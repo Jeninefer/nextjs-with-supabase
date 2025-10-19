@@ -180,11 +180,22 @@ const fetchMessages = async (
   return { messages: data ?? [] };
 };
 
+// Type guard to check if an object is a SenderRecord
+const isSenderRecord = (obj: any): obj is SenderRecord => {
+  return (
+    obj !== null &&
+    typeof obj === "object" &&
+    typeof obj.id === "string" &&
+    (typeof obj.display_name === "string" || typeof obj.display_name === "undefined")
+  );
+};
+
 const resolveSender = (sender: MessageRow["sender"]): SenderRecord | null => {
+  let resolved: any = sender;
   if (Array.isArray(sender)) {
-    return sender[0] ?? null;
+    resolved = sender[0];
   }
-  return sender;
+  return isSenderRecord(resolved) ? resolved : null;
 };
 
 const buildTranscript = (messages: MessageRow[]): TranscriptBundle => {
