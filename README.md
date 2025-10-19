@@ -32,6 +32,10 @@
 - Components with [shadcn/ui](https://ui.shadcn.com/)
 - Optional deployment with [Supabase Vercel Integration and Vercel deploy](#deploy-your-own)
   - Environment variables automatically assigned to Vercel project
+- Financial Intelligence Notebook with market analysis integration
+  - Jupyter notebook for comprehensive financial analysis
+  - Market insights extraction from MYPE 2025 report
+  - KPI calculations, risk analysis, and growth projections
 
 ## Demo
 
@@ -93,6 +97,38 @@ If you wish to just develop locally and not deploy to Vercel, [follow the steps 
 6. This template comes with the default shadcn/ui style initialized. If you instead want other ui.shadcn styles, delete `components.json` and [re-install shadcn/ui](https://ui.shadcn.com/docs/installation/next)
 
 > Check out [the docs for Local Development](https://supabase.com/docs/guides/getting-started/local-development) to also run Supabase locally.
+
+## Financial Intelligence Notebook
+
+This repository includes an Abaco Financial Intelligence Jupyter notebook that provides comprehensive financial analysis capabilities:
+
+### Features
+
+- **Feature Engineering**: Customer segmentation, delinquency analysis, and risk indicators
+- **KPI Calculation**: Assets Under Management (AUM), default rates, and portfolio metrics
+- **Growth Analysis**: Future projections and trend analysis
+- **Risk Analysis**: Roll rate calculations and portfolio health monitoring
+- **Market Analysis**: Integration with MYPE 2025 market research data
+- **AI-Powered Insights**: Automated summary generation with market context
+
+### Getting Started
+
+```bash
+# Install Jupyter and required packages
+pip install pandas numpy plotly pdfplumber jupyter
+
+# Navigate to notebooks directory
+cd notebooks
+
+# Start Jupyter
+jupyter notebook abaco_financial_intelligence.ipynb
+```
+
+For detailed documentation, see [`notebooks/README.md`](notebooks/README.md).
+
+### Data Requirements
+
+Place your financial data files in the `data/` directory. See [`data/README.md`](data/README.md) for the expected format. Sample data is provided in `data/sample_financial_data.csv`.
 
 ## Feedback and issues
 

@@ -40,3 +40,13 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# data files (exclude sensitive financial data)
+/data/*.csv
+/data/*.pdf
+!/data/sample_financial_data.csv
+!/data/README.md
+
+# jupyter notebooks
+.ipynb_checkpoints/
+**/.ipynb_checkpoints/
