@@ -60,3 +60,45 @@ The notebook is designed to work without the PDF file by using fallback market s
 - Test the notebook without the full MYPE report
 - Use your own market research data
 - Focus on financial metrics without market context
+
+# Data Directory Structure
+
+This directory contains sample data files and documentation for the ABACO Financial Intelligence Platform integration.
+
+## File Organization
+
+- **data/**: Directory containing sample CSV files with financial data.
+- **docs/**: Directory for additional documentation and reports.
+- **notebooks/**: Jupyter notebooks for data analysis and visualization.
+- **scripts/**: Python scripts for data processing and model training.
+
+## Sample Data Processing
+
+```python
+import pandas as pd
+
+# Load data
+data = pd.read_csv('your_file.csv')
+
+# Normalize column names
+data.columns = data.columns.str.lower()
+
+# Convert date column to datetime
+data['date'] = pd.to_datetime(data['date'])
+
+# Fill missing values
+data.fillna({
+    'balance': 0,
+    'credit_limit': 0,
+    'dpd': 0,
+    'apr': data['apr'].mean()  # Replace with average APR
+}, inplace=True)
+
+# Remove duplicates
+data.drop_duplicates(subset='customer_id', keep='last', inplace=True)
+
+# Save the cleaned data
+data.to_csv('your_file_cleaned.csv', index=False)
+```
+
+This example demonstrates how to load, clean, and save data using pandas. Adjust the script to fit your specific data files and cleaning requirements.
