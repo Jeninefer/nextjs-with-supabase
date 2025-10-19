@@ -2,22 +2,6 @@ import plugin from "tailwindcss/plugin";
 import type { Config } from "tailwindcss";
 import animatePlugin from "tailwindcss-animate";
 
-// ABACO Financial Intelligence Platform Color Palette
-const abacoColors = {
-  primary: {
-    50: '#f3f0ff',
-    100: '#e9e5ff',
-    200: '#d6cfff',
-    300: '#c1a6ff', // Primary purple
-    400: '#a78bfa',
-    500: '#8b5cf6',
-    600: '#5f4896', // Purple dark
-    700: '#553c9a',
-    800: '#4c1d95',
-    900: '#3b0764',
-  }
-}
-
 const flattenColorPalette = (colors: Record<string, unknown>, prefix = ""): Record<string, string> => {
   const entries = Object.entries(colors ?? {});
   return entries.reduce<Record<string, string>>((acc, [key, value]) => {
@@ -45,8 +29,8 @@ const flattenColorPalette = (colors: Record<string, unknown>, prefix = ""): Reco
 };
 
 const addVariablesForColors = plugin(({ addBase, theme }) => {
-  const colors = theme("colors");
-  const flattened = flattenColorPalette(colors);
+  const colors = theme("colors") ?? {};
+  const flattened = flattenColorPalette(colors as Record<string, unknown>);
   const cssVariables = Object.fromEntries(
     Object.entries(flattened).map(([name, value]) => [`--${name.replaceAll(/[./]/g, "-")}`, value])
   );
@@ -76,7 +60,17 @@ const config = {
         },
         primary: {
           DEFAULT: "hsl(var(--primary))",
-          foreground: "hsl(var(--primary-foreground))"
+          foreground: "hsl(var(--primary-foreground))",
+          50: '#f3f0ff',
+          100: '#e9e5ff',
+          200: '#d6cfff',
+          300: '#c1a6ff', // ABACO Primary purple
+          400: '#a78bfa',
+          500: '#8b5cf6',
+          600: '#5f4896', // ABACO Purple dark
+          700: '#553c9a',
+          800: '#4c1d95',
+          900: '#3b0764',
         },
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
@@ -103,8 +97,7 @@ const config = {
           "3": "hsl(var(--chart-3))",
           "4": "hsl(var(--chart-4))",
           "5": "hsl(var(--chart-5))"
-        },
-        ...abacoColors,
+        }
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -114,22 +107,6 @@ const config = {
       fontFamily: {
         'lato': ['Lato', 'sans-serif'],
         'poppins': ['Poppins', 'sans-serif'],
-      },
-      animation: {
-        'gradient': 'gradient 8s linear infinite',
-        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-      },
-      keyframes: {
-        gradient: {
-          '0%, 100%': {
-            'background-size': '200% 200%',
-            'background-position': 'left center'
-          },
-          '50%': {
-            'background-size': '200% 200%',
-            'background-position': 'right center'
-          }
-        }
       }
     }
   },
