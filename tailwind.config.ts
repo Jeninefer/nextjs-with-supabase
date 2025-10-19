@@ -31,7 +31,7 @@ const addVariablesForColors = plugin(({ addBase, theme }) => {
   const colors = theme("colors");
   const flattened = flattenColorPalette(colors as Record<string, unknown>);
   const cssVariables = Object.fromEntries(
-    Object.entries(flattened).map(([name, value]) => [`--${name.replaceAll(/[./]/g, "-")}`, value])
+    Object.entries(flattened).map(([name, value]) => [`--${name.replaceAll('.', '-').replaceAll('/', '-')}`, value])
   );
   addBase({ ":root": cssVariables });
 });
