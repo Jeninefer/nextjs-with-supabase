@@ -5,10 +5,7 @@ declare const Deno: {
   serve: (handler: (req: Request) => Response | Promise<Response>) => void;
 };
 
-<<<<<<< HEAD
-=======
 // @ts-expect-error -- Deno runtime resolves ESM URL imports
->>>>>>> main
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 type SummarizeRequest = {
