@@ -46,8 +46,7 @@ const corsHeaders = {
 const supabaseUrl = Deno.env.get("SUPABASE_URL") ?? "";
 const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
 const openAiKey = Deno.env.get("OPENAI_API_KEY") ?? "";
-const _openAiBaseUrl = Deno.env.get("OPENAI_BASE_URL") ?? "https://api.openai.com/v1";
-const openAiBaseUrl = _openAiBaseUrl.endsWith("/") ? _openAiBaseUrl.slice(0, -1) : _openAiBaseUrl;
+const openAiBaseUrl = (Deno.env.get("OPENAI_BASE_URL") ?? "https://api.openai.com/v1").replace(/\/$/, "");
 
 if (!supabaseUrl || !serviceRoleKey) {
   console.error("summarize-thread: Supabase credentials are not configured");
