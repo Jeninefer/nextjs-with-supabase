@@ -195,7 +195,7 @@ const buildTranscript = (messages: MessageRow[]): TranscriptBundle => {
       const senderInfo = resolveSender(msg.sender);
       const author = senderInfo?.display_name ?? senderInfo?.id ?? "Unknown";
       const stamp = new Date(msg.created_at).toISOString();
-      const body = (msg.body ?? "").replaceAll(/\s+/g, " ").trim();
+      const body = (msg.body ?? "").replace(/\s+/g, " ").trim();
       return `[${stamp}] ${author}: ${body}`;
     })
     .join("\n");
