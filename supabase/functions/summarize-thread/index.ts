@@ -203,7 +203,7 @@ const buildTranscript = (messages: MessageRow[]): TranscriptBundle => {
   return {
     transcript: lines,
     first: ordered[0],
-    last: ordered.at(-1) ?? ordered[0],
+    last: ordered[ordered.length - 1] ?? ordered[0],
   };
 };
 
