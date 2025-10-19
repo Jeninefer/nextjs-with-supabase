@@ -70,7 +70,7 @@
 
 /* ABACO Financial Intelligence Platform Styles */
 .abaco-gradient-text {
-  background: linear-gradient(81.74deg, var(--abaco-primary-purple) 5.91%, var(--abaco-purple-dark) 79.73%);
+  background: linear-gradient(81.74deg, #C1A6FF 5.91%, #5F4896 79.73%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -81,6 +81,7 @@
   border: 2px solid rgba(193, 166, 255, 0.4);
   border-radius: 20px;
   backdrop-filter: blur(10px);
+  padding: 24px;
 }
 
 .abaco-metric-card {
@@ -88,6 +89,7 @@
   border: 2px solid rgba(193, 166, 255, 0.5);
   border-radius: 16px;
   backdrop-filter: blur(10px);
+  padding: 20px;
 }
 
 @layer base {
