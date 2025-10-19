@@ -186,7 +186,7 @@ const isSenderRecord = (obj: any): obj is SenderRecord => {
     obj !== null &&
     typeof obj === "object" &&
     typeof obj.id === "string" &&
-    (typeof obj.display_name === "string" || typeof obj.display_name === "undefined")
+    (typeof obj.display_name === "string" || obj.display_name === null || typeof obj.display_name === "undefined")
   );
 };
 
