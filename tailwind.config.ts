@@ -1,11 +1,20 @@
 import plugin from "tailwindcss/plugin";
 import type { Config } from "tailwindcss";
 import animatePlugin from "tailwindcss-animate";
+import { customColors } from './colors.js'
 
 const flattenColorPalette = (colors: Record<string, unknown>, prefix = ""): Record<string, string> => {
   const entries = Object.entries(colors ?? {});
   return entries.reduce<Record<string, string>>((acc, [key, value]) => {
-    const normalizedKey = key === "DEFAULT" ? prefix : prefix ? `${prefix}-${key}` : key;
+    let normalizedKey: string;
+    if (key === "DEFAULT") {
+      normalizedKey = prefix;
+    } else if (prefix) {
+      normalizedKey = `${prefix}-${key}`;
+    } else {
+      normalizedKey = key;
+    }
+    
     if (!normalizedKey) {
       return acc;
     }
@@ -21,10 +30,10 @@ const flattenColorPalette = (colors: Record<string, unknown>, prefix = ""): Reco
 };
 
 const addVariablesForColors = plugin(({ addBase, theme }) => {
-  const colors = theme("colors") as Record<string, unknown>;
-  const flattened = flattenColorPalette(colors);
+  const colors = theme("colors");
+  const flattened = flattenColorPalette(colors ?? {});
   const cssVariables = Object.fromEntries(
-    Object.entries(flattened).map(([name, value]) => [`--${name.replace(/[./]/g, "-")}`, value])
+    Object.entries(flattened).map(([name, value]) => [`--${name.replaceAll(/[./]/g, "-")}`, value])
   );
   addBase({ ":root": cssVariables });
 });
@@ -79,7 +88,8 @@ const config = {
           "3": "hsl(var(--chart-3))",
           "4": "hsl(var(--chart-4))",
           "5": "hsl(var(--chart-5))"
-        }
+        },
+        ...customColors,
       },
       borderRadius: {
         lg: "var(--radius)",
