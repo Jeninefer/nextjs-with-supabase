@@ -1,3 +1,4 @@
+<!-- markdownlint-disable MD033 MD041 -->
 <a href="https://demo-nextjs-with-supabase.vercel.app/">
   <img alt="Next.js and Supabase Starter Kit - the fastest way to build apps with Next.js and Supabase" src="https://demo-nextjs-with-supabase.vercel.app/opengraph-image.png">
   <h1 align="center">Next.js and Supabase Starter Kit</h1>
@@ -12,10 +13,11 @@
   <a href="#demo"><strong>Demo</strong></a> ·
   <a href="#deploy-to-vercel"><strong>Deploy to Vercel</strong></a> ·
   <a href="#clone-and-run-locally"><strong>Clone and run locally</strong></a> ·
-  <a href="#feedback-and-issues"><strong>Feedback and issues</strong></a>
+  <a href="#feedback-and-issues"><strong>Feedback and issues</strong></a> ·
   <a href="#more-supabase-examples"><strong>More Examples</strong></a>
 </p>
 <br/>
+<!-- markdownlint-enable MD033 MD041 -->
 
 ## Features
 
@@ -30,7 +32,7 @@
 - Password-based authentication block installed via the [Supabase UI Library](https://supabase.com/ui/docs/nextjs/password-based-auth)
 - Styling with [Tailwind CSS](https://tailwindcss.com)
 - Components with [shadcn/ui](https://ui.shadcn.com/)
-- Optional deployment with [Supabase Vercel Integration and Vercel deploy](#deploy-your-own)
+- Optional deployment with [Supabase Vercel Integration and Vercel deploy](#deploy-to-vercel)
   - Environment variables automatically assigned to Vercel project
 - Financial Intelligence Notebook with market analysis integration
   - Jupyter notebook for comprehensive financial analysis
@@ -79,7 +81,7 @@ If you wish to just develop locally and not deploy to Vercel, [follow the steps 
 
 4. Rename `.env.example` to `.env.local` and update the following:
 
-   ```
+   ```env
    NEXT_PUBLIC_SUPABASE_URL=[INSERT SUPABASE PROJECT URL]
    NEXT_PUBLIC_SUPABASE_ANON_KEY=[INSERT SUPABASE PROJECT API ANON KEY]
    ```
@@ -96,9 +98,7 @@ If you wish to just develop locally and not deploy to Vercel, [follow the steps 
 
 6. This template comes with the default shadcn/ui style initialized. If you instead want other ui.shadcn styles, delete `components.json` and [re-install shadcn/ui](https://ui.shadcn.com/docs/installation/next)
 
-> Check out [the docs for Local Development](https://supabase.com/docs/guides/getting-started/local-development) to also run Supabase locally.
-
-## Financial Intelligence Notebook
+## Development Setup
 
 This repository includes an Abaco Financial Intelligence Jupyter notebook that provides comprehensive financial analysis capabilities:
 
@@ -129,6 +129,37 @@ For detailed documentation, see [`notebooks/README.md`](notebooks/README.md).
 ### Data Requirements
 
 Place your financial data files in the `data/` directory. See [`data/README.md`](data/README.md) for the expected format. Sample data is provided in `data/sample_financial_data.csv`.
+
+## ABACO Financial Intelligence Platform
+
+This project includes integration with the ABACO Financial Intelligence Platform for advanced financial analytics and lending portfolio management.
+
+### Key Features
+
+- **Next-Generation Analytics**: 20+ specialized processing modules
+- **Real-time KPIs**: Comprehensive financial metrics dashboard  
+- **Risk Intelligence**: Advanced roll-rate analysis and predictive modeling
+- **Market Intelligence**: Integration with 50+ external data sources
+- **AI-Powered Insights**: Conditional processing with intelligent fallbacks
+
+### Quick Start with ABACO
+
+```bash
+# Start Supabase locally
+supabase start
+
+# Install ABACO dependencies
+pip install -r notebooks/requirements.txt
+
+# Launch financial analytics
+jupyter notebook notebooks/abaco_financial_intelligence.ipynb
+```
+
+For detailed documentation, see [ABACO Platform Guide](./docs/ABACO_PLATFORM.md).
+
+## Production Deployment
+
+> Check out [the docs for Local Development](https://supabase.com/docs/guides/getting-started/local-development) to also run Supabase locally.
 
 ## Feedback and issues
 

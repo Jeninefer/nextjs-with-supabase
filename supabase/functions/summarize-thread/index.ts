@@ -5,6 +5,10 @@ declare const Deno: {
   serve: (handler: (req: Request) => Response | Promise<Response>) => void;
 };
 
+<<<<<<< HEAD
+=======
+// @ts-expect-error -- Deno runtime resolves ESM URL imports
+>>>>>>> main
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 type SummarizeRequest = {
@@ -180,6 +184,7 @@ const fetchMessages = async (
   return { messages: data ?? [] };
 };
 
+<<<<<<< HEAD
 // Type guard to check if an object is a SenderRecord
 const isSenderRecord = (obj: any): obj is SenderRecord => {
   return (
@@ -196,6 +201,13 @@ const resolveSender = (sender: MessageRow["sender"]): SenderRecord | null => {
     resolved = sender[0];
   }
   return isSenderRecord(resolved) ? resolved : null;
+=======
+const resolveSender = (sender: MessageRow["sender"]): SenderRecord | null => {
+  if (Array.isArray(sender)) {
+    return sender[0] ?? null;
+  }
+  return sender;
+>>>>>>> main
 };
 
 const buildTranscript = (messages: MessageRow[]): TranscriptBundle => {
@@ -205,7 +217,11 @@ const buildTranscript = (messages: MessageRow[]): TranscriptBundle => {
       const senderInfo = resolveSender(msg.sender);
       const author = senderInfo?.display_name ?? senderInfo?.id ?? "Unknown";
       const stamp = new Date(msg.created_at).toISOString();
+<<<<<<< HEAD
       const body = (msg.body ?? "").replace(/\s+/g, " ").trim();
+=======
+      const body = (msg.body ?? "").replaceAll(/\s+/g, " ").trim();
+>>>>>>> main
       return `[${stamp}] ${author}: ${body}`;
     })
     .join("\n");
@@ -213,7 +229,11 @@ const buildTranscript = (messages: MessageRow[]): TranscriptBundle => {
   return {
     transcript: lines,
     first: ordered[0],
+<<<<<<< HEAD
     last: ordered[ordered.length - 1] ?? ordered[0],
+=======
+    last: ordered.at(-1) ?? ordered[0],
+>>>>>>> main
   };
 };
 
@@ -240,7 +260,11 @@ const summarizeWithOpenAi = async (
           {
             role: "system",
             content:
+<<<<<<< HEAD
               "You summarize lending workspace chat threads. Return 3-5 concise bullet points using dashes (\"- \"). If there are any action items, list them at the end under a separate heading \"Action Items:\", each as a dash. If there are no action items, omit the \"Action Items:\" section.",
+=======
+              "You summarize lending workspace chat threads. Return 3-5 concise bullet points and highlight action items when present.",
+>>>>>>> main
           },
           {
             role: "user",
