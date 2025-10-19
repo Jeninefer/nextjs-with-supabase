@@ -40,3 +40,16 @@ next-env.d.ts
 /supabase/.branches
 /supabase/.temp
 /supabase/logs
+
+# Git merge artifacts
+*.orig
+*.rej
+*.BACKUP.*
+*.BASE.*
+*.LOCAL.*
+*.REMOTE.*
+
+# ABACO platform files
+notebooks/.ipynb_checkpoints/
+venv_packages_backup*
+temp_analysis/

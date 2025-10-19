@@ -15,23 +15,6 @@ const abacoColors = {
     700: '#553c9a',
     800: '#4c1d95',
     900: '#3b0764',
-  },
-  background: {
-    DEFAULT: '#030E19', // Deep space
-    card: '#0C2742',    // Dark blue
-    muted: '#1a1a2e',
-  },
-  gray: {
-    50: '#f9fafb',
-    100: '#f3f4f6',
-    200: '#e5e7eb',
-    300: '#CED4D9', // Light gray
-    400: '#9EA9B3', // Medium gray
-    500: '#6D7D8E', // Dark gray
-    600: '#4b5563',
-    700: '#374151',
-    800: '#1f2937',
-    900: '#111827',
   }
 }
 
@@ -81,7 +64,6 @@ const config = {
   theme: {
     extend: {
       colors: {
-        // Standard shadcn/ui colors
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         card: {
@@ -122,7 +104,6 @@ const config = {
           "4": "hsl(var(--chart-4))",
           "5": "hsl(var(--chart-5))"
         },
-        // ABACO Financial Intelligence Platform colors
         ...abacoColors,
       },
       borderRadius: {
