@@ -230,7 +230,7 @@ const summarizeWithOpenAi = async (
           {
             role: "system",
             content:
-              "You summarize lending workspace chat threads. Return 3-5 concise bullet points and highlight action items when present.",
+              "You summarize lending workspace chat threads. Return 3-5 concise bullet points using dashes (\"- \"). If there are any action items, list them at the end under a separate heading \"Action Items:\", each as a dash. If there are no action items, omit the \"Action Items:\" section.",
           },
           {
             role: "user",
