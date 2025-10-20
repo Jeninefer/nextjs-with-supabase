@@ -4,6 +4,11 @@
 # Script to import customer data into Supabase
 # Usage: ./scripts/import-customer-data.sh
 
+# Error handling philosophy:
+# This script uses 'set -e' to ensure that any error immediately halts the import process,
+# preventing partial or corrupted data imports. In contrast, verify-database.sh explicitly
+# avoids 'set -e' to allow reporting of multiple issues in a single run. This difference
+# is intentional and reflects the operational requirements of each script.
 set -e
 
 echo "🚀 ABACO Customer Data Import Script"
