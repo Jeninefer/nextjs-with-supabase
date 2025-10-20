@@ -1,6 +1,20 @@
 import plugin from "tailwindcss/plugin";
 import type { Config } from "tailwindcss";
-const { default: flattenColorPalette } = require("tailwindcss/lib/util/flattenColorPalette");
+import tailwindcssAnimate from "tailwindcss-animate";
+
+// Utility function to flatten color palette (replaces internal Tailwind utility)
+function flattenColorPalette(colors: any): Record<string, string> {
+  return Object.assign(
+    {},
+    ...Object.entries(colors ?? {}).flatMap(([color, values]) =>
+      typeof values === "object"
+        ? Object.entries(flattenColorPalette(values)).map(([number, hex]) => ({
+            [color + (number === "DEFAULT" ? "" : `-${number}`)]: hex,
+          }))
+        : [{ [`${color}`]: values }]
+    )
+  );
+}
 
 const config: Config = {
   darkMode: ["class"],
@@ -184,7 +198,7 @@ const config: Config = {
     },
   },
   plugins: [
-    require("tailwindcss-animate"),
+    tailwindcssAnimate,
     addVariablesForColors,
   ],
 } satisfies Config;
