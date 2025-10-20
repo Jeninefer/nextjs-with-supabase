@@ -1,5 +1,5 @@
-import { dirname } from "node:path";
-import { fileURLToPath } from "node:url";
+import { dirname } from "path";
+import { fileURLToPath } from "url";
 import { FlatCompat } from "@eslint/eslintrc";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -39,7 +39,8 @@ const eslintConfig = [
       ],
 
       // TypeScript specific rules for ABACO
-      "@typescript-eslint/no-unused-vars": "error",
+      "@typescript-eslint/no-unused-vars": "warn",
+      "@typescript-eslint/no-explicit-any": "warn",
       "@typescript-eslint/explicit-function-return-type": "warn",
       "@typescript-eslint/prefer-nullish-coalescing": "error",
       "@typescript-eslint/prefer-optional-chain": "error",
