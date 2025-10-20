@@ -3,7 +3,7 @@
 echo "🚀 ABACO Financial Intelligence Platform"
 echo "======================================="
 
-cd /Users/jenineferderas/Documents/GitHub/nextjs-with-supabase
+cd "$(dirname "$0")/.."
 
 # Detect Python command
 if command -v python3 &> /dev/null; then
