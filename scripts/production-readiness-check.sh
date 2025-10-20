@@ -4,7 +4,6 @@
 # Production Readiness Check
 # Usage: ./scripts/production-readiness-check.sh
 
-set -e
 
 echo "🚀 ABACO Production Readiness Check"
 echo "====================================="
