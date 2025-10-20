@@ -108,15 +108,17 @@ psql "postgresql://postgres:[password]@db.[project].supabase.co:5432/postgres" \
 
 # Verify data imported
 SELECT COUNT(*) FROM abaco_customers;
--- Expected: 1000
+-- Example expected value (from initial dataset): 1000
+-- NOTE: These values are examples from the initial dataset and may change as data evolves.
+-- For current expected values, refer to the dataset documentation or data source.
 
 SELECT
   COUNT(*) as total_customers,
   AVG(account_balance) as avg_balance,
   AVG(credit_score) as avg_credit_score
 FROM abaco_customers;
--- Expected: total_customers=1000, avg_balance≈9804.12, avg_credit_score≈606.40
-```
+-- Example expected values (initial dataset): total_customers=1000, avg_balance≈9804.12, avg_credit_score≈606.40
+-- NOTE: These are example values; actual results may vary. See dataset documentation for up-to-date statistics.
 
 ---
 
