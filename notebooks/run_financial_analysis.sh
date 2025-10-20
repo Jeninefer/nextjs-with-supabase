@@ -29,9 +29,9 @@ fi
 echo "🔄 Activating virtual environment..."
 source abaco_venv/bin/activate
 
-# Upgrade pip
-echo "⬆️ Upgrading pip..."
-pip install --upgrade pip
+# Upgrade pip (version pinned for reproducibility and security)
+echo "⬆️ Upgrading pip to version 23.3.1..."
+pip install --upgrade pip==23.3.1
 
 # Install only essential packages (avoid problematic ones)
 echo "📦 Installing Python dependencies from requirements.txt (pinned versions)..."
