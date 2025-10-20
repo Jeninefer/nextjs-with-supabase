@@ -2,5 +2,53 @@
     "git.autofetch": true,
     "json.schemaDownload.enable": true,
     "typescript.disableAutomaticTypeAcquisition": true,
-    "redhat.telemetry.enabled": false
+    "redhat.telemetry.enabled": false,
+    "typescript.preferences.importModuleSpecifier": "relative",
+    "typescript.suggest.autoImports": true,
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": "explicit",
+        "source.organizeImports": "explicit"
+    },
+    "files.associations": {
+        "*.tsx": "typescriptreact",
+        "*.ts": "typescript",
+        "*.json": "jsonc"
+    },
+    "emmet.includeLanguages": {
+        "typescript": "html",
+        "typescriptreact": "html"
+    },
+    "tailwindCSS.includeLanguages": {
+        "typescript": "html",
+        "typescriptreact": "html"
+    },
+    "tailwindCSS.experimental.classRegex": [
+        "cn\\(([^)]*)\\)"
+    ],
+    "python.defaultInterpreterPath": "/usr/local/bin/python3",
+    "python.terminal.activateEnvironment": false,
+    "files.exclude": {
+        "**/.git": true,
+        "**/.DS_Store": true,
+        "**/node_modules": true,
+        "**/.next": true,
+        "**/__pycache__": true,
+        "**/*.pyc": true
+    },
+    "search.exclude": {
+        "**/node_modules": true,
+        "**/.next": true,
+        "**/dist": true,
+        "**/__pycache__": true
+    },
+    "eslint.workingDirectories": [
+        {
+            "directory": ".",
+            "changeProcessCWD": true
+        }
+    ],
+    "nextjs.serverPort": 3000,
+    "cs-script.execMode": "Standard",
+    "cs-script.syntaxCheckOnSave": true
 }
