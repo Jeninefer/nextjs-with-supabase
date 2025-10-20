@@ -32,14 +32,27 @@ else
 fi
 # Verify installation
 echo "✅ Verifying installation..."
-python -c "import plotly; print(f'Plotly: {plotly.__version__}')" || exit 1
-python -c "import matplotlib; print(f'Matplotlib: {matplotlib.__version__}')" || exit 1
-python -c "import jinja2; print(f'Jinja2: {jinja2.__version__}')" || exit 1
-python -c "import numpy; print(f'NumPy: {numpy.__version__}')" || exit 1
-python -c "import pandas; print(f'Pandas: {pandas.__version__}')" || exit 1
-python -c "import scipy; print(f'SciPy: {scipy.__version__}')" || exit 1
-python -c "import sklearn; print(f'Scikit-learn: {sklearn.__version__}')" || exit 1
-python -c "import seaborn; print(f'Seaborn: {seaborn.__version__}')" || exit 1
+python -c "
+packages = [
+   ('plotly', 'Plotly'),
+   ('matplotlib', 'Matplotlib'),
+   ('jinja2', 'Jinja2'),
+   ('numpy', 'NumPy'),
+   ('pandas', 'Pandas'),
+   ('scipy', 'SciPy'),
+   ('sklearn', 'Scikit-learn'),
+   ('seaborn', 'Seaborn'),
+]
+import sys
+for pkg, name in packages:
+   try:
+       mod = __import__(pkg)
+       ver = getattr(mod, '__version__', 'unknown')
+       print(f'{name}: {ver}')
+   except Exception as e:
+       print(f'❌ Failed to import {name} ({pkg}): {e}', file=sys.stderr)
+       sys.exit(1)
+" || exit 1
 
 echo "🎉 ABACO environment setup complete!"
 echo "💡 Now restart your Jupyter kernel and re-run the notebook"
