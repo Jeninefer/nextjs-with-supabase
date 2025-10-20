@@ -34,8 +34,8 @@ echo "⬆️ Upgrading pip..."
 pip install --upgrade pip
 
 # Install only essential packages (avoid problematic ones)
-echo "📦 Installing Python dependencies (essential only)..."
-pip install pandas numpy plotly matplotlib seaborn pdfplumber jupyter ipython requests
+echo "📦 Installing Python dependencies from requirements.txt (pinned versions)..."
+pip install -r requirements.txt
 
 # Create necessary directories
 mkdir -p notebooks/charts
