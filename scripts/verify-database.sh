@@ -3,9 +3,10 @@
 # ABACO Financial Intelligence Platform
 # Database Verification Script
 # Usage: ./scripts/verify-database.sh
-
-# set -e  # Removed to allow graceful error handling - script continues through all verification checks even if some fail, enabling a complete verification report
-
+#
+# Error Handling Philosophy:
+# This script intentionally does NOT use 'set -e' to allow graceful error handling.
+# It continues through all verification checks even if some fail, enabling a complete verification report.
 echo "🔍 ABACO Database Verification Script"
 echo "========================================"
 echo ""
