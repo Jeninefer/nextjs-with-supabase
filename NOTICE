@@ -5,37 +5,37 @@ This product includes software developed by third parties:
 
 1. Next.js Framework (MIT License)
    Copyright (c) 2024 Vercel, Inc.
-   https://github.com/vercel/next.js
+   <https://github.com/vercel/next.js>
 
 2. React Library (MIT License)
    Copyright (c) Meta Platforms, Inc. and affiliates
-   https://github.com/facebook/react
+   <https://github.com/facebook/react>
 
 3. Tailwind CSS (MIT License)
    Copyright (c) Tailwind Labs, Inc.
-   https://github.com/tailwindlabs/tailwindcss
+   <https://github.com/tailwindlabs/tailwindcss>
 
 4. Supabase (Apache License 2.0)
    Copyright (c) 2021 Supabase, Inc.
-   https://github.com/supabase/supabase
+   <https://github.com/supabase/supabase>
 
 5. TypeScript (Apache License 2.0)
    Copyright (c) Microsoft Corporation
-   https://github.com/microsoft/TypeScript
+   <https://github.com/microsoft/TypeScript>
 
 6. Tailwind Color Palette Utility (Apache License 2.0)
    Inspired by Grida Project
    Copyright (c) Grida Co., Ltd.
-   https://github.com/gridaco/grida
+   <https://github.com/gridaco/grida>
    File: apps/forms/tailwind.config.ts
    Usage: Dynamic CSS variable generation pattern
 
-The flattenColorPalette utility implementation is based on a widely-used 
-community pattern in the Tailwind CSS ecosystem and is considered standard 
+The flattenColorPalette utility implementation is based on a widely-used
+community pattern in the Tailwind CSS ecosystem and is considered standard
 practice for dynamic color variable generation.
 
-ABACO-specific implementations, algorithms, and business logic remain 
+ABACO-specific implementations, algorithms, and business logic remain
 proprietary to ABACO Financial Intelligence Platform.
 
-For complete license information, see individual component licenses 
+For complete license information, see individual component licenses
 in the node_modules directory.
