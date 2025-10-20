@@ -126,9 +126,7 @@ The following Python packages are required:
 
 Install using:
 ```bash
-pip install pandas numpy plotly matplotlib seaborn jinja2 scipy scikit-learn
-```
-
+pip install -r requirements.txt
 Or use the provided environment setup script.
 
 ## Analytics Report
