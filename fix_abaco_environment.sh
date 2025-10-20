@@ -15,7 +15,10 @@ python3 -m ensurepip --upgrade 2>/dev/null || echo "pip already available"
 
 # Install required packages
 echo "📊 Installing ABACO dependencies..."
-python3 -m pip install --user plotly matplotlib seaborn jinja2 numpy pandas scipy scikit-learn
+python3 -m pip install --user plotly matplotlib seaborn jinja2 numpy pandas scipy scikit-learn || { 
+    echo "❌ Failed to install dependencies"; 
+    exit 1; 
+}
 
 # Verify installation
 echo "✅ Verifying installation..."
