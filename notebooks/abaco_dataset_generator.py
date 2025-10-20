@@ -83,17 +83,21 @@ def build_comprehensive_abaco_dataset():
     mortgage_pct = np.random.uniform(0.5, 0.8, num_customers)
     personal_pct = np.random.uniform(0.1, 0.3, num_customers) 
     auto_pct = np.random.uniform(0.05, 0.15, num_customers)
+    other_pct = np.random.uniform(0.0, 0.2, num_customers)  # Residual category for other loan types
     
-    # Normalize percentages to sum to 1.0
-    total_pct = mortgage_pct + personal_pct + auto_pct
+    # Normalize percentages to sum to 1.0 (mortgage, personal, auto, other)
+    total_pct = mortgage_pct + personal_pct + auto_pct + other_pct
     mortgage_pct = mortgage_pct / total_pct
     personal_pct = personal_pct / total_pct
     auto_pct = auto_pct / total_pct
+    other_pct = other_pct / total_pct
     
     # Calculate balances using normalized percentages
     mortgage_balance = total_loans * mortgage_pct
     personal_loan_balance = total_loans * personal_pct
     auto_loan_balance = total_loans * auto_pct
+    other_loan_balance = total_loans * other_pct
+    # Note: The four categories (mortgage, personal, auto, other) are assumed to cover all loan types for this dataset.
     debt_to_income_ratio = np.round((total_loans / annual_income) * 100, 2)
     
     # 7. Payment Behavior
