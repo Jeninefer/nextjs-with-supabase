@@ -225,8 +225,8 @@ Potential improvements for future iterations:
 - Lines of Code: ~400 (dataset generator)
 - Functions: 4 well-documented functions
 - Comments: Comprehensive docstrings
-- Error Handling: Proper try-except blocks
-- Type Hints: Clean function signatures
+- Error Handling: Basic error handling (try-except blocks can be added for robustness)
+- Type Hints: Type hints not yet implemented (recommended for future improvement)
 - Code Style: PEP 8 compliant
 
 ## ✨ Highlights
