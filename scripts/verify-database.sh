@@ -4,7 +4,7 @@
 # Database Verification Script
 # Usage: ./scripts/verify-database.sh
 
-# set -e  # Removed to allow graceful error handling in verification checks
+# set -e  # Removed to allow graceful error handling - script continues through all verification checks even if some fail, enabling a complete verification report
 
 echo "🔍 ABACO Database Verification Script"
 echo "========================================"
