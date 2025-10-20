@@ -41,16 +41,16 @@ npm run dev
 
 ### Using a Browser
 
-Navigate to: `http://localhost:3000/api/test-supabase`
+Navigate to: `http://localhost:3001/api/test-supabase`
 
 ### Using curl
 
 ```bash
 # Basic request
-curl http://localhost:3000/api/test-supabase
+curl http://localhost:3001/api/test-supabase
 
 # View all headers including timing metrics
-curl -i http://localhost:3000/api/test-supabase
+curl -i http://localhost:3001/api/test-supabase
 ```
 
 ## Response Format
