@@ -2,7 +2,7 @@
 # ABACO Final Recovery - Fix Corrupted Next.js Installation
 
 set -e
-cd /Users/jenineferderas/Documents/GitHub/nextjs-with-supabase
+cd "$(dirname "$0")"
 
 echo "🚨 ABACO FINAL RECOVERY - NEXT.JS INSTALLATION FIX"
 echo "=================================================="
