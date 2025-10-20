@@ -56,7 +56,7 @@ Open [http://localhost:3000](http://localhost:3000) to access the ABACO platform
 
 ## 📁 Project Structure
 
-```
+```text
 ├── app/                    # Next.js App Router
 │   ├── dashboard/         # Financial dashboard
 │   ├── auth/             # Authentication pages
