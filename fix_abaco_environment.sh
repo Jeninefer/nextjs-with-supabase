@@ -21,7 +21,12 @@ python3 -m pip install --user plotly matplotlib seaborn jinja2 numpy pandas scip
 echo "✅ Verifying installation..."
 python3 -c "import plotly; print(f'Plotly: {plotly.__version__}')"
 python3 -c "import matplotlib; print(f'Matplotlib: {matplotlib.__version__}')"
-python3 -c "import jinja2; print(f'Jinja2: {jinja2.__version__}')"
+python3 -c "import jinja2; print(f'Jinja2: {jinja2.__version__}')" || exit 1
+python3 -c "import numpy; print(f'Numpy: {numpy.__version__}')" || exit 1
+python3 -c "import pandas; print(f'Pandas: {pandas.__version__}')" || exit 1
+python3 -c "import scipy; print(f'Scipy: {scipy.__version__}')" || exit 1
+python3 -c "import sklearn; print(f'Scikit-learn: {sklearn.__version__}')" || exit 1
+python3 -c "import seaborn; print(f'Seaborn: {seaborn.__version__}')" || exit 1
 
 echo "🎉 ABACO environment setup complete!"
 echo "💡 Now restart your Jupyter kernel and re-run the notebook"
