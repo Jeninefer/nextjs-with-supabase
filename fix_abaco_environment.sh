@@ -27,7 +27,7 @@ python3 -c "import matplotlib; print(f'Matplotlib: {matplotlib.__version__}')" |
 python3 -c "import jinja2; print(f'Jinja2: {jinja2.__version__}')" || exit 1
 python3 -c "import numpy; print(f'NumPy: {numpy.__version__}')" || exit 1
 python3 -c "import pandas; print(f'Pandas: {pandas.__version__}')" || exit 1
-python3 -c "import scipy; print(f'Scipy: {scipy.__version__}')" || exit 1
+python3 -c "import scipy; print(f'SciPy: {scipy.__version__}')" || exit 1
 python3 -c "import sklearn; print(f'Scikit-learn: {sklearn.__version__}')" || exit 1
 python3 -c "import seaborn; print(f'Seaborn: {seaborn.__version__}')" || exit 1
 
