@@ -17,6 +17,6 @@ git commit -m "feat: add generated charts and utility scripts
 - Update ABACO platform with latest analysis results"
 
 # Push to remote
-git push origin main
+git push
 
 echo "✅ All changes committed and pushed successfully!"
