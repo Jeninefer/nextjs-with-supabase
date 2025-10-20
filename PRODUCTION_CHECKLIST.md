@@ -435,7 +435,7 @@ vercel --prod
 
 ```bash
 # 1. Create project at https://supabase.com/dashboard
-# 2. Run SQL schema (from integration-error.md)
+# 2. Run SQL schema (from supabase/migrations/001_create_abaco_schema.sql)
 # 3. Import CSV data
 # 4. Copy credentials to Vercel
 ```
