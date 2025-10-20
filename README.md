@@ -128,7 +128,10 @@ gcloud run deploy abaco-platform --source .
 
 For detailed setup instructions, error resolution, and platform status, see:
 
-- [Complete Setup Guide](../Library/Application%20Support/Code/User/cs-script.user/integration-error.md)
+- [Complete Setup Guide](./docs/SETUP_GUIDE.md) - Comprehensive setup from scratch
+- [Quick Reference](./docs/QUICK_REFERENCE.md) - Command cheat sheet
+- [Git Workflow Guide](./docs/GIT_WORKFLOW.md) - Git commands and workflows
+- [Production Checklist](./PRODUCTION_CHECKLIST.md) - Deployment verification
 - [Quick Start Guide](./QUICK_START.md)
 - [Build Success Log](./BUILD_SUCCESS.md)
 
@@ -150,13 +153,23 @@ git pull origin main
 git push origin main
 ```
 
+**Database setup:**
+
+```bash
+# Verify database and environment setup
+./scripts/verify-database.sh
+
+# Import customer data
+./scripts/import-customer-data.sh
+```
+
 **Python analysis not running:**
 
 ```bash
 python3 notebooks/abaco_financial_intelligence.py
 ```
 
-For comprehensive troubleshooting, environment status, and performance metrics, refer to the [Complete Setup Guide](../Library/Application%20Support/Code/User/cs-script.user/integration-error.md).
+For comprehensive troubleshooting, environment status, and performance metrics, refer to the [Complete Setup Guide](./docs/SETUP_GUIDE.md).
 
 ## 📄 License
 
