@@ -132,12 +132,14 @@ For detailed documentation, see [notebooks/README_ABACO_DATASET.md](./notebooks/
 ## 🚀 Deployment
 
 ### Vercel (Recommended)
+
 ```bash
 npm run build
 vercel deploy
 ```
 
 ### Google Cloud Run
+
 ```bash
 gcloud run deploy abaco-platform --source .
 ```
@@ -149,6 +151,40 @@ gcloud run deploy abaco-platform --source .
 - Basel III banking regulations
 - Enterprise-grade authentication
 
+## 🛠️ Troubleshooting
+
+For detailed setup instructions, error resolution, and platform status, see:
+
+- [Complete Setup Guide](../Library/Application%20Support/Code/User/cs-script.user/integration-error.md)
+- [Quick Start Guide](./QUICK_START.md)
+- [Build Success Log](./BUILD_SUCCESS.md)
+
+### Common Issues
+
+**Port already in use:**
+
+```bash
+lsof -i :3000
+kill -9 <PID>
+npm run dev
+```
+
+**Git sync issues:**
+
+```bash
+git status
+git pull origin main
+git push origin main
+```
+
+**Python analysis not running:**
+
+```bash
+python3 notebooks/abaco_financial_intelligence.py
+```
+
+For comprehensive troubleshooting, environment status, and performance metrics, refer to the [Complete Setup Guide](../Library/Application%20Support/Code/User/cs-script.user/integration-error.md).
+
 ## 📄 License
 
 Proprietary software. See [LICENSE](./LICENSE) for details.
@@ -159,8 +195,8 @@ This is a proprietary platform. For authorized contributions, please contact the
 
 ## 📞 Support
 
-For technical support: tech@abaco-platform.com
-For licensing: legal@abaco-platform.com
+For technical support: <tech@abaco-platform.com>
+For licensing: <legal@abaco-platform.com>
 
 ---
 
