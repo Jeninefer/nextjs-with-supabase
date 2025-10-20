@@ -2,6 +2,13 @@
 
 echo "🔄 Committing ABACO Financial Intelligence changes..."
 
+# Show git status and prompt for confirmation before staging all changes
+git status
+read -rp "Review the above changes. Proceed to stage all changes? (y/N): " CONFIRM
+if [[ ! "$CONFIRM" =~ ^[Yy]$ ]]; then
+    echo "Aborting commit."
+    exit 1
+fi
 # Add all modified, new, and deleted files
 git add -A
 
