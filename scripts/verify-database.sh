@@ -6,7 +6,10 @@
 #
 # Error Handling Philosophy:
 # This script intentionally does NOT use 'set -e' to allow graceful error handling.
-# It continues through all verification checks even if some fail, enabling a complete verification report.
+# Instead of failing fast on the first error, it continues through all verification checks even if some fail.
+# This approach enables a complete verification report, showing all issues at once, which is useful for debugging and comprehensive validation.
+# The trade-off is that some errors may be masked by subsequent checks, and the script may proceed further than expected after a critical failure.
+# This behavior is preferred here to help users identify all configuration problems in a single run, but may not be suitable for deployment or automation scripts where fail-fast is safer.
 echo "🔍 ABACO Database Verification Script"
 echo "========================================"
 echo ""
