@@ -41,12 +41,12 @@ export function useMCPIntegration() {
   });
 
 // Mapping from server ids to display names
+
 const SERVER_DISPLAY_NAMES: Record<string, string> = {
   'perplexity-ask': 'Perplexity',
   'fetch': 'Fetch',
   'memory': 'Memory'
 };
-  }, [state.servers]);
 
   const initializeMCPServers = useCallback(async () => {
     setState(prev => ({ ...prev, isLoading: true, error: null }));
