@@ -1,7 +1,7 @@
 #!/bin/bash
 
-echo "🚀 ABACO Financial Intelligence Runner"
-echo "====================================="
+echo "🚀 ABACO Financial Intelligence Platform"
+echo "======================================="
 
 cd /Users/jenineferderas/Documents/GitHub/nextjs-with-supabase
 
@@ -15,24 +15,32 @@ fi
 echo "🔄 Activating virtual environment..."
 source abaco_venv/bin/activate
 
-# Upgrade pip
+# Upgrade pip and install requirements
 echo "⬆️ Upgrading pip..."
 pip install --upgrade pip
 
-# Install base dependencies
-echo "📦 Installing base dependencies..."
-pip install pandas numpy plotly matplotlib seaborn pdfplumber jupyter ipython
+echo "📦 Installing Python dependencies..."
+if [ -f "notebooks/requirements.txt" ]; then
+    pip install -r notebooks/requirements.txt
+else
+    pip install pandas numpy plotly matplotlib seaborn pdfplumber jupyter ipython scikit-learn openpyxl
+fi
+
+# Create necessary directories
+mkdir -p notebooks/charts
+mkdir -p notebooks/exports
 
 # Run the financial analysis
-echo "💰 Running ABACO Financial Analysis..."
+echo "💰 Running ABACO Financial Intelligence Analysis..."
 python notebooks/abaco_financial_intelligence.py
 
 echo "✅ Analysis complete!"
 echo ""
 echo "📁 Generated files:"
 echo "  - notebooks/financial_analysis_results.csv"
-echo "  - notebooks/charts/ (HTML visualizations)"
+echo "  - notebooks/charts/ (Interactive HTML visualizations)"
 echo ""
-echo "🚀 To run Jupyter notebook:"
-echo "  source abaco_venv/bin/activate"
-echo "  jupyter notebook notebooks/"
+echo "🎯 Next steps:"
+echo "  1. Open charts in browser for interactive analysis"
+echo "  2. Import CSV data into your Next.js application"
+echo "  3. Use Jupyter for advanced analysis: jupyter notebook notebooks/"
