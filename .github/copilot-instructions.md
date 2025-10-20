@@ -106,27 +106,40 @@ This repository is a Next.js starter template with Supabase integration. Follow 
 
 ## Development Commands
 
-> **Note:** This project officially supports `npm` as the package manager. If you use `yarn` or `pnpm`, ensure the corresponding lockfile is present and up to date, and be aware that only `npm` is tested in CI/CD by default.
+> **Note:** This project officially supports and tests only `npm` as the package manager. Using `yarn` or `pnpm` is not recommended and may result in deployment errors unless you manually maintain the corresponding lockfile (`yarn.lock` or `pnpm-lock.yaml`) and resolve any issues yourself. Only `npm` is guaranteed to work in CI/CD and deployment.
 
 **Start development server**
 - `npm run dev`
+
+<!--
+**Unofficial commands for alternative package managers (unsupported):**
 - `yarn dev`
 - `pnpm dev`
+-->
 
 **Build for production**
 - `npm run build`
+
+<!--
 - `yarn build`
 - `pnpm build`
+-->
 
 **Start production server**
 - `npm run start`
+
+<!--
 - `yarn start`
 - `pnpm start`
+-->
 
 **Run ESLint**
 - `npm run lint`
+
+<!--
 - `yarn lint`
 - `pnpm lint`
+-->
 ## Testing
 
 - Currently, no testing framework is configured.
