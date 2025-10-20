@@ -25,7 +25,7 @@ echo "✅ Verifying installation..."
 python3 -c "import plotly; print(f'Plotly: {plotly.__version__}')" || exit 1
 python3 -c "import matplotlib; print(f'Matplotlib: {matplotlib.__version__}')" || exit 1
 python3 -c "import jinja2; print(f'Jinja2: {jinja2.__version__}')" || exit 1
-python3 -c "import numpy; print(f'Numpy: {numpy.__version__}')" || exit 1
+python3 -c "import numpy; print(f'NumPy: {numpy.__version__}')" || exit 1
 python3 -c "import pandas; print(f'Pandas: {pandas.__version__}')" || exit 1
 python3 -c "import scipy; print(f'Scipy: {scipy.__version__}')" || exit 1
 python3 -c "import sklearn; print(f'Scikit-learn: {sklearn.__version__}')" || exit 1
