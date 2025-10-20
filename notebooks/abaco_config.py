@@ -24,65 +24,72 @@ for directory in [CHARTS_DIR, EXPORTS_DIR, DATA_DIR]:
 
 # Financial Analysis Parameters
 FINANCIAL_CONFIG = {
-    'default_records': 1000,
-    'risk_categories': ['Low', 'Medium', 'High'],
-    'account_types': ['Checking', 'Savings', 'Credit', 'Investment', 'Business'],
-    'credit_score_ranges': {
-        'Poor': (300, 579),
-        'Fair': (580, 669),
-        'Good': (670, 739),
-        'Very Good': (740, 799),
-        'Excellent': (800, 850)
+    "default_records": 1000,
+    "risk_categories": ["Low", "Medium", "High"],
+    "account_types": ["Checking", "Savings", "Credit", "Investment", "Business"],
+    "credit_score_ranges": {
+        "Poor": (300, 579),
+        "Fair": (580, 669),
+        "Good": (670, 739),
+        "Very Good": (740, 799),
+        "Excellent": (800, 850),
     },
-    'risk_thresholds': {
-        'utilization_high': 0.75,
-        'utilization_medium': 0.50,
-        'debt_income_high': 0.40,
-        'debt_income_medium': 0.20
-    }
+    "risk_thresholds": {
+        "utilization_high": 0.75,
+        "utilization_medium": 0.50,
+        "debt_income_high": 0.40,
+        "debt_income_medium": 0.20,
+    },
 }
 
 # Visualization Settings
 CHART_CONFIG = {
-    'default_theme': 'plotly_white',
-    'color_palette': [
-        '#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', 
-        '#9467bd', '#8c564b', '#e377c2', '#7f7f7f'
+    "default_theme": "plotly_white",
+    "color_palette": [
+        "#1f77b4",
+        "#ff7f0e",
+        "#2ca02c",
+        "#d62728",
+        "#9467bd",
+        "#8c564b",
+        "#e377c2",
+        "#7f7f7f",
     ],
-    'chart_height': 500,
-    'chart_width': 800
+    "chart_height": 500,
+    "chart_width": 800,
 }
 
 # Export Settings
 EXPORT_CONFIG = {
-    'csv_encoding': 'utf-8',
-    'excel_engine': 'openpyxl',
-    'chart_format': 'html',
-    'include_timestamp': True
+    "csv_encoding": "utf-8",
+    "excel_engine": "openpyxl",
+    "chart_format": "html",
+    "include_timestamp": True,
 }
 
 # Database Connection (for future integration)
 DATABASE_CONFIG = {
-    'supabase_url': os.getenv('NEXT_PUBLIC_SUPABASE_URL'),
-    'supabase_key': os.getenv('NEXT_PUBLIC_SUPABASE_ANON_KEY'),
-    'table_prefix': 'abaco_',
-    'schema': 'public'
+    "supabase_url": os.getenv("NEXT_PUBLIC_SUPABASE_URL"),
+    "supabase_key": os.getenv("NEXT_PUBLIC_SUPABASE_ANON_KEY"),
+    "table_prefix": "abaco_",
+    "schema": "public",
 }
 
 # Logging Configuration
 LOGGING_CONFIG = {
-    'level': 'INFO',
-    'format': '%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    'log_file': NOTEBOOKS_DIR / 'abaco.log'
+    "level": "INFO",
+    "format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    "log_file": NOTEBOOKS_DIR / "abaco.log",
 }
+
 
 def get_config_summary():
     """Return a summary of current configuration"""
     return {
-        'platform': PLATFORM_NAME,
-        'version': VERSION,
-        'base_directory': str(BASE_DIR),
-        'charts_directory': str(CHARTS_DIR),
-        'exports_directory': str(EXPORTS_DIR),
-        'default_records': FINANCIAL_CONFIG['default_records']
+        "platform": PLATFORM_NAME,
+        "version": VERSION,
+        "base_directory": str(BASE_DIR),
+        "charts_directory": str(CHARTS_DIR),
+        "exports_directory": str(EXPORTS_DIR),
+        "default_records": FINANCIAL_CONFIG["default_records"],
     }
