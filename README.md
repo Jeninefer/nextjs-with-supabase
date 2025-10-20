@@ -101,6 +101,33 @@ npm run lint
 - **AI Insights**: Machine learning-powered analytics
 - **Growth Projections**: Strategic planning tools
 - **Market Intelligence**: 50+ data source monitoring
+- **Dataset Generator**: Comprehensive financial data generation with 30 customers and 53+ dimensions
+
+## 🔬 ABACO Dataset Generation
+
+Generate comprehensive financial intelligence datasets for analytics and testing:
+
+```bash
+# Quick start demo (recommended)
+bash demo_abaco_dataset.sh
+
+# Or run individually:
+
+# 1. Setup environment
+bash fix_abaco_environment.sh
+
+# 2. Generate dataset
+cd notebooks
+python3 abaco_dataset_generator.py
+```
+
+**Features:**
+- 30 customer records with 53 analytical dimensions
+- Realistic financial metrics and patterns
+- Comprehensive analytics reporting
+- CSV export with summary statistics
+
+For detailed documentation, see [notebooks/README_ABACO_DATASET.md](./notebooks/README_ABACO_DATASET.md)
 
 ## 🚀 Deployment
 
