@@ -108,7 +108,7 @@ else
 fi
 
 # Ensure .env files are in .gitignore
-if grep -q ".env.local" .gitignore && grep -q "^.env$" .gitignore; then
+if grep -q "\.env.local" .gitignore && grep -q "\.env" .gitignore; then
     check_pass "Environment files properly ignored"
 else
     check_warn "Check .gitignore for .env* files"
