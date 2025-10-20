@@ -55,6 +55,10 @@ export async function GET() {
           query_ms: queryTimeMs,
           total_request_ms: totalMs,
         },
+        environment: {
+          url_present: !!url,
+          service_key_present: !!serviceKey,
+        },
       },
       count: (data || []).length,
       data,
