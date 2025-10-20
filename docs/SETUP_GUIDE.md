@@ -122,7 +122,7 @@ SELECT
   AVG(credit_score) as avg_credit_score
 FROM abaco_customers;
 
--- Expected:
+-- Expected (example values based on the current dataset; these may change if the dataset is updated):
 -- total_customers: 1000
 -- avg_balance: ~9804.12
 -- avg_credit_score: ~606.40
