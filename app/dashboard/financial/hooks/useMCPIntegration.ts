@@ -138,7 +138,7 @@ const SERVER_DISPLAY_NAMES: Record<string, string> = {
   const getStoredAnalysis = useCallback(async (analysisId: string) => {
     const serverCheck = checkServer('memory');
     if (serverCheck) return serverCheck;
-    return await mockMCPClient.getMemory(`analysis_${analysisId}`);
+    return mockMCPClient.getMemory(`analysis_${analysisId}`);
   }, [checkServer]);
 
   useEffect(() => {
