@@ -9,9 +9,6 @@
         "nextjs.nextjs",
         "ms-toolsai.jupyter",
         "ms-python.flake8",
-        "ms-python.pylint",
-        "oleg-shilo.cs-script",
-        "ms-dotnettools.csharp",
-        "formulahendry.code-runner"
+        "ms-python.pylint"
     ]
 }
