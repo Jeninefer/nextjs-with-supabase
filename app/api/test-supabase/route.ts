@@ -18,13 +18,16 @@ export async function GET() {
       status: "connected",
       supabaseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL,
       hasData: !!data,
+      dataCount: data?.length || 0,
       error: error?.message || null,
+      timestamp: new Date().toISOString(),
     });
   } catch (error) {
     return NextResponse.json(
       {
         status: "error",
         message: error instanceof Error ? error.message : "Unknown error",
+        timestamp: new Date().toISOString(),
       },
       { status: 500 }
     );
