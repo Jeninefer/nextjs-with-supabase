@@ -2,7 +2,7 @@ import plugin from "tailwindcss/plugin";
 import type { Config } from "tailwindcss";
 const { default: flattenColorPalette } = require("tailwindcss/lib/util/flattenColorPalette");
 
-const config = {
+const config: Config = {
   darkMode: ["class"],
   content: [
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
@@ -189,6 +189,7 @@ const config = {
   ],
 } satisfies Config;
 
+// Add this function with proper error handling
 function addVariablesForColors({ addBase, theme }: any) {
   const colors = theme("colors") ?? {};
   const allColors = flattenColorPalette(colors);

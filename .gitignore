@@ -4,7 +4,6 @@
 /node_modules
 /.pnp
 .pnp.js
-.yarn/install-state.gz
 
 # Testing
 /coverage
@@ -15,10 +14,12 @@
 
 # Production
 /build
+/dist
 
 # Misc
 .DS_Store
 *.pem
+Thumbs.db
 
 # Debug
 npm-debug.log*
@@ -27,7 +28,9 @@ yarn-error.log*
 
 # Local env files
 .env*.local
-.env
+.env.development.local
+.env.test.local
+.env.production.local
 
 # Vercel
 .vercel
@@ -36,20 +39,35 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# Supabase
-/supabase/.branches
-/supabase/.temp
-/supabase/logs
+# IDE
+.vscode/settings.json
+.idea/
+*.swp
+*.swo
 
-# Git merge artifacts
-*.orig
-*.rej
-*.BACKUP.*
-*.BASE.*
-*.LOCAL.*
-*.REMOTE.*
+# OS generated files
+.DS_Store?
+ehthumbs.db
+Icon?
 
-# ABACO platform files
-notebooks/.ipynb_checkpoints/
-venv_packages_backup*
-temp_analysis/
+# Logs
+logs
+*.log
+
+# Cache directories
+.turbo/
+.cache/
+node_modules/.cache/
+
+# Temporary files
+*.tmp
+*.temp
+*~
+*.bak
+*.backup
+
+# ABACO specific
+/data/
+/uploads/
+/exports/
+.abaco-cache/
