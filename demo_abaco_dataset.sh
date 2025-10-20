@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 # ABACO Quick Start Demo
 # This script demonstrates the complete ABACO dataset generation workflow
 
