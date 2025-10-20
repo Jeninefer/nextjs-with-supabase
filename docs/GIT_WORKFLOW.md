@@ -42,13 +42,6 @@ git pull origin main
 
 # Push your changes
 git push origin main
-# Start your day
-cd ~/Documents/GitHub/nextjs-with-supabase
-git status
-git pull origin main
-
-# Make your changes...
-
 # Review what changed
 git status
 git diff
