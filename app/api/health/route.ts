@@ -27,7 +27,7 @@ export async function GET() {
       // Test connection with a simple query
       const { error } = await supabase
         .from("abaco_customers")
-        .select("count")
+        .select("customer_id")
         .limit(1);
 
       healthCheck.checks.supabase = !error;
