@@ -6,7 +6,7 @@ import { RiskAnalysis } from './components/RiskAnalysis'
 import { AIInsights } from './components/AIInsights'
 
 export default async function FinancialDashboard() {
-  const supabase = createClient()
+  const supabase = await createClient()
   
   const {
     data: { user },
