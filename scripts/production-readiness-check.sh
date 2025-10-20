@@ -176,16 +176,24 @@ echo -e "${BLUE}7. Checking Documentation${NC}"
 echo "--------------------------"
 
 # Check key documentation files
-# Hardcoded list of required documentation files.
-DOCS=(
-    "README.md"
-    "docs/architecture.md"
-    "docs/usage.md"
-    "docs/api.md"
-    "docs/CHANGELOG.md"
-)
+# List of required documentation files is read from docs/required-docs.txt if it exists,
+# otherwise fallback to default list.
+DOCS_LIST_FILE="docs/required-docs.txt"
+if [ -f "$DOCS_LIST_FILE" ]; then
+    mapfile -t DOCS < "$DOCS_LIST_FILE"
+else
+    DOCS=(
+        "README.md"
+        "docs/architecture.md"
+        "docs/usage.md"
+        "docs/api.md"
+        "docs/CHANGELOG.md"
+    )
+fi
 
 for doc in "${DOCS[@]}"; do
+    # Skip empty lines and comments
+    [[ -z "$doc" || "$doc" =~ ^# ]] && continue
     if git ls-files --error-unmatch "$doc" > /dev/null 2>&1; then
         if [ -f "$doc" ]; then
             check_pass "$doc exists"
