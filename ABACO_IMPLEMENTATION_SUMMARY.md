@@ -38,7 +38,7 @@ Successfully implemented a comprehensive dataset generation system for the ABACO
 
 **Dependencies Installed:**
 
-All dependencies and their minimum versions are specified in [`requirements.txt`](./requirements.txt) at the project root. This file is referenced by both the environment setup script and the documentation to ensure consistency.
+All dependencies and their minimum versions are specified in [`requirements.txt`](./requirements.txt) at the project root. If this file is missing, it is generated at runtime by the environment setup script (`fix_abaco_environment.sh`). The setup script and documentation both reference this file to ensure consistency.
 
 <details>
 <summary>Click to view <code>requirements.txt</code> contents</summary>
