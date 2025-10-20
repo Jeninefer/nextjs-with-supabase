@@ -52,7 +52,7 @@ This repository is a Next.js starter template with Supabase integration. Follow 
 - Follow the established design system using CSS variables defined in `globals.css`
 - Use the `cn()` utility from `@/lib/utils` for conditional className combinations
 - Respect the dark mode implementation using `next-themes`
-- Custom colors: Primary purple (#c1a6ff), Primary dark (#5f4896)
+- Custom colors: Primary purple (`--color-primary`), Primary dark (`--color-primary-dark`) (see `globals.css`)
 
 ### Supabase Integration
 
