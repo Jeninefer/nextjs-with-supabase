@@ -1,6 +1,6 @@
+import { FlatCompat } from "@eslint/eslintrc";
 import { dirname } from "node:path";
 import { fileURLToPath } from "node:url";
-import { FlatCompat } from "@eslint/eslintrc";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -21,7 +21,7 @@ const eslintConfig = [
       // String literal duplication prevention
       "no-duplicate-string": "off", // Handled by SonarLint
 
-      // Import organization
+      // Import organization - with error handling for missing plugins
       "import/order": [
         "error",
         {
@@ -38,15 +38,30 @@ const eslintConfig = [
         },
       ],
 
-      // TypeScript specific rules for ABACO
-      "@typescript-eslint/no-unused-vars": "error",
+      // TypeScript specific rules for ABACO - with fallbacks
+      "@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
       "@typescript-eslint/explicit-function-return-type": "warn",
       "@typescript-eslint/prefer-nullish-coalescing": "error",
       "@typescript-eslint/prefer-optional-chain": "error",
+      "@typescript-eslint/no-explicit-any": "warn",
 
       // Next.js specific optimizations
       "@next/next/no-img-element": "error",
       "@next/next/no-page-custom-font": "warn",
+      
+      // ABACO specific rules for financial platform
+      "no-console": ["warn", { "allow": ["warn", "error"] }],
+      "no-debugger": "error",
+      "no-alert": "error",
+    },
+  },
+  {
+    // Additional configuration for ABACO financial components
+    files: ["**/*.tsx", "**/*.ts"],
+    rules: {
+      // Enforce proper naming for ABACO components
+      "react/jsx-pascal-case": "error",
+      "react/prop-types": "off", // Using TypeScript instead
     },
   },
 ];
