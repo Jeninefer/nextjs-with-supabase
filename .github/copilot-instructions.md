@@ -52,7 +52,8 @@ This repository is a Next.js starter template with Supabase integration. Follow 
 - Follow the established design system using CSS variables defined in `globals.css`
 - Use the `cn()` utility from `@/lib/utils` for conditional className combinations
 - Respect the dark mode implementation using `next-themes`
-- Custom colors: Primary purple gradient (`--abaco-primary-light`, `--abaco-primary-medium`, `--abaco-primary-dark`, `--abaco-primary-darker`) (see `globals.css`)
+- Custom colors: Primary purple gradient (`--abaco-primary-light`, `--abaco-primary-medium`, `--abaco-primary-dark`, `--abaco-primary-darker`) (see `globals.css`). 
+  The "abaco" prefix refers to our project's custom color palette, used for branding and consistent UI theming.
 
 ### Supabase Integration
 
