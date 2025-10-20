@@ -4,18 +4,33 @@
 echo "🔧 ABACO Environment Fix"
 echo "========================"
 
-# Check current Python setup
-echo "Current Python setup:"
-which python3
-python3 --version
+# Set up Python virtual environment
+echo "🐍 Setting up Python virtual environment in .venv"
+if [ ! -d ".venv" ]; then
+    python3 -m venv .venv || { echo "❌ Failed to create virtual environment"; exit 1; }
+fi
+# shellcheck disable=SC1091
+source .venv/bin/activate || { echo "❌ Failed to activate virtual environment"; exit 1; }
 
-# Install package manager if missing
-echo "📦 Ensuring pip is available..."
-python3 -m ensurepip --upgrade 2>/dev/null || echo "pip already available"
+# Upgrade pip, setuptools, and wheel for reliability
+echo "⬆️  Upgrading pip, setuptools, and wheel..."
+python -m pip install --upgrade pip setuptools wheel || { echo "❌ Failed to upgrade pip/setuptools/wheel"; exit 1; }
+
+# Create requirements.txt if it doesn't exist
+if [ ! -f "requirements.txt" ]; then
+    echo "plotly==5.20.0" > requirements.txt
+    echo "matplotlib==3.8.4" >> requirements.txt
+    echo "seaborn==0.13.2" >> requirements.txt
+    echo "jinja2==3.1.3" >> requirements.txt
+    echo "numpy==1.26.4" >> requirements.txt
+    echo "pandas==2.2.2" >> requirements.txt
+    echo "scipy==1.13.1" >> requirements.txt
+    echo "scikit-learn==1.4.2" >> requirements.txt
+fi
 
 # Install required packages
-echo "📊 Installing ABACO dependencies..."
-python3 -m pip install --user plotly matplotlib seaborn jinja2 numpy pandas scipy scikit-learn || { 
+echo "📊 Installing ABACO dependencies from requirements.txt..."
+python -m pip install -r requirements.txt || { 
     echo "❌ Failed to install dependencies"; 
     exit 1; 
 }
