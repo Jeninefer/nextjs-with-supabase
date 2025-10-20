@@ -5,6 +5,7 @@ Central configuration file for all financial analysis parameters
 
 import os
 from pathlib import Path
+from typing import Any, Dict, List, Tuple
 
 # Platform Information
 PLATFORM_NAME = "ABACO Financial Intelligence"
@@ -23,10 +24,16 @@ for directory in [CHARTS_DIR, EXPORTS_DIR, DATA_DIR]:
     directory.mkdir(exist_ok=True)
 
 # Financial Analysis Parameters
-FINANCIAL_CONFIG = {
+FINANCIAL_CONFIG: Dict[str, Any] = {
     "default_records": 1000,
     "risk_categories": ["Low", "Medium", "High"],
-    "account_types": ["Checking", "Savings", "Credit", "Investment", "Business"],
+    "account_types": [
+        "Checking",
+        "Savings",
+        "Credit",
+        "Investment",
+        "Business",
+    ],
     "credit_score_ranges": {
         "Poor": (300, 579),
         "Fair": (580, 669),
@@ -43,7 +50,7 @@ FINANCIAL_CONFIG = {
 }
 
 # Visualization Settings
-CHART_CONFIG = {
+CHART_CONFIG: Dict[str, Any] = {
     "default_theme": "plotly_white",
     "color_palette": [
         "#1f77b4",
@@ -60,7 +67,7 @@ CHART_CONFIG = {
 }
 
 # Export Settings
-EXPORT_CONFIG = {
+EXPORT_CONFIG: Dict[str, Any] = {
     "csv_encoding": "utf-8",
     "excel_engine": "openpyxl",
     "chart_format": "html",
@@ -68,7 +75,7 @@ EXPORT_CONFIG = {
 }
 
 # Database Connection (for future integration)
-DATABASE_CONFIG = {
+DATABASE_CONFIG: Dict[str, Any] = {
     "supabase_url": os.getenv("NEXT_PUBLIC_SUPABASE_URL"),
     "supabase_key": os.getenv("NEXT_PUBLIC_SUPABASE_ANON_KEY"),
     "table_prefix": "abaco_",
@@ -76,14 +83,14 @@ DATABASE_CONFIG = {
 }
 
 # Logging Configuration
-LOGGING_CONFIG = {
+LOGGING_CONFIG: Dict[str, Any] = {
     "level": "INFO",
     "format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s",
     "log_file": NOTEBOOKS_DIR / "abaco.log",
 }
 
 
-def get_config_summary():
+def get_config_summary() -> Dict[str, Any]:
     """Return a summary of current configuration"""
     return {
         "platform": PLATFORM_NAME,
