@@ -16,19 +16,20 @@ source .venv/bin/activate || { echo "❌ Failed to activate virtual environment"
 echo "⬆️  Upgrading pip, setuptools, and wheel..."
 python -m pip install --upgrade pip setuptools wheel || { echo "❌ Failed to upgrade pip/setuptools/wheel"; exit 1; }
 
-# Ensure requirements.txt exists
-if [ ! -f "requirements.txt" ]; then
-    echo "❌ requirements.txt not found. Please obtain it from the repository to ensure consistent package versions."
-    exit 1
-fi
-
 # Install required packages
-echo "📊 Installing ABACO dependencies from requirements.txt..."
-python -m pip install -r requirements.txt || { 
-    echo "❌ Failed to install dependencies"; 
-    exit 1; 
-}
-
+if [ -f "requirements.txt" ]; then
+    echo "📊 Installing ABACO dependencies from requirements.txt..."
+    python -m pip install -r requirements.txt || { 
+        echo "❌ Failed to install dependencies"; 
+        exit 1; 
+    }
+else
+    echo "⚠️ requirements.txt not found. Installing default ABACO dependencies directly..."
+    python -m pip install plotly matplotlib jinja2 numpy pandas scipy scikit-learn seaborn || {
+        echo "❌ Failed to install default dependencies";
+        exit 1;
+    }
+fi
 # Verify installation
 echo "✅ Verifying installation..."
 python -c "import plotly; print(f'Plotly: {plotly.__version__}')" || exit 1
