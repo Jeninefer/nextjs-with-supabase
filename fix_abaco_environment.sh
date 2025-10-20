@@ -16,16 +16,10 @@ source .venv/bin/activate || { echo "❌ Failed to activate virtual environment"
 echo "⬆️  Upgrading pip, setuptools, and wheel..."
 python -m pip install --upgrade pip setuptools wheel || { echo "❌ Failed to upgrade pip/setuptools/wheel"; exit 1; }
 
-# Create requirements.txt if it doesn't exist
+# Ensure requirements.txt exists
 if [ ! -f "requirements.txt" ]; then
-    echo "plotly==5.20.0" > requirements.txt
-    echo "matplotlib==3.8.4" >> requirements.txt
-    echo "seaborn==0.13.2" >> requirements.txt
-    echo "jinja2==3.1.3" >> requirements.txt
-    echo "numpy==1.26.4" >> requirements.txt
-    echo "pandas==2.2.2" >> requirements.txt
-    echo "scipy==1.13.1" >> requirements.txt
-    echo "scikit-learn==1.4.2" >> requirements.txt
+    echo "❌ requirements.txt not found. Please obtain it from the repository to ensure consistent package versions."
+    exit 1
 fi
 
 # Install required packages
