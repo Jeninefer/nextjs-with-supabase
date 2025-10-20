@@ -31,6 +31,6 @@ which python
 python --version
 echo ""
 
-# Start an interactive shell with the environment
-echo "🚀 Starting new shell with activated environment..."
-exec "$SHELL"
+# Environment is now active in current shell
+echo "🚀 Environment activated in current shell!"
+echo "📝 Note: Use 'source notebooks/activate_env.sh' to activate in your current shell"
