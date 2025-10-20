@@ -78,7 +78,7 @@ git reset --soft HEAD~1        # Undo last commit (keep changes)
 git clean -fd                  # Remove untracked files
 ```
 
-📖 **Detailed Guide:** See [docs/GIT_WORKFLOW.md](./docs/GIT_WORKFLOW.md)
+📖 **Detailed Guide:** See [GIT_WORKFLOW.md](./GIT_WORKFLOW.md)
 
 ---
 
