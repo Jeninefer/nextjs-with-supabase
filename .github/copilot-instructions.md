@@ -118,7 +118,7 @@ This repository is a Next.js starter template with Supabase integration. Follow 
 
 ## Additional Notes
 
-- This starter kit uses Lato (primary) and Poppins (secondary) font families
+- The font families used in this starter kit should match those configured in the project (see Tailwind CSS and global styles for details)
 - The app supports both light and dark themes
 - Environment variables need to be configured in `.env.local` (see `.env.example`)
 - Supabase URL and anon key are required for the app to function
