@@ -106,11 +106,27 @@ This repository is a Next.js starter template with Supabase integration. Follow 
 
 ## Development Commands
 
-- `npm run dev` - Start development server
-- `npm run build` - Build for production
-- `npm run start` - Start production server
-- `npm run lint` - Run ESLint
+> **Note:** This project supports `npm`, `yarn`, and `pnpm` as package managers. Use the commands below according to your preferred tool.
 
+**Start development server**
+- `npm run dev`
+- `yarn dev`
+- `pnpm dev`
+
+**Build for production**
+- `npm run build`
+- `yarn build`
+- `pnpm build`
+
+**Start production server**
+- `npm run start`
+- `yarn start`
+- `pnpm start`
+
+**Run ESLint**
+- `npm run lint`
+- `yarn lint`
+- `pnpm lint`
 ## Testing
 
 - Currently no testing framework is configured
