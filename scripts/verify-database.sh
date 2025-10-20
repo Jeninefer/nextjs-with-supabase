@@ -5,7 +5,6 @@
 # Usage: ./scripts/verify-database.sh
 #
 # Error Handling: 'set -e' is not used so all verification checks run, providing a complete report of issues in one pass.
-# For more details, see docs/error-handling.md.
 echo "🔍 ABACO Database Verification Script"
 echo "========================================"
 echo ""
