@@ -9,7 +9,7 @@ echo "🐍 Setting up Python virtual environment in .venv"
 if [ ! -d ".venv" ]; then
     python3 -m venv .venv || { echo "❌ Failed to create virtual environment"; exit 1; }
 fi
-# shellcheck disable=SC1091
+# shellcheck disable=SC1091  # .venv is created above, so this file is guaranteed to exist; safe to source here.
 source .venv/bin/activate || { echo "❌ Failed to activate virtual environment"; exit 1; }
 
 # Upgrade pip, setuptools, and wheel for reliability
