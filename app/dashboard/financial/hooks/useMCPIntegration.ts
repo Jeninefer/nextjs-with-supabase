@@ -40,6 +40,14 @@ export function useMCPIntegration() {
     servers: new Set()
   });
 
+  // Helper to check server availability
+  const checkServer = useCallback((serverName: string) => {
+    if (!state.servers.has(serverName)) {
+      return { success: false, error: `${serverName.charAt(0).toUpperCase() + serverName.slice(1)} server not available` };
+    }
+    return null;
+  }, [state.servers]);
+
   const initializeMCPServers = useCallback(async () => {
     setState(prev => ({ ...prev, isLoading: true, error: null }));
 
@@ -110,32 +118,28 @@ export function useMCPIntegration() {
   }, []);
 
   const searchFinancialInsights = useCallback(async (query: string) => {
-    if (!state.servers.has('perplexity-ask')) {
-      return { success: false, error: 'Perplexity server not available' };
-    }
+    const serverCheck = checkServer('perplexity-ask');
+    if (serverCheck) return serverCheck;
     return await mockMCPClient.searchFinancialData(query);
-  }, [state.servers]);
+  }, [checkServer]);
 
   const fetchMarketData = useCallback(async (source: string) => {
-    if (!state.servers.has('fetch')) {
-      return { success: false, error: 'Fetch server not available' };
-    }
+    const serverCheck = checkServer('fetch');
+    if (serverCheck) return serverCheck;
     return await mockMCPClient.fetchMarketData(source);
-  }, [state.servers]);
+  }, [checkServer]);
 
   const storeAnalysisResult = useCallback(async (analysisId: string, result: any) => {
-    if (!state.servers.has('memory')) {
-      return { success: false, error: 'Memory server not available' };
-    }
+    const serverCheck = checkServer('memory');
+    if (serverCheck) return serverCheck;
     return await mockMCPClient.storeMemory(`analysis_${analysisId}`, result);
-  }, [state.servers]);
+  }, [checkServer]);
 
   const getStoredAnalysis = useCallback(async (analysisId: string) => {
-    if (!state.servers.has('memory')) {
-      return { success: false, error: 'Memory server not available' };
-    }
+    const serverCheck = checkServer('memory');
+    if (serverCheck) return serverCheck;
     return await mockMCPClient.getMemory(`analysis_${analysisId}`);
-  }, [state.servers]);
+  }, [checkServer]);
 
   useEffect(() => {
     initializeMCPServers();
