@@ -1,7 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  serverExternalPackages: ["@node-rs/argon2", "@node-rs/bcrypt"],
+  experimental: {
+    serverComponentsExternalPackages: ["@node-rs/argon2", "@node-rs/bcrypt"],
+  },
   images: {
     remotePatterns: [
       {
