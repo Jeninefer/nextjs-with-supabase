@@ -70,7 +70,7 @@ curl -i http://localhost:3001/api/test-supabase
       "total_request_ms": 52
     }
   },
-  "count": 5,
+  "count": 10,
   "data": [
     // ... array of records from kv_store_08a31cde table
   ]
