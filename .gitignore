@@ -67,7 +67,9 @@ node_modules/.cache/
 *.backup
 
 # ABACO specific
-/data/
+/data/*
+!/data/README.md
+!/data/sample_financial_data.csv
 /uploads/
 /exports/
 .abaco-cache/
