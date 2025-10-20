@@ -427,7 +427,7 @@ After completing setup:
 3. **Review Documentation**
    - [Production Checklist](../PRODUCTION_CHECKLIST.md)
    - [Git Workflow](./GIT_WORKFLOW.md)
-   - [Quick Start Guide](../QUICK_START.md)
+   - [Quick Start Guide](./SETUP_GUIDE.md) <!-- Updated link to point to this setup guide itself -->
 
 4. **Monitor Performance**
    - Supabase Dashboard → Reports
