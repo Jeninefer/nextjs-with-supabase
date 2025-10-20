@@ -78,7 +78,7 @@ git push origin main
 # If you get "error: switch `m' requires a value"
 # Always provide a commit message after -m
 
-# Wrong:
+# Incorrect:
 git commit -m
 
 # Correct:
