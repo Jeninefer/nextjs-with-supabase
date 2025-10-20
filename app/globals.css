@@ -4,103 +4,357 @@
 @tailwind utilities;
 
 :root {
-  /* ABACO Theme Variables */
-  --abaco-primary-purple: #C1A6FF;
-  --abaco-purple-dark: #5F4896;
-  --abaco-dark-blue: #0C2742;
-  --abaco-background: #030E19;
+  /* ABACO Color Palette - Purple Gradient System */
+  --abaco-primary-light: #C1A6FF;
+  --abaco-primary-medium: #A855F7;
+  --abaco-primary-dark: #5F4896;
+  --abaco-primary-darker: #4C3B78;
+  
+  /* Background Gradients - Deep Space Theme */
+  --abaco-bg-primary: #030E19;
+  --abaco-bg-secondary: #0F172A;
+  --abaco-bg-tertiary: #1E293B;
+  --abaco-bg-glass: rgba(15, 23, 42, 0.6);
+  --abaco-bg-overlay: rgba(168, 85, 247, 0.1);
+  
+  /* Text Colors - High Contrast */
+  --abaco-text-primary: #FFFFFF;
+  --abaco-text-secondary: #C1A6FF;
+  --abaco-text-muted: #94A3B8;
+  --abaco-text-accent: #A855F7;
+  
+  /* Border Colors */
+  --abaco-border-primary: rgba(168, 85, 247, 0.2);
+  --abaco-border-secondary: rgba(193, 166, 255, 0.1);
+  --abaco-border-accent: rgba(168, 85, 247, 0.4);
+  
+  /* Status Colors */
   --abaco-success: #10B981;
-  --abaco-warning: #FB923C;
-  --abaco-error: #DC2626;
-
-  /* Standard shadcn/ui variables */
-  --background: 0 0% 100%;
-  --foreground: 222.2 84% 4.9%;
-  --card: 0 0% 100%;
-  --card-foreground: 222.2 84% 4.9%;
-  --popover: 0 0% 100%;
-  --popover-foreground: 222.2 84% 4.9%;
-  --primary: 222.2 47.4% 11.2%;
-  --primary-foreground: 210 40% 98%;
-  --secondary: 210 40% 96%;
-  --secondary-foreground: 222.2 47.4% 11.2%;
-  --muted: 210 40% 96%;
-  --muted-foreground: 215.4 16.3% 46.9%;
-  --accent: 210 40% 96%;
-  --accent-foreground: 222.2 47.4% 11.2%;
-  --destructive: 0 84.2% 60.2%;
-  --destructive-foreground: 210 40% 98%;
-  --border: 214.3 31.8% 91.4%;
-  --input: 214.3 31.8% 91.4%;
-  --ring: 222.2 47.4% 11.2%;
-  --radius: 0.5rem;
-  --chart-1: 12 76% 61%;
-  --chart-2: 173 58% 39%;
-  --chart-3: 197 37% 24%;
-  --chart-4: 43 74% 66%;
-  --chart-5: 27 87% 67%;
+  --abaco-warning: #F59E0B;
+  --abaco-error: #EF4444;
+  --abaco-info: #3B82F6;
+  
+  /* Financial KPI Colors */
+  --abaco-growth: #10B981;
+  --abaco-risk: #EF4444;
+  --abaco-neutral: #6B7280;
+  --abaco-premium: #F59E0B;
+  
+  /* Typography */
+  --abaco-font-primary: 'Lato', sans-serif;
+  --abaco-font-secondary: 'Poppins', sans-serif;
+  
+  /* Spacing System - 4K Optimized */
+  --abaco-spacing-xs: 0.25rem;
+  --abaco-spacing-sm: 0.5rem;
+  --abaco-spacing-md: 1rem;
+  --abaco-spacing-lg: 1.5rem;
+  --abaco-spacing-xl: 2rem;
+  --abaco-spacing-2xl: 3rem;
+  --abaco-spacing-3xl: 4rem;
+  
+  /* Shadow System */
+  --abaco-shadow-sm: 0 1px 2px 0 rgba(168, 85, 247, 0.05);
+  --abaco-shadow-md: 0 4px 6px -1px rgba(168, 85, 247, 0.1);
+  --abaco-shadow-lg: 0 10px 15px -3px rgba(168, 85, 247, 0.1);
+  --abaco-shadow-xl: 0 20px 25px -5px rgba(168, 85, 247, 0.15);
+  --abaco-shadow-glow: 0 0 20px rgba(168, 85, 247, 0.3);
+  
+  /* Border Radius */
+  --abaco-radius-sm: 0.25rem;
+  --abaco-radius-md: 0.5rem;
+  --abaco-radius-lg: 0.75rem;
+  --abaco-radius-xl: 1rem;
+  --abaco-radius-2xl: 1.5rem;
 }
 
-.dark {
-  --background: 222.2 84% 4.9%;
-  --foreground: 210 40% 98%;
-  --card: 222.2 84% 4.9%;
-  --card-foreground: 210 40% 98%;
-  --popover: 222.2 84% 4.9%;
-  --popover-foreground: 210 40% 98%;
-  --primary: 210 40% 98%;
-  --primary-foreground: 222.2 47.4% 11.2%;
-  --secondary: 217.2 32.6% 17.5%;
-  --secondary-foreground: 210 40% 98%;
-  --muted: 217.2 32.6% 17.5%;
-  --muted-foreground: 215 20.2% 65.1%;
-  --accent: 217.2 32.6% 17.5%;
-  --accent-foreground: 210 40% 98%;
-  --destructive: 0 62.8% 30.6%;
-  --destructive-foreground: 210 40% 98%;
-  --border: 217.2 32.6% 17.5%;
-  --input: 217.2 32.6% 17.5%;
-  --ring: 212.7 26.8% 83.9%;
-  --chart-1: 220 70% 50%;
-  --chart-2: 160 60% 45%;
-  --chart-3: 30 80% 55%;
-  --chart-4: 280 65% 60%;
-  --chart-5: 340 75% 55%;
+/* Dark mode override (default for ABACO) */
+[data-theme="dark"], :root {
+  background: var(--abaco-bg-primary);
+  color: var(--abaco-text-primary);
 }
 
-/* ABACO Financial Intelligence Platform Styles */
-.abaco-gradient-text {
-  background: linear-gradient(81.74deg, var(--abaco-primary-purple) 5.91%, var(--abaco-purple-dark) 79.73%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.abaco-card {
-  background: linear-gradient(135deg, rgba(193, 166, 255, 0.2) 0%, rgba(0, 0, 0, 0.5) 100%);
-  border: 2px solid rgba(193, 166, 255, 0.4);
-  border-radius: 20px;
-  backdrop-filter: blur(10px);
-}
-
-.abaco-metric-card {
-  background: linear-gradient(135deg, rgba(193, 166, 255, 0.25) 0%, rgba(0, 0, 0, 0.8) 100%);
-  border: 2px solid rgba(193, 166, 255, 0.5);
-  border-radius: 16px;
-  backdrop-filter: blur(10px);
-}
-
+/* Base Typography Styles */
 @layer base {
-  * {
-    @apply border-border;
-  }
   body {
-    @apply bg-background text-foreground;
+    font-family: var(--abaco-font-primary);
+    background: linear-gradient(135deg, var(--abaco-bg-primary) 0%, #1E293B 50%, var(--abaco-bg-primary) 100%);
+    min-height: 100vh;
+    line-height: 1.6;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--abaco-font-primary);
+    font-weight: 700;
+    color: var(--abaco-text-primary);
+    line-height: 1.2;
+  }
+  
+  h1 { font-size: 2.5rem; }
+  h2 { font-size: 2rem; }
+  h3 { font-size: 1.75rem; }
+  h4 { font-size: 1.5rem; }
+  h5 { font-size: 1.25rem; }
+  h6 { font-size: 1.125rem; }
+  
+  p, span, div {
+    font-family: var(--abaco-font-secondary);
   }
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
+/* ABACO Component Utilities */
+@layer components {
+  /* Glass Morphism Cards */
+  .abaco-glass {
+    background: rgba(15, 23, 42, 0.4);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--abaco-border-primary);
+    box-shadow: var(--abaco-shadow-lg);
   }
+  
+  /* Enhanced Glass with Glow */
+  .abaco-glass-glow {
+    @apply abaco-glass;
+    box-shadow: var(--abaco-shadow-glow), var(--abaco-shadow-lg);
+  }
+  
+  /* Primary Button */
+  .abaco-btn-primary {
+    background: linear-gradient(135deg, var(--abaco-primary-medium) 0%, var(--abaco-primary-dark) 100%);
+    color: var(--abaco-text-primary);
+    font-family: var(--abaco-font-secondary);
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--abaco-radius-lg);
+    border: none;
+    box-shadow: var(--abaco-shadow-md);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .abaco-btn-primary:hover {
+    background: linear-gradient(135deg, var(--abaco-primary-light) 0%, var(--abaco-primary-medium) 100%);
+    box-shadow: var(--abaco-shadow-glow);
+    transform: translateY(-1px);
+  }
+  
+  /* KPI Card */
+  .abaco-kpi-card {
+    @apply abaco-glass;
+    padding: var(--abaco-spacing-lg);
+    border-radius: var(--abaco-radius-xl);
+    transition: all 0.3s ease;
+  }
+  
+  .abaco-kpi-card:hover {
+    @apply abaco-glass-glow;
+    transform: translateY(-2px);
+  }
+  
+  /* Financial Metric Display */
+  .abaco-metric-value {
+    font-family: var(--abaco-font-primary);
+    font-size: 2rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--abaco-primary-light) 0%, var(--abaco-primary-medium) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .abaco-metric-label {
+    font-family: var(--abaco-font-secondary);
+    font-size: 0.9rem;
+    color: var(--abaco-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  
+  /* Status Indicators */
+  .abaco-status-good {
+    color: var(--abaco-success);
+    background: rgba(16, 185, 129, 0.1);
+  }
+  
+  .abaco-status-warning {
+    color: var(--abaco-warning);
+    background: rgba(245, 158, 11, 0.1);
+  }
+  
+  .abaco-status-critical {
+    color: var(--abaco-error);
+    background: rgba(239, 68, 68, 0.1);
+  }
+  
+  /* Custom Scrollbar */
+  .abaco-scrollbar::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+  }
+  
+  .abaco-scrollbar::-webkit-scrollbar-track {
+    background: rgba(100, 116, 139, 0.1);
+    border-radius: 2px;
+  }
+  
+  .abaco-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(168, 85, 247, 0.4);
+    border-radius: 2px;
+  }
+  
+  .abaco-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgba(168, 85, 247, 0.6);
+  }
+  
+  /* Loading Animation */
+  .abaco-pulse {
+    animation: abaco-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+  
+  @keyframes abaco-pulse {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.5;
+    }
+  }
+  
+  /* Gradient Text */
+  .abaco-gradient-text {
+    background: linear-gradient(135deg, var(--abaco-primary-light) 0%, var(--abaco-primary-medium) 50%, var(--abaco-primary-dark) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  /* Chart Container */
+  .abaco-chart-container {
+    @apply abaco-glass;
+    padding: var(--abaco-spacing-xl);
+    border-radius: var(--abaco-radius-2xl);
+    min-height: 300px;
+  }
+  
+  /* Dashboard Grid */
+  .abaco-dashboard-grid {
+    display: grid;
+    gap: var(--abaco-spacing-lg);
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  }
+  
+  /* Responsive Grid for 4K */
+  @media (min-width: 2560px) {
+    .abaco-dashboard-grid {
+      grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+      gap: var(--abaco-spacing-2xl);
+    }
+  }
+}
+
+/* Utility Classes */
+@layer utilities {
+  /* Typography Utilities */
+  .font-lato { font-family: var(--abaco-font-primary); }
+  .font-poppins { font-family: var(--abaco-font-secondary); }
+  
+  /* Color Utilities */
+  .text-abaco-primary { color: var(--abaco-text-primary); }
+  .text-abaco-secondary { color: var(--abaco-text-secondary); }
+  .text-abaco-muted { color: var(--abaco-text-muted); }
+  .text-abaco-accent { color: var(--abaco-text-accent); }
+  
+  .bg-abaco-primary { background-color: var(--abaco-bg-primary); }
+  .bg-abaco-secondary { background-color: var(--abaco-bg-secondary); }
+  .bg-abaco-glass { background-color: var(--abaco-bg-glass); }
+  
+  .border-abaco-primary { border-color: var(--abaco-border-primary); }
+  .border-abaco-secondary { border-color: var(--abaco-border-secondary); }
+  .border-abaco-accent { border-color: var(--abaco-border-accent); }
+  
+  /* Shadow Utilities */
+  .shadow-abaco-sm { box-shadow: var(--abaco-shadow-sm); }
+  .shadow-abaco-md { box-shadow: var(--abaco-shadow-md); }
+  .shadow-abaco-lg { box-shadow: var(--abaco-shadow-lg); }
+  .shadow-abaco-xl { box-shadow: var(--abaco-shadow-xl); }
+  .shadow-abaco-glow { box-shadow: var(--abaco-shadow-glow); }
+}
+
+/* Responsive Design - 4K Optimization */
+@media (min-width: 3840px) {
+  :root {
+    --abaco-spacing-xs: 0.375rem;
+    --abaco-spacing-sm: 0.75rem;
+    --abaco-spacing-md: 1.5rem;
+    --abaco-spacing-lg: 2.25rem;
+    --abaco-spacing-xl: 3rem;
+    --abaco-spacing-2xl: 4.5rem;
+    --abaco-spacing-3xl: 6rem;
+  }
+  
+  body { font-size: 18px; }
+  h1 { font-size: 3.5rem; }
+  h2 { font-size: 3rem; }
+  h3 { font-size: 2.5rem; }
+  h4 { font-size: 2rem; }
+  h5 { font-size: 1.75rem; }
+  h6 { font-size: 1.5rem; }
+}
+
+/* Print Styles for Reports */
+@media print {
+  body {
+    background: white;
+    color: black;
+  }
+  
+  .abaco-glass,
+  .abaco-glass-glow {
+    background: white;
+    border: 1px solid #ccc;
+    box-shadow: none;
+  }
+  
+  .abaco-gradient-text {
+    -webkit-text-fill-color: black;
+    background: none;
+  }
+}
+
+/* Accessibility Enhancements */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+  :root {
+    --abaco-text-primary: #ffffff;
+    --abaco-text-secondary: #ffffff;
+    --abaco-border-primary: rgba(255, 255, 255, 0.8);
+    --abaco-border-secondary: rgba(255, 255, 255, 0.6);
+  }
+}
+
+/* Focus States for Accessibility */
+*:focus {
+  outline: 2px solid var(--abaco-primary-light);
+  outline-offset: 2px;
+}
+
+/* Selection Colors */
+::selection {
+  background: var(--abaco-primary-medium);
+  color: var(--abaco-text-primary);
+}
+
+::-moz-selection {
+  background: var(--abaco-primary-medium);
+  color: var(--abaco-text-primary);
 }
