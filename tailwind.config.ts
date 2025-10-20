@@ -189,21 +189,21 @@ const config: Config = {
 
 // Inline implementation of flattenColorPalette to avoid internal module dependency
 function flattenColorPalette(colors: Record<string, any>): Record<string, string> {
-  const result: Record<string, string> = {};
-  
-  function flatten(obj: Record<string, any>, prefix = ''): void {
+  function flatten(obj: Record<string, any>, prefix = ''): Record<string, string> {
+    let result: Record<string, string> = {};
     for (const [key, value] of Object.entries(obj)) {
       if (typeof value === 'string') {
         const colorKey = prefix ? `${prefix}-${key}` : key;
         result[key === 'DEFAULT' && prefix ? prefix : colorKey] = value;
       } else if (typeof value === 'object' && value !== null) {
-        flatten(value, prefix ? `${prefix}-${key}` : key);
+        const nested = flatten(value, prefix ? `${prefix}-${key}` : key);
+        result = { ...result, ...nested };
       }
     }
+    return result;
   }
-  
-  flatten(colors);
-  return result;
+
+  return flatten(colors);
 }
 
 // Add this function with proper error handling
