@@ -48,7 +48,5 @@
             "changeProcessCWD": true
         }
     ],
-    "nextjs.serverPort": 3000,
-    "cs-script.execMode": "Standard",
-    "cs-script.syntaxCheckOnSave": true
+    "nextjs.serverPort": 3000
 }
