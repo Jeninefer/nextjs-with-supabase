@@ -132,7 +132,7 @@ const SERVER_DISPLAY_NAMES: Record<string, string> = {
   const storeAnalysisResult = useCallback(async (analysisId: string, result: any) => {
     const serverCheck = checkServer('memory');
     if (serverCheck) return serverCheck;
-    return await mockMCPClient.storeMemory(`analysis_${analysisId}`, result);
+    return mockMCPClient.storeMemory(`analysis_${analysisId}`, result);
   }, [checkServer]);
 
   const getStoredAnalysis = useCallback(async (analysisId: string) => {
