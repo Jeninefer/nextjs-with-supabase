@@ -5,8 +5,14 @@ declare const Deno: {
   serve: (handler: (req: Request) => Response | Promise<Response>) => void;
 };
 
-// @ts-expect-error -- Deno runtime resolves ESM URL imports
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+
+// Configuration constants
+const SNIPPET_LENGTH = 120;
+const DEFAULT_MAX_MESSAGES = 50;
+const MAX_MESSAGE_LIMIT = 200;
+const DEFAULT_MODEL = "gpt-4o";
+const AI_TEMPERATURE = 0.2;
 
 type SummarizeRequest = {
   thread_id: string;
@@ -91,20 +97,21 @@ const normalizePayload = (payload: SummarizeRequest): NormalizedPayload | Respon
     return jsonResponse(400, { error: "thread_id is required" });
   }
 
-  const maxMessages = Math.min(Math.max(payload.max_messages ?? 50, 1), 200);
-  const model = payload.model?.trim() || "gpt-4o";
+  const maxMessages = Math.min(Math.max(payload.max_messages ?? DEFAULT_MAX_MESSAGES, 1), MAX_MESSAGE_LIMIT);
+  const model = payload.model?.trim() || DEFAULT_MODEL;
 
   return { threadId, maxMessages, model };
 };
 
-type MembershipResult = { profileId: string | null } | { response: Response };
+type MembershipResult = { profileId: string } | { response: Response };
 
 const verifyMembership = async (
   header: string | null,
   threadId: string
 ): Promise<MembershipResult> => {
+  // SECURITY FIX: Require authorization header - reject anonymous requests
   if (!header) {
-    return { profileId: null };
+    return { response: jsonResponse(401, { error: "Authorization required" }) };
   }
 
   const [scheme, token] = header.split(" ");
@@ -148,7 +155,7 @@ const verifyMembership = async (
     }
 
     if (!membership) {
-      return { response: jsonResponse(403, { error: "Membership required" }) };
+      return { response: jsonResponse(403, { error: "Thread membership required" }) };
     }
 
     return { profileId: profile.id };
@@ -207,6 +214,20 @@ const buildTranscript = (messages: MessageRow[]): TranscriptBundle => {
   };
 };
 
+// Enhanced type guard with better type safety
+const isSenderRecord = (obj: unknown): obj is SenderRecord => {
+  return (
+    obj !== null &&
+    typeof obj === "object" &&
+    typeof (obj as Record<string, unknown>).id === "string" &&
+    (
+      typeof (obj as Record<string, unknown>).display_name === "string" || 
+      (obj as Record<string, unknown>).display_name === null || 
+      (obj as Record<string, unknown>).display_name === undefined
+    )
+  );
+};
+
 const summarizeWithOpenAi = async (
   threadId: string,
   transcript: string,
@@ -225,12 +246,12 @@ const summarizeWithOpenAi = async (
       },
       body: JSON.stringify({
         model,
-        temperature: 0.2,
+        temperature: AI_TEMPERATURE,
         messages: [
           {
             role: "system",
             content:
-              "You summarize lending workspace chat threads. Return 3-5 concise bullet points and highlight action items when present.",
+              "You summarize lending workspace chat threads. Return 3-5 concise bullet points using dashes (\"- \"). If there are any action items, list them at the end under a separate heading \"Action Items:\", each as a dash. If there are no action items, omit the \"Action Items:\" section.",
           },
           {
             role: "user",
@@ -262,8 +283,8 @@ const fallbackSummary = (
   first: MessageRow,
   last: MessageRow
 ): string => {
-  const firstSnippet = (first.body ?? "n/a").slice(0, 120);
-  const lastSnippet = (last.body ?? "n/a").slice(0, 120);
+  const firstSnippet = (first.body ?? "n/a").slice(0, SNIPPET_LENGTH);
+  const lastSnippet = (last.body ?? "n/a").slice(0, SNIPPET_LENGTH);
   return `Thread ${threadId} has ${count} messages. First topic: ${firstSnippet}. Latest update: ${lastSnippet}.`;
 };
 
@@ -300,11 +321,13 @@ Deno.serve(async (req: Request): Promise<Response> => {
     return normalized;
   }
 
+  // SECURITY: Always verify membership before proceeding
   const membership = await verifyMembership(req.headers.get("Authorization"), normalized.threadId);
   if ("response" in membership) {
     return membership.response;
   }
 
+  // Only proceed with verified user who has thread membership
   const messagesResult = await fetchMessages(normalized.threadId, normalized.maxMessages);
   if ("response" in messagesResult) {
     return messagesResult.response;

@@ -1,7 +1,17 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  turbo: {
+    rules: {
+      "*.svg": {
+        loaders: ["@svgr/webpack"],
+        as: "*.js",
+      },
+    },
+  },
+  experimental: {
+    serverComponentsExternalPackages: ["@node-rs/argon2", "@node-rs/bcrypt"],
+  },
 };
 
 export default nextConfig;
