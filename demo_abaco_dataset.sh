@@ -18,7 +18,8 @@ echo ""
 echo "📊 Step 2: Generating comprehensive financial dataset..."
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 cd notebooks
-python3 abaco_dataset_generator.py
+source ../.venv/bin/activate
+python abaco_dataset_generator.py
 echo ""
 
 # Step 3: Verify Output
