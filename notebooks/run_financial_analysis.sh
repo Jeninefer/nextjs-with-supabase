@@ -12,7 +12,7 @@ elif command -v python &> /dev/null; then
     PYTHON_CMD="python"
 else
     echo "❌ Python not found! Running Python setup..."
-    ./fix_python_path.sh
+    ./notebooks/fix_python_path.sh
     PYTHON_CMD="python3"
 fi
 
