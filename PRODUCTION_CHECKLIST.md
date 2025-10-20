@@ -115,7 +115,7 @@ SELECT
   AVG(account_balance) as avg_balance,
   AVG(credit_score) as avg_credit_score
 FROM abaco_customers;
--- Expected: 1000, ~9804.12, ~606.40
+-- Expected: total_customers=1000, avg_balance≈9804.12, avg_credit_score≈606.40
 ```
 
 ---
