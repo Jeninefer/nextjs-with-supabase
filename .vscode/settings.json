@@ -50,5 +50,6 @@
     ],
     "nextjs.serverPort": 3000,
     "cs-script.execMode": "Standard",
-    "cs-script.syntaxCheckOnSave": true
+    "cs-script.syntaxCheckOnSave": true,
+    "editor.codeActions.triggerOnFocusChange": true
 }
