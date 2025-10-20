@@ -140,10 +140,10 @@ echo "------------------------"
 
 # TypeScript check
 echo "Running TypeScript type check..."
-if npm run type-check > /dev/null 2>&1; then
+if npm run type-check > /tmp/abaco-typecheck.log 2>&1; then
     check_pass "TypeScript type check passed"
 else
-    check_fail "TypeScript errors found. Run: npm run type-check"
+    check_fail "TypeScript errors found. Check: /tmp/abaco-typecheck.log"
 fi
 
 # Build check
