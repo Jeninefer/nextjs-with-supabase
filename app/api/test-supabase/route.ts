@@ -51,10 +51,6 @@ export async function GET() {
     const responseBody = {
       ok: true,
       meta: {
-        environment: {
-          url_present: !!process.env.NEXT_PUBLIC_SUPABASE_URL,
-          service_key_present: !!process.env.SUPABASE_SERVICE_ROLE_KEY,
-        },
         timings: {
           query_ms: queryTimeMs,
           total_request_ms: totalMs,
