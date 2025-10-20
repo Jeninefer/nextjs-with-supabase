@@ -290,7 +290,7 @@ curl https://your-app.vercel.app/api/health
 # Expected: {"status":"ok",...,"checks":{"supabase":true}}
 ```
 
-See [Production Checklist](../PRODUCTION_CHECKLIST.md) for comprehensive deployment guide.
+See [Production Checklist](./PRODUCTION_CHECKLIST.md) for comprehensive deployment guide.
 
 ---
 
