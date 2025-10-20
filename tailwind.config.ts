@@ -1,6 +1,4 @@
-import plugin from "tailwindcss/plugin";
 import type { Config } from "tailwindcss";
-const { default: flattenColorPalette } = require("tailwindcss/lib/util/flattenColorPalette");
 
 const config: Config = {
   darkMode: ["class"],
@@ -188,6 +186,25 @@ const config: Config = {
     addVariablesForColors,
   ],
 } satisfies Config;
+
+// Inline implementation of flattenColorPalette to avoid internal module dependency
+function flattenColorPalette(colors: Record<string, any>): Record<string, string> {
+  const result: Record<string, string> = {};
+  
+  function flatten(obj: Record<string, any>, prefix = ''): void {
+    for (const [key, value] of Object.entries(obj)) {
+      if (typeof value === 'string') {
+        const colorKey = prefix ? `${prefix}-${key}` : key;
+        result[key === 'DEFAULT' && prefix ? prefix : colorKey] = value;
+      } else if (typeof value === 'object' && value !== null) {
+        flatten(value, prefix ? `${prefix}-${key}` : key);
+      }
+    }
+  }
+  
+  flatten(colors);
+  return result;
+}
 
 // Add this function with proper error handling
 function addVariablesForColors({ addBase, theme }: any) {
