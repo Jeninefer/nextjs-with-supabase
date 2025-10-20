@@ -43,7 +43,9 @@ git pull origin main
 # Push your changes
 git push origin main
 
-# Force sync (use with caution)
+# Force sync (DANGER: This will permanently delete all uncommitted local changes!)
+# WARNING: The following command will irreversibly discard ALL local changes (staged and unstaged) that have not been committed.
+# This action CANNOT be undone. If you want to preserve your changes, run `git stash` before proceeding.
 git fetch origin
 git reset --hard origin/main
 ```
