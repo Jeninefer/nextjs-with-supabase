@@ -33,14 +33,15 @@ The notebook processes customer financial data with these typical columns:
 - `industry`: Customer's industry sector
 - `kam_owner`: Key Account Manager assigned to the customer
 - `customer_type`: Customer type (micro, sme, corporate, enterprise)
+- `account_status`: Account status (active, delinquent)
 
 #### Sample CSV Structure
 
 ```csv
-customer_id,date,balance,credit_limit,dpd,product_code,origination_date,apr,industry,kam_owner,customer_type
-CUST001,2025-01-15,50000,100000,0,PROD_A,2024-01-01,0.12,technology,KAM_001,sme
-CUST002,2025-01-15,250000,300000,15,PROD_B,2023-06-15,0.15,manufacturing,KAM_002,corporate
-CUST003,2025-01-15,5000,10000,45,PROD_A,2024-08-20,0.25,retail,KAM_003,micro
+customer_id,date,balance,credit_limit,dpd,product_code,origination_date,apr,industry,kam_owner,customer_type,account_status
+CUST001,2025-01-15,50000,100000,0,PROD_A,2024-01-01,0.12,technology,KAM_001,sme,active
+CUST002,2025-01-15,250000,300000,15,PROD_B,2023-06-15,0.15,manufacturing,KAM_002,corporate,delinquent
+CUST003,2025-01-15,5000,10000,45,PROD_A,2024-08-20,0.25,retail,KAM_003,micro,delinquent
 ```
 
 ## Data Privacy
