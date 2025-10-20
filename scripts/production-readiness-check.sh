@@ -176,7 +176,19 @@ echo -e "${BLUE}7. Checking Documentation${NC}"
 echo "--------------------------"
 
 # Check key documentation files
-DOCS=("README.md" "docs/SETUP_GUIDE.md" "docs/GIT_WORKFLOW.md" "docs/QUICK_REFERENCE.md" "PRODUCTION_CHECKLIST.md")
+# The list of required documentation files is read from docs/REQUIRED_DOCS.txt.
+# Update docs/REQUIRED_DOCS.txt to keep this check in sync with actual documentation.
+DOCS=()
+DOCS_CONFIG="docs/REQUIRED_DOCS.txt"
+if [ -f "$DOCS_CONFIG" ]; then
+    while IFS= read -r line; do
+        # Skip empty lines and comments
+        [[ -z "$line" || "$line" =~ ^# ]] && continue
+        DOCS+=("$line")
+    done < "$DOCS_CONFIG"
+else
+    check_warn "$DOCS_CONFIG not found. Please create this file listing required documentation files (one per line)."
+fi
 
 for doc in "${DOCS[@]}"; do
     if [ -f "$doc" ]; then
