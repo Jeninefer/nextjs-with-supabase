@@ -1,0 +1,61 @@
+ABACO FINANCIAL INTELLIGENCE - DATASET SUMMARY
+================================================================================
+
+Total Customers: 30
+Total Dimensions: 53
+Total Data Points: 1590
+
+Columns:
+   1. customer_id
+   2. account_number
+   3. customer_segment
+   4. relationship_years
+   5. age_group
+   6. account_balance
+   7. avg_monthly_balance
+   8. min_balance_last_year
+   9. max_balance_last_year
+  10. credit_limit
+  11. outstanding_debt
+  12. credit_score
+  13. credit_utilization_ratio
+  14. available_credit
+  15. monthly_transactions
+  16. monthly_spending
+  17. avg_transaction_value
+  18. largest_transaction
+  19. monthly_income
+  20. annual_income
+  21. employment_status
+  22. income_stability_score
+  23. total_loans
+  24. mortgage_balance
+  25. personal_loan_balance
+  26. auto_loan_balance
+  27. debt_to_income_ratio
+  28. payment_history_score
+  29. on_time_payments_pct
+  30. late_payments_count
+  31. missed_payments_count
+  32. risk_category
+  33. risk_score
+  34. default_probability
+  35. num_products
+  36. has_checking
+  37. has_savings
+  38. has_credit_card
+  39. has_investment
+  40. has_loan
+  41. monthly_fee_income
+  42. interest_income
+  43. transaction_fee_income
+  44. total_monthly_revenue
+  45. customer_lifetime_value
+  46. profit_margin
+  47. digital_banking_usage_pct
+  48. mobile_app_logins_monthly
+  49. customer_service_calls
+  50. satisfaction_score
+  51. account_growth_rate
+  52. spending_trend
+  53. investment_potential_score
