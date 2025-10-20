@@ -24,12 +24,16 @@ else
     fi
 fi
 
-# Create a symlink for convenience
-if [ ! -f "/usr/local/bin/python" ] && [ "$PYTHON_CMD" = "python3" ]; then
-    echo "🔗 Creating python symlink..."
-    sudo ln -sf $(which python3) /usr/local/bin/python
+# Set up a Python virtual environment for project isolation
+if [ ! -d "venv" ]; then
+    echo "🛠️  Creating a virtual environment in ./venv ..."
+    $PYTHON_CMD -m venv venv
 fi
 
-echo "✅ Python setup complete!"
-echo "🐍 Using: $PYTHON_CMD"
+# Activate the virtual environment
+source venv/bin/activate
+PYTHON_CMD="python"
+
+echo "✅ Python virtual environment setup complete!"
+echo "🐍 Using: $PYTHON_CMD from virtual environment"
 $PYTHON_CMD --version
