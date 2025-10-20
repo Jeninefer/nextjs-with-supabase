@@ -40,10 +40,26 @@ export function useMCPIntegration() {
     servers: new Set()
   });
 
+  // Mapping from server ids to display names
+  const SERVER_DISPLAY_NAMES: Record<string, string> = {
+    'perplexity-ask': 'Perplexity',
+    'fetch': 'Fetch',
+    'memory': 'Memory'
+  };
+
+  // Helper to title-case server ids (splitting on hyphens/underscores)
+  function toDisplayName(serverId: string): string {
+    if (SERVER_DISPLAY_NAMES[serverId]) return SERVER_DISPLAY_NAMES[serverId];
+    return serverId
+      .split(/[-_]/)
+      .map(token => token.charAt(0).toUpperCase() + token.slice(1))
+      .join(' ');
+  }
+
   // Helper to check server availability
   const checkServer = useCallback((serverName: string) => {
     if (!state.servers.has(serverName)) {
-      return { success: false, error: `${serverName.charAt(0).toUpperCase() + serverName.slice(1)} server not available` };
+      return { success: false, error: `${toDisplayName(serverName)} server not available` };
     }
     return null;
   }, [state.servers]);
