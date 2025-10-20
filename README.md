@@ -66,6 +66,12 @@ Open [http://localhost:3000](http://localhost:3000) to access the ABACO platform
 │   └── auth/            # Authentication components
 ├── lib/                 # Utilities and configurations
 │   └── supabase/       # Supabase client setup
+├── notebooks/           # Jupyter notebooks for analytics
+│   ├── README.md        # Notebook documentation
+│   └── abaco_financial_intelligence.ipynb
+├── data/                # Sample datasets and documentation
+│   ├── README.md        # Data format specifications
+│   └── sample_financial_data.csv
 └── scripts/            # Utility scripts
 ```
 
@@ -101,6 +107,70 @@ npm run lint
 - **AI Insights**: Machine learning-powered analytics
 - **Growth Projections**: Strategic planning tools
 - **Market Intelligence**: 50+ data source monitoring
+- **Market Analysis**: Comprehensive analytics notebooks
+  - Feature engineering and risk modeling
+  - KPI calculation and tracking
+  - Industry and product analysis
+  - Data quality auditing
+
+## 📈 Market Analysis Feature
+
+The Market Analysis feature provides comprehensive financial analytics through Jupyter notebooks, enabling data-driven decision making for portfolio management and strategic planning.
+
+### Capabilities
+
+#### 1. Feature Engineering
+Transform raw lending data into actionable insights:
+- **Customer Classification**: Automatic segmentation (micro, SME, corporate, enterprise)
+- **Risk Indicators**: Delinquency bucketing and utilization rates
+- **Temporal Features**: Account age, vintage analysis
+- **Alert Generation**: Automated risk flag detection
+
+#### 2. KPI Calculation Engine
+Real-time performance monitoring:
+- **Portfolio Metrics**: Total exposure, customer counts, average balances
+- **Delinquency Tracking**: Multi-bucket DPD analysis (0, 1-30, 31-60, 61-90, 90+)
+- **Customer Mix Analysis**: Distribution by type and segment
+- **Financial Health**: Utilization rates, account age metrics
+
+#### 3. Market Intelligence
+Strategic insights for growth:
+- **Industry Analysis**: Sector exposure and performance
+- **Product Performance**: CC, PL, BL product mix optimization
+- **KAM Portfolio**: Key Account Manager effectiveness
+- **Segment Insights**: A-F customer value analysis
+
+#### 4. Data Quality Audit
+Ensure data integrity:
+- **Completeness Checks**: Missing value detection
+- **Validity Validation**: Data type and range verification
+- **Consistency Monitoring**: Cross-field validation
+- **Outlier Detection**: Statistical anomaly identification
+
+### Quick Start
+
+```bash
+# Install Jupyter and dependencies
+pip install jupyter pandas numpy
+
+# Launch notebook
+cd notebooks
+jupyter notebook abaco_financial_intelligence.ipynb
+```
+
+### Documentation
+
+- **Notebooks**: See `notebooks/README.md` for detailed cell documentation
+- **Data Formats**: See `data/README.md` for schema specifications
+- **Sample Data**: Use `data/sample_financial_data.csv` for testing
+
+### Integration
+
+The Market Analysis feature integrates seamlessly with:
+- **Supabase**: Load production data via secure APIs
+- **Dashboard**: Feed real-time KPIs to web interface
+- **Reports**: Generate automated management reports
+- **Alerts**: Trigger notifications for risk events
 
 ## 🚀 Deployment
 
