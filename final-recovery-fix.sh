@@ -33,8 +33,17 @@ fi
 
 # Step 4: Test configuration files
 echo "⚙️ Step 4: Testing configuration files..."
-node -c next.config.ts && echo "✅ next.config.ts syntax OK" || echo "❌ next.config.ts has issues"
-node -c tailwind.config.ts && echo "✅ tailwind.config.ts syntax OK" || echo "❌ tailwind.config.ts has issues"
+if [ -f "next.config.ts" ]; then
+    echo "✅ next.config.ts found"
+else
+    echo "❌ next.config.ts missing"
+fi
+if [ -f "tailwind.config.ts" ]; then
+    echo "✅ tailwind.config.ts found"
+else
+    echo "❌ tailwind.config.ts missing"
+fi
+echo "ℹ️ TypeScript syntax will be validated during build process"
 
 # Step 5: Test build process
 echo "🏗️ Step 5: Testing build process..."
