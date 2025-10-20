@@ -35,15 +35,21 @@ Successfully implemented a comprehensive dataset generation system for the ABACO
 ```
 
 **Dependencies Installed:**
-- plotly >=6.3.1
-- matplotlib >=3.10.7
-- seaborn >=0.13.2
-- jinja2 >=3.1.2
-- numpy >=2.3.4
-- pandas >=2.3.3
-- scipy >=1.16.2
-- scikit-learn >=1.7.2
 
+All dependencies and their minimum versions are specified in [`requirements.txt`](./requirements.txt) at the project root. This file is referenced by both the environment setup script and the documentation to ensure consistency.
+
+<details>
+<summary>Click to view <code>requirements.txt</code> contents</summary>
+
+```txt
+plotly>=6.3.1
+matplotlib>=3.10.7
+seaborn>=0.13.2
+jinja2>=3.1.2
+numpy>=2.3.4
+pandas>=2.3.3
+scipy>=1.16.2
+scikit-learn>=1.7.2
 ### 2. Dataset Generator
 **File:** `notebooks/abaco_dataset_generator.py`
 
