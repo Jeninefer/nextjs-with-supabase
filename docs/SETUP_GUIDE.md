@@ -235,7 +235,13 @@ See [Git Workflow Guide](./GIT_WORKFLOW.md) for detailed Git instructions.
 
 ### Prerequisites Checklist
 
-Before deploying to production, verify:
+Run the automated production readiness check:
+
+```bash
+./scripts/production-readiness-check.sh
+```
+
+Or manually verify:
 
 - [ ] All environment variables configured
 - [ ] Database schema applied
