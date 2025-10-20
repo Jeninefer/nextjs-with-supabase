@@ -10,7 +10,7 @@ import warnings
 def build_comprehensive_abaco_dataset():
     """
     Generate comprehensive financial dataset for ABACO platform
-    Returns: DataFrame with 30 customers and 35+ analytical dimensions
+    Returns: DataFrame with 30 customers and 53 analytical dimensions
     """
     print("🚀 Building ABACO Financial Intelligence Dataset...")
     
