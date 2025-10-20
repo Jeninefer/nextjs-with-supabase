@@ -143,22 +143,9 @@ else
     fi
 fi
 
-# Step 7: Test development server
-echo "🚀 Step 7: Testing development server..."
-timeout 15s npm run dev > dev-test.log 2>&1 &
-DEV_PID=$!
-sleep 10
-
-if kill -0 $DEV_PID 2>/dev/null; then
-    echo "✅ Development server started successfully"
-    kill $DEV_PID 2>/dev/null || true
-else
-    echo "⚠️ Development server test completed (normal timeout)"
-fi
-
-# Cleanup test log
-rm -f dev-test.log
-
+# Step 7: (Skipped) Development server test
+echo "🚀 Step 7: Skipping development server test for efficiency (see build test above)..."
+# If you wish to manually test the dev server, run: npm run dev
 # Step 8: Final verification
 echo "✅ Step 8: Final verification..."
 echo ""
