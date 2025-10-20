@@ -43,7 +43,7 @@ fi
 # Test 4: Response time
 echo "Test 4: Response time..."
 RESPONSE_TIME=$(curl -o /dev/null -s -w '%{time_total}' "$PROD_URL")
-if (( $(echo "$RESPONSE_TIME < 2.0" | bc -l) )); then
+if awk "BEGIN {exit !($RESPONSE_TIME < 2.0)}"; then
     echo -e "${GREEN}✅ Response time: ${RESPONSE_TIME}s${NC}"
 else
     echo -e "${RED}⚠️  Response time: ${RESPONSE_TIME}s (slow)${NC}"
