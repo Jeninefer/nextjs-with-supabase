@@ -142,12 +142,10 @@ const { data, error } = await supabase
 
 ### Middleware redirects to /sign-in
 
-**Solution**: The middleware has been configured to exclude API routes from authentication checks. If you still see redirects, verify `middleware.ts` has `api` in the exclusion pattern:
+**Solution**: The middleware has been configured to exclude the `/api/test-supabase` route from authentication checks. If you still see redirects, verify `middleware.ts` has `api/test-supabase` in the exclusion pattern:
 
 ```typescript
-matcher: ['/((?!_next/static|_next/image|favicon.ico|api|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)']
-```
-
+matcher: ['/((?!_next/static|_next/image|favicon.ico|api/test-supabase|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)']
 ## Production Considerations
 
 1. **Remove or protect this endpoint** before deploying to production
