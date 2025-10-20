@@ -59,7 +59,15 @@ fi
 
 # Step 6: Test development server
 echo "🚀 Step 6: Testing development server startup..."
-timeout 10s npm run dev > /dev/null 2>&1 && echo "✅ Dev server starts successfully" || echo "⚠️ Dev server test timeout (normal)"
+timeout 10s npm run dev > /dev/null 2>&1
+status=$?
+if [ $status -eq 124 ]; then
+    echo "⚠️ Dev server test timeout (normal)"
+elif [ $status -eq 0 ]; then
+    echo "✅ Dev server starts successfully"
+else
+    echo "❌ Dev server failed to start (exit code $status)"
+fi
 
 echo ""
 echo "🎉 ABACO FINAL RECOVERY COMPLETED!"
