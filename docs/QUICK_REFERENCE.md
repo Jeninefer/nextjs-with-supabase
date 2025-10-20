@@ -25,6 +25,11 @@ npm run format                 # Format code with Prettier
 
 ## 📊 Database Commands
 
+### Production Readiness Check
+```bash
+./scripts/production-readiness-check.sh   # Complete production readiness verification
+```
+
 ### Verify Database Setup
 ```bash
 ./scripts/verify-database.sh   # Comprehensive database verification
@@ -200,6 +205,7 @@ npm run build
 ## 🎯 Production Deployment Checklist
 
 Before deploying:
+- [ ] Run: `./scripts/production-readiness-check.sh`
 - [ ] `npm run type-check` passes
 - [ ] `npm run build` succeeds
 - [ ] `.env.local` configured correctly
