@@ -33,7 +33,7 @@ fi
 
 # Test 3: SSL Certificate
 echo "Test 3: SSL certificate..."
-PROD_HOST=$(echo $PROD_URL | sed 's~https://~~')
+PROD_HOST=$(echo "$PROD_URL" | sed 's~https://~~')
 if openssl s_client -connect ${PROD_HOST}:443 -servername ${PROD_HOST} < /dev/null 2>/dev/null | grep -q 'Verify return code: 0'; then
     echo -e "${GREEN}✅ SSL: Valid${NC}"
 else
