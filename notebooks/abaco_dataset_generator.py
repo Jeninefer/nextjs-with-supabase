@@ -100,7 +100,7 @@ def build_comprehensive_abaco_dataset():
     auto_loan_balance = total_loans * auto_pct
     other_loan_balance = total_loans * other_pct
     # Note: The four categories (mortgage, personal, auto, other) are assumed to cover all loan types for this dataset.
-    debt_to_income_ratio = np.round((total_loans / annual_income) * 100, 2)
+    debt_to_income_ratio = np.round(np.where(annual_income > 0, (total_loans / annual_income) * 100, 0), 2)
     
     # 7. Payment Behavior
     payment_history_score = np.random.uniform(0.7, 1.0, num_customers)
