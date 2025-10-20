@@ -6,6 +6,8 @@ Enterprise-grade financial analytics with 30+ dimensional customer analysis
 
 import pandas as pd
 import numpy as np
+import warnings
+warnings.filterwarnings("ignore")
 def build_comprehensive_abaco_dataset():
     """
     Generates a comprehensive synthetic financial dataset for the ABACO platform.
