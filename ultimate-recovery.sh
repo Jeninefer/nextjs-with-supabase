@@ -2,7 +2,7 @@
 # ABACO Ultimate Recovery - Fix All Node.js and Tailwind Issues
 
 set -e
-cd /Users/jenineferderas/Documents/GitHub/nextjs-with-supabase
+cd "$(dirname "$0")"
 
 echo "🚨 ABACO ULTIMATE RECOVERY - COMPLETE SYSTEM FIX"
 echo "==============================================="
