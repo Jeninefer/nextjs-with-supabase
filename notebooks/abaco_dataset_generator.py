@@ -57,9 +57,23 @@ def build_comprehensive_abaco_dataset():
     
     # 6. Debt Metrics
     total_loans = np.round(np.random.uniform(0, 250000, num_customers), 2)
-    mortgage_balance = total_loans * np.random.uniform(0.5, 0.8, num_customers)
-    personal_loan_balance = total_loans * np.random.uniform(0.1, 0.3, num_customers)
-    auto_loan_balance = total_loans * np.random.uniform(0.05, 0.15, num_customers)
+    
+    # Generate loan components that sum to total_loans
+    # Use normalized random values to ensure components sum to 1.0
+    mortgage_pct = np.random.uniform(0.5, 0.8, num_customers)
+    personal_pct = np.random.uniform(0.1, 0.3, num_customers) 
+    auto_pct = np.random.uniform(0.05, 0.15, num_customers)
+    
+    # Normalize percentages to sum to 1.0
+    total_pct = mortgage_pct + personal_pct + auto_pct
+    mortgage_pct = mortgage_pct / total_pct
+    personal_pct = personal_pct / total_pct
+    auto_pct = auto_pct / total_pct
+    
+    # Calculate balances using normalized percentages
+    mortgage_balance = total_loans * mortgage_pct
+    personal_loan_balance = total_loans * personal_pct
+    auto_loan_balance = total_loans * auto_pct
     debt_to_income_ratio = np.round((total_loans / annual_income) * 100, 2)
     
     # 7. Payment Behavior
