@@ -110,7 +110,7 @@ psql "postgresql://postgres:[password]@db.[project].supabase.co:5432/postgres" \
 SELECT COUNT(*) FROM abaco_customers;
 -- Example expected value (from initial dataset): 1000
 -- NOTE: These values are examples from the initial dataset and may change as data evolves.
--- For current expected values, refer to the dataset documentation in notebooks/README.md or the data source at notebooks/financial_analysis_results.csv.
+-- For current expected values, refer to the data source at notebooks/financial_analysis_results.csv.
 
 SELECT
   COUNT(*) as total_customers,
