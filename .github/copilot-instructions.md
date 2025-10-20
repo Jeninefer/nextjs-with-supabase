@@ -118,7 +118,7 @@ This repository is a Next.js starter template with Supabase integration. Follow 
 
 ## Additional Notes
 
-- This starter kit uses the Geist font family
+- This starter kit uses Lato (primary) and Poppins (secondary) font families
 - The app supports both light and dark themes
 - Environment variables need to be configured in `.env.local` (see `.env.example`)
 - Supabase URL and anon key are required for the app to function
