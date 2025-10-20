@@ -225,7 +225,7 @@ Verify:
 curl https://your-app.vercel.app/api/health
 ```
 
-📖 **Full Guide:** See [PRODUCTION_CHECKLIST.md](./PRODUCTION_CHECKLIST.md)
+📖 **Full Guide:** See [PRODUCTION_CHECKLIST.md](../PRODUCTION_CHECKLIST.md)
 
 ---
 
