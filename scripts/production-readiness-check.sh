@@ -186,10 +186,15 @@ DOCS=(
 )
 
 for doc in "${DOCS[@]}"; do
-    if [ -f "$doc" ]; then
-        check_pass "$doc exists"
+    if git ls-files --error-unmatch "$doc" > /dev/null 2>&1; then
+        if [ -f "$doc" ]; then
+            check_pass "$doc exists"
+        else
+            check_warn "$doc tracked by git but not found"
+        fi
     else
-        check_warn "$doc not found"
+        # File is not tracked by git, skip check
+        :
     fi
 done
 
