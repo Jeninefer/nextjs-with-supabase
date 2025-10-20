@@ -42,17 +42,6 @@ git pull origin main
 
 # Push your changes
 git push origin main
-
-# ⚠️ DANGER: The following command will irreversibly discard ALL uncommitted local changes (staged and unstaged). This action CANNOT be undone! If you want to preserve your changes, run `git stash` before proceeding.
-git fetch origin
-git reset --hard origin/main
-```
-
-### Common Workflows
-
-#### 1. Daily Development Workflow
-
-```bash
 # Start your day
 cd ~/Documents/GitHub/nextjs-with-supabase
 git status
