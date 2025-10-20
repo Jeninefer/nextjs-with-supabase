@@ -41,7 +41,7 @@ def build_comprehensive_abaco_dataset():
     # Set random seed for reproducibility
     np.random.seed(42)
     
-    # Generate realistic financial data across 35+ dimensions
+    # Generate realistic financial data across 53 dimensions
     
     # 1. Basic Customer Information
     customer_ids = customers
