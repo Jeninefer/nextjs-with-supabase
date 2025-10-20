@@ -8,8 +8,29 @@ import pandas as pd
 import numpy as np
 def build_comprehensive_abaco_dataset():
     """
-    Generate comprehensive financial dataset for ABACO platform
-    Returns: DataFrame with 30 customers and 53 analytical dimensions
+    Generates a comprehensive synthetic financial dataset for the ABACO platform.
+
+    Algorithm:
+        - Creates data for 30 customers, each with 53 analytical dimensions.
+        - Uses numpy's random module to generate realistic financial and demographic data.
+        - Sets random seed to 42 for reproducibility.
+        - Employs various statistical distributions:
+            * Customer segments and age groups: categorical sampling via np.random.choice.
+            * Relationship years, monthly transactions: uniform integer sampling via np.random.randint.
+            * Account balances: log-normal distribution (mean=10, sigma=1.5).
+            * Monthly balances, min/max balances: scaled from account balance using uniform multipliers.
+            * Credit limits: uniform distribution (range 5,000 to 100,000).
+            * Outstanding debt: scaled from credit limit using uniform multipliers.
+            * Credit scores: categorical sampling.
+            * Transaction activity and spending: uniform distributions.
+            * Additional dimensions use combinations of the above or further random sampling.
+
+    Implementation details:
+        - All random number generation uses np.random with seed 42 for reproducibility.
+        - Data is returned as a pandas DataFrame.
+
+    Returns:
+        pd.DataFrame: DataFrame with 30 customers and 53 analytical dimensions.
     """
     print("🚀 Building ABACO Financial Intelligence Dataset...")
     
