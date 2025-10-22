@@ -113,10 +113,10 @@ export default function ValidationPage() {
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 p-6">
       <div className="max-w-7xl mx-auto">
         <div className="mb-8">
-          <h1 className="text-4xl font-bold text-white mb-2 font-['Lato']">
+          <h1 className="text-4xl font-bold text-white mb-2 font-lato">
             Resultados de Validación - Análisis de Préstamos
           </h1>
-          <p className="text-purple-300 font-['Poppins']">
+          <p className="text-purple-300 font-poppins">
             Validación de cálculos mensuales de transferencias y operaciones
           </p>
         </div>
