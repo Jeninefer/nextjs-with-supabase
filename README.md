@@ -171,6 +171,8 @@ For detailed setup instructions, error resolution, and platform status, see:
 - [Complete Setup Guide](../Library/Application%20Support/Code/User/cs-script.user/integration-error.md)
 - [Quick Start Guide](./QUICK_START.md)
 - [Build Success Log](./BUILD_SUCCESS.md)
+- [VS Code Terminal Guide](./docs/VSCODE_TERMINAL_GUIDE.md)
+- [Terminal Quick Reference](./.vscode/TERMINAL_QUICK_REFERENCE.md)
 
 ### Common Issues
 
