@@ -80,29 +80,29 @@ export function getMCPConfig(): MCPConfiguration {
   // Deep copy servers and their configs to avoid mutating defaultMCPConfig
   const config: MCPConfiguration = {
     servers: Object.fromEntries(
-      Object.entries(defaultMCPConfig.servers).map(([name, serverConfig]) => [
-        name,
-        {
-          ...serverConfig,
-          env: serverConfig.env ? { ...serverConfig.env } : undefined
+      Object.entries(defaultMCPConfig.servers).map(([name, serverConfig]) => {
+        // Determine if we should auto-enable this server
+        let autoEnabled = serverConfig.enabled;
+        if (serverConfig.env && serverConfig.requiresAuth) {
+          const hasAllEnvVars = Object.values(serverConfig.env).every(
+            value => value && value.length > 0
+          );
+          if (hasAllEnvVars && !serverConfig.enabled) {
+            console.log(`Auto-enabling ${name} - credentials detected`);
+            autoEnabled = true;
+          }
         }
-      ])
+        return [
+          name,
+          {
+            ...serverConfig,
+            enabled: autoEnabled,
+            env: serverConfig.env ? { ...serverConfig.env } : undefined
+          }
+        ];
+      })
     )
   };
-  
-  // Auto-enable servers if their required environment variables are present
-  Object.entries(config.servers).forEach(([serverName, serverConfig]) => {
-    if (serverConfig.env && serverConfig.requiresAuth) {
-      const hasAllEnvVars = Object.values(serverConfig.env).every(
-        value => value && value.length > 0
-      );
-      
-      if (hasAllEnvVars && !serverConfig.enabled) {
-        console.log(`Auto-enabling ${serverName} - credentials detected`);
-        serverConfig.enabled = true;
-      }
-    }
-  });
   
   return config;
 }
