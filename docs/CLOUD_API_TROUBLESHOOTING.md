@@ -72,7 +72,7 @@ source abaco_venv/bin/activate
 jupyter notebook
 ```
 
-See: [notebooks/README.md](notebooks/README.md)
+See: [notebooks/README.md](../notebooks/README.md)
 
 ### Path 2: Google Cloud Integration (Advanced)
 
