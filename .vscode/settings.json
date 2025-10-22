@@ -87,5 +87,21 @@
         "latex",
         "plaintext",
         "shellscript"
-    ]
+    ],
+    "terminal.integrated.fontSize": 14,
+    "terminal.integrated.fontFamily": "monospace",
+    "terminal.integrated.lineHeight": 1.2,
+    "terminal.integrated.copyOnSelection": true,
+    "terminal.integrated.scrollback": 10000,
+    "terminal.integrated.enableBell": false,
+    "terminal.integrated.confirmOnExit": "hasChildProcesses",
+    "terminal.integrated.shellIntegration.enabled": true,
+    "terminal.integrated.shellIntegration.decorationsEnabled": "both",
+    "terminal.integrated.tabs.enabled": true,
+    "terminal.integrated.tabs.location": "left",
+    "terminal.integrated.cwd": "${workspaceFolder}",
+    "terminal.integrated.splitCwd": "workspaceRoot",
+    "terminal.integrated.cursorStyle": "block",
+    "terminal.integrated.cursorBlinking": true,
+    "terminal.integrated.smoothScrolling": true
 }
