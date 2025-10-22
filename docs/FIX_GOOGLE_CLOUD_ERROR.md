@@ -104,8 +104,15 @@ Google Cloud SDK automatically adds configuration to shell startup files (`.bash
 ### Test 1: No Google Cloud Variables
 
 ```bash
-env | grep -i "GOOGLE\|GCLOUD\|DATAPROC"
-# Should return nothing (except possibly CHROME_BIN)
+env | grep -E "^(GOOGLE_|GCLOUD_|CLOUDSDK_|GCP_|DATAPROC_)"
+# Should return nothing (no output means success)
+```
+
+Or use the comprehensive verification script:
+
+```bash
+./scripts/verify_environment.sh
+# Will check all aspects of your environment
 ```
 
 ### Test 2: Start Next.js Without Errors
@@ -113,6 +120,13 @@ env | grep -i "GOOGLE\|GCLOUD\|DATAPROC"
 ```bash
 npm run dev
 # Should start on http://localhost:3000 without any Google Cloud errors
+```
+
+Expected output:
+```
+▲ Next.js 15.5.6
+- Local:        http://localhost:3000
+✓ Ready in 2s
 ```
 
 ### Test 3: Run Python Analysis
@@ -126,8 +140,8 @@ npm run dev
 
 ```bash
 # Open a new terminal
-env | grep -i "GOOGLE\|GCLOUD\|DATAPROC"
-# Should still return nothing (if shell config was updated)
+./scripts/verify_environment.sh
+# Should show all tests passing
 ```
 
 ## 📋 What ABACO Actually Uses
