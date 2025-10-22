@@ -301,7 +301,7 @@ A: In the `notebooks/charts/` directory by default.
 
 - **Technical Issues**: See [../docs/GOOGLE_CLOUD_SETUP.md](../docs/GOOGLE_CLOUD_SETUP.md)
 - **Platform Documentation**: See [../README.md](../README.md)
-- **Email Support**: tech@abaco-platform.com
+- **Report Issues**: [GitHub Issues](https://github.com/<your-org>/<your-repo>/issues)
 
 ## Contributing
 
