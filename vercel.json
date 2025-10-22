@@ -16,6 +16,9 @@
       "dest": "/$1"
     }
   ],
+  "buildCommand": "npm run build",
+  "installCommand": "npm install",
+  "framework": "vite",
   "headers": [
     {
       "source": "/(.*)",
