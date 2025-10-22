@@ -35,7 +35,6 @@ jobs:
       - name: Build project
         run: npm run build
         env:
-          # Only include environment variables that are actually defined in repository secrets
           NODE_ENV: production
 
       - name: Install Vercel CLI

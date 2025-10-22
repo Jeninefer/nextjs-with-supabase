@@ -38,15 +38,17 @@ This project integrates multiple AI APIs: OpenAI (GPT), xAI (Grok), and Figma AP
 3. Click "Create new token"
 4. Name it and copy the token (starts with `figd_`)
 
+⚠️ **SECURITY WARNING**: Never expose your actual API tokens in code or documentation!
+
 ### 2. Configure Environment Variables
 
 Add to your `.env` file:
 
 ```env
-OPENAI_API_KEY=sk-proj-your-key-here
-XAI_API_KEY=xai-your-key-here
-FIGMA_ACCESS_TOKEN=figd_your-token-here
-FIGMA_FILE_KEY=your-figma-file-key
+OPENAI_API_KEY=sk-proj-your-openai-key-here
+XAI_API_KEY=xai-your-xai-key-here
+FIGMA_ACCESS_TOKEN=figd_your-figma-token-here
+FIGMA_FILE_KEY=your-figma-file-key-here
 ```
 
 ### 3. Extract Figma File Key
@@ -54,10 +56,10 @@ FIGMA_FILE_KEY=your-figma-file-key
 From your Figma URL:
 
 ```text
-https://www.figma.com/design/nuVKwuPuLS7VmLFvqzOX1G/Create-Dark-Editable-Slides
+https://www.figma.com/design/[FILE_KEY]/Your-Design-Name
 ```
 
-The file key is: `nuVKwuPuLS7VmLFvqzOX1G`
+The file key is the part between `/design/` and the next `/`.
 
 ## OpenAI API
 
@@ -162,13 +164,13 @@ https://api.x.ai/v1/chat/completions
 import { figma } from './api/figma';
 
 // Get entire file
-const file = await figma.getFile('nuVKwuPuLS7VmLFvqzOX1G');
+const file = await figma.getFile('YOUR_FILE_KEY');
 
 // Get specific frame
-const frame = await figma.getFrame('nuVKwuPuLS7VmLFvqzOX1G', 'Deck 2');
+const frame = await figma.getFrame('YOUR_FILE_KEY', 'Frame Name');
 
 // Extract all text
-const textNodes = await figma.extractText('nuVKwuPuLS7VmLFvqzOX1G');
+const textNodes = await figma.extractText('YOUR_FILE_KEY');
 
 // Export images
 const images = await figma.getImages('file-key', ['node-id-1', 'node-id-2'], {
@@ -198,7 +200,7 @@ import { figma } from './api/figma';
 import { openai } from './api/openai';
 
 async function analyzeDesign() {
-  const file = await figma.getFile('nuVKwuPuLS7VmLFvqzOX1G');
+  const file = await figma.getFile(process.env.FIGMA_FILE_KEY);
   const analysis = await openai.analyzeFigmaDesign(
     file.document,
     'Analyze the color scheme and suggest improvements'
