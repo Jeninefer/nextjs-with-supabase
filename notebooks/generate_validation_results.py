@@ -89,8 +89,19 @@ def perform_validation_checks(df):
     if df is not None:
         # Check if utilization ratio makes sense
         if 'monthly_spending' in df.columns and 'credit_limit' in df.columns:
-            utilization_ratio = df['monthly_spending'] / df['credit_limit']
-            invalid_ratios = int(((utilization_ratio < 0) | (utilization_ratio > 2)).sum())
+            import numpy as np
+            utilization_ratio = np.divide(
+                df['monthly_spending'],
+                df['credit_limit'],
+                out=np.full_like(df['monthly_spending'], np.nan, dtype=np.float64),
+                where=df['credit_limit'] != 0
+            )
+            invalid_ratios = int((
+                (utilization_ratio < 0) | 
+                (utilization_ratio > 2) | 
+                np.isnan(utilization_ratio) | 
+                np.isinf(utilization_ratio)
+            ).sum())
             checks['formulaConsistency'] = {
                 'passed': invalid_ratios < 10,
                 'message': 'Financial formulas are consistent across all records' if invalid_ratios == 0
