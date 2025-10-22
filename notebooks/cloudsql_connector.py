@@ -216,14 +216,20 @@ class CloudSQLConnector:
                 if not all(col in df.columns for col in required_cols):
                     raise ValueError(f"Missing required columns: {required_cols}")
 
+            # Helper to safely escape MySQL identifiers
+            def escape_identifier(identifier: str) -> str:
+                # Only allow identifiers that are in the whitelist (already checked above)
+                # Escape backticks by doubling them
+                return f"`{identifier.replace('`', '``')}`"
+
             # Prepare INSERT statement
-            columns = ", ".join([f"`{col}`" for col in df.columns])
+            columns = ", ".join([escape_identifier(col) for col in df.columns])
             placeholders = ", ".join(["%s"] * len(df.columns))
             insert_query = f"""
-                INSERT INTO `{table_name}` ({columns})
+                INSERT INTO {escape_identifier(table_name)} ({columns})
                 VALUES ({placeholders})
                 ON DUPLICATE KEY UPDATE
-                {', '.join([f'`{col}`=VALUES(`{col}`)' for col in df.columns if col != 'customer_id'])}
+                {', '.join([f'{escape_identifier(col)}=VALUES({escape_identifier(col)})' for col in df.columns if col != 'customer_id'])}
             """
 
             # Bulk insert
