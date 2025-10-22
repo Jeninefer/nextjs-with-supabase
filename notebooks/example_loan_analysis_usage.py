@@ -14,7 +14,7 @@ notebooks_dir = Path(__file__).parent
 if str(notebooks_dir) not in sys.path:
     sys.path.insert(0, str(notebooks_dir))
 
-import abaco_loan_analysis as ala
+import abaco_loan_analysis as ala  # noqa: E402
 
 
 def run_analysis_with_custom_path():
