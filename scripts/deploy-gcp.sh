@@ -118,7 +118,7 @@ check_permissions() {
         echo "     https://console.cloud.google.com/iam-admin/troubleshooter"
         echo ""
         echo "  3. Or create a new project where you have Owner permissions:"
-        echo "     gcloud projects create abaco-platform-\$(date +%s) --name='ABACO Platform'"
+        echo '     gcloud projects create abaco-platform-$(date +%s) --name="ABACO Platform"'
         exit 1
     fi
     
