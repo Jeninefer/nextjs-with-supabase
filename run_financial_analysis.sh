@@ -1,9 +1,12 @@
 #!/bin/bash
 
+# Get the directory where this script is located
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
 echo "🚀 ABACO Financial Intelligence Platform"
 echo "======================================="
 
-cd /Users/jenineferderas/Documents/GitHub/nextjs-with-supabase
+cd "$SCRIPT_DIR"
 
 # Check if virtual environment exists
 if [ ! -d "abaco_venv" ]; then
