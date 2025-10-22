@@ -148,6 +148,7 @@ gcloud run deploy abaco-platform --source .
 
 For detailed setup instructions, error resolution, and platform status, see:
 
+- **[Cloud API Troubleshooting Guide](./docs/CLOUD_API_TROUBLESHOOTING.md)** - ⭐ Start here for Cloud API errors
 - [Notebooks Setup & Troubleshooting](./notebooks/README.md)
 - [Google Cloud Setup Guide](./docs/GOOGLE_CLOUD_SETUP.md)
 - [Quick Start Guide](./QUICK_START.md)
