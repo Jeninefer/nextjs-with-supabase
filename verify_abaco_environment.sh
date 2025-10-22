@@ -25,7 +25,7 @@ if [ -d "abaco_venv" ]; then
     echo "   ✅ Virtual environment exists: abaco_venv/"
     
     # Check if activated
-    if [ ! -z "$VIRTUAL_ENV" ]; then
+    if [ -n "$VIRTUAL_ENV" ]; then
         echo "   ✅ Virtual environment is activated"
     else
         echo "   ℹ️  Virtual environment not activated"
