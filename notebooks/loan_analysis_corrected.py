@@ -2,8 +2,6 @@ import pandas as pd
 import numpy as np
 import re
 from pathlib import Path
-from caas_jupyter_tools import display_dataframe_to_user
-
 # ========================================
 # SCRIPT 1: Monthly Transfers & Operations (CORRECTED)
 # ========================================
