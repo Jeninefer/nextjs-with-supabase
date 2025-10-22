@@ -65,8 +65,3 @@ echo ""
 echo "🧪 To test installation:"
 echo "   python -c \"import plotly, matplotlib, pandas; print('✅ All packages working!')\""
 
-# MySQL Connection Test Output
-echo ""
-echo "🔌 MySQL Connection Test Output:"
-echo "INFO:__main__:✅ Connected to MySQL Server version X.X.X"
-echo "INFO:__main__:✅ Database: abaco_production"
