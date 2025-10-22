@@ -367,7 +367,7 @@ if __name__ == "__main__":
         print(f"\n📊 Portfolio Metrics:")
         print(f"Total Customers: {metrics.get('total_customers', 0):,}")
         print(f"Total Portfolio: ${metrics.get('total_portfolio', 0):,.2f}")
-        print(f"Avg Credit Score: {metrics.get('avg_credit_score', 0):.1f}")
+        # print(f"Avg Credit Score: {metrics.get('avg_credit_score', 0):.1f}")  # REMOVED: do not log sensitive credit score info
         print(f"Risk Distribution: {metrics.get('risk_distribution', {})}")
 
         # Disconnect
