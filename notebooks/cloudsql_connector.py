@@ -44,7 +44,8 @@ class CloudSQLConnector:
                 logger.info(f"✅ Connected to Cloud SQL: {self.database}")
                 return True
 
-        except Error:
+        except Error as e:
+            logger.warning(f"Cloud SQL connection attempt failed: {e}")
             # Fallback: localhost (for development)
             try:
                 self.connection = mysql.connector.connect(
