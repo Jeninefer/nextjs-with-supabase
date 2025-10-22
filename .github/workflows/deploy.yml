@@ -79,25 +79,3 @@ jobs:
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           GITHUB_STEP_SUMMARY: ${{ github.step_summary }}
-
-src/
-├── components/
-│   └── slides/           # Abaco presentation components
-│       ├── ObjectiveSlide.tsx
-│       ├── ChannelStrategySlide.tsx
-│       ├── KAMStrategySlide.tsx
-│       ├── MarketingFunnelSlide.tsx
-│       └── TacticsSlide.tsx
-├── api/                  # API integrations
-├── supabase/            # Supabase configuration
-└── styles/              # CSS and design system
-
-scripts/
-├── find-license-matches.js  # License detection
-├── cleanup-now.sh          # Automated cleanup
-└── pre-commit-check.sh     # Git hooks
-
-docs/
-├── AI_APIS.md              # API integration guide
-├── SUPABASE_GUIDE.md       # Supabase setup
-└── DESIGN_SYSTEM.md        # Design guidelines
