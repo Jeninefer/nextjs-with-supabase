@@ -1,15 +1,25 @@
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
+// Public route prefixes (routes that start with these are public)
+const PUBLIC_ROUTE_PREFIXES = [
+  '/sign-in',
+  '/sign-up',
+  '/auth',
+  '/dashboard/validation',
+  '/api/validation-results',
+];
+// Public routes that must match exactly
+const PUBLIC_ROUTE_EXACT = [
+  '/',
+];
+
 export async function middleware(request: NextRequest) {
   // Allow public access to validation routes and API
-  const isPublicRoute = 
-    request.nextUrl.pathname.startsWith('/sign-in') ||
-    request.nextUrl.pathname.startsWith('/sign-up') ||
-    request.nextUrl.pathname.startsWith('/auth') ||
-    request.nextUrl.pathname.startsWith('/dashboard/validation') ||
-    request.nextUrl.pathname.startsWith('/api/validation-results') ||
-    request.nextUrl.pathname === '/'
+  const { pathname } = request.nextUrl;
+  const isPublicRoute =
+    PUBLIC_ROUTE_PREFIXES.some(prefix => pathname.startsWith(prefix)) ||
+    PUBLIC_ROUTE_EXACT.includes(pathname);
 
   // Skip Supabase authentication for public routes
   if (isPublicRoute) {
