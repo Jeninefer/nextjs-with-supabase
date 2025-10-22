@@ -81,7 +81,7 @@ class CloudSQLConnector:
             self.cursor.execute(sql, params or ())
             return self.cursor.fetchall()
         except Error as e:
-            logger.error(f"❌ Query failed: {e}")
+            logger.error(f"❌ Query failed: {e} - SQL: {sql}")
             return []
 
     def upload_csv(self, csv_path: str, table_name: str) -> bool:
