@@ -78,3 +78,99 @@
 b {
     font-weight: bold;
 }
+
+/* Supabase Integration Styles */
+.ms-welcome__section {
+    width: 100%;
+    margin-bottom: 30px;
+    padding: 15px;
+    background-color: #f3f2f1;
+    border-radius: 4px;
+}
+
+.ms-welcome__section h3 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    color: #323130;
+}
+
+.ms-MessageBar {
+    padding: 12px;
+    margin-bottom: 15px;
+    border-left: 4px solid;
+    border-radius: 2px;
+}
+
+.ms-MessageBar-content {
+    display: flex;
+    align-items: center;
+}
+
+.ms-MessageBar-text {
+    font-size: 14px;
+    line-height: 20px;
+}
+
+.ms-MessageBar--success {
+    background-color: #dff6dd;
+    border-color: #107c10;
+    color: #107c10;
+}
+
+.ms-MessageBar--error {
+    background-color: #fde7e9;
+    border-color: #a80000;
+    color: #a80000;
+}
+
+.ms-MessageBar--warning {
+    background-color: #fff4ce;
+    border-color: #ffaa44;
+    color: #8a5600;
+}
+
+.ms-MessageBar--info {
+    background-color: #f3f2f1;
+    border-color: #0078d4;
+    color: #0078d4;
+}
+
+.ms-welcome__action-group {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 15px;
+}
+
+.ms-Button.ms-Button--primary {
+    background-color: #0078d4;
+    border: 1px solid #0078d4;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 2px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.ms-Button.ms-Button--primary:hover {
+    background-color: #005a9e;
+    border-color: #005a9e;
+}
+
+.ms-Button.ms-Button--primary .ms-Button-label {
+    color: white;
+}
+
+.ms-welcome__output {
+    margin-top: 15px;
+    padding: 12px;
+    background-color: white;
+    border-radius: 2px;
+    min-height: 40px;
+    border: 1px solid #d2d0ce;
+}
+
+.ms-welcome__output p {
+    margin: 0;
+    color: #323130;
+}

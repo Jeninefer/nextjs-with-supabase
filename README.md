@@ -2,17 +2,47 @@
 
 PowerPoint add-ins are integrations built by third parties into PowerPoint by using [PowerPoint JavaScript API](https://learn.microsoft.com/en-us/office/dev/add-ins/reference/overview/powerpoint-add-ins-reference-overview) and [Office Platform capabilities](https://learn.microsoft.com/en-us/office/dev/add-ins/overview/office-add-ins).
 
-## How to run this project
+## 🚀 Features
 
-### Prerequisites
+- ✅ Office Add-in for PowerPoint (also supports Excel, Word, Outlook)
+- ✅ **Supabase Integration** - Backend database, authentication, storage, and real-time features
+- ✅ Modern JavaScript with Webpack and Babel
+- ✅ Hot reload development server
+- ✅ Production-ready build system
+
+## 📋 Prerequisites
 
 - Node.js (the latest LTS version). Visit the [Node.js site](https://nodejs.org/) to download and install the right version for your operating system. To verify that you've already installed these tools, run the commands `node -v` and `npm -v` in your terminal.
-- Office connected to a Microsoft 365 subscription. You might qualify for a Microsoft 365 E5 developer subscription through the [Microsoft 365 Developer Program](https://developer.microsoft.com/microsoft-365/dev-program), see [FAQ](https://learn.microsoft.com/office/developer-program/microsoft-365-developer-program-faq#who-qualifies-for-a-microsoft-365-e5-developer-subscription-) for details. Alternatively, you can [sign up for a 1-month free trial](https://www.microsoft.com/microsoft-365/try?rtc=1) or [purchase a Microsoft 365 plan](https://www.microsoft.com/microsoft-365/buy/compare-all-microsoft-365-products).
+- Office connected to a Microsoft 365 subscription. You might qualify for a Microsoft 365 E5 developer subscription through the [Microsoft 365 Developer Program](https://developer.microsoft.com/microsoft-365/dev-program), see [FAQ](https://learn.microsoft.com/office/developer-program/microsoft-365-developer-program-faq#who-qualifies-for-a-microsoft-365-e5-developer-subscription-) for details. Alternatively, you can [sign up for a 1-month free trial](https://www.microsoft.com/microsoft-365/try?rtc=1) or [purchase a Microsoft 365 plan](https://www.microsoft.com/buy/compare-all-microsoft-365-products).
+- **(Optional)** A [Supabase](https://supabase.com) account and project for backend functionality
+
+## 🔧 Setup
+
+### 1. Install Dependencies
+
+```bash
+npm install
+```
+
+### 2. Configure Supabase (Optional)
+
+If you want to use Supabase backend features:
+
+1. Create a project at [Supabase](https://supabase.com)
+2. Copy `.env.example` to `.env`
+3. Add your Supabase credentials to `.env`:
+
+   ```env
+   SUPABASE_URL=https://your-project-id.supabase.co
+   SUPABASE_ANON_KEY=your-anon-key-here
+   ```
+
+4. See [SUPABASE_GUIDE.md](./SUPABASE_GUIDE.md) for detailed setup instructions
 
 ### Run the add-in using Office Add-ins Development Kit extension
 
 1. **Open the Office Add-ins Development Kit**
-    
+
     In the **Activity Bar**, select the **Office Add-ins Development Kit** icon to open the extension.
 
 1. **Preview Your Office Add-in (F5)**
@@ -33,7 +63,7 @@ The add-in project that you've created contains code for a basic task pane add-i
 
 To explore an Office add-in project, you can start with the key files listed below.
 
-- The `./manifest.xml` file in the root directory of the project defines the settings and capabilities of the add-in.  <br>You can check whether your manifest file is valid by selecting **Validate Manifest File** option from the Office Add-ins Development Kit.
+- The `./manifest.xml` file in the root directory of the project defines the settings and capabilities of the add-in. You can check whether your manifest file is valid by selecting **Validate Manifest File** option from the Office Add-ins Development Kit.
 - The `./src/taskpane/taskpane.html` file contains the HTML markup for the task pane.
 - The `./src/taskpane/taskpane.css` file contains the CSS that's applied to content in the task pane.
 - The `./src/taskpane/taskpane.js` file contains the Office JavaScript API code that facilitates interaction between the task pane and the PowerPoint application.

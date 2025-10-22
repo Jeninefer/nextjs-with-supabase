@@ -1,0 +1,51 @@
+{
+  "version": 2,
+  "name": "office-addin-figma",
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "dist"
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/$1"
+    }
+  ],
+  "env": {
+    "SUPABASE_URL": "@supabase-url",
+    "SUPABASE_ANON_KEY": "@supabase-anon-key",
+    "FIGMA_ACCESS_TOKEN": "@figma-access-token",
+    "OPENAI_API_KEY": "@openai-api-key",
+    "XAI_API_KEY": "@xai-api-key"
+  },
+  "build": {
+    "env": {
+      "SUPABASE_URL": "@supabase-url",
+      "SUPABASE_ANON_KEY": "@supabase-anon-key"
+    }
+  },
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
+        },
+        {
+          "key": "Access-Control-Allow-Methods",
+          "value": "GET, POST, PUT, DELETE, OPTIONS"
+        },
+        {
+          "key": "Access-Control-Allow-Headers",
+          "value": "X-Requested-With, Content-Type, Authorization"
+        }
+      ]
+    }
+  ]
+}

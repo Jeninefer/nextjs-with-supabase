@@ -29,26 +29,56 @@
         <h2 class="ms-font-xl">Please <a target="_blank" href="https://learn.microsoft.com/office/dev/add-ins/testing/test-debug-office-add-ins#sideload-an-office-add-in-for-testing">sideload</a> your add-in to see app body.</h2>
     </section>
     <main id="app-body" class="ms-welcome__main" style="display: none;">
-        <h2 class="ms-font-xl"> Discover what Office Add-ins can do for you today! </h2>
-        <ul class="ms-List ms-welcome__features">
-            <li class="ms-ListItem">
-                <i class="ms-Icon ms-Icon--Ribbon ms-font-xl"></i>
-                <span class="ms-font-m">Achieve more with Office integration</span>
-            </li>
-            <li class="ms-ListItem">
-                <i class="ms-Icon ms-Icon--Unlock ms-font-xl"></i>
-                <span class="ms-font-m">Unlock features and functionality</span>
-            </li>
-            <li class="ms-ListItem">
-                <i class="ms-Icon ms-Icon--Design ms-font-xl"></i>
-                <span class="ms-font-m">Create and visualize like a pro</span>
-            </li>
-        </ul>
-        <p class="ms-font-l">Modify the source files, then click <b>Run</b>.</p>
-        <div role="button" id="run" class="ms-welcome__action ms-Button ms-Button--hero ms-font-xl">
-            <span class="ms-Button-label">Run</span>
+        <h2 class="ms-font-xl">Office Add-in with Supabase Integration</h2>
+        
+        <!-- Supabase Status Section -->
+        <div class="ms-welcome__section">
+            <h3 class="ms-font-l">Supabase Connection</h3>
+            <div id="supabase-status" class="ms-MessageBar ms-MessageBar--info">
+                <div class="ms-MessageBar-content">
+                    <div class="ms-MessageBar-text">
+                        Checking Supabase connection...
+                    </div>
+                </div>
+            </div>
         </div>
-        <p><label id="item-subject"></label></p>
+
+        <!-- Office Integration Section -->
+        <div class="ms-welcome__section">
+            <h3 class="ms-font-l">Office Integration</h3>
+            <ul class="ms-List ms-welcome__features">
+                <li class="ms-ListItem">
+                    <i class="ms-Icon ms-Icon--Ribbon ms-font-xl"></i>
+                    <span class="ms-font-m">Insert text into document</span>
+                </li>
+                <li class="ms-ListItem">
+                    <i class="ms-Icon ms-Icon--CloudUpload ms-font-xl"></i>
+                    <span class="ms-font-m">Sync with Supabase database</span>
+                </li>
+            </ul>
+            <div role="button" id="run" class="ms-welcome__action ms-Button ms-Button--hero ms-font-xl">
+                <span class="ms-Button-label">Insert Text</span>
+            </div>
+        </div>
+
+        <!-- Supabase Demo Section -->
+        <div class="ms-welcome__section">
+            <h3 class="ms-font-l">Supabase Demo</h3>
+            <div class="ms-welcome__action-group">
+                <div role="button" id="test-connection" class="ms-Button ms-Button--primary">
+                    <span class="ms-Button-label">Test Connection</span>
+                </div>
+                <div role="button" id="save-data" class="ms-Button ms-Button--primary">
+                    <span class="ms-Button-label">Save to DB</span>
+                </div>
+                <div role="button" id="load-data" class="ms-Button ms-Button--primary">
+                    <span class="ms-Button-label">Load from DB</span>
+                </div>
+            </div>
+            <div id="demo-output" class="ms-welcome__output">
+                <p class="ms-font-m">Click a button to test Supabase functionality</p>
+            </div>
+        </div>
     </main>
 </body>
 

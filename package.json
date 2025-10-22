@@ -15,6 +15,9 @@
     "build": "webpack --mode production",
     "build:dev": "webpack --mode development",
     "dev-server": "webpack serve --mode development",
+    "vercel-build": "npm run build",
+    "deploy": "vercel --prod",
+    "deploy:preview": "vercel",
     "lint": "office-addin-lint check",
     "lint:fix": "office-addin-lint fix",
     "prettier": "office-addin-lint prettier",
@@ -26,7 +29,11 @@
     "watch": "webpack --mode development --watch"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.76.1",
+    "axios": "^1.12.2",
     "core-js": "^3.36.0",
+    "dotenv-webpack": "^8.1.1",
+    "openai": "^6.6.0",
     "regenerator-runtime": "^0.14.1"
   },
   "devDependencies": {
