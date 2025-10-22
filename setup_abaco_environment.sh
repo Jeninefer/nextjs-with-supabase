@@ -29,7 +29,7 @@ if ! python3 -m venv --help &> /dev/null; then
 fi
 
 # Check for and clear any Google Cloud environment variables
-if [ ! -z "$GOOGLE_APPLICATION_CREDENTIALS" ] || [ ! -z "$GOOGLE_CLOUD_PROJECT" ]; then
+if [ -n "$GOOGLE_APPLICATION_CREDENTIALS" ] || [ -n "$GOOGLE_CLOUD_PROJECT" ]; then
     echo "⚠️  Warning: Google Cloud environment variables detected"
     echo "   GOOGLE_APPLICATION_CREDENTIALS: $GOOGLE_APPLICATION_CREDENTIALS"
     echo "   GOOGLE_CLOUD_PROJECT: $GOOGLE_CLOUD_PROJECT"
