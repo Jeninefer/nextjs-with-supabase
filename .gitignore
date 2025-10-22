@@ -52,6 +52,12 @@ __pycache__/
 # Jupyter Notebook checkpoints
 .ipynb_checkpoints/
 
+# Loan analysis output files (keep directory structure, ignore generated files)
+notebooks/loan_analysis/*.csv
+notebooks/loan_analysis/charts/*.html
+notebooks/loan_analysis/charts/*.png
+notebooks/loan_analysis/charts/*.jpg
+
 # Temporary files
 *.tmp
 *.bak
