@@ -53,7 +53,7 @@ else
 fi
 
 # Check 4: Python packages (if environment is activated)
-if [ ! -z "$VIRTUAL_ENV" ]; then
+if [ -n "$VIRTUAL_ENV" ]; then
     echo ""
     echo "4️⃣ Checking Python packages..."
     
