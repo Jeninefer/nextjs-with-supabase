@@ -9,16 +9,31 @@ import numpy as np
 import json
 from datetime import datetime
 from pathlib import Path
+from dateutil.relativedelta import relativedelta
 
-def generate_sample_validation_results():
+def generate_sample_validation_results(start_date=None, end_date=None):
     """
     Generate sample validation results for loan data analysis
     Since we don't have the actual loan data files, we'll create sample results
     that demonstrate the validation structure
+
+    Args:
+        start_date (str or datetime, optional): Start date in 'YYYY-MM' or datetime format. Defaults to 24 months ago.
+        end_date (str or datetime, optional): End date in 'YYYY-MM' or datetime format. Defaults to current month.
     """
     
+    # Determine date range
+    if end_date is None:
+        end_date_dt = datetime.today().replace(day=1)
+    else:
+        end_date_dt = datetime.strptime(end_date, "%Y-%m") if isinstance(end_date, str) else end_date
+    if start_date is None:
+        start_date_dt = end_date_dt - relativedelta(months=23)
+    else:
+        start_date_dt = datetime.strptime(start_date, "%Y-%m") if isinstance(start_date, str) else start_date
+
     # Sample monthly transfers and operations data
-    months = pd.date_range('2023-01', '2024-12', freq='MS').strftime('%Y-%m').tolist()
+    months = pd.date_range(start_date_dt, end_date_dt, freq='MS').strftime('%Y-%m').tolist()
     
     monthly_transfers_operations = []
     for i, month in enumerate(months):
