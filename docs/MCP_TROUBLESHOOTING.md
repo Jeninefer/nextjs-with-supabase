@@ -10,8 +10,8 @@ The ABACO platform uses MCP servers to integrate with various AI and data servic
 
 **Error Message:**
 ```
-Error listing clusters: Error: Cloud Dataproc API has not been used in project gen-lang-client-0516194156 
-before or it is disabled. Enable it by visiting https://console.developers.google.com/apis/api/dataproc.googleapis.com/overview?project=gen-lang-client-0516194156 
+Error listing clusters: Error: Cloud Dataproc API has not been used in project your-project-id 
+before or it is disabled. Enable it by visiting https://console.developers.google.com/apis/api/dataproc.googleapis.com/overview?project=your-project-id 
 then retry. If you enabled this API recently, wait a few minutes for the action to propagate to our systems and retry.
 ```
 
