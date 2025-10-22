@@ -134,8 +134,10 @@ netstat -ano | findstr :3000   # Windows
 # Kill process by PID
 kill -9 <PID>
 
-# Kill process by name
+# Kill process by name (Unix/macOS)
 pkill -f node
+# Kill process by name (Windows)
+taskkill /F /IM node.exe
 ```
 
 ## Project-Specific Tasks
