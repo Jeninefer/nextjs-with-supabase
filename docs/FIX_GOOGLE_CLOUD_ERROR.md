@@ -186,15 +186,10 @@ jupyter notebook
 
 To apply all fixes permanently:
 
-```bash
-cd /path/to/nextjs-with-supabase && ./scripts/setup_clean_environment.sh && echo -e '\n# ABACO: Prevent Google Cloud auto-configuration\nexport CLOUDSDK_CORE_DISABLE_PROMPTS=1\nexport CLOUDSDK_CORE_DISABLE_USAGE_REPORTING=1' >> ~/.bashrc
-```
-
-For zsh users:
-
-```bash
-cd /path/to/nextjs-with-supabase && ./scripts/setup_clean_environment.sh && echo -e '\n# ABACO: Prevent Google Cloud auto-configuration\nexport CLOUDSDK_CORE_DISABLE_PROMPTS=1\nexport CLOUDSDK_CORE_DISABLE_USAGE_REPORTING=1' >> ~/.zshrc
-```
+### For bash users:
+1. Change to your project directory:
+   ```bash
+   cd /path/to/nextjs-with-supabase
 
 ## 🛟 Support
 
