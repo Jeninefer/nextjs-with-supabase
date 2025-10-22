@@ -30,7 +30,7 @@ cd "$SCRIPT_DIR/.."
 ```
 
 ## Scripts Fixed
-### Root directory (15 scripts):
+### Root directory (12 scripts):
 - `setup_abaco_environment.sh`
 - `git-cleanup.sh`
 - `emergency-fix.sh`
