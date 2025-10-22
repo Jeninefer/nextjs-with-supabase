@@ -37,7 +37,7 @@ export async function POST(request: Request) {
 
     // Execute query (in production, add proper validation and security)
     const { stdout } = await execAsync(
-      `python3 -c "from notebooks.cloudsql_connector import CloudSQLConnector; import os; c = CloudSQLConnector(os.getenv('CLOUD_SQL_CONNECTION_NAME'), os.getenv('CLOUD_SQL_DATABASE'), os.getenv('CLOUD_SQL_USERNAME'), os.getenv('CLOUD_SQL_PASSWORD')); c.connect(); print(c.execute_query('${query}').to_json() if c.execute_query('${query}') is not None else 'null'); c.disconnect()"`
+      `python3 -c "from notebooks.cloudsql_connector import CloudSQLConnector; import os; c = CloudSQLConnector(os.getenv('CLOUD_SQL_CONNECTION_NAME'), os.getenv('CLOUD_SQL_DATABASE'), os.getenv('CLOUD_SQL_USERNAME'), os.getenv('CLOUD_SQL_PASSWORD')); c.connect(); result = c.execute_query('${query}'); print(result.to_json() if result is not None else 'null'); c.disconnect()"`
     );
 
     // Handle the case where the Python result is None or empty
