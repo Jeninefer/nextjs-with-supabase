@@ -108,7 +108,7 @@ export async function exportToZip(
   try {
     // Dynamic import to avoid build errors if jszip is not installed
     const JSZip = (await import("jszip").catch(() => {
-      throw new Error("jszip package is not installed. Please run: npm install jszip");
+      throw new Error("jszip package not found. Please run: npm install to ensure all dependencies are installed.");
     })).default;
     const zip = new JSZip();
 
