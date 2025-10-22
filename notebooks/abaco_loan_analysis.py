@@ -99,7 +99,7 @@ def to_numeric(series: pd.Series) -> pd.Series:
     """Convert series to numeric, handling currency symbols"""
     s = series.astype(str)
     s = s.str.replace(r"[%$,₡€£¥\s]", "", regex=True)
-    return pd.to_numeric(s, errors="coerce")
+    return pd.to_numeric(s, errors="coerce").fillna(0.0)
 
 
 def to_datetime(series: pd.Series) -> pd.Series:
