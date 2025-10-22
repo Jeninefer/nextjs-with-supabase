@@ -115,14 +115,14 @@ bash ../fix_abaco_environment.sh
 ## Requirements
 
 The following Python packages are required:
-- pandas >= 2.1.0
-- numpy >= 1.24.0
-- plotly >= 5.17.0
-- matplotlib >= 3.8.0
-- seaborn >= 0.12.0
-- jinja2 >= 3.1.0
-- scipy >= 1.11.0
-- scikit-learn >= 1.3.0
+- pandas == 2.0.3
+- numpy == 1.23.5
+- plotly == 5.15.0
+- matplotlib == 3.7.2
+- seaborn == 0.12.2
+- jinja2 == 3.1.2
+- scipy == 1.10.1
+- scikit-learn == 1.2.2
 
 Install using:
 ```bash
