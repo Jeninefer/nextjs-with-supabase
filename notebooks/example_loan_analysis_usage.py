@@ -24,7 +24,8 @@ def run_analysis_with_custom_path():
     # os.environ['SHARED_FOLDER_PATH'] = '/custom/data/path'
     
     # Option 2: Modify the module's SHARED_FOLDER after import
-    custom_data_path = Path('/path/to/your/data')
+    # Example: Use a cross-platform data folder in your home directory
+    custom_data_path = Path.home() / 'data'
     ala.SHARED_FOLDER = custom_data_path
     
     print(f"Using data from: {ala.SHARED_FOLDER}")
