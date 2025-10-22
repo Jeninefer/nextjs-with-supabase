@@ -26,7 +26,7 @@
     "tailwindCSS.experimental.classRegex": [
         "cn\\(([^)]*)\\)"
     ],
-    "python.defaultInterpreterPath": "/usr/local/bin/python3",
+    "python.defaultInterpreterPath": "${workspaceFolder}/abaco_venv/bin/python",
     "python.terminal.activateEnvironment": false,
     "files.exclude": {
         "**/.git": true,
@@ -52,40 +52,14 @@
     "cs-script.execMode": "Standard",
     "cs-script.syntaxCheckOnSave": true,
     "spellright.language": [
-        "en",
-        "cs",
-        "da",
-        "de",
-        "fr",
-        "id",
-        "it",
-        "is",
-        "lt",
-        "hu",
-        "nl",
-        "pl",
-        "pt",
-        "ro",
-        "sl",
-        "fi",
-        "sv",
-        "vi",
-        "tr",
-        "el",
-        "bg",
-        "ru",
-        "uk",
-        "he",
-        "ar",
-        "hi",
-        "pa",
-        "te",
-        "ko"
+        "en"
     ],
     "spellright.documentTypes": [
         "markdown",
         "latex",
         "plaintext",
-        "shellscript"
-    ]
+        "shellscript",
+        "python"
+    ],
+    "jupyter.notebookFileRoot": "${workspaceFolder}"
 }
