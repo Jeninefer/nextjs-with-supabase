@@ -148,7 +148,7 @@ unset GOOGLE_CLOUD_PROJECT
 ```
 
 **If you DO need GCP:**
-- See [docs/GOOGLE_CLOUD_SETUP.md](docs/GOOGLE_CLOUD_SETUP.md)
+- See [GOOGLE_CLOUD_SETUP.md](GOOGLE_CLOUD_SETUP.md)
 - Enable the specific API mentioned in the error
 - Verify service account has proper permissions
 
