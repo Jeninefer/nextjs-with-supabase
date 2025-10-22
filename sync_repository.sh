@@ -3,8 +3,9 @@
 echo "🔄 ABACO Repository Synchronization Script"
 echo "=========================================="
 
-# Navigate to project directory
-cd /Users/jenineferderas/Documents/GitHub/nextjs-with-supabase
+# Get the directory where this script is located and navigate to repository root
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+cd "$SCRIPT_DIR"
 
 # Check if we're in a git repository
 if [ ! -d ".git" ]; then
