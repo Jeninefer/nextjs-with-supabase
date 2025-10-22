@@ -23,6 +23,7 @@ next-env.d.ts
 # Environment variables
 .env*.local
 .env
+.env.production
 
 # IDE
 .vscode/settings.json
@@ -57,3 +58,7 @@ __pycache__/
 *.bak
 *.swp
 *~
+
+# Google Cloud
+.gcloud/
+.config/gcloud/

@@ -113,8 +113,48 @@ vercel deploy
 
 ### Google Cloud Run
 
+#### Quick Deploy
+
 ```bash
-gcloud run deploy abaco-platform --source .
+# Using automated deployment script (recommended)
+./scripts/deploy-gcp.sh
+
+# Or manual deployment
+gcloud run deploy abaco-platform --source . --region us-central1
+```
+
+#### Setup Requirements
+
+Before deploying to Google Cloud, ensure you have:
+
+1. **Google Cloud Project** with billing enabled
+2. **Required IAM Permissions:**
+   - `roles/editor` (recommended) or
+   - `roles/run.developer` + `roles/iam.serviceAccountUser` + `roles/storage.admin`
+3. **Required APIs enabled:**
+   - Cloud Run API
+   - Cloud Build API
+   - Container Registry API
+
+#### Troubleshooting
+
+If you encounter permission errors like:
+```
+Missing or blocked permissions: resourcemanager.projects.get
+```
+
+**Quick Solutions:**
+- See: [Google Cloud Quick Start Guide](./GOOGLE_CLOUD_QUICK_START.md)
+- Full documentation: [docs/GOOGLE_CLOUD_SETUP.md](./docs/GOOGLE_CLOUD_SETUP.md)
+- Or contact your Google Cloud administrator to request access
+
+**Common fixes:**
+```bash
+# Enable required APIs
+gcloud services enable cloudbuild.googleapis.com run.googleapis.com
+
+# Or create a new project where you have Owner permissions
+gcloud projects create abaco-platform-$(date +%s) --name="ABACO Platform"
 ```
 
 ## 🔒 Security & Compliance
