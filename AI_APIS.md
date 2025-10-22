@@ -70,7 +70,7 @@ The file key is: `nuVKwuPuLS7VmLFvqzOX1G`
 - Vision (image analysis)
 - Streaming responses
 
-### Usage
+### OpenAI Usage
 
 ```javascript
 import { openai } from './api/openai';
@@ -92,7 +92,7 @@ const analysis = await openai.analyzeFigmaDesign(designData, 'What can be improv
 const slideContent = await openai.generateSlideContent('AI in Healthcare', 1, 10);
 ```
 
-### Models Available
+### Available Models
 
 - `gpt-4-turbo` - Latest GPT-4 Turbo with 128K context
 - `gpt-4` - GPT-4 with 8K context
@@ -116,7 +116,7 @@ const slideContent = await openai.generateSlideContent('AI in Healthcare', 1, 10
 - Code generation
 - OpenAI-compatible API
 
-### Usage
+### xAI Usage
 
 ```javascript
 import { xai } from './api/xai';
@@ -134,13 +134,13 @@ const test = await xai.test();
 console.log(test.response);
 ```
 
-### Models Available
+### Grok Models
 
 - `grok-2-1212` - Latest Grok-2 model (recommended)
 - `grok-2-vision-1212` - Grok-2 with vision capabilities
 - `grok-beta` - Beta version
 
-### API Endpoint
+### xAI API Endpoint
 
 ```
 https://api.x.ai/v1/chat/completions
@@ -156,7 +156,7 @@ https://api.x.ai/v1/chat/completions
 - Comments management
 - Version history
 
-### Usage
+### Figma Usage
 
 ```javascript
 import { figma } from './api/figma';
@@ -183,7 +183,7 @@ const comments = await figma.getComments('file-key');
 await figma.postComment('file-key', 'Great design!', { x: 100, y: 200 });
 ```
 
-### API Endpoint
+### Figma API Endpoint
 
 ```
 https://api.figma.com/v1/
@@ -304,20 +304,20 @@ async function getFigmaFile(fileKey, cacheDuration = 300000) {
 
 ## API Reference
 
-### OpenAI
+### OpenAI Methods
 
 - `chatCompletion(messages, options)` - Chat completion
 - `complete(prompt, systemPrompt, options)` - Simple completion
 - `analyzeFigmaDesign(designData, question)` - AI design analysis
 - `generateSlideContent(topic, slideNumber, totalSlides)` - Generate slides
 
-### xAI (Grok)
+### xAI Methods
 
 - `chatCompletion(messages, options)` - Chat with Grok
 - `complete(prompt, systemPrompt, options)` - Simple completion
 - `test()` - Test connection
 
-### Figma
+### Figma Methods
 
 - `getFile(fileKey)` - Get entire file
 - `getFileNodes(fileKey, nodeIds)` - Get specific nodes
@@ -329,7 +329,7 @@ async function getFigmaFile(fileKey, cacheDuration = 300000) {
 
 ## Troubleshooting
 
-### Common Issues
+### Common API Issues
 
 | Error | Cause | Solution |
 |-------|-------|----------|
