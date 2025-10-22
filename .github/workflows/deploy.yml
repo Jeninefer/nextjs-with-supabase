@@ -35,26 +35,16 @@ jobs:
       - name: Build project
         run: npm run build
         env:
-          # Only include environment variables that are actually defined in repository secrets
           NODE_ENV: production
 
-      - name: Install Vercel CLI
-        run: npm install --global vercel@latest
-        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/office-addin-figma'
-
-      - name: Deploy to Vercel (Preview)
-        if: github.event_name == 'pull_request'
-        run: vercel --token=${{ secrets.VERCEL_TOKEN }} --confirm
-        env:
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-
-      - name: Deploy to Vercel (Production)
-        if: github.ref == 'refs/heads/main'
-        run: vercel --prod --token=${{ secrets.VERCEL_TOKEN }} --confirm
-        env:
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+      - name: Deploy to Vercel
+        uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          vercel-args: ${{ github.ref == 'refs/heads/main' && '--prod' || '' }}
+        if: github.event_name == 'push' || github.event_name == 'pull_request'
 
       - name: Add deployment summary
         run: |
@@ -70,34 +60,24 @@ jobs:
           else
             echo "🔍 **Preview deployment created**" >> $GITHUB_STEP_SUMMARY
           fi
-      - name: Notify Vercel deployment
-        run: |
-          if [ "${{ github.event_name }}" == "pull_request" ]; then
-            DEPLOYMENT_URL=$(echo ${{ steps.vercel.outputs.details }} | jq -r '.url')
-            echo "🔗 View Preview Deployment: $DEPLOYMENT_URL" >> $GITHUB_STEP_SUMMARY
-          fi
-        env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-          GITHUB_STEP_SUMMARY: ${{ github.step_summary }}
 
-src/
-├── components/
-│   └── slides/           # Abaco presentation components
-│       ├── ObjectiveSlide.tsx
-│       ├── ChannelStrategySlide.tsx
-│       ├── KAMStrategySlide.tsx
-│       ├── MarketingFunnelSlide.tsx
-│       └── TacticsSlide.tsx
-├── api/                  # API integrations
-├── supabase/            # Supabase configuration
-└── styles/              # CSS and design system
-
-scripts/
-├── find-license-matches.js  # License detection
-├── cleanup-now.sh          # Automated cleanup
-└── pre-commit-check.sh     # Git hooks
-
-docs/
-├── AI_APIS.md              # API integration guide
-├── SUPABASE_GUIDE.md       # Supabase setup
-└── DESIGN_SYSTEM.md        # Design guidelines
+{
+  "root": true,
+  "env": { "browser": true, "es2020": true },
+  "extends": [
+    "eslint:recommended",
+    "@typescript-eslint/recommended",
+    "plugin:react-hooks/recommended"
+  ],
+  "ignorePatterns": ["dist", ".eslintrc.cjs"],
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["react-refresh"],
+  "rules": {
+    "react-refresh/only-export-components": [
+      "warn",
+      { "allowConstantExport": true }
+    ],
+    "@typescript-eslint/no-unused-vars": ["warn"],
+    "no-console": "warn"
+  }
+}
