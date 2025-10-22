@@ -89,10 +89,9 @@ export function getMCPConfig(): MCPConfiguration {
           );
           if (hasAllEnvVars) {
             if (!serverConfig.enabled) {
-              console.log(`Auto-enabling ${name} - credentials detected`);
               autoEnabled = true;
             } else {
-              console.log(`Credentials detected for ${name} (already enabled)`);
+              // Credentials detected for this server (already enabled)
             }
           }
         }
