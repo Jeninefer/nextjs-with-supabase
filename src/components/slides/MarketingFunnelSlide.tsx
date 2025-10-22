@@ -1,28 +1,79 @@
-<div className="grid grid-cols-3 gap-3 mb-6">
-        <div className="bg-white/5 backdrop-blur-sm rounded-lg p-3 border border-blue-500/20">
-          <p className="text-[10px] text-gray-400 mb-1">Oct 2025</p>
-          <p className="text-xs text-white">20–30k views</p>
-          <p className="text-xs text-blue-400">35–45 leads</p>
-          <p className="text-xs text-green-400">5–8 meetings</p>
-          <p className="text-xs text-purple-400 font-semibold">2–3 clients</p>
-          <p className="text-[9px] text-gray-500 mt-1">Transport pilot</p>
+export default function MarketingFunnelSlide() {
+  return (
+    <div className="space-y-6">
+      <h3 className="text-2xl font-bold text-white mb-4">Marketing Funnel - Abaco Technologies</h3>
+      
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        {/* Awareness */}
+        <div className="bg-purple-500/20 rounded-lg p-4 text-center">
+          <div className="text-3xl mb-2">👁️</div>
+          <h4 className="font-semibold text-purple-200 mb-2">Awareness</h4>
+          <div className="text-sm text-gray-300 space-y-1">
+            <p>• SEO/SEM</p>
+            <p>• Content Marketing</p>
+            <p>• Social Media</p>
+            <p>• PR & Events</p>
+          </div>
         </div>
 
-        <div className="bg-white/5 backdrop-blur-sm rounded-lg p-3 border border-green-500/20">
-          <p className="text-[10px] text-gray-400 mb-1">Nov 2025</p>
-          <p className="text-xs text-white">50–80k views</p>
-          <p className="text-xs text-blue-400">120–160 leads</p>
-          <p className="text-xs text-green-400">17–27 meetings</p>
-          <p className="text-xs text-purple-400 font-semibold">5–8 clients</p>
-          <p className="text-[9px] text-gray-500 mt-1">Construction/Services</p>
+        {/* Interest */}
+        <div className="bg-blue-500/20 rounded-lg p-4 text-center">
+          <div className="text-3xl mb-2">🎯</div>
+          <h4 className="font-semibold text-blue-200 mb-2">Interest</h4>
+          <div className="text-sm text-gray-300 space-y-1">
+            <p>• Lead Magnets</p>
+            <p>• Webinars</p>
+            <p>• Case Studies</p>
+            <p>• Product Demos</p>
+          </div>
         </div>
 
-        <div className="bg-white/5 backdrop-blur-sm rounded-lg p-3 border border-purple-500/20">
-          <p className="text-[10px] text-gray-400 mb-1">Dec 1–15, 2025</p>
-          <p className="text-xs text-white">30–50k views</p>
-          <p className="text-xs text-blue-400">70–100 leads</p>
-          <p className="text-xs text-green-400">10–17 meetings</p>
-          <p className="text-xs text-purple-400 font-semibold">3–5 clients</p>
-          <p className="text-[9px] text-gray-500 mt-1">Retargeting/cases</p>
+        {/* Consideration */}
+        <div className="bg-green-500/20 rounded-lg p-4 text-center">
+          <div className="text-3xl mb-2">🤔</div>
+          <h4 className="font-semibold text-green-200 mb-2">Consideration</h4>
+          <div className="text-sm text-gray-300 space-y-1">
+            <p>• Free Trials</p>
+            <p>• Consultations</p>
+            <p>• ROI Calculators</p>
+            <p>• Comparisons</p>
+          </div>
+        </div>
+
+        {/* Action */}
+        <div className="bg-red-500/20 rounded-lg p-4 text-center">
+          <div className="text-3xl mb-2">⚡</div>
+          <h4 className="font-semibold text-red-200 mb-2">Action</h4>
+          <div className="text-sm text-gray-300 space-y-1">
+            <p>• Purchase</p>
+            <p>• Contract Signing</p>
+            <p>• Implementation</p>
+            <p>• Onboarding</p>
+          </div>
         </div>
       </div>
+
+      <div className="mt-6 p-4 bg-white/10 rounded-lg">
+        <h4 className="font-semibold text-white mb-2">Métricas Clave</h4>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+          <div>
+            <p className="text-purple-200">Awareness</p>
+            <p className="text-white font-bold">100K impressions</p>
+          </div>
+          <div>
+            <p className="text-blue-200">Interest</p>
+            <p className="text-white font-bold">5K leads</p>
+          </div>
+          <div>
+            <p className="text-green-200">Consideration</p>
+            <p className="text-white font-bold">500 trials</p>
+          </div>
+          <div>
+            <p className="text-red-200">Action</p>
+            <p className="text-white font-bold">50 customers</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}

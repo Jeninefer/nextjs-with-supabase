@@ -1,28 +1,112 @@
-<div className="grid grid-cols-3 gap-3 mb-4">
-        <div className="bg-white/5 backdrop-blur-sm rounded-lg p-3 border border-blue-500/20">
-          <h4 className="text-[10px] font-semibold text-blue-300 mb-2">Sem 1–2 (Oct)</h4>
-          <ul className="text-[9px] text-gray-300 space-y-1">
-            <li>• Piloto Transport & Logistics</li>
-            <li>• 6–8 creatividades</li>
-            <li>• 3–4 posts/sem</li>
-            <li>• 2 Reels/sem</li>
-          </ul>
-        </div>
+export default function TacticsSlide() {
+  const tactics = [
+    {
+      phase: "Q1 2025",
+      title: "Foundation & Launch",
+      items: [
+        "Setup CRM y marketing automation",
+        "Content strategy & SEO optimization", 
+        "Social media presence establishment",
+        "Lead magnets creation"
+      ],
+      color: "purple"
+    },
+    {
+      phase: "Q2 2025",
+      title: "Scale & Optimize", 
+      items: [
+        "Paid advertising campaigns",
+        "Webinar series launch",
+        "Partner channel development",
+        "Customer success program"
+      ],
+      color: "blue"
+    },
+    {
+      phase: "Q3 2025",
+      title: "Expansion",
+      items: [
+        "Account-based marketing",
+        "Industry events & conferences", 
+        "Referral program launch",
+        "Product integration demos"
+      ],
+      color: "green"
+    },
+    {
+      phase: "Q4 2025",
+      title: "Optimization",
+      items: [
+        "Data analysis & optimization",
+        "Customer retention focus",
+        "Upselling strategies", 
+        "Year-end campaigns"
+      ],
+      color: "red"
+    }
+  ]
 
-        <div className="bg-white/5 backdrop-blur-sm rounded-lg p-3 border border-green-500/20">
-          <h4 className="text-[10px] font-semibold text-green-300 mb-2">Sem 3–6 (Nov)</h4>
-          <ul className="text-[9px] text-gray-300 space-y-1">
-            <li>• Escalar Construcción/Servicios</li>
-            <li>• Duplicar pauta</li>
-            <li>• 2 casos de éxito</li>
-          </ul>
-        </div>
+  const getColorClasses = (color: string) => {
+    const colors = {
+      purple: "bg-purple-500/20 border-purple-400/30 text-purple-200",
+      blue: "bg-blue-500/20 border-blue-400/30 text-blue-200",
+      green: "bg-green-500/20 border-green-400/30 text-green-200", 
+      red: "bg-red-500/20 border-red-400/30 text-red-200"
+    }
+    return colors[color as keyof typeof colors] || colors.purple
+  }
 
-        <div className="bg-white/5 backdrop-blur-sm rounded-lg p-3 border border-purple-500/20">
-          <h4 className="text-[10px] font-semibold text-purple-300 mb-2">Sem 7–8 (Dic 1–15)</h4>
-          <ul className="text-[9px] text-gray-300 space-y-1">
-            <li>• Retargeting agresivo</li>
-            <li>• 1 estudio de caso corto</li>
-          </ul>
+  return (
+    <div className="space-y-6">
+      <h3 className="text-2xl font-bold text-white mb-4">Tactics Timeline - Abaco 2025</h3>
+      
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {tactics.map((tactic, index) => (
+          <div key={index} className={`${getColorClasses(tactic.color)} rounded-lg p-6 border`}>
+            <div className="flex items-center justify-between mb-4">
+              <h4 className="font-bold text-lg">{tactic.title}</h4>
+              <span className="text-sm font-semibold px-3 py-1 bg-white/20 rounded-full">
+                {tactic.phase}
+              </span>
+            </div>
+            
+            <ul className="space-y-2">
+              {tactic.items.map((item, itemIndex) => (
+                <li key={itemIndex} className="flex items-start space-x-2">
+                  <span className="text-white/70 mt-1">•</span>
+                  <span className="text-gray-300 text-sm">{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+
+      <div className="mt-6 p-4 bg-white/10 rounded-lg">
+        <h4 className="font-semibold text-white mb-3">KPIs por Trimestre</h4>
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 text-sm">
+          <div className="text-center">
+            <p className="text-purple-200 font-semibold">Q1</p>
+            <p className="text-white">1K leads</p>
+            <p className="text-gray-300">Foundation metrics</p>
+          </div>
+          <div className="text-center">
+            <p className="text-blue-200 font-semibold">Q2</p>
+            <p className="text-white">3K leads</p>
+            <p className="text-gray-300">Scale & optimize</p>
+          </div>
+          <div className="text-center">
+            <p className="text-green-200 font-semibold">Q3</p>
+            <p className="text-white">5K leads</p>
+            <p className="text-gray-300">Market expansion</p>
+          </div>
+          <div className="text-center">
+            <p className="text-red-200 font-semibold">Q4</p>
+            <p className="text-white">7K leads</p>
+            <p className="text-gray-300">Optimization peak</p>
+          </div>
         </div>
       </div>
+    </div>
+  )
+}
