@@ -32,6 +32,29 @@ Para integración con otros sistemas:
 curl http://localhost:3000/api/validation-results
 ```
 
+**Ejemplo de respuesta JSON:**
+
+```json
+{
+  "validation_status": "APROBADO",
+  "summary_statistics": {
+    "total_loans": 120,
+    "total_amount": 350000,
+    "average_amount": 2916.67
+  },
+  "monthly_transfers_operations": [
+    { "month": "2024-01", "transfers": 15, "operations": 20 },
+    { "month": "2024-02", "transfers": 12, "operations": 18 }
+  ],
+  "monthly_averages": [
+    { "month": "2024-01", "average_amount": 3000 },
+    { "month": "2024-02", "average_amount": 2850 }
+  ],
+  "outstanding_balance": [
+    { "month": "2024-01", "balance": 50000 },
+    { "month": "2024-02", "balance": 48000 }
+  ]
+}
 ### Opción 3: Archivos CSV
 
 Los resultados también están disponibles en formato CSV:
