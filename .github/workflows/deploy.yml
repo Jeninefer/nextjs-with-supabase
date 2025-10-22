@@ -77,7 +77,7 @@ jobs:
           echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
           echo "Abaco Office Add-in - React Components:" >> $GITHUB_STEP_SUMMARY
           echo "• ObjectiveSlide.tsx - Business objectives" >> $GITHUB_STEP_SUMMARY
-          echo "• ChannelStrategySlide.tsx - Channel strategy" >> $GITHUB_STEP_SUMMARY  
+          echo "• ChannelStrategySlide.tsx - Channel strategy" >> $GITHUB_STEP_SUMMARY
           echo "• KAMStrategySlide.tsx - Key account management" >> $GITHUB_STEP_SUMMARY
           echo "• MarketingFunnelSlide.tsx - Marketing funnel analysis" >> $GITHUB_STEP_SUMMARY
           echo "• TacticsSlide.tsx - Quarterly tactics timeline" >> $GITHUB_STEP_SUMMARY
