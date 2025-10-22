@@ -118,7 +118,7 @@ const slideContent = await openai.generateSlideContent('AI in Healthcare', 1, 10
 - Code generation
 - OpenAI-compatible API
 
-### xAI Usage Examples
+### xAI Usage
 
 ```javascript
 import { xai } from './api/xai';
