@@ -37,7 +37,7 @@ const mockMCPClient = {
         return false;
       }
       
-      return true; // Simulate success in all cases unless error simulation is enabled (then 80% success)
+      return true; // Simulate success in all cases; when error simulation is enabled, success rate is 80%
     } catch (error) {
       console.error(`Mock: Error initializing ${name}:`, error);
       return false;
