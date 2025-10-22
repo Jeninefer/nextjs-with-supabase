@@ -21,8 +21,15 @@ export async function middleware(request: NextRequest) {
     process.env.NODE_ENV === 'development' &&
     (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)
   ) {
-    // If no credentials, allow access (for development without Supabase)
-    return NextResponse.next({ request })
+    // If no credentials, only allow public routes; otherwise, return error
+    if (isPublicRoute) {
+      return NextResponse.next({ request })
+    } else {
+      return new NextResponse(
+        'Supabase credentials are missing. Access to protected routes is not allowed in development without credentials.',
+        { status: 500 }
+      )
+    }
   }
 
   let supabaseResponse = NextResponse.next({ request })
