@@ -84,7 +84,7 @@ See: [notebooks/README.md](../notebooks/README.md)
 - Understanding of GCP services and costs
 
 **Setup:**
-1. Follow the comprehensive guide: [docs/GOOGLE_CLOUD_SETUP.md](docs/GOOGLE_CLOUD_SETUP.md)
+1. Follow the comprehensive guide: [GOOGLE_CLOUD_SETUP.md](GOOGLE_CLOUD_SETUP.md)
 2. Enable required APIs in your GCP project
 3. Create and configure service account
 4. Set environment variables in `.env.local`
