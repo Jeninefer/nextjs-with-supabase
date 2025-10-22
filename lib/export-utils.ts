@@ -3,7 +3,16 @@
  * Client-side data export with proper encoding handling
  */
 
-import type { CustomerData } from "./data-generator";
+// CustomerData type for export functionality
+export interface CustomerData {
+  id: string;
+  name: string;
+  segment: string;
+  balance: number;
+  riskScore: number;
+  status: string;
+  [key: string]: string | number;
+}
 
 /**
  * Export customer data to CSV with UTF-8 encoding
@@ -88,7 +97,8 @@ export function exportToJSON(
 
 /**
  * Export multiple formats (CSV + JSON) as ZIP
- * Requires JSZip library: npm install jszip
+ * Note: Requires jszip package to be installed: npm install jszip
+ * This is an optional feature and will fail gracefully if not available.
  */
 export async function exportToZip(
   customers: CustomerData[],
@@ -96,7 +106,10 @@ export async function exportToZip(
   filename: string = "abaco_export"
 ): Promise<void> {
   try {
-    const JSZip = (await import("jszip")).default;
+    // Dynamic import to avoid build errors if jszip is not installed
+    const JSZip = (await import("jszip").catch(() => {
+      throw new Error("jszip package is not installed. Please run: npm install jszip");
+    })).default;
     const zip = new JSZip();
 
     // Add CSV
