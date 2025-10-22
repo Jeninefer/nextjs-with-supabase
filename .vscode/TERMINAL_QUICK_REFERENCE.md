@@ -128,7 +128,8 @@ mv old-name.txt new-name.txt
 ps aux
 
 # Find process by port
-lsof -i :3000
+lsof -i :3000        # macOS/Linux
+netstat -ano | findstr :3000   # Windows
 
 # Kill process by PID
 kill -9 <PID>
