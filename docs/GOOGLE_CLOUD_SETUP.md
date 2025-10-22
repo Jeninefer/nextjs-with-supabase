@@ -398,7 +398,7 @@ After setup, verify everything is configured correctly:
 ## Support
 
 For ABACO-specific deployment issues:
-- Technical Support: tech@abaco-platform.com
+- Technical Support: Please open an issue in the [ABACO GitHub repository](https://github.com/abaco-platform/abaco/issues) or contact your ABACO account representative.
 - Documentation: See `/docs` folder in repository
 
 For Google Cloud issues:
