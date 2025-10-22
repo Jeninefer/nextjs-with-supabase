@@ -4,7 +4,7 @@ Reusable financial analysis functions and data generators
 """
 
 import logging
-from datetime import datetime, timedelta
+from datetime import datetime
 from typing import Dict, List, Optional, Tuple
 
 import numpy as np
@@ -127,9 +127,7 @@ class FinancialDataGenerator:
         )
 
         # Customer lifetime value estimate
-        df["lifetime_value"] = np.round(
-            df["profit_potential"] * df["years_with_bank"] * 12, 2
-        )
+        df["lifetime_value"] = np.round(df["profit_potential"] * df["years_with_bank"] * 12, 2)
 
         return df
 
@@ -191,9 +189,9 @@ class FinancialAnalyzer:
         profit_metrics = {
             "total_profit_potential": df["profit_potential"].sum(),
             "average_profit_per_customer": df["profit_potential"].mean(),
-            "top_10_percent_customers": df.nlargest(
-                int(len(df) * 0.1), "lifetime_value"
-            )["lifetime_value"].sum(),
+            "top_10_percent_customers": df.nlargest(int(len(df) * 0.1), "lifetime_value")[
+                "lifetime_value"
+            ].sum(),
             "profit_by_account_type": df.groupby("account_type")["profit_potential"]
             .sum()
             .to_dict(),

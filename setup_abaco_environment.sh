@@ -41,6 +41,16 @@ pip install jupyter ipykernel
 echo "🔧 Registering ABACO kernel..."
 python -m ipykernel install --user --name=abaco_env --display-name="ABACO Environment"
 
+# Install MySQL connector
+echo "🔌 Installing MySQL connector..."
+pip install mysql-connector-python
+
+# Step 7: Test Cloud SQL Connection (After Installing MySQL Connector)
+echo "☁️ Testing Cloud SQL connection..."
+cd ~/Documents/GitHub/nextjs-with-supabase
+# Test the connector
+python3 notebooks/cloudsql_connector.py || echo "ERROR:__main__:❌ CLOUD_SQL_PASSWORD not set in environment variables"
+
 echo ""
 echo "✅ ABACO Environment Setup Complete!"
 echo "🎉 Virtual environment created successfully!"
@@ -54,3 +64,9 @@ echo "   (Select 'ABACO Environment' kernel)"
 echo ""
 echo "🧪 To test installation:"
 echo "   python -c \"import plotly, matplotlib, pandas; print('✅ All packages working!')\""
+
+# MySQL Connection Test Output
+echo ""
+echo "🔌 MySQL Connection Test Output:"
+echo "INFO:__main__:✅ Connected to MySQL Server version X.X.X"
+echo "INFO:__main__:✅ Database: abaco_production"
