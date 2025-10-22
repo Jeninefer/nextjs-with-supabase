@@ -20,9 +20,6 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     
-    /* Ignore deprecations */
-    "ignoreDeprecations": "6.0",
-    
     /* Path resolution */
     "baseUrl": ".",
     "paths": {

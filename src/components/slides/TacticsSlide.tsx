@@ -1,4 +1,8 @@
-<div className="grid grid-cols-3 gap-3 mb-4">
+export default function TacticsSlide() {
+  return (
+    <div className="p-8">
+      <h2 className="text-2xl font-bold text-white mb-6">Tactics</h2>
+      <div className="grid grid-cols-3 gap-3 mb-4">
         <div className="bg-white/5 backdrop-blur-sm rounded-lg p-3 border border-blue-500/20">
           <h4 className="text-[10px] font-semibold text-blue-300 mb-2">Sem 1–2 (Oct)</h4>
           <ul className="text-[9px] text-gray-300 space-y-1">
@@ -26,3 +30,6 @@
           </ul>
         </div>
       </div>
+    </div>
+  );
+}
