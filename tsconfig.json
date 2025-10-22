@@ -20,16 +20,12 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     
-    /* Ignore deprecations */
-    "ignoreDeprecations": "6.0",
-    
     /* Path resolution */
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
       "@components/*": ["./src/components/*"],
-      "@api/*": ["./src/api/*"],
-      "@supabase/*": ["./src/supabase/*"]
+      "@api/*": ["./src/api/*"]
     }
   },
   "include": ["src"],
