@@ -37,14 +37,23 @@ jobs:
         env:
           NODE_ENV: production
 
-      - name: Deploy to Vercel
-        uses: amondnet/vercel-action@v25
-        with:
-          vercel-token: ${{ secrets.VERCEL_TOKEN }}
-          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
-          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-          vercel-args: ${{ github.ref == 'refs/heads/main' && '--prod' || '' }}
-        if: github.event_name == 'push' || github.event_name == 'pull_request'
+      - name: Install Vercel CLI
+        run: npm install --global vercel@latest
+        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/office-addin-figma'
+
+      - name: Deploy to Vercel (Preview)
+        if: github.event_name == 'pull_request'
+        run: vercel --token=${{ secrets.VERCEL_TOKEN }} --confirm
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+      - name: Deploy to Vercel (Production)
+        if: github.ref == 'refs/heads/main'
+        run: vercel --prod --token=${{ secrets.VERCEL_TOKEN }} --confirm
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
       - name: Add deployment summary
         run: |
@@ -61,23 +70,30 @@ jobs:
             echo "🔍 **Preview deployment created**" >> $GITHUB_STEP_SUMMARY
           fi
 
-{
-  "root": true,
-  "env": { "browser": true, "es2020": true },
-  "extends": [
-    "eslint:recommended",
-    "@typescript-eslint/recommended",
-    "plugin:react-hooks/recommended"
-  ],
-  "ignorePatterns": ["dist", ".eslintrc.cjs"],
-  "parser": "@typescript-eslint/parser",
-  "plugins": ["react-refresh"],
-  "rules": {
-    "react-refresh/only-export-components": [
-      "warn",
-      { "allowConstantExport": true }
-    ],
-    "@typescript-eslint/no-unused-vars": ["warn"],
-    "no-console": "warn"
-  }
-}
+      - name: Project Structure Summary
+        run: |
+          echo "### 📁 Project Structure" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+          echo "src/" >> $GITHUB_STEP_SUMMARY
+          echo "├── components/" >> $GITHUB_STEP_SUMMARY
+          echo "│   └── slides/           # Abaco presentation components" >> $GITHUB_STEP_SUMMARY
+          echo "│       ├── ObjectiveSlide.tsx" >> $GITHUB_STEP_SUMMARY
+          echo "│       ├── ChannelStrategySlide.tsx" >> $GITHUB_STEP_SUMMARY
+          echo "│       ├── KAMStrategySlide.tsx" >> $GITHUB_STEP_SUMMARY
+          echo "│       ├── MarketingFunnelSlide.tsx" >> $GITHUB_STEP_SUMMARY
+          echo "│       └── TacticsSlide.tsx" >> $GITHUB_STEP_SUMMARY
+          echo "├── api/                  # API integrations" >> $GITHUB_STEP_SUMMARY
+          echo "├── supabase/            # Supabase configuration" >> $GITHUB_STEP_SUMMARY
+          echo "└── styles/              # CSS and design system" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "scripts/" >> $GITHUB_STEP_SUMMARY
+          echo "├── find-license-matches.js  # License detection" >> $GITHUB_STEP_SUMMARY
+          echo "├── cleanup-now.sh          # Automated cleanup" >> $GITHUB_STEP_SUMMARY
+          echo "└── pre-commit-check.sh     # Git hooks" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "docs/" >> $GITHUB_STEP_SUMMARY
+          echo "├── AI_APIS.md              # API integration guide" >> $GITHUB_STEP_SUMMARY
+          echo "├── SUPABASE_GUIDE.md       # Supabase setup" >> $GITHUB_STEP_SUMMARY
+          echo "└── DESIGN_SYSTEM.md        # Design guidelines" >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
