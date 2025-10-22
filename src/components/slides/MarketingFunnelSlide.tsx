@@ -1,4 +1,8 @@
-<div className="grid grid-cols-3 gap-3 mb-6">
+export default function MarketingFunnelSlide() {
+  return (
+    <div className="p-8">
+      <h2 className="text-2xl font-bold text-white mb-6">Marketing Funnel</h2>
+      <div className="grid grid-cols-3 gap-3 mb-6">
         <div className="bg-white/5 backdrop-blur-sm rounded-lg p-3 border border-blue-500/20">
           <p className="text-[10px] text-gray-400 mb-1">Oct 2025</p>
           <p className="text-xs text-white">20–30k views</p>
@@ -26,3 +30,6 @@
           <p className="text-[9px] text-gray-500 mt-1">Retargeting/cases</p>
         </div>
       </div>
+    </div>
+  );
+}
