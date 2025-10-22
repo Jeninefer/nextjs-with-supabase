@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 # Script to generate and display validation results for loan data analysis
+#
+# Before first use, ensure this script is executable:
+#   chmod +x scripts/generate_validation.sh
 
 set -e
 
