@@ -158,17 +158,18 @@ def validate_financial_data(df: pd.DataFrame) -> Dict:
             )
             logger.error(f"❌ Missing columns: {missing_columns}")
         
-        # Calculate summary statistics
-        validation_results['summary'] = {
-            'total_checks': len(validation_results['checks_passed']) + len(validation_results['checks_failed']),
-            'passed': len(validation_results['checks_passed']),
-            'failed': len(validation_results['checks_failed']),
-            'warnings': len(validation_results['warnings'])
-        }
         
     except Exception as e:
         logger.error(f"❌ Error during validation: {e}")
         validation_results['checks_failed'].append(f'Validation error: {str(e)}')
+    
+    # Calculate summary statistics - always executed regardless of exceptions
+    validation_results['summary'] = {
+        'total_checks': len(validation_results['checks_passed']) + len(validation_results['checks_failed']),
+        'passed': len(validation_results['checks_passed']),
+        'failed': len(validation_results['checks_failed']),
+        'warnings': len(validation_results['warnings'])
+    }
     
     return validation_results
 
