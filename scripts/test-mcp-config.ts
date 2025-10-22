@@ -45,7 +45,7 @@ console.log();
 
 // Test 5: Verify safety - Google Cloud servers should be disabled by default
 console.log('Test 5: Verify Google Cloud API Safety');
-const googleCloudServers = ['web-search']; // Servers that use Google Cloud
+const googleCloudServers = ['web-search']; // Only 'web-search' uses Google Cloud APIs; update this list if more servers are added in the future
 const allDisabled = googleCloudServers.every(server => !isMCPServerEnabled(server));
 if (allDisabled) {
   console.log('✅ All Google Cloud API servers are disabled by default (prevents Dataproc errors)');
