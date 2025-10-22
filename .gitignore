@@ -50,3 +50,13 @@ lerna-debug.log*
 *.old
 *.copy
 *copy*
+
+# Security - Never commit these
+SECURITY_WARNING.md
+.env
+.env.local
+.env.*.local
+**/secrets/
+**/*secret*
+**/*token*
+**/*key*.txt
