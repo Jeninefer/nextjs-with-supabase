@@ -33,7 +33,7 @@ const mockMCPClient = {
         return false;
       }
       
-      return true; // Simula éxito en 80% de casos
+      return true; // Simulate success in 80% of cases
     } catch (error) {
       console.error(`Mock: Error initializing ${name}:`, error);
       return false;
