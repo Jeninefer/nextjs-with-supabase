@@ -313,5 +313,5 @@ A: Delete the `abaco_venv` directory and run `./setup_abaco_environment.sh` agai
 
 ---
 
-*last updated: October 2025*  
+*Last updated: October 2025*  
 *For the latest documentation, see the main [README.md](README.md)*
