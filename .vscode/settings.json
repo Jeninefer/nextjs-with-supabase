@@ -87,5 +87,11 @@
         "latex",
         "plaintext",
         "shellscript"
-    ]
+    ],
+    "terminal.integrated.env.osx": {
+        "PATH": "/usr/local/bin:/usr/bin:${env:PATH}"
+    },
+    "terminal.integrated.env.linux": {
+        "PATH": "/usr/local/bin:/usr/bin:${env:PATH}"
+    }
 }
