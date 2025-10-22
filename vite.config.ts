@@ -18,7 +18,8 @@ export default defineConfig({
   server: {
     port: 5173,
     strictPort: true,
-    open: true,
+    // Set open via environment variable: VITE_OPEN=true|false (default: false)
+    open: process.env.VITE_OPEN ? process.env.VITE_OPEN === 'true' : false,
   },
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.jsx'],
