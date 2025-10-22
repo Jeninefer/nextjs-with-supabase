@@ -209,7 +209,7 @@ check_roles() {
     POLICY=$(gcloud projects get-iam-policy "$PROJECT_ID" --flatten="bindings[].members" --format="json" 2>/dev/null)
     
     if [ -n "$POLICY" ]; then
-        USER_ROLES=$(echo "$POLICY" | jq -r ".[] | select(.bindings.members | contains([\"user:$ACTIVE_ACCOUNT\"])) | .bindings.role" 2>/dev/null || echo "")
+        USER_ROLES=$(echo "$POLICY" | jq -r ".bindings[] | select(.members[] == \"user:$ACTIVE_ACCOUNT\") | .role" 2>/dev/null || echo "")
         
         if [ -n "$USER_ROLES" ]; then
             print_success "Your roles in project $PROJECT_ID:"
