@@ -85,7 +85,7 @@ def build_comprehensive_abaco_dataset():
     mortgage_pct = np.random.uniform(0.5, 0.8, num_customers)
     personal_pct = np.random.uniform(0.1, 0.3, num_customers) 
     auto_pct = np.random.uniform(0.05, 0.15, num_customers)
-    other_pct = np.random.uniform(0.0, 0.2, num_customers)  # Independently generated; all four categories are normalized to sum to 1.0
+    other_pct = np.random.uniform(0.0, 0.2, num_customers)  # Independently generated; will be normalized to sum to 1.0 below
     
     # Normalize percentages to sum to 1.0 (mortgage, personal, auto, other)
     total_pct = mortgage_pct + personal_pct + auto_pct + other_pct
