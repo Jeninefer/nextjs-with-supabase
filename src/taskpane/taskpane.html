@@ -1,5 +1,4 @@
 <!-- Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT License. -->
-<!-- This file shows how to design a first-run page that provides a welcome screen to the user about the features of the add-in. -->
 
 <!DOCTYPE html>
 <html>
@@ -8,76 +7,84 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Contoso Task Pane Add-in</title>
+    <title>Figma Office Add-in</title>
 
     <!-- Office JavaScript API -->
     <script type="text/javascript" src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
 
-    <!-- For more information on Fluent UI, visit https://developer.microsoft.com/fluentui#/. -->
+    <!-- Fluent UI -->
     <link rel="stylesheet" href="https://res-1.cdn.office.net/files/fabric-cdn-prod_20230815.002/office-ui-fabric-core/11.1.0/css/fabric.min.css"/>
 
-    <!-- Template styles -->
+    <!-- Styles -->
     <link href="taskpane.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body class="ms-font-m ms-welcome ms-Fabric">
     <header class="ms-welcome__header ms-bgColor-neutralLighter">
-        <img width="90" height="90" src="../../assets/logo-filled.png" alt="Contoso" title="Contoso" />
-        <h1 class="ms-font-su">Welcome</h1>
+        <img width="90" height="90" src="../../assets/logo-filled.png" alt="Figma Integration" title="Figma Integration" />
+        <h1 class="ms-font-su">Figma Office Add-in</h1>
     </header>
     <section id="sideload-msg" class="ms-welcome__main">
         <h2 class="ms-font-xl">Please <a target="_blank" href="https://learn.microsoft.com/office/dev/add-ins/testing/test-debug-office-add-ins#sideload-an-office-add-in-for-testing">sideload</a> your add-in to see app body.</h2>
     </section>
     <main id="app-body" class="ms-welcome__main" style="display: none;">
-        <h2 class="ms-font-xl">Office Add-in with Supabase Integration</h2>
+        <h2 class="ms-font-xl">Figma to PowerPoint Integration</h2>
         
-        <!-- Supabase Status Section -->
+        <!-- System Status -->
         <div class="ms-welcome__section">
-            <h3 class="ms-font-l">Supabase Connection</h3>
-            <div id="supabase-status" class="ms-MessageBar ms-MessageBar--info">
+            <div id="system-status" class="ms-MessageBar ms-MessageBar--info">
                 <div class="ms-MessageBar-content">
                     <div class="ms-MessageBar-text">
-                        Checking Supabase connection...
+                        Checking system status...
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Office Integration Section -->
+        <!-- Actions -->
         <div class="ms-welcome__section">
-            <h3 class="ms-font-l">Office Integration</h3>
-            <ul class="ms-List ms-welcome__features">
-                <li class="ms-ListItem">
-                    <i class="ms-Icon ms-Icon--Ribbon ms-font-xl"></i>
-                    <span class="ms-font-m">Insert text into document</span>
-                </li>
-                <li class="ms-ListItem">
-                    <i class="ms-Icon ms-Icon--CloudUpload ms-font-xl"></i>
-                    <span class="ms-font-m">Sync with Supabase database</span>
-                </li>
-            </ul>
-            <div role="button" id="run" class="ms-welcome__action ms-Button ms-Button--hero ms-font-xl">
-                <span class="ms-Button-label">Insert Text</span>
+            <h3 class="ms-font-l">Actions</h3>
+            <div class="ms-welcome__action-group">
+                <div role="button" id="run" class="ms-Button ms-Button--hero">
+                    <span class="ms-Button-label">Insert Test Text</span>
+                </div>
+                <div role="button" id="test-connection" class="ms-Button ms-Button--primary">
+                    <span class="ms-Button-label">Test Connections</span>
+                </div>
+                <div role="button" id="import-figma" class="ms-Button ms-Button--primary">
+                    <span class="ms-Button-label">Import from Figma</span>
+                </div>
+                <div role="button" id="generate-content" class="ms-Button ms-Button--primary">
+                    <span class="ms-Button-label">Generate AI Content</span>
+                </div>
             </div>
         </div>
 
-        <!-- Supabase Demo Section -->
+        <!-- Output Area -->
         <div class="ms-welcome__section">
-            <h3 class="ms-font-l">Supabase Demo</h3>
-            <div class="ms-welcome__action-group">
-                <div role="button" id="test-connection" class="ms-Button ms-Button--primary">
-                    <span class="ms-Button-label">Test Connection</span>
-                </div>
-                <div role="button" id="save-data" class="ms-Button ms-Button--primary">
-                    <span class="ms-Button-label">Save to DB</span>
-                </div>
-                <div role="button" id="load-data" class="ms-Button ms-Button--primary">
-                    <span class="ms-Button-label">Load from DB</span>
-                </div>
+            <h3 class="ms-font-l">Output</h3>
+            <div id="output-area" class="ms-welcome__output">
+                <p class="ms-font-m">Ready to start</p>
             </div>
-            <div id="demo-output" class="ms-welcome__output">
-                <p class="ms-font-m">Click a button to test Supabase functionality</p>
-            </div>
+        </div>
+
+        <!-- Features -->
+        <div class="ms-welcome__section">
+            <h3 class="ms-font-l">Features</h3>
+            <ul class="ms-List ms-welcome__features">
+                <li class="ms-ListItem">
+                    <i class="ms-Icon ms-Icon--Design ms-font-xl"></i>
+                    <span class="ms-font-m">Import Figma designs</span>
+                </li>
+                <li class="ms-ListItem">
+                    <i class="ms-Icon ms-Icon--Robot ms-font-xl"></i>
+                    <span class="ms-font-m">AI-powered content generation</span>
+                </li>
+                <li class="ms-ListItem">
+                    <i class="ms-Icon ms-Icon--CloudUpload ms-font-xl"></i>
+                    <span class="ms-font-m">Cloud data storage</span>
+                </li>
+            </ul>
         </div>
     </main>
 </body>

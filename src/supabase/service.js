@@ -1,11 +1,11 @@
 /**
  * Supabase Service
- * 
+ *
  * Helper functions for common Supabase operations.
  * This module provides easy-to-use wrappers around Supabase functionality.
  */
 
-import { supabase, isSupabaseConfigured } from './client';
+import { supabase, isSupabaseConfigured } from "./client";
 
 /**
  * Authentication helpers
@@ -13,23 +13,23 @@ import { supabase, isSupabaseConfigured } from './client';
 export const auth = {
   /**
    * Sign up a new user
-   * @param {string} email 
-   * @param {string} password 
+   * @param {string} email
+   * @param {string} password
    * @returns {Promise<{user, session, error}>}
    */
   async signUp(email, password) {
-    if (!isSupabaseConfigured()) return { error: { message: 'Supabase not configured' } };
+    if (!isSupabaseConfigured()) return { error: { message: "Supabase not configured" } };
     return await supabase.auth.signUp({ email, password });
   },
 
   /**
    * Sign in an existing user
-   * @param {string} email 
-   * @param {string} password 
+   * @param {string} email
+   * @param {string} password
    * @returns {Promise<{user, session, error}>}
    */
   async signIn(email, password) {
-    if (!isSupabaseConfigured()) return { error: { message: 'Supabase not configured' } };
+    if (!isSupabaseConfigured()) return { error: { message: "Supabase not configured" } };
     return await supabase.auth.signInWithPassword({ email, password });
   },
 
@@ -38,7 +38,7 @@ export const auth = {
    * @returns {Promise<{error}>}
    */
   async signOut() {
-    if (!isSupabaseConfigured()) return { error: { message: 'Supabase not configured' } };
+    if (!isSupabaseConfigured()) return { error: { message: "Supabase not configured" } };
     return await supabase.auth.signOut();
   },
 
@@ -47,8 +47,12 @@ export const auth = {
    * @returns {Promise<{user, error}>}
    */
   async getCurrentUser() {
-    if (!isSupabaseConfigured()) return { user: null, error: { message: 'Supabase not configured' } };
-    const { data: { user }, error } = await supabase.auth.getUser();
+    if (!isSupabaseConfigured())
+      return { user: null, error: { message: "Supabase not configured" } };
+    const {
+      data: { user },
+      error,
+    } = await supabase.auth.getUser();
     return { user, error };
   },
 
@@ -57,10 +61,14 @@ export const auth = {
    * @returns {Promise<{session, error}>}
    */
   async getSession() {
-    if (!isSupabaseConfigured()) return { session: null, error: { message: 'Supabase not configured' } };
-    const { data: { session }, error } = await supabase.auth.getSession();
+    if (!isSupabaseConfigured())
+      return { session: null, error: { message: "Supabase not configured" } };
+    const {
+      data: { session },
+      error,
+    } = await supabase.auth.getSession();
     return { session, error };
-  }
+  },
 };
 
 /**
@@ -73,8 +81,9 @@ export const db = {
    * @param {string} columns - Columns to select (default: '*')
    * @returns {Promise<{data, error}>}
    */
-  async select(table, columns = '*') {
-    if (!isSupabaseConfigured()) return { data: null, error: { message: 'Supabase not configured' } };
+  async select(table, columns = "*") {
+    if (!isSupabaseConfigured())
+      return { data: null, error: { message: "Supabase not configured" } };
     return await supabase.from(table).select(columns);
   },
 
@@ -85,7 +94,8 @@ export const db = {
    * @returns {Promise<{data, error}>}
    */
   async insert(table, data) {
-    if (!isSupabaseConfigured()) return { data: null, error: { message: 'Supabase not configured' } };
+    if (!isSupabaseConfigured())
+      return { data: null, error: { message: "Supabase not configured" } };
     return await supabase.from(table).insert(data).select();
   },
 
@@ -97,7 +107,8 @@ export const db = {
    * @returns {Promise<{data, error}>}
    */
   async update(table, data, match) {
-    if (!isSupabaseConfigured()) return { data: null, error: { message: 'Supabase not configured' } };
+    if (!isSupabaseConfigured())
+      return { data: null, error: { message: "Supabase not configured" } };
     return await supabase.from(table).update(data).match(match).select();
   },
 
@@ -108,9 +119,10 @@ export const db = {
    * @returns {Promise<{data, error}>}
    */
   async delete(table, match) {
-    if (!isSupabaseConfigured()) return { data: null, error: { message: 'Supabase not configured' } };
+    if (!isSupabaseConfigured())
+      return { data: null, error: { message: "Supabase not configured" } };
     return await supabase.from(table).delete().match(match);
-  }
+  },
 };
 
 /**
@@ -125,7 +137,8 @@ export const storage = {
    * @returns {Promise<{data, error}>}
    */
   async upload(bucket, path, file) {
-    if (!isSupabaseConfigured()) return { data: null, error: { message: 'Supabase not configured' } };
+    if (!isSupabaseConfigured())
+      return { data: null, error: { message: "Supabase not configured" } };
     return await supabase.storage.from(bucket).upload(path, file);
   },
 
@@ -136,7 +149,8 @@ export const storage = {
    * @returns {Promise<{data, error}>}
    */
   async download(bucket, path) {
-    if (!isSupabaseConfigured()) return { data: null, error: { message: 'Supabase not configured' } };
+    if (!isSupabaseConfigured())
+      return { data: null, error: { message: "Supabase not configured" } };
     return await supabase.storage.from(bucket).download(path);
   },
 
@@ -159,9 +173,10 @@ export const storage = {
    * @returns {Promise<{data, error}>}
    */
   async delete(bucket, paths) {
-    if (!isSupabaseConfigured()) return { data: null, error: { message: 'Supabase not configured' } };
+    if (!isSupabaseConfigured())
+      return { data: null, error: { message: "Supabase not configured" } };
     return await supabase.storage.from(bucket).remove(paths);
-  }
+  },
 };
 
 /**
@@ -175,27 +190,27 @@ export const realtime = {
    * @param {string} event - Event type ('INSERT', 'UPDATE', 'DELETE', '*')
    * @returns {RealtimeChannel}
    */
-  subscribe(table, callback, event = '*') {
+  subscribe(table, callback, event = "*") {
     if (!isSupabaseConfigured()) {
-      console.error('Supabase not configured');
+      console.error("Supabase not configured");
       return null;
     }
-    
+
     return supabase
       .channel(`${table}-changes`)
-      .on('postgres_changes', { event, schema: 'public', table }, callback)
+      .on("postgres_changes", { event, schema: "public", table }, callback)
       .subscribe();
   },
 
   /**
    * Unsubscribe from a channel
-   * @param {RealtimeChannel} channel 
+   * @param {RealtimeChannel} channel
    */
   async unsubscribe(channel) {
     if (channel) {
       await supabase.removeChannel(channel);
     }
-  }
+  },
 };
 
 export default {

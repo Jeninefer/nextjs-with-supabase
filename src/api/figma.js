@@ -1,22 +1,24 @@
 /**
  * Figma API Client
- * 
+ *
  * Integrates with Figma's REST API to read and manipulate design files.
  * Documentation: https://www.figma.com/developers/api
  */
 
 const FIGMA_CONFIG = {
   accessToken: process.env.FIGMA_ACCESS_TOKEN,
-  fileKey: process.env.FIGMA_FILE_KEY || 'nuVKwuPuLS7VmLFvqzOX1G',
-  apiUrl: 'https://api.figma.com/v1'
+  fileKey: process.env.FIGMA_FILE_KEY || "nuVKwuPuLS7VmLFvqzOX1G",
+  apiUrl: "https://api.figma.com/v1",
 };
 
 /**
  * Validate Figma configuration
  */
 export function validateFigmaConfig() {
-  if (!FIGMA_CONFIG.accessToken || FIGMA_CONFIG.accessToken.includes('your-figma-token')) {
-    console.warn('⚠️ Figma access token is not configured. Please set FIGMA_ACCESS_TOKEN in your .env file.');
+  if (!FIGMA_CONFIG.accessToken || FIGMA_CONFIG.accessToken.includes("your-figma-token")) {
+    console.warn(
+      "⚠️ Figma access token is not configured. Please set FIGMA_ACCESS_TOKEN in your .env file."
+    );
     return false;
   }
   return true;
@@ -27,19 +29,19 @@ export function validateFigmaConfig() {
  */
 async function figmaRequest(endpoint, options = {}) {
   if (!validateFigmaConfig()) {
-    throw new Error('Figma is not properly configured');
+    throw new Error("Figma is not properly configured");
   }
 
   const url = `${FIGMA_CONFIG.apiUrl}${endpoint}`;
   const headers = {
-    'X-Figma-Token': FIGMA_CONFIG.accessToken,
-    ...options.headers
+    "X-Figma-Token": FIGMA_CONFIG.accessToken,
+    ...options.headers,
   };
 
   try {
     const response = await fetch(url, {
       ...options,
-      headers
+      headers,
     });
 
     if (!response.ok) {
@@ -48,7 +50,7 @@ async function figmaRequest(endpoint, options = {}) {
 
     return await response.json();
   } catch (error) {
-    console.error('Figma API request failed:', error);
+    console.error("Figma API request failed:", error);
     throw error;
   }
 }
@@ -64,7 +66,7 @@ export async function getFile(fileKey = FIGMA_CONFIG.fileKey) {
  * Get specific nodes from a file
  */
 export async function getFileNodes(fileKey, nodeIds) {
-  const ids = Array.isArray(nodeIds) ? nodeIds.join(',') : nodeIds;
+  const ids = Array.isArray(nodeIds) ? nodeIds.join(",") : nodeIds;
   return await figmaRequest(`/files/${fileKey}/nodes?ids=${ids}`);
 }
 
@@ -72,20 +74,15 @@ export async function getFileNodes(fileKey, nodeIds) {
  * Get images/exports from nodes
  */
 export async function getImages(fileKey, nodeIds, options = {}) {
-  const {
-    scale = 1,
-    format = 'png',
-    svg_include_id = false,
-    svg_simplify_stroke = true
-  } = options;
+  const { scale = 1, format = "png", svg_include_id = false, svg_simplify_stroke = true } = options;
 
-  const ids = Array.isArray(nodeIds) ? nodeIds.join(',') : nodeIds;
+  const ids = Array.isArray(nodeIds) ? nodeIds.join(",") : nodeIds;
   const params = new URLSearchParams({
     ids,
     scale: scale.toString(),
     format,
     svg_include_id: svg_include_id.toString(),
-    svg_simplify_stroke: svg_simplify_stroke.toString()
+    svg_simplify_stroke: svg_simplify_stroke.toString(),
   });
 
   return await figmaRequest(`/images/${fileKey}?${params}`);
@@ -103,14 +100,14 @@ export async function getComments(fileKey) {
  */
 export async function postComment(fileKey, message, position) {
   return await figmaRequest(`/files/${fileKey}/comments`, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json'
+      "Content-Type": "application/json",
     },
     body: JSON.stringify({
       message,
-      client_meta: position
-    })
+      client_meta: position,
+    }),
   });
 }
 
@@ -118,7 +115,7 @@ export async function postComment(fileKey, message, position) {
  * Get current user info
  */
 export async function getMe() {
-  return await figmaRequest('/me');
+  return await figmaRequest("/me");
 }
 
 /**
@@ -140,9 +137,9 @@ export async function getProjectFiles(projectId) {
  */
 export async function getFrame(fileKey, frameName) {
   const file = await getFile(fileKey);
-  
+
   function findFrame(node) {
-    if (node.type === 'FRAME' && node.name === frameName) {
+    if (node.type === "FRAME" && node.name === frameName) {
       return node;
     }
     if (node.children) {
@@ -165,12 +162,12 @@ export async function extractText(fileKey) {
   const textNodes = [];
 
   function traverse(node) {
-    if (node.type === 'TEXT') {
+    if (node.type === "TEXT") {
       textNodes.push({
         id: node.id,
         name: node.name,
         characters: node.characters,
-        style: node.style
+        style: node.style,
       });
     }
     if (node.children) {
@@ -196,7 +193,7 @@ export const figma = {
   getProjectFiles,
   getFrame,
   extractText,
-  config: FIGMA_CONFIG
+  config: FIGMA_CONFIG,
 };
 
 export default figma;

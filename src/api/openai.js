@@ -1,22 +1,24 @@
 /**
  * OpenAI API Client
- * 
+ *
  * Integrates with OpenAI's API for GPT models.
  * Documentation: https://platform.openai.com/docs/api-reference
  */
 
 const OPENAI_CONFIG = {
   apiKey: process.env.OPENAI_API_KEY,
-  apiUrl: 'https://api.openai.com/v1',
-  model: 'gpt-4-turbo-preview'
+  apiUrl: "https://api.openai.com/v1",
+  model: "gpt-4-turbo-preview",
 };
 
 /**
  * Validate OpenAI configuration
  */
 export function validateOpenAIConfig() {
-  if (!OPENAI_CONFIG.apiKey || OPENAI_CONFIG.apiKey.includes('your-openai-api-key')) {
-    console.warn('⚠️ OpenAI API key is not configured. Please set OPENAI_API_KEY in your .env file.');
+  if (!OPENAI_CONFIG.apiKey || OPENAI_CONFIG.apiKey.includes("your-openai-api-key")) {
+    console.warn(
+      "⚠️ OpenAI API key is not configured. Please set OPENAI_API_KEY in your .env file."
+    );
     return false;
   }
   return true;
@@ -27,22 +29,22 @@ export function validateOpenAIConfig() {
  */
 async function openaiRequest(endpoint, data, options = {}) {
   if (!validateOpenAIConfig()) {
-    throw new Error('OpenAI is not properly configured');
+    throw new Error("OpenAI is not properly configured");
   }
 
   const url = `${OPENAI_CONFIG.apiUrl}${endpoint}`;
   const headers = {
-    'Content-Type': 'application/json',
-    'Authorization': `Bearer ${OPENAI_CONFIG.apiKey}`,
-    ...options.headers
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${OPENAI_CONFIG.apiKey}`,
+    ...options.headers,
   };
 
   try {
     const response = await fetch(url, {
-      method: 'POST',
+      method: "POST",
       headers,
       body: JSON.stringify(data),
-      ...options
+      ...options,
     });
 
     if (!response.ok) {
@@ -52,7 +54,7 @@ async function openaiRequest(endpoint, data, options = {}) {
 
     return await response.json();
   } catch (error) {
-    console.error('OpenAI API request failed:', error);
+    console.error("OpenAI API request failed:", error);
     throw error;
   }
 }
@@ -65,29 +67,33 @@ export async function chatCompletion(messages, options = {}) {
     model = OPENAI_CONFIG.model,
     temperature = 0.7,
     max_tokens = 1000,
-    stream = false
+    stream = false,
   } = options;
 
-  return await openaiRequest('/chat/completions', {
+  return await openaiRequest("/chat/completions", {
     model,
     messages,
     temperature,
     max_tokens,
-    stream
+    stream,
   });
 }
 
 /**
  * Simple text completion helper
  */
-export async function complete(prompt, systemPrompt = 'You are a helpful assistant.', options = {}) {
+export async function complete(
+  prompt,
+  systemPrompt = "You are a helpful assistant.",
+  options = {}
+) {
   const messages = [
-    { role: 'system', content: systemPrompt },
-    { role: 'user', content: prompt }
+    { role: "system", content: systemPrompt },
+    { role: "user", content: prompt },
   ];
 
   const response = await chatCompletion(messages, options);
-  return response.choices[0]?.message?.content || '';
+  return response.choices[0]?.message?.content || "";
 }
 
 /**
@@ -124,7 +130,7 @@ Provide:
 Format as JSON.`;
 
   const response = await complete(prompt, systemPrompt);
-  
+
   try {
     return JSON.parse(response);
   } catch {
@@ -140,7 +146,7 @@ export const openai = {
   complete,
   analyzeFigmaDesign,
   generateSlideContent,
-  config: OPENAI_CONFIG
+  config: OPENAI_CONFIG,
 };
 
 export default openai;

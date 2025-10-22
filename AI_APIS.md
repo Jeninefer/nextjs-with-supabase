@@ -25,11 +25,11 @@ This project integrates multiple AI APIs: OpenAI (GPT), xAI (Grok), and Figma AP
 
 #### xAI (Grok)
 
-1. Go to [xAI](https://x.ai/)
+1. Go to [xAI Console](https://console.x.ai/)
 2. Sign up for API access
 3. Navigate to API settings
 4. Generate an API key
-5. Copy the key (starts with `xai-`)
+5. Copy the key
 
 #### Figma
 
@@ -52,21 +52,23 @@ FIGMA_FILE_KEY=your-figma-file-key
 ### 3. Extract Figma File Key
 
 From your Figma URL:
-```
-https://www.figma.com/file/nuVKwuPuLS7VmLFvqzOX1G/Create-Dark-Editable-Slides
+
+```text
+https://www.figma.com/design/nuVKwuPuLS7VmLFvqzOX1G/Create-Dark-Editable-Slides
 ```
 
-The file key is: `nuVKwuPuLS7VmLFvqzOX1G` (already configured as default)
+The file key is: `nuVKwuPuLS7VmLFvqzOX1G`
 
 ## OpenAI API
 
 ### Features
 
-- GPT-4 Turbo and GPT-3.5 Turbo
+- GPT-4 and GPT-4 Turbo models
 - Chat completions
 - Function calling
 - JSON mode
 - Vision (image analysis)
+- Streaming responses
 
 ### Usage
 
@@ -92,26 +94,27 @@ const slideContent = await openai.generateSlideContent('AI in Healthcare', 1, 10
 
 ### Models Available
 
-- `gpt-4-turbo-preview` - Latest GPT-4 Turbo
-- `gpt-4` - GPT-4
-- `gpt-3.5-turbo` - Fast and cost-effective
+- `gpt-4-turbo` - Latest GPT-4 Turbo with 128K context
+- `gpt-4` - GPT-4 with 8K context
+- `gpt-3.5-turbo` - Fast and cost-effective with 16K context
 
-### Pricing (as of 2025)
+### Pricing (January 2025)
 
-| Model | Input | Output |
-|-------|-------|--------|
-| GPT-4 Turbo | $0.01/1K tokens | $0.03/1K tokens |
-| GPT-3.5 Turbo | $0.0005/1K tokens | $0.0015/1K tokens |
+| Model | Input (per 1M tokens) | Output (per 1M tokens) |
+|-------|----------------------|------------------------|
+| GPT-4 Turbo | $10.00 | $30.00 |
+| GPT-4 | $30.00 | $60.00 |
+| GPT-3.5 Turbo | $0.50 | $1.50 |
 
 ## xAI (Grok) API
 
 ### Features
 
-- Grok-beta model
-- Real-time knowledge
+- Grok-2 and Grok-beta models
+- Real-time knowledge (up to current date)
 - Conversational AI
-- Creative writing
 - Code generation
+- OpenAI-compatible API
 
 ### Usage
 
@@ -121,20 +124,27 @@ import { xai } from './api/xai';
 // Simple completion
 const response = await xai.complete('What is happening in tech today?');
 
-// Real-time analysis
-const analysis = await xai.analyzeWithRealTime('Latest developments in AI');
-
-// Creative writing
-const content = await xai.creativeWrite('Future of Work', 'professional');
+// Chat completion
+const result = await xai.chatCompletion([
+  { role: 'user', content: 'Explain AI trends in 2025' }
+]);
 
 // Test connection
 const test = await xai.test();
-console.log(test.response); // "Hi! Hello world!"
+console.log(test.response);
 ```
 
 ### Models Available
 
-- `grok-beta` - Latest Grok model with real-time data access
+- `grok-2-1212` - Latest Grok-2 model (recommended)
+- `grok-2-vision-1212` - Grok-2 with vision capabilities
+- `grok-beta` - Beta version
+
+### API Endpoint
+
+```
+https://api.x.ai/v1/chat/completions
+```
 
 ## Figma API
 
@@ -142,9 +152,9 @@ console.log(test.response); // "Hi! Hello world!"
 
 - Read file data
 - Get specific nodes
-- Export images
-- Comments
-- Team/project management
+- Export images (PNG, JPG, SVG, PDF)
+- Comments management
+- Version history
 
 ### Usage
 
@@ -160,41 +170,23 @@ const frame = await figma.getFrame('nuVKwuPuLS7VmLFvqzOX1G', 'Deck 2');
 // Extract all text
 const textNodes = await figma.extractText('nuVKwuPuLS7VmLFvqzOX1G');
 
-// Get images
+// Export images
 const images = await figma.getImages('file-key', ['node-id-1', 'node-id-2'], {
   format: 'png',
   scale: 2
 });
 
+// Get comments
+const comments = await figma.getComments('file-key');
+
 // Post comment
 await figma.postComment('file-key', 'Great design!', { x: 100, y: 200 });
 ```
 
-### File Structure
+### API Endpoint
 
-```javascript
-{
-  "document": {
-    "id": "0:0",
-    "name": "Document",
-    "type": "DOCUMENT",
-    "children": [
-      {
-        "id": "0:1",
-        "name": "Page 1",
-        "type": "CANVAS",
-        "children": [
-          {
-            "id": "1:2",
-            "name": "Frame 1",
-            "type": "FRAME",
-            "children": [...]
-          }
-        ]
-      }
-    ]
-  }
-}
+```
+https://api.figma.com/v1/
 ```
 
 ## Usage Examples
@@ -206,15 +198,11 @@ import { figma } from './api/figma';
 import { openai } from './api/openai';
 
 async function analyzeDesign() {
-  // Get Figma file
   const file = await figma.getFile('nuVKwuPuLS7VmLFvqzOX1G');
-  
-  // Analyze with AI
   const analysis = await openai.analyzeFigmaDesign(
     file.document,
     'Analyze the color scheme and suggest improvements'
   );
-  
   console.log(analysis);
 }
 ```
@@ -225,19 +213,12 @@ async function analyzeDesign() {
 import { openai } from './api/openai';
 import { xai } from './api/xai';
 
-async function generatePresentation(topic) {
+async function generatePresentation(topic, slideCount = 10) {
   const slides = [];
-  
-  for (let i = 1; i <= 10; i++) {
-    // Use OpenAI for structured content
-    const content = await openai.generateSlideContent(topic, i, 10);
-    
-    // Use Grok for creative elements
-    const creative = await xai.creativeWrite(content.title, 'engaging');
-    
-    slides.push({ ...content, creative });
+  for (let i = 1; i <= slideCount; i++) {
+    const content = await openai.generateSlideContent(topic, i, slideCount);
+    slides.push(content);
   }
-  
   return slides;
 }
 ```
@@ -246,27 +227,20 @@ async function generatePresentation(topic) {
 
 ```javascript
 import { figma } from './api/figma';
-import Office from 'office';
 
-async function importFigmaSlides() {
-  // Get Figma file
-  const file = await figma.getFile('nuVKwuPuLS7VmLFvqzOX1G');
-  
-  // Find all frames (slides)
+async function exportFigmaSlides(fileKey) {
+  const file = await figma.getFile(fileKey);
   const frames = file.document.children[0].children.filter(
     node => node.type === 'FRAME'
   );
   
-  // Export as images
   const nodeIds = frames.map(f => f.id);
-  const images = await figma.getImages(file.key, nodeIds, {
+  const images = await figma.getImages(fileKey, nodeIds, {
     format: 'png',
     scale: 2
   });
   
-  // Insert into PowerPoint
-  await Office.context.document.slides.add();
-  // ... insert images
+  return images;
 }
 ```
 
@@ -290,58 +264,40 @@ try {
   console.log(response);
 } catch (error) {
   console.error('API Error:', error.message);
-  // Show user-friendly message
-  showError('Failed to generate content. Please try again.');
+  if (error.response?.status === 429) {
+    console.log('Rate limit exceeded. Retrying...');
+  }
 }
 ```
 
 ### 3. Rate Limiting
 
 ```javascript
-// Implement retry with exponential backoff
 async function callWithRetry(apiFunction, maxRetries = 3) {
   for (let i = 0; i < maxRetries; i++) {
     try {
       return await apiFunction();
     } catch (error) {
-      if (i === maxRetries - 1) throw error;
+      if (error.response?.status !== 429 || i === maxRetries - 1) throw error;
       await new Promise(resolve => setTimeout(resolve, 1000 * Math.pow(2, i)));
     }
   }
 }
 ```
 
-### 4. Cost Management
-
-```javascript
-// Track token usage
-let totalTokens = 0;
-
-async function completionWithTracking(prompt) {
-  const response = await openai.chatCompletion([
-    { role: 'user', content: prompt }
-  ]);
-  
-  totalTokens += response.usage.total_tokens;
-  console.log(`Total tokens used: ${totalTokens}`);
-  
-  return response.choices[0].message.content;
-}
-```
-
-### 5. Caching
+### 4. Caching
 
 ```javascript
 const cache = new Map();
 
-async function getFigmaFile(fileKey) {
-  if (cache.has(fileKey)) {
-    return cache.get(fileKey);
+async function getFigmaFile(fileKey, cacheDuration = 300000) {
+  const cached = cache.get(fileKey);
+  if (cached && Date.now() - cached.timestamp < cacheDuration) {
+    return cached.data;
   }
   
   const file = await figma.getFile(fileKey);
-  cache.set(fileKey, file);
-  
+  cache.set(fileKey, { data: file, timestamp: Date.now() });
   return file;
 }
 ```
@@ -359,8 +315,6 @@ async function getFigmaFile(fileKey) {
 
 - `chatCompletion(messages, options)` - Chat with Grok
 - `complete(prompt, systemPrompt, options)` - Simple completion
-- `analyzeWithRealTime(query)` - Real-time analysis
-- `creativeWrite(topic, style)` - Creative writing
 - `test()` - Test connection
 
 ### Figma
@@ -375,43 +329,31 @@ async function getFigmaFile(fileKey) {
 
 ## Troubleshooting
 
-### OpenAI API Errors
+### Common Issues
 
-| Error | Solution |
-|-------|----------|
-| Invalid API key | Regenerate key in OpenAI dashboard |
-| Rate limit exceeded | Wait and retry with backoff |
-| Insufficient quota | Add payment method or upgrade plan |
-| Model not found | Check model name spelling |
-
-### xAI API Errors
-
-| Error | Solution |
-|-------|----------|
-| Authentication failed | Verify API key |
-| Model unavailable | Use `grok-beta` |
-| Request timeout | Increase timeout in options |
-
-### Figma API Errors
-
-| Error | Solution |
-|-------|----------|
-| 403 Forbidden | Check token permissions |
-| 404 Not found | Verify file key is correct |
-| Rate limit | Wait before next request |
-| File too large | Use node filtering |
+| Error | Cause | Solution |
+|-------|-------|----------|
+| 401 Unauthorized | Invalid API key | Regenerate key and update .env |
+| 403 Forbidden | Insufficient permissions | Check token scopes |
+| 404 Not Found | Invalid file/resource ID | Verify IDs are correct |
+| 429 Rate Limited | Too many requests | Implement retry with backoff |
+| 500 Server Error | API service issue | Wait and retry |
 
 ## Resources
 
-- [OpenAI API Docs](https://platform.openai.com/docs)
-- [xAI Documentation](https://docs.x.ai/)
-- [Figma API Docs](https://www.figma.com/developers/api)
-- [Vercel Environment Variables](https://vercel.com/docs/concepts/projects/environment-variables)
+- [OpenAI API Documentation](https://platform.openai.com/docs/api-reference)
+- [xAI API Documentation](https://docs.x.ai/)
+- [Figma API Documentation](https://www.figma.com/developers/api)
+- [Office Add-ins Documentation](https://learn.microsoft.com/en-us/office/dev/add-ins/)
 
 ## Support
 
 For API-specific issues:
 
-- OpenAI: [support@openai.com](mailto:support@openai.com)
-- xAI: [xAI Support](https://x.ai/support)
-- Figma: [Figma Help Center](https://help.figma.com/)
+- **OpenAI**: [help.openai.com](https://help.openai.com/)
+- **xAI**: [x.ai/support](https://x.ai/support)
+- **Figma**: [help.figma.com](https://help.figma.com/)
+
+---
+
+*Last Updated: January 2025*

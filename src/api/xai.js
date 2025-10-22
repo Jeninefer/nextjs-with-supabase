@@ -1,22 +1,22 @@
 /**
  * xAI (Grok) API Client
- * 
+ *
  * Integrates with xAI's Grok models.
  * Documentation: https://docs.x.ai/api
  */
 
 const XAI_CONFIG = {
   apiKey: process.env.XAI_API_KEY,
-  apiUrl: 'https://api.x.ai/v1',
-  model: 'grok-beta'
+  apiUrl: "https://api.x.ai/v1",
+  model: "grok-beta",
 };
 
 /**
  * Validate xAI configuration
  */
 export function validateXAIConfig() {
-  if (!XAI_CONFIG.apiKey || XAI_CONFIG.apiKey.includes('your-xai-api-key')) {
-    console.warn('⚠️ xAI API key is not configured. Please set XAI_API_KEY in your .env file.');
+  if (!XAI_CONFIG.apiKey || XAI_CONFIG.apiKey.includes("your-xai-api-key")) {
+    console.warn("⚠️ xAI API key is not configured. Please set XAI_API_KEY in your .env file.");
     return false;
   }
   return true;
@@ -27,22 +27,22 @@ export function validateXAIConfig() {
  */
 async function xaiRequest(endpoint, data, options = {}) {
   if (!validateXAIConfig()) {
-    throw new Error('xAI is not properly configured');
+    throw new Error("xAI is not properly configured");
   }
 
   const url = `${XAI_CONFIG.apiUrl}${endpoint}`;
   const headers = {
-    'Content-Type': 'application/json',
-    'Authorization': `Bearer ${XAI_CONFIG.apiKey}`,
-    ...options.headers
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${XAI_CONFIG.apiKey}`,
+    ...options.headers,
   };
 
   try {
     const response = await fetch(url, {
-      method: 'POST',
+      method: "POST",
       headers,
       body: JSON.stringify(data),
-      ...options
+      ...options,
     });
 
     if (!response.ok) {
@@ -52,7 +52,7 @@ async function xaiRequest(endpoint, data, options = {}) {
 
     return await response.json();
   } catch (error) {
-    console.error('xAI API request failed:', error);
+    console.error("xAI API request failed:", error);
     throw error;
   }
 }
@@ -61,31 +61,31 @@ async function xaiRequest(endpoint, data, options = {}) {
  * Chat completion with Grok
  */
 export async function chatCompletion(messages, options = {}) {
-  const {
-    model = XAI_CONFIG.model,
-    temperature = 0,
-    stream = false
-  } = options;
+  const { model = XAI_CONFIG.model, temperature = 0, stream = false } = options;
 
-  return await xaiRequest('/chat/completions', {
+  return await xaiRequest("/chat/completions", {
     model,
     messages,
     temperature,
-    stream
+    stream,
   });
 }
 
 /**
  * Simple text completion helper
  */
-export async function complete(prompt, systemPrompt = 'You are Grok, a helpful AI assistant.', options = {}) {
+export async function complete(
+  prompt,
+  systemPrompt = "You are Grok, a helpful AI assistant.",
+  options = {}
+) {
   const messages = [
-    { role: 'system', content: systemPrompt },
-    { role: 'user', content: prompt }
+    { role: "system", content: systemPrompt },
+    { role: "user", content: prompt },
   ];
 
   const response = await chatCompletion(messages, options);
-  return response.choices[0]?.message?.content || '';
+  return response.choices[0]?.message?.content || "";
 }
 
 /**
@@ -101,7 +101,7 @@ Provide accurate, up-to-date analysis with sources when relevant.`;
 /**
  * Creative writing with Grok
  */
-export async function creativeWrite(topic, style = 'professional') {
+export async function creativeWrite(topic, style = "professional") {
   const systemPrompt = `You are Grok, a creative writing assistant. 
 Write in a ${style} style with wit and insight.`;
 
@@ -113,11 +113,11 @@ Write in a ${style} style with wit and insight.`;
  */
 export async function test() {
   try {
-    const response = await complete('Testing. Just say hi and hello world and nothing else.');
-    console.log('✅ xAI (Grok) connection successful:', response);
+    const response = await complete("Testing. Just say hi and hello world and nothing else.");
+    console.log("✅ xAI (Grok) connection successful:", response);
     return { success: true, response };
   } catch (error) {
-    console.error('❌ xAI (Grok) connection failed:', error.message);
+    console.error("❌ xAI (Grok) connection failed:", error.message);
     return { success: false, error: error.message };
   }
 }
@@ -131,7 +131,7 @@ export const xai = {
   analyzeWithRealTime,
   creativeWrite,
   test,
-  config: XAI_CONFIG
+  config: XAI_CONFIG,
 };
 
 export default xai;
