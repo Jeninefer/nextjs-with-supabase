@@ -82,8 +82,11 @@ async function ValidationDashboard() {
               <div className="mt-2 text-sm text-yellow-700">
                 <p>Generate validation data first:</p>
                 <pre className="mt-2 p-3 bg-gray-900 text-green-400 rounded overflow-x-auto">
-                  <code>{`cd ~/Documents/GitHub/nextjs-with-supabase
-source abaco_venv/bin/activate
+                  <code>{`# From your project root directory
+python3 notebooks/generate_validation_results.py
+
+# Or if using a virtual environment:
+source venv/bin/activate
 python3 notebooks/generate_validation_results.py`}</code>
                 </pre>
               </div>
