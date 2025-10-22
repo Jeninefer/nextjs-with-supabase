@@ -51,7 +51,7 @@
             "request": "launch",
             "program": "${workspaceFolder}/notebooks/abaco_financial_intelligence.py",
             "console": "integratedTerminal",
-            "python": "${workspaceFolder}/abaco_venv/bin/python",
+            "python": "${command:python.interpreterPath}",
             "env": {
                 "PYTHONPATH": "${workspaceFolder}"
             }
@@ -62,7 +62,7 @@
             "request": "launch",
             "program": "${workspaceFolder}/notebooks/generate_validation_results.py",
             "console": "integratedTerminal",
-            "python": "${workspaceFolder}/abaco_venv/bin/python"
+            "python": "${command:python.interpreterPath}"
         }
     ],
     "compounds": [

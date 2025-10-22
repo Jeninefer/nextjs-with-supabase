@@ -241,15 +241,24 @@ class CloudSQLConnector:
                 # Escape backticks by doubling them
                 return f"`{identifier.replace('`', '``')}`"
 
-            # Prepare INSERT statement
+            # Prepare INSERT statement with MySQL 8.0.20+ compatible syntax
             columns = ", ".join([escape_identifier(col) for col in df.columns])
             placeholders = ", ".join(["%s"] * len(df.columns))
-            insert_query = f"""
-                INSERT INTO {escape_identifier(table_name)} ({columns})
-                VALUES ({placeholders})
-                ON DUPLICATE KEY UPDATE
-                {', '.join([f'{escape_identifier(col)}=VALUES({escape_identifier(col)})' for col in df.columns if col != 'customer_id'])}
-            """
+            # Use new syntax instead of deprecated VALUES() function
+            update_cols = [col for col in df.columns if col != 'customer_id']
+            update_clause = ', '.join([f'{escape_identifier(col)}=NEW.{escape_identifier(col)}' for col in update_cols]) if update_cols else ''
+            
+            if update_clause:
+                insert_query = f"""
+                    INSERT INTO {escape_identifier(table_name)} ({columns})
+                    VALUES ({placeholders}) AS NEW
+                    ON DUPLICATE KEY UPDATE {update_clause}
+                """
+            else:
+                insert_query = f"""
+                    INSERT INTO {escape_identifier(table_name)} ({columns})
+                    VALUES ({placeholders})
+                """
 
             # Bulk insert
             rows_inserted = 0
