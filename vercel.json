@@ -16,19 +16,6 @@
       "dest": "/$1"
     }
   ],
-  "env": {
-    "SUPABASE_URL": "@supabase-url",
-    "SUPABASE_ANON_KEY": "@supabase-anon-key",
-    "FIGMA_ACCESS_TOKEN": "@figma-access-token",
-    "OPENAI_API_KEY": "@openai-api-key",
-    "XAI_API_KEY": "@xai-api-key"
-  },
-  "build": {
-    "env": {
-      "SUPABASE_URL": "@supabase-url",
-      "SUPABASE_ANON_KEY": "@supabase-anon-key"
-    }
-  },
   "headers": [
     {
       "source": "/(.*)",

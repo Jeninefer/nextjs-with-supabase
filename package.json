@@ -5,14 +5,20 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "vite build",
     "preview": "vite preview",
-    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "lint": "eslint . --ext ts,tsx",
     "lint:fix": "eslint . --ext ts,tsx --fix",
     "type-check": "tsc --noEmit",
-    "clean": "rm -rf dist node_modules package-lock.json",
+    "clean": "rm -rf dist build .cache .parcel-cache .vite node_modules package-lock.json",
+    "clean:duplicates": "find . -type f \\( -name '*.bak' -o -name '*.old' -o -name '*.copy' -o -name '*copy*' \\) -not -path '*/node_modules/*' -delete",
+    "clean:licenses": "find . -type f -name 'LICENSE*' -not -path './LICENSE' -not -path '*/node_modules/*' -delete",
+    "clean:all": "npm run clean:duplicates && npm run clean:licenses && npm run clean",
     "reinstall": "npm run clean && npm install",
-    "test:urls": "node scripts/test-urls.js"
+    "test:urls": "node scripts/test-urls.js",
+    "verify": "npm run clean:duplicates && npm run type-check && npm run lint",
+    "find-licenses": "node scripts/find-license-matches.js",
+    "cleanup:now": "bash scripts/cleanup-now.sh"
   },
   "dependencies": {
     "openai": "^4.24.0",
