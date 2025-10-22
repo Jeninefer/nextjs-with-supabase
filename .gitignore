@@ -60,3 +60,17 @@ SECURITY_WARNING.md
 **/*secret*
 **/*token*
 **/*key*.txt
+
+# Git metadata
+FETCH_HEAD
+ORIG_HEAD
+MERGE_HEAD
+
+# Scripts output
+scripts/*.log
+scripts/*.zip
+scripts/*backup*
+
+# Temporary files
+*.tmp
+*.temp
