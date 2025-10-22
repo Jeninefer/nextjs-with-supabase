@@ -3,7 +3,7 @@
     "git.autoStash": false,
     "git.confirmSync": true,
     "git.enableSmartCommit": false,
-    "git.postCommitCommand": "none",
+    "git.postCommitCommand": "",
     "git.showPushSuccessNotification": true,
     "git.untrackedChanges": "separate",
     "scm.defaultViewMode": "tree",
