@@ -45,6 +45,26 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000) to access the ABACO platform.
 
+### Python/Jupyter Setup
+
+For financial analysis notebooks:
+
+```bash
+# Set up Python environment
+chmod +x setup_abaco_environment.sh
+./setup_abaco_environment.sh
+
+# Verify setup
+chmod +x verify_abaco_environment.sh
+./verify_abaco_environment.sh
+
+# Activate and run
+source abaco_venv/bin/activate
+jupyter notebook notebooks/abaco_financial_intelligence_unified.ipynb
+```
+
+See [notebooks/README.md](./notebooks/README.md) for detailed notebook documentation.
+
 ## 🏗️ Tech Stack
 
 - **Frontend**: Next.js 15, React, TypeScript
