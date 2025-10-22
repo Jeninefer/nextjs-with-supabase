@@ -218,10 +218,10 @@ Expected output:
 
 ## Documentation Index
 
-- **[notebooks/README.md](notebooks/README.md)** - Complete notebook setup and usage guide
-- **[docs/GOOGLE_CLOUD_SETUP.md](docs/GOOGLE_CLOUD_SETUP.md)** - Detailed GCP integration guide
-- **[README.md](README.md)** - Main platform documentation
-- **[.env.example](.env.example)** - Environment variable template
+- **[notebooks/README.md](../notebooks/README.md)** - Complete notebook setup and usage guide
+- **[docs/GOOGLE_CLOUD_SETUP.md](./GOOGLE_CLOUD_SETUP.md)** - Detailed GCP integration guide
+- **[README.md](../README.md)** - Main platform documentation
+- **[.env.example](../.env.example)** - Environment variable template
 
 ## Getting Help
 
