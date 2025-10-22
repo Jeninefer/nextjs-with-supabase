@@ -113,8 +113,16 @@ vercel deploy
 
 ### Google Cloud Run
 
+For detailed Google Cloud setup instructions, including how to configure gcloud and resolve quota warnings, see [Google Cloud Setup Guide](./docs/GOOGLE_CLOUD_SETUP.md).
+
+**Quick deployment:**
+
 ```bash
-gcloud run deploy abaco-platform --source .
+# Option 1: Use the setup script (recommended)
+./setup_gcloud_abaco.sh
+
+# Option 2: Deploy manually
+gcloud run deploy abaco-platform --source . --region us-central1
 ```
 
 ## 🔒 Security & Compliance
@@ -128,9 +136,10 @@ gcloud run deploy abaco-platform --source .
 
 For detailed setup instructions, error resolution, and platform status, see:
 
-- [Complete Setup Guide](../Library/Application%20Support/Code/User/cs-script.user/integration-error.md)
 - [Quick Start Guide](./QUICK_START.md)
 - [Build Success Log](./BUILD_SUCCESS.md)
+- [Google Cloud Setup Guide](./docs/GOOGLE_CLOUD_SETUP.md)
+- [Complete Setup Guide](./docs/COMPLETE_SETUP.md) <!-- Coming soon: Comprehensive setup and troubleshooting instructions -->
 
 ### Common Issues
 
@@ -156,7 +165,18 @@ git push origin main
 python3 notebooks/abaco_financial_intelligence.py
 ```
 
-For comprehensive troubleshooting, environment status, and performance metrics, refer to the [Complete Setup Guide](../Library/Application%20Support/Code/User/cs-script.user/integration-error.md).
+**Google Cloud quota warnings:**
+
+```bash
+# Set up gcloud configuration for ABACO
+./setup_gcloud_abaco.sh
+
+# Or manually fix quota project
+gcloud auth application-default set-quota-project archivo-comercial
+gcloud auth application-default login
+```
+
+For comprehensive troubleshooting, environment status, and performance metrics, refer to the documentation guides listed above.
 
 ## 📄 License
 
