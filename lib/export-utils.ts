@@ -22,7 +22,7 @@ export function exportToCSV(
   filename: string = "abaco_customers"
 ): void {
   if (data.length === 0) {
-    throw new Error("Cannot export empty dataset");
+    throw new Error("Cannot export empty dataset. Please ensure data is loaded before attempting to export.");
   }
 
   // Generate CSV content
