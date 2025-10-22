@@ -49,7 +49,7 @@ pip install mysql-connector-python
 echo "☁️ Testing Cloud SQL connection..."
 cd ~/Documents/GitHub/nextjs-with-supabase
 # Test the connector
-python3 notebooks/cloudsql_connector.py || echo "ERROR:__main__:❌ CLOUD_SQL_PASSWORD not set in environment variables"
+python3 notebooks/cloudsql_connector.py || echo "WARNING: Cloud SQL connection test failed - CLOUD_SQL_PASSWORD not set in environment variables"
 
 echo ""
 echo "✅ ABACO Environment Setup Complete!"
