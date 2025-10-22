@@ -71,6 +71,16 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📚 Documentation
 
+### Project Guides
+
+- [VS Code Extensions Guide](VSCODE_EXTENSIONS.md) - Recommended extensions and setup
+- [AI APIs Integration](AI_APIS.md) - OpenAI, xAI, and Figma API usage
+- [Supabase Integration](SUPABASE_GUIDE.md) - Backend setup and usage
+- [Vercel Deployment](VERCEL_DEPLOY.md) - Deploy to production
+- [GitHub Secrets](GITHUB_SECRETS.md) - CI/CD configuration
+
+### External Documentation
+
 - Figma API: <https://www.figma.com/developers/api>
 - OpenAI: <https://platform.openai.com/docs>
 - xAI: <https://docs.x.ai/>
