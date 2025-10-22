@@ -2,10 +2,20 @@
 
 ## 🚀 One-Command Setup
 
-Run this single command to set up everything:
+First, ensure your environment is clean from Google Cloud interference:
 
 ```bash
-cd /Users/jenineferderas/Documents/GitHub/nextjs-with-supabase && chmod +x setup_abaco_environment.sh && ./setup_abaco_environment.sh
+# Clear Google Cloud environment variables
+./scripts/setup_clean_environment.sh
+
+# Verify environment is ready
+./scripts/verify_environment.sh
+```
+
+Then set up the ABACO environment:
+
+```bash
+chmod +x setup_abaco_environment.sh && ./setup_abaco_environment.sh
 ```
 
 ## ✅ Verification Commands
@@ -13,16 +23,19 @@ cd /Users/jenineferderas/Documents/GitHub/nextjs-with-supabase && chmod +x setup
 After setup, verify everything works:
 
 ```bash
-# Activate environment
+# 1. Verify environment is clean
+./scripts/verify_environment.sh
+
+# 2. Activate Python environment
 source abaco_venv/bin/activate
 
-# Test Python packages
+# 3. Test Python packages
 python -c "import plotly, matplotlib, pandas; print('✅ All packages working!')"
 
-# Test Next.js build
+# 4. Test Next.js build
 npm run build
 
-# Start development
+# 5. Start development
 npm run dev
 ```
 

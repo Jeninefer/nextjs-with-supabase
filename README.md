@@ -128,11 +128,23 @@ gcloud run deploy abaco-platform --source .
 
 For detailed setup instructions, error resolution, and platform status, see:
 
-- [Complete Setup Guide](../Library/Application%20Support/Code/User/cs-script.user/integration-error.md)
+- [Fix Google Cloud Dataproc Error](./docs/FIX_GOOGLE_CLOUD_ERROR.md) - **Complete solution for cloud interference**
 - [Quick Start Guide](./QUICK_START.md)
 - [Build Success Log](./BUILD_SUCCESS.md)
 
 ### Common Issues
+
+**Google Cloud Dataproc interference:**
+
+```bash
+# Quick fix - one command to solve everything
+./scripts/setup_clean_environment.sh
+
+# Verify environment is clean
+./scripts/verify_environment.sh
+```
+
+See [Fix Google Cloud Error Guide](./docs/FIX_GOOGLE_CLOUD_ERROR.md) for detailed instructions.
 
 **Port already in use:**
 
@@ -156,7 +168,11 @@ git push origin main
 python3 notebooks/abaco_financial_intelligence.py
 ```
 
-For comprehensive troubleshooting, environment status, and performance metrics, refer to the [Complete Setup Guide](../Library/Application%20Support/Code/User/cs-script.user/integration-error.md).
+For comprehensive troubleshooting and environment verification, run:
+
+```bash
+./scripts/verify_environment.sh
+```
 
 ## 📄 License
 
