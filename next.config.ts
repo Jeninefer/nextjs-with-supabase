@@ -20,9 +20,6 @@ const nextConfig: NextConfig = {
       use: [
         {
           loader: "@svgr/webpack",
-          options: {
-            // You can add svgr options here if needed
-          },
         },
       ],
     });
