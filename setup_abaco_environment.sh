@@ -1,9 +1,12 @@
 #!/bin/bash
 
+# Get the directory where this script is located
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
 echo "🚀 ABACO Environment Setup - Virtual Environment Solution"
 echo "========================================================"
 
-cd /Users/jenineferderas/Documents/GitHub/nextjs-with-supabase
+cd "$SCRIPT_DIR"
 
 # Step 1: Create virtual environment
 echo "🐍 Creating ABACO virtual environment..."
