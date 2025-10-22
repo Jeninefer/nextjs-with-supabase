@@ -1,5 +1,12 @@
 {
     "git.autofetch": true,
+    "git.autoStash": false,
+    "git.confirmSync": true,
+    "git.enableSmartCommit": false,
+    "git.postCommitCommand": "none",
+    "git.showPushSuccessNotification": true,
+    "git.untrackedChanges": "separate",
+    "scm.defaultViewMode": "tree",
     "json.schemaDownload.enable": true,
     "typescript.disableAutomaticTypeAcquisition": true,
     "redhat.telemetry.enabled": false,
@@ -10,6 +17,9 @@
         "source.fixAll.eslint": "explicit",
         "source.organizeImports": "explicit"
     },
+    "terminal.integrated.defaultProfile.linux": "bash",
+    "terminal.integrated.defaultProfile.osx": "bash",
+    "terminal.integrated.defaultProfile.windows": "PowerShell",
     "files.associations": {
         "*.tsx": "typescriptreact",
         "*.ts": "typescript",
