@@ -7,6 +7,7 @@ Comprehensive financial data analysis and visualization platform.
 import subprocess
 import sys
 import warnings
+from pathlib import Path
 warnings.filterwarnings('ignore')
 
 def install_package(package):
@@ -140,7 +141,7 @@ def main():
         create_financial_dashboard(df)
     
     # Save results
-    output_file = '/Users/jenineferderas/Documents/GitHub/nextjs-with-supabase/notebooks/financial_analysis_results.csv'
+    output_file = Path(__file__).parent / 'financial_analysis_results.csv'
     df.to_csv(output_file, index=False)
     print(f"\n💾 Results saved to: {output_file}")
     
@@ -181,8 +182,8 @@ def create_financial_dashboard(df):
         )
         
         # Save charts
-        charts_dir = '/Users/jenineferderas/Documents/GitHub/nextjs-with-supabase/notebooks/charts'
         import os
+        charts_dir = Path(__file__).parent / 'charts'
         os.makedirs(charts_dir, exist_ok=True)
         
         fig_risk.write_html(f"{charts_dir}/risk_distribution.html")
