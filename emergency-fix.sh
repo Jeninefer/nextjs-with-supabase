@@ -1,6 +1,8 @@
 #!/bin/bash
 # Emergency ABACO Repository Fix - Complete Recovery
-cd /Users/jenineferderas/Documents/GitHub/nextjs-with-supabase
+# Get the directory where this script is located and navigate to repository root
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+cd "$SCRIPT_DIR"
 
 echo "🚨 EMERGENCY FIX: Resolving merge conflicts and corrupted files..."
 echo "=================================================================="
