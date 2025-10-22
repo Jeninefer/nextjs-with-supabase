@@ -68,7 +68,6 @@
         "markdown",
         "latex",
         "plaintext",
-        "shellscript",
-        "jsonc"
+        "shellscript"
     ]
 }
