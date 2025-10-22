@@ -37,12 +37,24 @@ export async function POST(request: Request) {
 
     // Execute query (in production, add proper validation and security)
     const { stdout } = await execAsync(
-      `python3 -c "from notebooks.cloudsql_connector import CloudSQLConnector; import os; c = CloudSQLConnector(os.getenv('CLOUD_SQL_CONNECTION_NAME'), os.getenv('CLOUD_SQL_DATABASE'), os.getenv('CLOUD_SQL_USERNAME'), os.getenv('CLOUD_SQL_PASSWORD')); c.connect(); print(c.execute_query('${query}').to_json()); c.disconnect()"`
+      `python3 -c "from notebooks.cloudsql_connector import CloudSQLConnector; import os; c = CloudSQLConnector(os.getenv('CLOUD_SQL_CONNECTION_NAME'), os.getenv('CLOUD_SQL_DATABASE'), os.getenv('CLOUD_SQL_USERNAME'), os.getenv('CLOUD_SQL_PASSWORD')); c.connect(); print(c.execute_query('${query}').to_json() if c.execute_query('${query}') is not None else 'null'); c.disconnect()"`
     );
+
+    // Handle the case where the Python result is None or empty
+    const trimmed = stdout.trim();
+    if (!trimmed || trimmed === "None" || trimmed === "null") {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Query returned no results.",
+        },
+        { status: 404 }
+      );
+    }
 
     return NextResponse.json({
       success: true,
-      data: JSON.parse(stdout),
+      data: JSON.parse(trimmed),
     });
   } catch (error) {
     return NextResponse.json(
