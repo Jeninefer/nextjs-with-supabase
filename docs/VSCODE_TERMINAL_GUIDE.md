@@ -832,6 +832,6 @@ ps aux | grep -i node
 
 ---
 
-**Last Updated:** October 2025  
+**Last Updated:** June 2024  
 **Version:** 1.0  
 **Maintained by:** ABACO Development Team
