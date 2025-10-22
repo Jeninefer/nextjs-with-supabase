@@ -40,11 +40,16 @@ fi
 # Check 3: Jupyter kernel
 echo ""
 echo "3️⃣ Checking Jupyter kernel..."
-if jupyter kernelspec list 2>/dev/null | grep -q "abaco_env"; then
-    echo "   ✅ ABACO kernel registered"
+if command -v jupyter &> /dev/null; then
+    if jupyter kernelspec list 2>/dev/null | grep -q "abaco_env"; then
+        echo "   ✅ ABACO kernel registered"
+    else
+        echo "   ⚠️  ABACO kernel not found"
+        echo "   This may be normal if setup just ran"
+    fi
 else
-    echo "   ⚠️  ABACO kernel not found"
-    echo "   This may be normal if setup just ran"
+    echo "   ⚠️  Jupyter is not installed or not available in the current environment."
+    echo "   Activate your virtual environment and/or install Jupyter."
 fi
 
 # Check 4: Python packages (if environment is activated)
