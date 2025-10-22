@@ -258,8 +258,8 @@ export default function ValidationPage() {
                 {monthly_averages.slice(-12).map((row, idx) => (
                   <tr key={idx} className="border-b border-slate-700/50 hover:bg-slate-700/30">
                     <td className="p-3">{row.month}</td>
-                    <td className="p-3 text-right">{formatCurrency(parseFloat(row.avg_amount_per_operation || '0'))}</td>
-                    <td className="p-3 text-right">{formatCurrency(parseFloat(row.avg_amount_per_transfer || '0'))}</td>
+                    <td className="p-3 text-right">{formatCurrency(parseFloat(row.avg_amount_per_operation ?? '0'))}</td>
+                    <td className="p-3 text-right">{formatCurrency(parseFloat(row.avg_amount_per_transfer ?? '0'))}</td>
                   </tr>
                 ))}
               </tbody>
