@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+# Run this script with: python3 generate_validation_results.py
 """
 Generate validation results for loan data analysis
 This script creates a validation report based on the loan_analysis_corrected.py calculations
