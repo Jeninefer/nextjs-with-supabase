@@ -35,10 +35,11 @@ This error occurs when your Google Cloud user account lacks the necessary IAM pe
    - Recommended role: **Viewer** or **Editor**
 
 3. Ask them to grant you one of these roles:
-   - **Viewer** (4 permissions) - For read-only access
-   - **Editor** - For deployment capabilities
-   - **Owner** - For full project control
+   - **Viewer** – For read-only access<sup>1</sup>
+   - **Editor** – For deployment capabilities
+   - **Owner** – For full project control
 
+<sup>1</sup> The Viewer role grants many permissions (see [Google Cloud documentation](https://cloud.google.com/iam/docs/understanding-roles#viewer)), but only a subset (such as `resourcemanager.projects.get`) are required for this project.
 #### Option 2: Use the Troubleshooting Tool
 
 Visit the troubleshooting URL provided in the error message to see detailed permission issues:
