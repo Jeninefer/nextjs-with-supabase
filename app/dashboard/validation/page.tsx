@@ -94,7 +94,7 @@ export default function ValidationPage() {
   const { validation_report, monthly_transfers_operations, monthly_averages, outstanding_balance } = data;
 
   const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat('es-CR', {
+    return new Intl.NumberFormat('en-US', {
       style: 'currency',
       currency: 'USD',
       minimumFractionDigits: 2,
@@ -103,7 +103,7 @@ export default function ValidationPage() {
   };
 
   const formatNumber = (value: number) => {
-    return new Intl.NumberFormat('es-CR', {
+    return new Intl.NumberFormat('en-US', {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2
     }).format(value);
@@ -114,32 +114,32 @@ export default function ValidationPage() {
       <div className="max-w-7xl mx-auto">
         <div className="mb-8">
           <h1 className="text-4xl font-bold text-white mb-2 font-lato">
-            Resultados de Validación - Análisis de Préstamos
+            Validation Results - Loan Analysis
           </h1>
           <p className="text-purple-300 font-poppins">
-            Validación de cálculos mensuales de transferencias y operaciones
+            Validation of monthly transfer and operation calculations
           </p>
         </div>
 
         {/* Validation Status */}
         <Card className="bg-slate-800/50 border-purple-500/30 p-6 mb-6">
-          <h2 className="text-2xl font-bold text-white mb-4">Estado de Validación</h2>
+          <h2 className="text-2xl font-bold text-white mb-4">Validation Status</h2>
           <div className="grid grid-cols-2 gap-4 mb-6">
             <div className="bg-slate-700/50 p-4 rounded-lg">
               <div className="text-purple-300 text-sm">Estado</div>
               <div className={`text-2xl font-bold ${validation_report.status === 'PASSED' ? 'text-green-400' : 'text-red-400'}`}>
-                {validation_report.status === 'PASSED' ? '✅ APROBADO' : '❌ FALLADO'}
+                {validation_report.status === 'PASSED' ? '✅ PASSED' : '❌ FAILED'}
               </div>
             </div>
             <div className="bg-slate-700/50 p-4 rounded-lg">
-              <div className="text-purple-300 text-sm">Fecha de Generación</div>
+              <div className="text-purple-300 text-sm">Generation Date</div>
               <div className="text-white text-lg">
-                {new Date(validation_report.generated_at).toLocaleString('es-CR')}
+                {new Date(validation_report.generated_at).toLocaleString('en-US')}
               </div>
             </div>
           </div>
 
-          <h3 className="text-xl font-bold text-white mb-3">Verificaciones de Validación</h3>
+          <h3 className="text-xl font-bold text-white mb-3">Validation Checks</h3>
           <div className="grid grid-cols-2 gap-4">
             {Object.entries(validation_report.validation_checks).map(([key, value]) => (
               <div key={key} className="bg-slate-700/50 p-4 rounded-lg flex items-center justify-between">
@@ -154,58 +154,58 @@ export default function ValidationPage() {
 
         {/* Summary Statistics */}
         <Card className="bg-slate-800/50 border-purple-500/30 p-6 mb-6">
-          <h2 className="text-2xl font-bold text-white mb-4">Estadísticas Resumidas</h2>
+          <h2 className="text-2xl font-bold text-white mb-4">Summary Statistics</h2>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
             <div className="bg-slate-700/50 p-4 rounded-lg">
-              <div className="text-purple-300 text-sm">Total Transferencias</div>
+              <div className="text-purple-300 text-sm">Total Transfers</div>
               <div className="text-white text-2xl font-bold">
                 {validation_report.summary_statistics.total_transfers.toLocaleString()}
               </div>
             </div>
             <div className="bg-slate-700/50 p-4 rounded-lg">
-              <div className="text-purple-300 text-sm">Total Operaciones</div>
+              <div className="text-purple-300 text-sm">Total Operations</div>
               <div className="text-white text-2xl font-bold">
                 {validation_report.summary_statistics.total_operations.toLocaleString()}
               </div>
             </div>
             <div className="bg-slate-700/50 p-4 rounded-lg">
-              <div className="text-purple-300 text-sm">Promedio Operaciones/Mes</div>
+              <div className="text-purple-300 text-sm">Average Operations/Month</div>
               <div className="text-white text-2xl font-bold">
                 {formatNumber(validation_report.summary_statistics.avg_operation_count_per_month)}
               </div>
             </div>
             <div className="bg-slate-700/50 p-4 rounded-lg">
-              <div className="text-purple-300 text-sm">Monto Promedio por Operación</div>
+              <div className="text-purple-300 text-sm">Average Amount per Operation</div>
               <div className="text-white text-xl font-bold">
                 {formatCurrency(validation_report.summary_statistics.avg_amount_per_operation)}
               </div>
             </div>
             <div className="bg-slate-700/50 p-4 rounded-lg">
-              <div className="text-purple-300 text-sm">Monto Promedio por Transferencia</div>
+              <div className="text-purple-300 text-sm">Average Amount per Transfer</div>
               <div className="text-white text-xl font-bold">
                 {formatCurrency(validation_report.summary_statistics.avg_amount_per_transfer)}
               </div>
             </div>
             <div className="bg-slate-700/50 p-4 rounded-lg">
-              <div className="text-purple-300 text-sm">Desembolsos Totales</div>
+              <div className="text-purple-300 text-sm">Total Disbursements</div>
               <div className="text-white text-xl font-bold">
                 {formatCurrency(validation_report.summary_statistics.total_disbursements)}
               </div>
             </div>
             <div className="bg-slate-700/50 p-4 rounded-lg">
-              <div className="text-purple-300 text-sm">Principal Pagado Total</div>
+              <div className="text-purple-300 text-sm">Total Principal Paid</div>
               <div className="text-white text-xl font-bold">
                 {formatCurrency(validation_report.summary_statistics.total_principal_paid)}
               </div>
             </div>
             <div className="bg-slate-700/50 p-4 rounded-lg">
-              <div className="text-purple-300 text-sm">Castigos Totales</div>
+              <div className="text-purple-300 text-sm">Total Write-offs</div>
               <div className="text-white text-xl font-bold">
                 {formatCurrency(validation_report.summary_statistics.total_writeoffs)}
               </div>
             </div>
             <div className="bg-slate-700/50 p-4 rounded-lg">
-              <div className="text-purple-300 text-sm">Saldo Pendiente Final</div>
+              <div className="text-purple-300 text-sm">Final Outstanding Balance</div>
               <div className="text-white text-xl font-bold">
                 {formatCurrency(validation_report.summary_statistics.final_outstanding_balance)}
               </div>
@@ -215,16 +215,16 @@ export default function ValidationPage() {
 
         {/* Monthly Transfers and Operations */}
         <Card className="bg-slate-800/50 border-purple-500/30 p-6 mb-6">
-          <h2 className="text-2xl font-bold text-white mb-4">Transferencias y Operaciones Mensuales</h2>
+          <h2 className="text-2xl font-bold text-white mb-4">Monthly Transfers and Operations</h2>
           <div className="overflow-x-auto">
             <table className="w-full text-white">
               <thead className="bg-slate-700/50">
                 <tr>
-                  <th className="p-3 text-left">Mes</th>
-                  <th className="p-3 text-right">Transferencias</th>
-                  <th className="p-3 text-right">Operaciones</th>
-                  <th className="p-3 text-right">Total Desembolsos</th>
-                  <th className="p-3 text-right">Promedio Ops/Transfer</th>
+                  <th className="p-3 text-left">Month</th>
+                  <th className="p-3 text-right">Transfers</th>
+                  <th className="p-3 text-right">Operations</th>
+                  <th className="p-3 text-right">Total Disbursements</th>
+                  <th className="p-3 text-right">Avg Ops/Transfer</th>
                 </tr>
               </thead>
               <tbody>
@@ -244,14 +244,14 @@ export default function ValidationPage() {
 
         {/* Monthly Averages */}
         <Card className="bg-slate-800/50 border-purple-500/30 p-6 mb-6">
-          <h2 className="text-2xl font-bold text-white mb-4">Montos Promedio Mensuales</h2>
+          <h2 className="text-2xl font-bold text-white mb-4">Monthly Average Amounts</h2>
           <div className="overflow-x-auto">
             <table className="w-full text-white">
               <thead className="bg-slate-700/50">
                 <tr>
-                  <th className="p-3 text-left">Mes</th>
-                  <th className="p-3 text-right">Promedio por Operación</th>
-                  <th className="p-3 text-right">Promedio por Transferencia</th>
+                  <th className="p-3 text-left">Month</th>
+                  <th className="p-3 text-right">Average per Operation</th>
+                  <th className="p-3 text-right">Average per Transfer</th>
                 </tr>
               </thead>
               <tbody>
@@ -269,17 +269,17 @@ export default function ValidationPage() {
 
         {/* Outstanding Balance */}
         <Card className="bg-slate-800/50 border-purple-500/30 p-6 mb-6">
-          <h2 className="text-2xl font-bold text-white mb-4">Saldo Pendiente Mensual</h2>
+          <h2 className="text-2xl font-bold text-white mb-4">Monthly Outstanding Balance</h2>
           <div className="overflow-x-auto">
             <table className="w-full text-white text-sm">
               <thead className="bg-slate-700/50">
                 <tr>
-                  <th className="p-2 text-left">Mes</th>
-                  <th className="p-2 text-right">Desembolso Mensual</th>
-                  <th className="p-2 text-right">Principal Pagado</th>
-                  <th className="p-2 text-right">Interés Pagado</th>
-                  <th className="p-2 text-right">Castigos</th>
-                  <th className="p-2 text-right">Saldo Pendiente</th>
+                  <th className="p-2 text-left">Month</th>
+                  <th className="p-2 text-right">Monthly Disbursement</th>
+                  <th className="p-2 text-right">Principal Paid</th>
+                  <th className="p-2 text-right">Interest Paid</th>
+                  <th className="p-2 text-right">Write-offs</th>
+                  <th className="p-2 text-right">Outstanding Balance</th>
                 </tr>
               </thead>
               <tbody>
