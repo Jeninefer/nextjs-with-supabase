@@ -52,40 +52,13 @@
     "cs-script.execMode": "Standard",
     "cs-script.syntaxCheckOnSave": true,
     "spellright.language": [
-        "en",
-        "cs",
-        "da",
-        "de",
-        "fr",
-        "id",
-        "it",
-        "is",
-        "lt",
-        "hu",
-        "nl",
-        "pl",
-        "pt",
-        "ro",
-        "sl",
-        "fi",
-        "sv",
-        "vi",
-        "tr",
-        "el",
-        "bg",
-        "ru",
-        "uk",
-        "he",
-        "ar",
-        "hi",
-        "pa",
-        "te",
-        "ko"
+        "en"
     ],
     "spellright.documentTypes": [
         "markdown",
         "latex",
         "plaintext",
-        "shellscript"
+        "shellscript",
+        "jsonc"
     ]
 }
