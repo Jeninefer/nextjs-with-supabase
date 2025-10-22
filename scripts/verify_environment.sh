@@ -136,7 +136,7 @@ if [ -d "abaco_venv" ]; then
     ((PASSED++))
 else
     echo -e "${YELLOW}⚠️  WARNING${NC}: Python virtual environment not found"
-    echo "Run: ./setup_abaco_environment.sh"
+    echo "Run: ./scripts/setup_clean_environment.sh"
     ((WARNINGS++))
 fi
 echo ""
