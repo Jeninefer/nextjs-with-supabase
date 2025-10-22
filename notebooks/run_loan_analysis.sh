@@ -1,4 +1,6 @@
 #!/bin/bash
+# NOTE: Before running this script, ensure it is executable by running:
+#   chmod +x run_loan_analysis.sh
 #
 # Example script to run ABACO Loan Analysis
 # This demonstrates how to use the loan analysis script with custom data paths
