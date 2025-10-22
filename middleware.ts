@@ -17,7 +17,10 @@ export async function middleware(request: NextRequest) {
   }
 
   // Check if Supabase credentials are configured
-  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+  if (
+    process.env.NODE_ENV === 'development' &&
+    (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)
+  ) {
     // If no credentials, allow access (for development without Supabase)
     return NextResponse.next({ request })
   }
