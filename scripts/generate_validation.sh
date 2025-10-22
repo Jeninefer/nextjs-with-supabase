@@ -27,8 +27,12 @@ python3 -c "import pandas, numpy" 2>/dev/null || {
 # Generate validation results
 echo ""
 echo "🔄 Generating validation results..."
-cd notebooks
+if ! pushd notebooks > /dev/null; then
+    echo "❌ Error: Failed to change directory to 'notebooks'"
+    exit 1
+fi
 python3 generate_validation_results.py
+popd > /dev/null
 
 echo ""
 echo "================================================"
