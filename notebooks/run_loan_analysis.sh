@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # NOTE: Before running this script, ensure it is executable by running:
 #   chmod +x run_loan_analysis.sh
 #
