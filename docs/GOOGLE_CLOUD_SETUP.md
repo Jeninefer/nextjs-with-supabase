@@ -228,7 +228,7 @@ If you see authentication errors:
 
 For issues specific to:
 - **GCP Setup**: Consult [Google Cloud Support](https://cloud.google.com/support)
-- **ABACO Platform**: Contact tech@abaco-platform.com
+- **ABACO Platform**: [Open an issue on GitHub](https://github.com/abaco-platform/abaco/issues)
 - **Notebook Issues**: See [notebooks/README.md](../notebooks/README.md)
 
 ---
