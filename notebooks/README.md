@@ -16,6 +16,10 @@ cd /path/to/nextjs-with-supabase
 chmod +x setup_abaco_environment.sh
 ./setup_abaco_environment.sh
 
+# Verify setup (optional but recommended)
+chmod +x verify_abaco_environment.sh
+./verify_abaco_environment.sh
+
 # Activate virtual environment
 source abaco_venv/bin/activate
 ```
