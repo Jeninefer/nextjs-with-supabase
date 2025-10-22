@@ -156,7 +156,7 @@ check_permissions() {
             "storage.buckets.get")
                 # 'gcloud storage buckets list' is only available in newer gcloud SDKs.
                 # Check if 'gcloud storage' is available; if not, fall back to 'gsutil ls'.
-                if gcloud help storage &> /dev/null; then
+                if gcloud storage --help &> /dev/null; then
                     if gcloud storage buckets list --project="$PROJECT_ID" &> /dev/null; then
                         print_success "$permission"
                     else
