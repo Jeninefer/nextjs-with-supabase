@@ -50,5 +50,42 @@
     ],
     "nextjs.serverPort": 3000,
     "cs-script.execMode": "Standard",
-    "cs-script.syntaxCheckOnSave": true
+    "cs-script.syntaxCheckOnSave": true,
+    "spellright.language": [
+        "en",
+        "cs",
+        "da",
+        "de",
+        "fr",
+        "id",
+        "it",
+        "is",
+        "lt",
+        "hu",
+        "nl",
+        "pl",
+        "pt",
+        "ro",
+        "sl",
+        "fi",
+        "sv",
+        "vi",
+        "tr",
+        "el",
+        "bg",
+        "ru",
+        "uk",
+        "he",
+        "ar",
+        "hi",
+        "pa",
+        "te",
+        "ko"
+    ],
+    "spellright.documentTypes": [
+        "markdown",
+        "latex",
+        "plaintext",
+        "shellscript"
+    ]
 }
