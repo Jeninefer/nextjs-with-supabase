@@ -92,7 +92,7 @@ def perform_validation_checks(df):
             utilization_ratio = df['monthly_spending'] / df['credit_limit']
             invalid_ratios = int(((utilization_ratio < 0) | (utilization_ratio > 2)).sum())
             checks['formulaConsistency'] = {
-                'passed': bool(invalid_ratios < 10),
+                'passed': invalid_ratios < 10,
                 'message': 'Financial formulas are consistent across all records' if invalid_ratios == 0
                           else f'Found {invalid_ratios} records with unusual utilization ratios'
             }
