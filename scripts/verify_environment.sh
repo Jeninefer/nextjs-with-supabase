@@ -111,7 +111,7 @@ elif [ -n "$ZSH_VERSION" ]; then
     SHELL_CONFIG="$HOME/.zshrc"
 fi
 
-if [ ! -z "$SHELL_CONFIG" ] && [ -f "$SHELL_CONFIG" ]; then
+if [ -n "$SHELL_CONFIG" ] && [ -f "$SHELL_CONFIG" ]; then
     if grep -q "CLOUDSDK_CORE_DISABLE_PROMPTS" "$SHELL_CONFIG"; then
         echo -e "${GREEN}✅ PASS${NC}: Shell configured to prevent Google Cloud interference"
         ((PASSED++))
