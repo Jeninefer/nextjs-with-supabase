@@ -265,7 +265,6 @@ A: Delete the `abaco_venv` directory and run `./setup_abaco_environment.sh` agai
 
 - **Technical Issues:** [Report a bug or request help on GitHub Issues](https://github.com/Jeninefer/nextjs-with-supabase/issues)
 - **GCP-Specific:** [Google Cloud Support](https://cloud.google.com/support)
-- **GitHub Issues:** [Report a bug](https://github.com/Jeninefer/nextjs-with-supabase/issues)
 
 ## Best Practices
 
