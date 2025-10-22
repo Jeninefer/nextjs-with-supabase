@@ -69,31 +69,12 @@ jobs:
           else
             echo "🔍 **Preview deployment created**" >> $GITHUB_STEP_SUMMARY
           fi
-
-      - name: Project Structure Summary
+      - name: Notify Vercel deployment
         run: |
-          echo "### 📁 Project Structure" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
-          echo "src/" >> $GITHUB_STEP_SUMMARY
-          echo "├── components/" >> $GITHUB_STEP_SUMMARY
-          echo "│   └── slides/           # Abaco presentation components" >> $GITHUB_STEP_SUMMARY
-          echo "│       ├── ObjectiveSlide.tsx" >> $GITHUB_STEP_SUMMARY
-          echo "│       ├── ChannelStrategySlide.tsx" >> $GITHUB_STEP_SUMMARY
-          echo "│       ├── KAMStrategySlide.tsx" >> $GITHUB_STEP_SUMMARY
-          echo "│       ├── MarketingFunnelSlide.tsx" >> $GITHUB_STEP_SUMMARY
-          echo "│       └── TacticsSlide.tsx" >> $GITHUB_STEP_SUMMARY
-          echo "├── api/                  # API integrations" >> $GITHUB_STEP_SUMMARY
-          echo "├── supabase/            # Supabase configuration" >> $GITHUB_STEP_SUMMARY
-          echo "└── styles/              # CSS and design system" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "scripts/" >> $GITHUB_STEP_SUMMARY
-          echo "├── find-license-matches.js  # License detection" >> $GITHUB_STEP_SUMMARY
-          echo "├── cleanup-now.sh          # Automated cleanup" >> $GITHUB_STEP_SUMMARY
-          echo "└── pre-commit-check.sh     # Git hooks" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "docs/" >> $GITHUB_STEP_SUMMARY
-          echo "├── AI_APIS.md              # API integration guide" >> $GITHUB_STEP_SUMMARY
-          echo "├── SUPABASE_GUIDE.md       # Supabase setup" >> $GITHUB_STEP_SUMMARY
-          echo "└── DESIGN_SYSTEM.md        # Design guidelines" >> $GITHUB_STEP_SUMMARY
-          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+          if [ "${{ github.event_name }}" == "pull_request" ]; then
+            DEPLOYMENT_URL=$(echo ${{ steps.vercel.outputs.details }} | jq -r '.url')
+            echo "🔗 View Preview Deployment: $DEPLOYMENT_URL" >> $GITHUB_STEP_SUMMARY
+          fi
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          GITHUB_STEP_SUMMARY: ${{ github.step_summary }}
