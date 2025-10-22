@@ -196,7 +196,26 @@ class CloudSQLConnector:
 
             # Whitelist of allowed tables and their columns
             allowed_tables = {
-                "abaco_customers": {"customer_id", "account_balance", "credit_score", "risk_category"},
+                "abaco_customers": {
+                    "customer_id",
+                    "account_balance",
+                    "credit_score",
+                    "risk_category",
+                    "credit_limit",
+                    "monthly_spending",
+                    "loan_amount",
+                    "loan_status",
+                    "last_payment_date",
+                    "account_open_date",
+                    "customer_name",
+                    "email",
+                    "phone_number",
+                    "address",
+                    "city",
+                    "state",
+                    "zip_code",
+                    "country"
+                },
                 # Add other allowed tables and their columns here as needed
             }
 
