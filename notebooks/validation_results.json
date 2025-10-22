@@ -1,0 +1,34 @@
+{
+  "timestamp": "2025-10-22T13:28:17.647027",
+  "totalLoans": 1000,
+  "totalDisbursements": "$48,329,096.44",
+  "totalOutstanding": "$9,804,120.00",
+  "checks": {
+    "negativeBalance": {
+      "passed": true,
+      "message": "All account balances are positive"
+    },
+    "monotonicDisbursement": {
+      "passed": true,
+      "message": "All loan disbursements are within reasonable limits"
+    },
+    "formulaConsistency": {
+      "passed": true,
+      "message": "Found 6 records with unusual utilization ratios"
+    },
+    "reasonableFinalBalance": {
+      "passed": true,
+      "message": "All account balances are within reasonable ranges"
+    }
+  },
+  "summary": {
+    "totalCustomers": 1000,
+    "avgBalance": "$9,804.12",
+    "avgCreditScore": 606.4,
+    "riskDistribution": {
+      "Low": 333,
+      "Medium": 341,
+      "High": 326
+    }
+  }
+}
