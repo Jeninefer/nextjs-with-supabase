@@ -128,7 +128,8 @@ gcloud run deploy abaco-platform --source .
 
 For detailed setup instructions, error resolution, and platform status, see:
 
-- [Complete Setup Guide](../Library/Application%20Support/Code/User/cs-script.user/integration-error.md)
+- [Notebooks Setup & Troubleshooting](./notebooks/README.md)
+- [Google Cloud Setup Guide](./docs/GOOGLE_CLOUD_SETUP.md)
 - [Quick Start Guide](./QUICK_START.md)
 - [Build Success Log](./BUILD_SUCCESS.md)
 
@@ -153,10 +154,24 @@ git push origin main
 **Python analysis not running:**
 
 ```bash
-python3 notebooks/abaco_financial_intelligence.py
+# Set up Python environment first
+chmod +x setup_abaco_environment.sh
+./setup_abaco_environment.sh
+
+# Then activate and run
+source abaco_venv/bin/activate
+jupyter notebook notebooks/abaco_financial_intelligence_unified.ipynb
 ```
 
-For comprehensive troubleshooting, environment status, and performance metrics, refer to the [Complete Setup Guide](../Library/Application%20Support/Code/User/cs-script.user/integration-error.md).
+**Cloud Dataproc API Error:**
+
+This error typically means your environment is trying to use Google Cloud services. The ABACO platform runs locally by default. See [Google Cloud Setup Guide](./docs/GOOGLE_CLOUD_SETUP.md) for details.
+
+```bash
+# Quick fix: Clear GCP environment variables
+unset GOOGLE_APPLICATION_CREDENTIALS
+unset GOOGLE_CLOUD_PROJECT
+```
 
 ## 📄 License
 
