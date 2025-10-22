@@ -317,7 +317,7 @@ if __name__ == "__main__":
         db.create_schema()
 
         # Upload data (if CSV exists)
-        csv_path = "notebooks/financial_analysis_results.csv"
+        csv_path = Path(__file__).parent / "financial_analysis_results.csv"
         if Path(csv_path).exists():
             db.upload_csv(csv_path, "abaco_customers")
 
