@@ -95,8 +95,7 @@ class CloudSQLConnector:
             sql = f"INSERT INTO {table_name} ({columns}) VALUES ({placeholders})"
 
             # Bulk insert
-            for _, row in df.iterrows():
-                self.cursor.execute(sql, tuple(row))
+            self.cursor.executemany(sql, df.values.tolist())
 
             self.connection.commit()
             logger.info(f"✅ Uploaded {len(df)} rows to {table_name}")
