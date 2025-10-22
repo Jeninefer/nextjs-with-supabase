@@ -18,7 +18,7 @@ export default function KAMStrategySlide() {
               <p>• AUM (live): <span className="text-green-400 font-bold">$7.28M</span></p>
               <p>• Active clients: <span className="text-blue-400 font-bold">188</span></p>
               <p>• Target (Dec-2026): <span className="text-purple-400 font-bold">$16.276M</span></p>
-              <p className="text-[10px] text-gray-400 mt-1">+$8.908M net (~$0.636M/month avg)</p>
+              <p className="text-[10px] text-gray-400 mt-1">+$8.996M net (~$0.643M/month avg)</p>
             </div>
           </div>
 
