@@ -1,6 +1,8 @@
 #!/bin/bash
 # ABACO Platform - Git Repository Cleanup and Recovery
-cd /Users/jenineferderas/Documents/GitHub/nextjs-with-supabase
+# Get the directory where this script is located
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+cd "$SCRIPT_DIR"
 
 echo "🔧 ABACO Git Repository Cleanup"
 echo "================================"

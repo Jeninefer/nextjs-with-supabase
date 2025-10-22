@@ -72,8 +72,7 @@ SUPABASE_SERVICE_ROLE_KEY=your-service-role-key-from-supabase-start
 ### Deployment Commands
 
 ```bash
-# Execute complete cleanup and sync
-cd /Users/jenineferderas/Documents/GitHub/nextjs-with-supabase
+# Execute complete cleanup and sync from the repository root
 chmod +x cleanup_and_sync.sh
 ./cleanup_and_sync.sh
 
@@ -95,7 +94,7 @@ print('🔒 Security: License compliant')
 Now run the cleanup script to complete the repository optimization:
 
 ```bash
-cd /Users/jenineferderas/Documents/GitHub/nextjs-with-supabase
+# From the repository root
 chmod +x cleanup_and_sync.sh
 ./cleanup_and_sync.sh
 ```

@@ -3,7 +3,9 @@
 echo "🧹 ABACO Repository Cleanup & Supabase Fix"
 echo "=========================================="
 
-cd /Users/jenineferderas/Documents/GitHub/nextjs-with-supabase
+# Get the directory where this script is located
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+cd "$SCRIPT_DIR/.."
 
 # 1. Find and remove duplicate files
 echo "🔍 Scanning for duplicate files..."

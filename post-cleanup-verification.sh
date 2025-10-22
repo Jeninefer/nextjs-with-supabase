@@ -1,7 +1,9 @@
 #!/bin/bash
 # ABACO Platform - Final Verification Script
 
-cd /Users/jenineferderas/Documents/GitHub/nextjs-with-supabase
+# Get the directory where this script is located
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+cd "$SCRIPT_DIR"
 
 echo "🔍 ABACO POST-CLEANUP VERIFICATION REPORT"
 echo "=========================================="
