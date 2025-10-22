@@ -46,11 +46,16 @@ check_gcloud() {
 # Function to check if user is authenticated
 check_auth() {
     print_info "Checking authentication..."
-    if ! gcloud auth list --filter=status:ACTIVE --format="value(account)" &> /dev/null; then
+    CURRENT_USER=$(gcloud auth list --filter=status:ACTIVE --format="value(account)" 2>/dev/null)
+    if [ -z "$CURRENT_USER" ]; then
         print_warning "Not authenticated. Running gcloud auth login..."
         gcloud auth login
+        CURRENT_USER=$(gcloud auth list --filter=status:ACTIVE --format="value(account)" 2>/dev/null)
+        if [ -z "$CURRENT_USER" ]; then
+            print_error "Authentication failed"
+            exit 1
+        fi
     fi
-    CURRENT_USER=$(gcloud auth list --filter=status:ACTIVE --format="value(account)")
     print_success "Authenticated as: $CURRENT_USER"
 }
 
