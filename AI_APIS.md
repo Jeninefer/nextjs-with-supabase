@@ -118,7 +118,7 @@ const slideContent = await openai.generateSlideContent('AI in Healthcare', 1, 10
 - Code generation
 - OpenAI-compatible API
 
-### xAI Usage
+### xAI Usage Examples
 
 ```javascript
 import { xai } from './api/xai';
@@ -144,7 +144,7 @@ console.log(test.response);
 
 ### xAI API Endpoint
 
-```
+```text
 https://api.x.ai/v1/chat/completions
 ```
 
@@ -158,7 +158,7 @@ https://api.x.ai/v1/chat/completions
 - Comments management
 - Version history
 
-### Figma Usage
+### Figma Usage Examples
 
 ```javascript
 import { figma } from './api/figma';
@@ -187,7 +187,7 @@ await figma.postComment('file-key', 'Great design!', { x: 100, y: 200 });
 
 ### Figma API Endpoint
 
-```
+```text
 https://api.figma.com/v1/
 ```
 
@@ -358,4 +358,5 @@ For API-specific issues:
 
 ---
 
-*Last Updated: January 2025*
+**Last Updated:** January 2025  
+**⚠️ Remember to keep your API keys secure and never commit them to version control!**
