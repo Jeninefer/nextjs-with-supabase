@@ -350,7 +350,10 @@ gcloud config set project $PROJECT
 
 # Fix quota project warning
 echo "✓ Setting ADC quota project"
-gcloud auth application-default set-quota-project $PROJECT 2>/dev/null || echo "⚠ ADC quota project update requires re-authentication"
+if ! gcloud auth application-default set-quota-project $PROJECT 2>/dev/null; then
+    echo "⚠ ADC quota project update failed. You may need to re-authenticate ADC:"
+    echo "    gcloud auth application-default login"
+fi
 
 # Enable required APIs
 echo "✓ Enabling required APIs..."
