@@ -1,5 +1,3 @@
-import React from 'react';
-
 export default function KAMStrategySlide() {
   return (
     <div className="h-screen w-full bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 flex flex-col justify-between p-8 overflow-hidden">

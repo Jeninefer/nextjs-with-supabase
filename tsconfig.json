@@ -20,6 +20,9 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     
+    /* Ignore deprecations */
+    "ignoreDeprecations": "6.0",
+    
     /* Path resolution */
     "baseUrl": ".",
     "paths": {
@@ -30,6 +33,5 @@
     }
   },
   "include": ["src"],
-  "exclude": ["node_modules", "dist", "build"],
-  "references": [{ "path": "./tsconfig.node.json" }]
+  "exclude": ["node_modules", "dist", "build"]
 }

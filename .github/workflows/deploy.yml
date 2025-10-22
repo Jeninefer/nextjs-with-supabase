@@ -1,16 +1,10 @@
-name: Deploy to Vercel
+name: Deploy Office Add-in to Vercel
 
 on:
   push:
-    branches:
-      - main
+    branches: [main, office-addin-figma]
   pull_request:
-    branches:
-      - main
-
-env:
-  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+    branches: [main]
 
 jobs:
   deploy:
@@ -29,42 +23,81 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Run linter
+      - name: Run license cleanup
+        run: npm run clean:duplicates || true
+
+      - name: Type check
+        run: npm run type-check
+
+      - name: Lint code
         run: npm run lint || true
 
       - name: Build project
         run: npm run build
         env:
-          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
-          FIGMA_ACCESS_TOKEN: ${{ secrets.FIGMA_ACCESS_TOKEN }}
-          FIGMA_FILE_KEY: ${{ secrets.FIGMA_FILE_KEY }}
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          XAI_API_KEY: ${{ secrets.XAI_API_KEY }}
+          # Only include environment variables that are actually defined in repository secrets
+          NODE_ENV: production
 
       - name: Install Vercel CLI
         run: npm install --global vercel@latest
+        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/office-addin-figma'
 
-      - name: Pull Vercel Environment Information
-        run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
-
-      - name: Build Project Artifacts
-        run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+      - name: Deploy to Vercel (Preview)
+        if: github.event_name == 'pull_request'
+        run: vercel --token=${{ secrets.VERCEL_TOKEN }} --confirm
         env:
-          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
-          FIGMA_ACCESS_TOKEN: ${{ secrets.FIGMA_ACCESS_TOKEN }}
-          FIGMA_FILE_KEY: ${{ secrets.FIGMA_FILE_KEY }}
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          XAI_API_KEY: ${{ secrets.XAI_API_KEY }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
-      - name: Deploy Project Artifacts to Vercel
-        run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
+      - name: Deploy to Vercel (Production)
+        if: github.ref == 'refs/heads/main'
+        run: vercel --prod --token=${{ secrets.VERCEL_TOKEN }} --confirm
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
-      - name: Add deployment URL to summary
+      - name: Add deployment summary
         run: |
-          echo "### 🚀 Deployment Successful!" >> $GITHUB_STEP_SUMMARY
+          echo "### 🚀 Deployment Status" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "Your Office Add-in has been deployed to Vercel." >> $GITHUB_STEP_SUMMARY
+          echo "✅ Office Add-in build completed successfully!" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "Check your Vercel dashboard for the deployment URL." >> $GITHUB_STEP_SUMMARY
+          echo "**Branch:** \`${{ github.ref_name }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "**Commit:** \`${{ github.sha }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          if [ "${{ github.ref }}" == "refs/heads/main" ]; then
+            echo "🌍 **Production deployment initiated**" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "🔍 **Preview deployment created**" >> $GITHUB_STEP_SUMMARY
+          fi
+      - name: Notify Vercel deployment
+        run: |
+          if [ "${{ github.event_name }}" == "pull_request" ]; then
+            DEPLOYMENT_URL=$(echo ${{ steps.vercel.outputs.details }} | jq -r '.url')
+            echo "🔗 View Preview Deployment: $DEPLOYMENT_URL" >> $GITHUB_STEP_SUMMARY
+          fi
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          GITHUB_STEP_SUMMARY: ${{ github.step_summary }}
+
+src/
+├── components/
+│   └── slides/           # Abaco presentation components
+│       ├── ObjectiveSlide.tsx
+│       ├── ChannelStrategySlide.tsx
+│       ├── KAMStrategySlide.tsx
+│       ├── MarketingFunnelSlide.tsx
+│       └── TacticsSlide.tsx
+├── api/                  # API integrations
+├── supabase/            # Supabase configuration
+└── styles/              # CSS and design system
+
+scripts/
+├── find-license-matches.js  # License detection
+├── cleanup-now.sh          # Automated cleanup
+└── pre-commit-check.sh     # Git hooks
+
+docs/
+├── AI_APIS.md              # API integration guide
+├── SUPABASE_GUIDE.md       # Supabase setup
+└── DESIGN_SYSTEM.md        # Design guidelines

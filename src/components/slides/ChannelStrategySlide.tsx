@@ -1,6 +1,4 @@
-import React from 'react';
-
-const ChannelStrategySlide = () => {
+export default function ChannelStrategySlide() {
   return (
     <div className="p-8">
       <h2 className="text-2xl font-bold text-white mb-6">Estrategia de Canales</h2>
@@ -19,5 +17,3 @@ const ChannelStrategySlide = () => {
     </div>
   );
 };
-
-export default ChannelStrategySlide;

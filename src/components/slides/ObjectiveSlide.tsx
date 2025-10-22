@@ -1,6 +1,4 @@
-import React from 'react';
-
-const ObjectiveSlide = () => {
+export default function ObjectiveSlide() {
   return (
     <div className="p-8">
       <div className="text-center mb-8">
@@ -25,5 +23,3 @@ const ObjectiveSlide = () => {
     </div>
   );
 };
-
-export default ObjectiveSlide;

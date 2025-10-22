@@ -12,6 +12,7 @@ const urls = [
   { url: 'https://www.figma.com/developers/api', expectRedirect: true },
   { url: 'https://help.openai.com/', expectRedirect: true },
   { url: 'https://help.figma.com/', expectRedirect: true }
+  
 ];
 
 async function testUrl(urlInfo) {

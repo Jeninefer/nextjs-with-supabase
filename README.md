@@ -1,107 +1,82 @@
-# Figma Office Add-in with AI Integration
+# 🏢 Abaco Office Add-in - Figma Integration
 
-> PowerPoint add-in that integrates Figma designs with AI-powered content generation using OpenAI, xAI (Grok), and Figma APIs.
+> Office Add-in with Figma, OpenAI, and xAI API integrations for Abaco Technologies
 
-## 🚀 Quick Start
+[![Deploy to Vercel](https://github.com/Jeninefer/nextjs-with-supabase/actions/workflows/deploy.yml/badge.svg)](https://github.com/Jeninefer/nextjs-with-supabase/actions/workflows/deploy.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-```bash
-# Complete audit and setup
-bash scripts/complete-audit.sh
+## 🚀 Features
 
-# Or run individual scripts
-bash scripts/fix-github-secrets.sh    # Check security
-node scripts/test-urls.js              # Test API endpoints
-bash scripts/setup-github.sh           # Setup GitHub
-bash scripts/sync-repo.sh              # Sync to GitHub
-```
+- ✅ **Office Add-in Integration** - PowerPoint, Word, Excel compatibility
+- ✅ **Figma API** - Import designs and extract content
+- ✅ **AI-Powered Content** - OpenAI GPT-4 and xAI Grok integration
+- ✅ **Supabase Backend** - Real-time data and authentication
+- ✅ **Abaco Presentation Slides** - Interactive React components
+- ✅ **License Management** - Automated cleanup and detection tools
+- ✅ **Security First** - Environment variable protection and pre-commit hooks
 
-## ⚠️ Security Notice
+## 📦 Quick Start
 
-**IMPORTANT**: Before pushing to GitHub, ensure:
-- No API keys in `.env` file are committed
-- All secrets are in `.env` (not tracked by git)
-- API keys are rotated if previously exposed
-
-Run `bash scripts/fix-github-secrets.sh` to check for issues.
-
-# Figma Office Add-in
-
-PowerPoint add-in that imports Figma designs and generates AI-powered content using OpenAI, xAI (Grok), and Supabase.
-
-## Features
-
-- 🎨 **Figma Integration**: Import designs from Figma file nuVKwuPuLS7VmLFvqzOX1G
-- 🤖 **AI Content Generation**: OpenAI GPT-4 and xAI Grok
-- ☁️ **Cloud Storage**: Supabase backend
-- 🚀 **Automated Deployment**: GitHub Actions + Vercel
-
-## Quick Start
-
-### Prerequisites
-
-- Node.js v22.17.0+
-- PowerPoint Desktop or Online
-- API keys (Figma, OpenAI, xAI, Supabase)
-
-### Installation
+### 1. Clone & Install
 
 ```bash
+git clone https://github.com/Jeninefer/nextjs-with-supabase.git
+cd nextjs-with-supabase
+git checkout office-addin-figma
 npm install
-cp .env.example .env
-# Edit .env with your API keys
-npm run dev-server
 ```
 
-### Sideload in PowerPoint
-
-1. Open PowerPoint
-2. Insert > My Add-ins > Upload My Add-in
-3. Select manifest.xml
-4. Click "Figma Import" in ribbon
-
-## Configuration
-
-Edit `.env`:
-
-```env
-FIGMA_ACCESS_TOKEN=your-token
-FIGMA_FILE_KEY=nuVKwuPuLS7VmLFvqzOX1G
-OPENAI_API_KEY=your-key
-XAI_API_KEY=your-key
-SUPABASE_URL=your-url
-SUPABASE_ANON_KEY=your-key
-```
-
-## Deployment
-
-### GitHub Actions
-
-Add secrets to repository, push to main branch for automatic deployment.
-
-See: https://github.com/Jeninefer/OfficeAddinApps-Figma/settings/secrets/actions
-
-### Manual
+### 2. Environment Setup
 
 ```bash
-npm run build
-vercel --prod
+# Copy environment template
+cp .env.example .env
+
+# Edit with your API keys (see .env.example for details)
+nano .env
 ```
 
-## Scripts
+### 3. Development
 
-- `npm run dev-server` - Development
-- `npm run build` - Production build
-- `npm run lint` - Check code
-- `npm start` - Debug in Office
+```bash
+# Start development server
+npm run dev
 
-## Documentation
+# Run in parallel terminal for type checking
+npm run type-check
 
-- Figma API: https://www.figma.com/developers/api
-- OpenAI: https://platform.openai.com/docs
-- xAI: https://docs.x.ai/
-- Supabase: https://supabase.com/docs
-- Office Add-ins: https://learn.microsoft.com/office/dev/add-ins/
+# Clean duplicate files
+npm run clean:duplicates
+```
 
-## Repository
+## 🔧 Configuration
 
-https://github.com/Jeninefer/OfficeAddinApps-Figma
+### Required API Keys
+
+| Service | Get From | Environment Variable |
+|---------|----------|---------------------|
+| **Supabase** | [Dashboard](https://supabase.com/dashboard) | `SUPABASE_URL`, `SUPABASE_ANON_KEY` |
+| **OpenAI** | [Platform](https://platform.openai.com/api-keys) | `OPENAI_API_KEY` |
+| **xAI (Grok)** | [Console](https://console.x.ai/) | `XAI_API_KEY` |
+| **Figma** | [Settings](https://www.figma.com/settings) | `FIGMA_ACCESS_TOKEN` |
+
+### GitHub Secrets (for CI/CD)
+
+Add these to your repository secrets at:
+`https://github.com/YOUR_USERNAME/YOUR_REPO/settings/secrets/actions`
+
+## 📜 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 📚 Documentation
+
+- Figma API: <https://www.figma.com/developers/api>
+- OpenAI: <https://platform.openai.com/docs>
+- xAI: <https://docs.x.ai/>
+- Supabase: <https://supabase.com/docs>
+- Office Add-ins: <https://learn.microsoft.com/office/dev/add-ins/>
+
+## 📁 Repository
+
+<https://github.com/Jeninefer/OfficeAddinApps-Figma>

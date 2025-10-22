@@ -157,6 +157,7 @@ git push origin main
 ### 1. Test the Deployment
 
 Visit your Vercel URL to verify:
+
 - ✅ Static files are served correctly
 - ✅ Environment variables are loaded
 - ✅ HTTPS is working
@@ -190,6 +191,7 @@ vercel logs [deployment-url]
 ### Vercel Dashboard
 
 Monitor in real-time:
+
 - Deployment status
 - Build logs
 - Runtime logs
@@ -363,6 +365,7 @@ vercel env ls
 7. ✅ Configure custom domain (optional)
 
 For detailed integration guides, see:
+
 - [SUPABASE_GUIDE.md](./SUPABASE_GUIDE.md) - Supabase setup
 - [AI_APIS.md](./AI_APIS.md) - AI APIs setup (OpenAI, xAI)
 - [FIGMA_API.md](./FIGMA_API.md) - Figma API setup
