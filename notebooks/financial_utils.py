@@ -127,9 +127,7 @@ class FinancialDataGenerator:
         )
 
         # Customer lifetime value estimate
-        df["lifetime_value"] = np.round(
-            df["profit_potential"] * df["years_with_bank"] * 12, 2
-        )
+        df["lifetime_value"] = np.round(df["profit_potential"] * df["years_with_bank"] * 12, 2)
 
         return df
 
@@ -191,9 +189,9 @@ class FinancialAnalyzer:
         profit_metrics = {
             "total_profit_potential": df["profit_potential"].sum(),
             "average_profit_per_customer": df["profit_potential"].mean(),
-            "top_10_percent_customers": df.nlargest(
-                int(len(df) * 0.1), "lifetime_value"
-            )["lifetime_value"].sum(),
+            "top_10_percent_customers": df.nlargest(int(len(df) * 0.1), "lifetime_value")[
+                "lifetime_value"
+            ].sum(),
             "profit_by_account_type": df.groupby("account_type")["profit_potential"]
             .sum()
             .to_dict(),
@@ -204,37 +202,63 @@ class FinancialAnalyzer:
         return profit_metrics
 
 
-def export_analysis_results(df: pd.DataFrame, metrics: Dict, filename: str) -> str:
-    """Export analysis results to files"""
-    from abaco_config import EXPORTS_DIR
+def export_analysis_results(
+    df: pd.DataFrame, metrics: Dict, filename: str, encoding: str = "utf-8"
+) -> str:
+    """
+    Export analysis results to files with proper encoding.
+
+    Args:
+        df: DataFrame to export
+        metrics: Dictionary of metrics to export as JSON
+        filename: Base filename for exports
+        encoding: File encoding (default: utf-8)
+
+    Returns:
+        Path to the exported CSV file
+
+    Raises:
+        IOError: If file writing fails
+        ValueError: If DataFrame is empty
+    """
+    from pathlib import Path
+    import json
+
+    # Validate inputs
+    if df.empty:
+        raise ValueError("Cannot export empty DataFrame")
+
+    if not filename:
+        raise ValueError("Filename cannot be empty")
+
+    # Create exports directory if it doesn't exist
+    exports_dir = Path(__file__).parent / "exports"
+    exports_dir.mkdir(parents=True, exist_ok=True)
 
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
 
-    # Export main dataset
-    csv_path = EXPORTS_DIR / f"{filename}_{timestamp}.csv"
-    df.to_csv(csv_path, index=False)
+    try:
+        # Export main dataset with explicit encoding
+        csv_path = exports_dir / f"{filename}_{timestamp}.csv"
+        df.to_csv(csv_path, index=False, encoding=encoding)
+        logger.info(f"📊 CSV exported: {csv_path}")
 
-    # Export metrics summary
-    metrics_path = EXPORTS_DIR / f"{filename}_metrics_{timestamp}.json"
-    import json
+        # Export metrics summary with explicit encoding
+        metrics_path = exports_dir / f"{filename}_metrics_{timestamp}.json"
 
-    with open(metrics_path, "w") as f:
-        json.dump(metrics, f, indent=2, default=str)
+        with open(metrics_path, "w", encoding=encoding) as f:
+            json.dump(
+                metrics, f, indent=2, default=str, ensure_ascii=False  # Preserve Unicode characters
+            )
 
-    logger.info(f"✅ Analysis results exported to {EXPORTS_DIR}")
-    return str(csv_path)
+        logger.info(f"📈 Metrics exported: {metrics_path}")
+        logger.info(f"✅ Analysis results exported to {exports_dir}")
 
+        return str(csv_path)
 
-if __name__ == "__main__":
-    # Example usage
-    generator = FinancialDataGenerator()
-    data = generator.generate_customer_data(500)
-
-    analyzer = FinancialAnalyzer()
-    portfolio_metrics = analyzer.calculate_portfolio_metrics(data)
-    risk_metrics = analyzer.risk_analysis(data)
-
-    print("📊 Sample Analysis Results:")
-    print(f"Total Customers: {portfolio_metrics['total_customers']:,}")
-    print(f"Total Assets: ${portfolio_metrics['total_assets']:,.2f}")
-    print(f"Average Credit Score: {portfolio_metrics['average_credit_score']:.0f}")
+    except IOError as e:
+        logger.error(f"❌ Failed to export files: {e}")
+        raise
+    except Exception as e:
+        logger.error(f"❌ Unexpected error during export: {e}")
+        raise
