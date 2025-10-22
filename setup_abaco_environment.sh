@@ -67,8 +67,7 @@ elif command -v python3.11 &> /dev/null; then
     echo "✅ Using Python 3.11"
 else
     python3 -m venv abaco_venv
-    PYTHON_VERSION=$(python3 --version)
-    echo "✅ Using $PYTHON_VERSION"
+    echo "✅ Using $(python3 --version)"
 fi
 
 # Step 2: Activate environment
