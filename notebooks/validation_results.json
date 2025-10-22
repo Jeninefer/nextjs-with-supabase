@@ -1,0 +1,17 @@
+{
+  "total_records": 1000,
+  "checks_passed": [
+    "No negative account balances",
+    "All credit scores in valid range (300-850)",
+    "All utilization ratios reasonable",
+    "All required columns present"
+  ],
+  "checks_failed": [],
+  "warnings": [],
+  "summary": {
+    "total_checks": 4,
+    "passed": 4,
+    "failed": 0,
+    "warnings": 0
+  }
+}
