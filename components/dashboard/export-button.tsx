@@ -1,8 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { exportToCSV, exportToJSON, exportToZip } from "@/lib/export-utils";
-import type { CustomerData } from "@/lib/data-generator";
+import { exportToCSV, exportToJSON, exportToZip, type CustomerData } from "@/lib/export-utils";
 
 interface ExportButtonProps {
   customers: CustomerData[];
@@ -91,17 +90,3 @@ export function ExportButton({ customers, metrics, format = "csv" }: ExportButto
     </button>
   );
 }
-
-[tool.ruff]
-select = ["E", "F", "I", "W", "UP", "SIM"]
-ignore = []
-
-[tool.ruff.per-file-ignores]
-"__init__.py" = ["F401"]
-
-# Enforce text encoding specification
-[tool.ruff.lint]
-select = ["PTH", "UP"]
-
-[tool.pylint.messages_control]
-enable = ["unspecified-encoding"]

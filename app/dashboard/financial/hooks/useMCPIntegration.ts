@@ -9,7 +9,7 @@ interface MCPIntegrationState {
   servers: Set<string>;
 }
 
-// Tipos para configuración MCP
+// Types for MCP configuration
 type MCPConfigEntry =
   | { command: string; args: string[]; env?: Record<string, string | undefined> }
   | { command: string; args: string[] };
@@ -19,11 +19,11 @@ function hasEnvConfig(x: unknown): x is { env: Record<string, string | undefined
   return typeof x === 'object' && x !== null && 'env' in x && typeof (x as any).env === 'object';
 }
 
-// Mock MCP client para evitar dependencias externas por ahora
+// Mock MCP client to avoid external dependencies for now
 const mockMCPClient = {
   initializeServer: async (name: string, command: string, args: string[], env?: Record<string, string>) => {
     console.log(`Mock: Initializing ${name} with ${command} ${args.join(' ')}`);
-    return Math.random() > 0.3; // Simula éxito en 70% de casos
+    return Math.random() > 0.3; // Simulates success in 70% of cases
   },
   searchFinancialData: async (query: string) => ({ success: true, data: `Mock analysis for: ${query}` }),
   fetchMarketData: async (url: string) => ({ success: true, data: `Mock data from: ${url}` }),
@@ -62,12 +62,12 @@ export function useMCPIntegration() {
 
       const initializedServers = new Set<string>();
 
-      // Bucle con type guards y normalización segura
+      // Loop with type guards and safe normalization
       for (const [serverName, configRaw] of Object.entries(mcpConfig)) {
         const config = configRaw as MCPConfigEntry;
 
         if (hasEnvConfig(config)) {
-          // Verificar variables de entorno
+          // Verify environment variables
           const envValues = Object.values(config.env);
           if (!envValues.length || !envValues.every(v => typeof v === 'string' && v.length > 0)) {
             console.warn(`Skipping ${serverName} - missing environment variables`);
@@ -75,12 +75,12 @@ export function useMCPIntegration() {
           }
         }
 
-        // Normalizar env a Record<string, string> o undefined
+        // Normalize env to Record<string, string> or undefined
         const envToPass: Record<string, string> | undefined = hasEnvConfig(config)
           ? Object.fromEntries(Object.entries(config.env).map(([k, v]) => [k, v ?? '']))
           : undefined;
 
-        // Usar mock client por ahora
+        // Use mock client for now
         const success = await mockMCPClient.initializeServer(
           serverName,
           config.command,
