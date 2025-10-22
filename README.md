@@ -1,3 +1,29 @@
+# Figma Office Add-in with AI Integration
+
+> PowerPoint add-in that integrates Figma designs with AI-powered content generation using OpenAI, xAI (Grok), and Figma APIs.
+
+## 🚀 Quick Start
+
+```bash
+# Complete audit and setup
+bash scripts/complete-audit.sh
+
+# Or run individual scripts
+bash scripts/fix-github-secrets.sh    # Check security
+node scripts/test-urls.js              # Test API endpoints
+bash scripts/setup-github.sh           # Setup GitHub
+bash scripts/sync-repo.sh              # Sync to GitHub
+```
+
+## ⚠️ Security Notice
+
+**IMPORTANT**: Before pushing to GitHub, ensure:
+- No API keys in `.env` file are committed
+- All secrets are in `.env` (not tracked by git)
+- API keys are rotated if previously exposed
+
+Run `bash scripts/fix-github-secrets.sh` to check for issues.
+
 # Figma Office Add-in
 
 PowerPoint add-in that imports Figma designs and generates AI-powered content using OpenAI, xAI (Grok), and Supabase.
