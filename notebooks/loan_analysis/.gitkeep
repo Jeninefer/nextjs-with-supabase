@@ -1,0 +1,2 @@
+# This file ensures the loan_analysis directory is tracked in git
+# Output CSV files and charts are generated here when running abaco_loan_analysis.py

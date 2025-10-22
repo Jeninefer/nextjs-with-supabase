@@ -3,6 +3,7 @@ ABACO Loan Analysis - Using Real Loan Tape Data
 Analyzes loan disbursements, payments, and portfolio outstanding
 """
 
+import os
 import re
 from datetime import datetime
 from pathlib import Path
@@ -17,13 +18,18 @@ from plotly.subplots import make_subplots
 # CONFIGURATION
 # ========================================
 
-# Shared folder path (adjust to your actual shared folder location)
-SHARED_FOLDER = Path("/Users/jenineferderas/Documents/GitHub/nextjs-with-supabase/data/shared")
+# Get the repository root directory (parent of notebooks folder)
+REPO_ROOT = Path(__file__).parent.parent
 
-# Output paths
-OUTPUT_DIR = Path(
-    "/Users/jenineferderas/Documents/GitHub/nextjs-with-supabase/notebooks/loan_analysis"
-)
+# Shared folder path (adjust to your actual shared folder location)
+# Can be overridden via environment variable SHARED_FOLDER_PATH
+SHARED_FOLDER = Path(os.environ.get(
+    "SHARED_FOLDER_PATH",
+    REPO_ROOT / "data" / "shared"
+))
+
+# Output paths - relative to notebooks directory
+OUTPUT_DIR = Path(__file__).parent / "loan_analysis"
 OUTPUT_DIR.mkdir(exist_ok=True)
 
 CHARTS_DIR = OUTPUT_DIR / "charts"

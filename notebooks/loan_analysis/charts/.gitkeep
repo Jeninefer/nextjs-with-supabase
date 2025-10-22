@@ -1,0 +1,2 @@
+# This file ensures the charts directory is tracked in git
+# HTML visualization files are generated here when running abaco_loan_analysis.py
