@@ -366,11 +366,11 @@ Error listing clusters: Error: Cloud Dataproc API has not been used in project g
 
 If you continue to experience issues after following this guide:
 
-1. **Check existing issues:** Review [GitHub Issues](https://github.com/your-org/nextjs-with-supabase/issues)
+1. **Check existing issues:** Review [GitHub Issues](https://github.com/nextjs-with-supabase/issues)
 2. **Create a new issue:** Include error messages, steps to reproduce, and your environment details
 3. **Contact support:**
    - Technical support: <tech@abaco-platform.com>
-   - Community discussions: [GitHub Discussions](https://github.com/your-org/nextjs-with-supabase/discussions)
+   - Community discussions: [GitHub Discussions](https://github.com/nextjs-with-supabase/discussions)
 
 ---
 
