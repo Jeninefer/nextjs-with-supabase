@@ -187,9 +187,9 @@ jupyter notebook
 To apply all fixes permanently:
 
 ### For bash users:
-1. Change to your project directory:
+1. Open your shell configuration file in a text editor (e.g., `.bashrc` or `.bash_profile`):
    ```bash
-   cd /path/to/nextjs-with-supabase
+   nano ~/.bashrc
 
 ## 🛟 Support
 
