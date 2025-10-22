@@ -61,7 +61,7 @@ if [ -n "$VIRTUAL_ENV" ]; then
     all_installed=true
     
     for pkg in "${packages[@]}"; do
-        if python -c "import $pkg" 2>/dev/null; then
+        if python3 -c "import $pkg" 2>/dev/null; then
             echo "   ✅ $pkg"
         else
             echo "   ❌ $pkg (missing)"
