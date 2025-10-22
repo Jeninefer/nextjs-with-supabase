@@ -18,7 +18,11 @@ const mockMCPClient = {
       
       // Simulate potential Google Cloud API errors for testing resilience
       // In production, real MCP servers might encounter these errors
-      const simulateError = Math.random() > 0.8;
+      const enableErrorSimulation = process.env.NEXT_PUBLIC_ENABLE_MCP_ERROR_SIMULATION === 'true';
+      let simulateError = false;
+      if (enableErrorSimulation) {
+        simulateError = Math.random() > 0.8;
+      }
       
       if (simulateError) {
         // Simulate Google Cloud API errors that should be handled gracefully
