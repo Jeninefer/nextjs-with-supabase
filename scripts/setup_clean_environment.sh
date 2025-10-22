@@ -66,14 +66,18 @@ if [ -n "$SHELL_CONFIG" ] && [ -f "$SHELL_CONFIG" ]; then
         echo "  ℹ️  Adding ABACO configuration to $SHELL_CONFIG"
         echo ""
         echo "  Would you like to add the following to $SHELL_CONFIG? (y/n)"
-        echo ""
-        echo "    # ABACO: Prevent Google Cloud auto-configuration"
-        echo "    export CLOUDSDK_CORE_DISABLE_PROMPTS=1"
-        echo "    export CLOUDSDK_CORE_DISABLE_USAGE_REPORTING=1"
-        echo ""
-        echo "  This prevents Google Cloud SDK from interfering with ABACO development."
-        echo ""
-        echo "  💡 You can manually add these lines later if needed."
+        read -r add_abaco_config
+        if [[ "$add_abaco_config" =~ ^[Yy]$ ]]; then
+            {
+                echo ""
+                echo "# ABACO: Prevent Google Cloud auto-configuration"
+                echo "export CLOUDSDK_CORE_DISABLE_PROMPTS=1"
+                echo "export CLOUDSDK_CORE_DISABLE_USAGE_REPORTING=1"
+            } >> "$SHELL_CONFIG"
+            echo "  ✓ ABACO configuration added to $SHELL_CONFIG"
+        else
+            echo "  ℹ️  Skipped adding ABACO configuration. You can manually add these lines later if needed."
+        fi
     else
         echo "  ✓ ABACO configuration already present in $SHELL_CONFIG"
     fi
