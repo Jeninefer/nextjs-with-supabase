@@ -3,7 +3,9 @@
 echo "🔧 FIXING ALL BUILD ISSUES"
 echo "=========================="
 
-cd /Users/jenineferderas/Documents/GitHub/nextjs-with-supabase
+# Get the directory where this script is located and navigate to repository root
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+cd "$SCRIPT_DIR"
 
 # Fix Supabase Functions import
 cat > supabase/functions/summarize-thread/index.ts << 'EOF'
