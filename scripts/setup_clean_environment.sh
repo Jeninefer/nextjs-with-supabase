@@ -60,7 +60,7 @@ elif [ -n "$ZSH_VERSION" ]; then
     SHELL_CONFIG="$HOME/.zshrc"
 fi
 
-if [ ! -z "$SHELL_CONFIG" ] && [ -f "$SHELL_CONFIG" ]; then
+if [ -n "$SHELL_CONFIG" ] && [ -f "$SHELL_CONFIG" ]; then
     # Check if ABACO configuration already exists
     if ! grep -q "# ABACO: Prevent Google Cloud auto-configuration" "$SHELL_CONFIG"; then
         echo "  ℹ️  Adding ABACO configuration to $SHELL_CONFIG"
