@@ -12,6 +12,7 @@
         "ms-python.pylint",
         "oleg-shilo.cs-script",
         "ms-dotnettools.csharp",
-        "formulahendry.code-runner"
+        "formulahendry.code-runner",
+        "sonarsource.sonarlint-vscode"
     ]
 }
