@@ -77,7 +77,18 @@ export const defaultMCPConfig: MCPConfiguration = {
 export function getMCPConfig(): MCPConfiguration {
   // In the future, this could read from environment variables or a config file
   // to allow runtime configuration of which servers to enable
-  const config = { ...defaultMCPConfig };
+  // Deep copy servers and their configs to avoid mutating defaultMCPConfig
+  const config: MCPConfiguration = {
+    servers: Object.fromEntries(
+      Object.entries(defaultMCPConfig.servers).map(([name, serverConfig]) => [
+        name,
+        {
+          ...serverConfig,
+          env: serverConfig.env ? { ...serverConfig.env } : undefined
+        }
+      ])
+    )
+  };
   
   // Auto-enable servers if their required environment variables are present
   Object.entries(config.servers).forEach(([serverName, serverConfig]) => {
