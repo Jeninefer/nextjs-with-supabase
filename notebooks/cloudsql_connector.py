@@ -194,20 +194,36 @@ class CloudSQLConnector:
             df = pd.read_csv(csv_path)
             logger.info(f"📊 Loaded {len(df)} rows from {csv_path}")
 
-            # Validate required columns exist
+            # Whitelist of allowed tables and their columns
+            allowed_tables = {
+                "abaco_customers": {"customer_id", "account_balance", "credit_score", "risk_category"},
+                # Add other allowed tables and their columns here as needed
+            }
+
+            # Validate table name
+            if table_name not in allowed_tables:
+                raise ValueError(f"Table '{table_name}' is not allowed.")
+
+            # Validate columns
+            allowed_cols = allowed_tables[table_name]
+            for col in df.columns:
+                if col not in allowed_cols:
+                    raise ValueError(f"Column '{col}' is not allowed in table '{table_name}'.")
+
+            # Validate required columns exist (if needed)
             if table_name == "abaco_customers":
                 required_cols = ["customer_id", "account_balance", "credit_score"]
                 if not all(col in df.columns for col in required_cols):
                     raise ValueError(f"Missing required columns: {required_cols}")
 
             # Prepare INSERT statement
-            columns = ", ".join(df.columns)
+            columns = ", ".join([f"`{col}`" for col in df.columns])
             placeholders = ", ".join(["%s"] * len(df.columns))
             insert_query = f"""
-                INSERT INTO {table_name} ({columns})
+                INSERT INTO `{table_name}` ({columns})
                 VALUES ({placeholders})
                 ON DUPLICATE KEY UPDATE
-                {', '.join([f'{col}=VALUES({col})' for col in df.columns if col != 'customer_id'])}
+                {', '.join([f'`{col}`=VALUES(`{col}`)' for col in df.columns if col != 'customer_id'])}
             """
 
             # Bulk insert
