@@ -12,14 +12,15 @@
 
 ### Current Platform Status
 
-**Fresh Project Available**: `/Users/jenineferderas/Documents/GitHub/abaco-platform-fresh`
+**Fresh Project Available**: Alternative clean repository location (if needed)
 **Legacy Project**: Current directory (for reference and migration)
 
 ## Deployment Options
 
 ### Option 1: Use Fresh Project (Recommended)
 ```bash
-cd /Users/jenineferderas/Documents/GitHub/abaco-platform-fresh
+# Navigate to your fresh project location
+cd /path/to/abaco-platform-fresh
 
 # Install ABACO dependencies
 npm install @supabase/ssr @supabase/supabase-js clsx tailwind-merge next-themes

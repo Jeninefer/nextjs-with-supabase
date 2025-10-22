@@ -139,8 +139,10 @@ def main():
         print("\n📊 Generating visualizations...")
         create_financial_dashboard(df)
     
-    # Save results
-    output_file = '/Users/jenineferderas/Documents/GitHub/nextjs-with-supabase/notebooks/financial_analysis_results.csv'
+    # Save results - use relative path from script location
+    import os
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    output_file = os.path.join(script_dir, 'financial_analysis_results.csv')
     df.to_csv(output_file, index=False)
     print(f"\n💾 Results saved to: {output_file}")
     
@@ -180,9 +182,10 @@ def create_financial_dashboard(df):
             title="Credit Utilization vs Risk Score"
         )
         
-        # Save charts
-        charts_dir = '/Users/jenineferderas/Documents/GitHub/nextjs-with-supabase/notebooks/charts'
+        # Save charts - use relative path from script location
         import os
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        charts_dir = os.path.join(script_dir, 'charts')
         os.makedirs(charts_dir, exist_ok=True)
         
         fig_risk.write_html(f"{charts_dir}/risk_distribution.html")

@@ -1,7 +1,9 @@
 #!/bin/bash
 # ABACO Financial Intelligence Platform - Complete Cleanup and Git Commit
 set -e
-cd /Users/jenineferderas/Documents/GitHub/nextjs-with-supabase
+# Get the directory where this script is located
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+cd "$SCRIPT_DIR"
 
 echo "🚀 ABACO COMPLETE CLEANUP & COMMIT PROCESS"
 echo "=========================================="

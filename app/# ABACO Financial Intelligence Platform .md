@@ -6,12 +6,13 @@ Your new ABACO Financial Intelligence Platform is ready for setup.
 
 ## Current Status: ✅ CLEAN ENVIRONMENT READY
 
-**Project Location**: `/Users/jenineferderas/Documents/GitHub/abaco-platform-fresh`
+**Project Location**: Alternative clean project location (customize to your path)
 
 ## Next Steps - Execute These Commands:
 
 ```bash
-cd abaco-platform-fresh
+# Navigate to your fresh project directory
+cd /path/to/abaco-platform-fresh
 
 # Install ABACO-specific dependencies
 npm install @supabase/ssr @supabase/supabase-js clsx tailwind-merge

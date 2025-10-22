@@ -5,8 +5,10 @@
 Run this single command to set up everything:
 
 ```bash
-cd /Users/jenineferderas/Documents/GitHub/nextjs-with-supabase && chmod +x setup_abaco_environment.sh && ./setup_abaco_environment.sh
+cd /path/to/nextjs-with-supabase && chmod +x setup_abaco_environment.sh && ./setup_abaco_environment.sh
 ```
+
+Note: Replace `/path/to/nextjs-with-supabase` with your actual repository location.
 
 ## ✅ Verification Commands
 

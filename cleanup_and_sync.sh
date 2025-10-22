@@ -3,7 +3,9 @@
 echo "🧹 ABACO Complete Repository Cleanup & GitHub Sync"
 echo "=================================================="
 
-cd /Users/jenineferderas/Documents/GitHub/nextjs-with-supabase
+# Get the directory where this script is located
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+cd "$SCRIPT_DIR"
 
 # Step 1: Remove all blank and empty files
 echo "📄 Removing blank and empty files..."
@@ -17,8 +19,6 @@ echo "✅ Empty files removed"
 # Step 2: Remove duplicate lockfiles
 echo "🔒 Cleaning duplicate lockfiles..."
 rm -f pnpm-lock.yaml yarn.lock
-rm -f /Users/jenineferderas/package-lock.json
-rm -f /Users/jenineferderas/pnpm-lock.yaml
 echo "✅ Duplicate lockfiles removed"
 
 # Step 3: Remove build artifacts and cache

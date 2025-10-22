@@ -46,7 +46,7 @@
 
 **🚀 Start Platform:**
 ```bash
-cd /Users/jenineferderas/Documents/GitHub/nextjs-with-supabase
+# From the repository root directory
 
 # Launch Next.js development server
 npm run dev
