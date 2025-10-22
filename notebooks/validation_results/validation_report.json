@@ -1,5 +1,5 @@
 {
-  "generated_at": "2025-10-22T05:20:05.954395",
+  "generated_at": "2025-10-22T00:45:12.976496",
   "validation_checks": {
     "no_negative_outstanding": true,
     "disbursements_monotonic": true,
@@ -7,16 +7,16 @@
     "final_outstanding_reasonable": true
   },
   "summary_statistics": {
-    "total_transfers": 281,
-    "total_operations": 751,
-    "avg_transfer_count_per_month": 11.71,
-    "avg_operation_count_per_month": 31.29,
-    "avg_amount_per_operation": 9283.01,
-    "avg_amount_per_transfer": 30165.43,
-    "total_disbursements": 3307536.81,
-    "total_principal_paid": 1528536.84,
-    "total_writeoffs": 21851.76,
-    "final_outstanding_balance": 1757148.21
+    "total_transfers": 269,
+    "total_operations": 710,
+    "avg_transfer_count_per_month": 11.21,
+    "avg_operation_count_per_month": 29.58,
+    "avg_amount_per_operation": 9715.82,
+    "avg_amount_per_transfer": 30997.03,
+    "total_disbursements": 3303520.98,
+    "total_principal_paid": 1474204.02,
+    "total_writeoffs": 15518.62,
+    "final_outstanding_balance": 1813798.34
   },
   "status": "PASSED"
 }

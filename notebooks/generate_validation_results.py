@@ -9,7 +9,13 @@ import numpy as np
 import json
 from datetime import datetime
 from pathlib import Path
-from dateutil.relativedelta import relativedelta
+try:
+    from dateutil.relativedelta import relativedelta
+except ImportError:
+    print("ERROR: The 'python-dateutil' package is required to run this script.")
+    print("Please install it using: pip install python-dateutil")
+    import sys
+    sys.exit(1)
 
 def generate_sample_validation_results(start_date=None, end_date=None):
     """
