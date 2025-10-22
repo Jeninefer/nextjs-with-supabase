@@ -65,7 +65,12 @@ if [ -n "$SHELL_CONFIG" ] && [ -f "$SHELL_CONFIG" ]; then
     if ! grep -q "# ABACO: Prevent Google Cloud auto-configuration" "$SHELL_CONFIG"; then
         echo "  ℹ️  Adding ABACO configuration to $SHELL_CONFIG"
         echo ""
-        read -r -p "  Would you like to add the following to $SHELL_CONFIG? (y/n) " add_abaco_config
+        if [ "${ABACO_AUTO_CONFIGURE}" = "true" ]; then
+            add_abaco_config="y"
+            echo "  (ABACO_AUTO_CONFIGURE=true detected, auto-adding configuration)"
+        else
+            read -r -p "  Would you like to add the following to $SHELL_CONFIG? (y/n) " add_abaco_config
+        fi
         
         if [[ "$add_abaco_config" =~ ^[Yy]$ ]]; then
             {
