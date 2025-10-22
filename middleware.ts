@@ -26,6 +26,8 @@ export async function middleware(request: NextRequest) {
   if (!user && !request.nextUrl.pathname.startsWith('/sign-in') && 
       !request.nextUrl.pathname.startsWith('/sign-up') && 
       !request.nextUrl.pathname.startsWith('/auth') && 
+      !request.nextUrl.pathname.startsWith('/api/validation-results') &&
+      !request.nextUrl.pathname.startsWith('/dashboard/validation') &&
       request.nextUrl.pathname !== '/') {
     const url = request.nextUrl.clone()
     url.pathname = '/sign-in'
