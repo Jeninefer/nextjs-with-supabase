@@ -113,9 +113,27 @@ vercel deploy
 
 ### Google Cloud Run
 
+Deploy this Next.js application as a containerized service using **Google Cloud Run** (not Dataproc - which is for data processing clusters).
+
+**Prerequisites:**
+1. Enable the Cloud Run API (not Dataproc API):
+   ```bash
+   gcloud services enable run.googleapis.com
+   ```
+2. Set your project and region:
+   ```bash
+   gcloud config set project YOUR_PROJECT_ID
+   gcloud config set run/region YOUR_REGION
+   ```
+
+**Deploy:**
 ```bash
-gcloud run deploy abaco-platform --source .
+gcloud run deploy abaco-platform --source . --region YOUR_REGION
 ```
+
+**Note:** This application uses Cloud Run for deploying web applications, not Cloud Dataproc which is for managing Apache Spark/Hadoop clusters. If you see errors about Dataproc API, ensure you're using the Cloud Run deployment commands above.
+
+For detailed deployment instructions, see [Google Cloud Deployment Guide](./docs/GOOGLE_CLOUD_DEPLOYMENT.md).
 
 ## 🔒 Security & Compliance
 
