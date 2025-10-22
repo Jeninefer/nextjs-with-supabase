@@ -1,17 +1,24 @@
 {
     "recommendations": [
-        "ms-vscode.vscode-typescript-next",
-        "bradlc.vscode-tailwindcss",
+        // Essential for Next.js/TypeScript
+        "dbaeumer.vscode-eslint",
         "esbenp.prettier-vscode",
-        "ms-vscode.vscode-eslint",
+        "bradlc.vscode-tailwindcss",
+        // Essential for Python
         "ms-python.python",
         "ms-python.debugpy",
-        "nextjs.nextjs",
-        "ms-toolsai.jupyter",
-        "ms-python.flake8",
-        "ms-python.pylint",
-        "oleg-shilo.cs-script",
-        "ms-dotnettools.csharp",
-        "formulahendry.code-runner"
+        // AI Assistant (choose ONE)
+        "github.copilot",
+        "github.copilot-chat",
+        // Quality of Life
+        "formulahendry.auto-close-tag",
+        "formulahendry.auto-rename-tag",
+        "streetsidesoftware.code-spell-checker"
+    ],
+    "unwantedRecommendations": [
+        "google.gemini",
+        "alibaba-cloud.lingma-vscode",
+        "cs-script.cs-script",
+        "sonarsource.sonarlint-vscode"
     ]
 }
