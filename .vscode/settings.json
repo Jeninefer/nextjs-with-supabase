@@ -29,7 +29,6 @@
     "tailwindCSS.experimental.classRegex": [
         "cn\\(([^)]*)\\)"
     ],
-    "python.defaultInterpreterPath": "${workspaceFolder}/abaco_venv/bin/python",
     "python.analysis.typeCheckingMode": "basic",
     "python.terminal.activateEnvironment": false,
     "[python]": {
