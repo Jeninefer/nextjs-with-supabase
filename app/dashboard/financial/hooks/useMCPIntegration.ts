@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
+import { getEnabledMCPServers } from '@/lib/mcp-config';
 
 interface MCPIntegrationState {
   isInitialized: boolean;
@@ -9,27 +10,70 @@ interface MCPIntegrationState {
   servers: Set<string>;
 }
 
-// Tipos para configuración MCP
-type MCPConfigEntry =
-  | { command: string; args: string[]; env?: Record<string, string | undefined> }
-  | { command: string; args: string[] };
-
-// Type guard para env
-function hasEnvConfig(x: unknown): x is { env: Record<string, string | undefined> } {
-  return typeof x === 'object' && x !== null && 'env' in x && typeof (x as any).env === 'object';
-}
-
 // Mock MCP client para evitar dependencias externas por ahora
 const mockMCPClient = {
   initializeServer: async (name: string, command: string, args: string[], env?: Record<string, string>) => {
-    console.log(`Mock: Initializing ${name} with ${command} ${args.join(' ')}`);
-    return Math.random() > 0.3; // Simula éxito en 70% de casos
+    try {
+      console.log(`Mock: Initializing ${name} with ${command} ${args.join(' ')}`);
+      
+      // Simulate potential Google Cloud API errors for testing resilience
+      // In production, real MCP servers might encounter these errors
+      const simulateError = Math.random() > 0.8;
+      
+      if (simulateError) {
+        // Simulate Google Cloud API errors that should be handled gracefully
+        const errorMessages = [
+          'Cloud Dataproc API has not been used',
+          'API not enabled',
+          'Insufficient permissions',
+          'Network timeout'
+        ];
+        const randomError = errorMessages[Math.floor(Math.random() * errorMessages.length)];
+        console.warn(`Mock: Simulated error for ${name}: ${randomError}`);
+        return false;
+      }
+      
+      return true; // Simula éxito en 80% de casos
+    } catch (error) {
+      console.error(`Mock: Error initializing ${name}:`, error);
+      return false;
+    }
   },
-  searchFinancialData: async (query: string) => ({ success: true, data: `Mock analysis for: ${query}` }),
-  fetchMarketData: async (url: string) => ({ success: true, data: `Mock data from: ${url}` }),
-  storeMemory: async (key: string, value: any) => ({ success: true, data: `Stored ${key}` }),
-  getMemory: async (key: string) => ({ success: true, data: `Retrieved ${key}` }),
-  disconnect: async () => console.log('Mock: Disconnected')
+  searchFinancialData: async (query: string) => {
+    try {
+      return { success: true, data: `Mock analysis for: ${query}` };
+    } catch (error) {
+      return { success: false, error: 'Service unavailable' };
+    }
+  },
+  fetchMarketData: async (url: string) => {
+    try {
+      return { success: true, data: `Mock data from: ${url}` };
+    } catch (error) {
+      return { success: false, error: 'Service unavailable' };
+    }
+  },
+  storeMemory: async (key: string, value: any) => {
+    try {
+      return { success: true, data: `Stored ${key}` };
+    } catch (error) {
+      return { success: false, error: 'Service unavailable' };
+    }
+  },
+  getMemory: async (key: string) => {
+    try {
+      return { success: true, data: `Retrieved ${key}` };
+    } catch (error) {
+      return { success: false, error: 'Service unavailable' };
+    }
+  },
+  disconnect: async () => {
+    try {
+      console.log('Mock: Disconnected');
+    } catch (error) {
+      console.error('Mock: Error during disconnect:', error);
+    }
+  }
 };
 
 export function useMCPIntegration() {
@@ -44,52 +88,62 @@ export function useMCPIntegration() {
     setState(prev => ({ ...prev, isLoading: true, error: null }));
 
     try {
-      const mcpConfig: Record<string, MCPConfigEntry> = {
-        'perplexity-ask': {
-          command: 'npx',
-          args: ['-y', 'server-perplexity-ask'],
-          env: { PERPLEXITY_API_KEY: process.env.NEXT_PUBLIC_PERPLEXITY_API_KEY }
-        },
-        'fetch': {
-          command: 'npx',
-          args: ['-y', '@modelcontextprotocol/server-fetch']
-        },
-        'memory': {
-          command: 'npx',
-          args: ['-y', '@modelcontextprotocol/server-memory']
-        }
-      };
+      // Get only enabled MCP servers from configuration
+      const enabledServers = getEnabledMCPServers();
+      
+      if (enabledServers.length === 0) {
+        console.log('No MCP servers enabled. Configure credentials in environment variables to enable servers.');
+        setState(prev => ({
+          ...prev,
+          isInitialized: false,
+          isLoading: false,
+          servers: new Set()
+        }));
+        return;
+      }
 
       const initializedServers = new Set<string>();
 
-      // Bucle con type guards y normalización segura
-      for (const [serverName, configRaw] of Object.entries(mcpConfig)) {
-        const config = configRaw as MCPConfigEntry;
+      // Initialize only enabled servers
+      for (const { name: serverName, config } of enabledServers) {
+        try {
+          // Normalizar env a Record<string, string> o undefined
+          const envToPass: Record<string, string> | undefined = config.env
+            ? Object.fromEntries(
+                Object.entries(config.env)
+                  .filter(([_, v]) => v !== undefined)
+                  .map(([k, v]) => [k, v as string])
+              )
+            : undefined;
 
-        if (hasEnvConfig(config)) {
-          // Verificar variables de entorno
-          const envValues = Object.values(config.env);
-          if (!envValues.length || !envValues.every(v => typeof v === 'string' && v.length > 0)) {
-            console.warn(`Skipping ${serverName} - missing environment variables`);
-            continue;
+          // Usar mock client por ahora
+          const success = await mockMCPClient.initializeServer(
+            serverName,
+            config.command,
+            config.args,
+            envToPass
+          );
+
+          if (success) {
+            initializedServers.add(serverName);
+            console.log(`✅ Initialized MCP server: ${serverName}`);
+          } else {
+            console.warn(`⚠️ Failed to initialize MCP server: ${serverName}`);
           }
-        }
-
-        // Normalizar env a Record<string, string> o undefined
-        const envToPass: Record<string, string> | undefined = hasEnvConfig(config)
-          ? Object.fromEntries(Object.entries(config.env).map(([k, v]) => [k, v ?? '']))
-          : undefined;
-
-        // Usar mock client por ahora
-        const success = await mockMCPClient.initializeServer(
-          serverName,
-          config.command,
-          config.args,
-          envToPass
-        );
-
-        if (success) {
-          initializedServers.add(serverName);
+        } catch (serverError) {
+          // Log individual server initialization failures but continue with others
+          const errorMessage = serverError instanceof Error ? serverError.message : 'Unknown error';
+          console.warn(`Failed to initialize ${serverName}: ${errorMessage}`);
+          
+          // Check if this is a Google Cloud API error
+          if (errorMessage.includes('Dataproc') || errorMessage.includes('googleapis.com')) {
+            console.info(
+              `💡 Tip: ${serverName} requires Google Cloud API access. ` +
+              'If you don\'t need this server, it will be automatically skipped. ' +
+              'To enable it, ensure your Google Cloud project has the required APIs enabled.'
+            );
+          }
+          // Continue with next server instead of failing completely
         }
       }
 
@@ -100,11 +154,21 @@ export function useMCPIntegration() {
         servers: initializedServers
       }));
 
+      if (initializedServers.size > 0) {
+        console.log(`✅ Successfully initialized ${initializedServers.size} MCP server(s):`, Array.from(initializedServers).join(', '));
+      } else {
+        console.log('⚠️ No MCP servers could be initialized. The application will work with limited features.');
+      }
+
     } catch (error) {
+      // Handle catastrophic failures gracefully
+      const errorMessage = error instanceof Error ? error.message : 'Failed to initialize MCP servers';
+      console.error('MCP initialization error:', errorMessage);
+      
       setState(prev => ({
         ...prev,
         isLoading: false,
-        error: error instanceof Error ? error.message : 'Failed to initialize MCP servers'
+        error: errorMessage
       }));
     }
   }, []);
