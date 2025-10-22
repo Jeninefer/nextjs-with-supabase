@@ -26,7 +26,7 @@
     "tailwindCSS.experimental.classRegex": [
         "cn\\(([^)]*)\\)"
     ],
-    // NOTE: The following path assumes you have run `setup_abaco_environment.sh` to create the virtual environment.
+    // NOTE: The following path assumes you have run 'setup_abaco_environment.sh' to create the virtual environment.
     "python.defaultInterpreterPath": "${workspaceFolder}/abaco_venv/bin/python",
     "python.terminal.activateEnvironment": false,
     "files.exclude": {
