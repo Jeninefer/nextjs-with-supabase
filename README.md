@@ -139,6 +139,7 @@ For detailed setup instructions, error resolution, and platform status, see:
 - [Quick Start Guide](./QUICK_START.md)
 - [Build Success Log](./BUILD_SUCCESS.md)
 - [Google Cloud Setup Guide](./docs/GOOGLE_CLOUD_SETUP.md)
+- [Complete Setup Guide](./docs/COMPLETE_SETUP.md) <!-- Coming soon: Comprehensive setup and troubleshooting instructions -->
 
 ### Common Issues
 
