@@ -71,8 +71,7 @@ jobs:
           echo "📋 **Build Details:**" >> $GITHUB_STEP_SUMMARY
           echo "- **Branch:** \`${{ github.ref_name }}\`" >> $GITHUB_STEP_SUMMARY
           echo "- **Commit:** \`${{ github.sha }}\`" >> $GITHUB_STEP_SUMMARY
-          echo "- **Workflow:** \`${{ github.workflow }}\`" \
-               >> $GITHUB_STEP_SUMMARY
+          echo "- **Workflow:** \`${{ github.workflow }}\`" >> $GITHUB_STEP_SUMMARY
           echo "- **Build Status:** ✅ SUCCESS" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "🧩 **Components Built:**" >> $GITHUB_STEP_SUMMARY
