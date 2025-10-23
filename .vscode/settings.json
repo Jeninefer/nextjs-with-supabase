@@ -30,6 +30,7 @@
         "cn\\(([^)]*)\\)"
     ],
     "python.analysis.typeCheckingMode": "basic",
+    "python.defaultInterpreterPath": "abaco_venv/bin/python",
     "python.terminal.activateEnvironment": false,
     "[python]": {
         "editor.defaultFormatter": "ms-python.black-formatter",
