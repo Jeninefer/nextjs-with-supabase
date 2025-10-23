@@ -358,5 +358,5 @@ For API-specific issues:
 
 ---
 
-**Last Updated:** January 2025  
+**Last Updated:** October 2025  
 **⚠️ Remember to keep your API keys secure and never commit them to version control!**
