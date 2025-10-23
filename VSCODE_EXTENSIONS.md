@@ -176,5 +176,5 @@ Or enable auto-update:
 
 ---
 
-**Last Updated:** January 2025  
+**Last Updated:** October 2025  
 For project-specific documentation, see [README.md](README.md)
