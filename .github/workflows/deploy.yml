@@ -56,8 +56,7 @@ jobs:
             npm install --global vercel@latest
             vercel --prod --token=${{ secrets.VERCEL_TOKEN }} --confirm
           else
-            echo "⚠️ Production deployment skipped - " \
-                 "VERCEL_TOKEN not configured"
+            echo "⚠️ Production deployment skipped - VERCEL_TOKEN not configured"
           fi
         env:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
