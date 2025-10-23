@@ -23,13 +23,13 @@ jobs:
         run: npm ci
 
       - name: Run license cleanup
-        run: npm run clean:duplicates || echo "License cleanup completed"
+        run: npm run clean:duplicates || echo "⚠️ License cleanup skipped or failed"
 
       - name: Type check
         run: npm run type-check
 
       - name: Lint code
-        run: npm run lint || echo "Linting completed"
+        run: npm run lint || echo "⚠️ Linting skipped or failed"
 
       - name: Build project
         run: npm run build
@@ -50,7 +50,7 @@ jobs:
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
       - name: Deploy to Vercel (Production)
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        if: github.ref == 'refs/heads/main'
         run: |
           if [ -n "${{ secrets.VERCEL_TOKEN }}" ]; then
             npm install --global vercel@latest
