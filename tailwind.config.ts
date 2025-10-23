@@ -64,7 +64,7 @@ const config = {
           50: '#f3f0ff',
           100: '#e9e5ff',
           200: '#d6cfff',
-          300: '#c1a6ff', // ABACO Primary purple
+          300: '#c1a6ff', // ABACO primary purple
           400: '#a78bfa',
           500: '#8b5cf6',
           600: '#5f4896', // ABACO Purple dark
