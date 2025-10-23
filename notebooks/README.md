@@ -8,26 +8,27 @@ The `abaco_financial_intelligence.ipynb` notebook implements a complete financia
 
 ### Cells Overview
 
-1. **Cell 1: Feature Engineering** - Merges datasets and computes various financial metrics including customer types, delinquency buckets, and risk indicators.
+1. **Cell 1: Error Output** - Displays any error output or initial notebook state (if present).
 
-2. **Cell 2: KPI Calculation Engine** - Computes key performance indicators (KPIs) and financial views including AUM, active clients, default rates, and more.
+2. **Cell 2: Feature Engineering** - Merges datasets and computes various financial metrics including customer types, delinquency buckets, and risk indicators.
 
-3. **Cell 3: Growth Analysis & Projections** - Projects future Assets Under Management (AUM) and client growth with trend analysis.
+3. **Cell 3: KPI Calculation Engine** - Computes key performance indicators (KPIs) and financial views including AUM, active clients, default rates, and more.
 
-4. **Cell 4: Marketing & Sales Analysis** - Analyzes sales data by industry and channel to identify growth opportunities.
+4. **Cell 4: Growth Analysis & Projections** - Projects future Assets Under Management (AUM) and client growth with trend analysis.
 
-5. **Cell 5: Risk Analysis & Roll Rate** - Analyzes default rates, delinquency percentages, and portfolio roll rates.
+5. **Cell 5: Marketing & Sales Analysis** - Analyzes sales data by industry and channel to identify growth opportunities.
 
-6. **Cell 6: Data Quality Audit** - Audits data quality across sources to ensure data integrity.
+6. **Cell 6: Risk Analysis & Roll Rate** - Analyzes default rates, delinquency percentages, and portfolio roll rates.
 
-7. **Cell 7: AI Summary & Insights** - Generates AI-powered insights based on the analyzed data.
+7. **Cell 7: Data Quality Audit** - Audits data quality across sources to ensure data integrity.
 
-8. **Cell 8: Visualizations & Exports** - Creates interactive visualizations using Plotly and enables data exports.
+8. **Cell 8: AI Summary & Insights** - Generates AI-powered insights based on the analyzed data.
 
-9. **Cell 9: Market Analysis from MYPE 2025 PDF** - Extracts and analyzes market insights from the MYPE 2025 report.
+9. **Cell 9: Visualizations & Exports** - Creates interactive visualizations using Plotly and enables data exports.
 
-## Market Analysis Feature (Cell 9)
+10. **Cell 10: Market Analysis from MYPE 2025 PDF** - Extracts and analyzes market insights from the MYPE 2025 report.
 
+## Market Analysis Feature (Cell 10)
 The Market Analysis feature integrates external market research from the MYPE (Micro and Small Enterprises) 2025 report to provide context for financial decisions.
 
 ### Key Features
