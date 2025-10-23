@@ -68,7 +68,7 @@ jobs:
           echo "### 🚀 Build & Deploy Summary" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "✅ **Office Add-in build completed " \
-               "successfully!**" >> $GITHUB_STEP_SUMMARY
+               successfully!**" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "📋 **Build Details:**" >> $GITHUB_STEP_SUMMARY
           echo "- **Branch:** \`${{ github.ref_name }}\`" \
