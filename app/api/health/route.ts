@@ -25,9 +25,10 @@ export async function GET() {
       );
 
       // Test connection with a simple query
+      // Use a lightweight system table to check database connectivity
       const { error } = await supabase
-        .from("abaco_customers")
-        .select("customer_id")
+        .from("pg_catalog.pg_tables")
+        .select("tablename")
         .limit(1);
 
       healthCheck.checks.supabase = !error;
