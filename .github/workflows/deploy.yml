@@ -1,6 +1,6 @@
 name: Deploy Office Add-in to Vercel
 
-'on':
+on:
   push:
     branches: [main, office-addin-figma]
   pull_request:
