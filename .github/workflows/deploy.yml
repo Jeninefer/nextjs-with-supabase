@@ -27,7 +27,7 @@ jobs:
         run: npm run clean:duplicates || echo "License cleanup completed"
 
       - name: Type check
-        run: npm run type-check || echo "TypeScript check completed with warnings"
+        run: npm run type-check
 
       - name: Lint code
         run: npm run lint || echo "Linting completed"
