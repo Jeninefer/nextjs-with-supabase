@@ -51,7 +51,7 @@ jobs:
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
       - name: Deploy to Vercel (Production)
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        if: github.ref == 'refs/heads/main'
         run: |
           if [ -n "${{ secrets.VERCEL_TOKEN }}" ]; then
             npm install --global vercel@latest
