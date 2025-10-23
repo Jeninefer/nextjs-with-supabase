@@ -121,8 +121,6 @@ SELECT
   AVG(account_balance) as avg_balance,
   AVG(credit_score) as avg_credit_score
 FROM abaco_customers;
----
-
 ## Environment Setup
 
 ### Step 1: Get Supabase Credentials
