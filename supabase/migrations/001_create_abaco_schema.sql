@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS public.abaco_customers (
     account_balance DECIMAL(12, 2) NOT NULL,
     credit_limit DECIMAL(12, 2) NOT NULL,
     monthly_spending DECIMAL(12, 2) NOT NULL,
-    -- Credit score is assumed to be a FICO score (range: 300-850)
+    -- Credit score is a FICO score (range: 300-850)
     credit_score INTEGER NOT NULL CHECK (credit_score >= 300 AND credit_score <= 850),
     monthly_income DECIMAL(12, 2) NOT NULL,
     loan_amount DECIMAL(12, 2) NOT NULL,
