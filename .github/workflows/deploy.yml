@@ -24,7 +24,7 @@ jobs:
         run: npm ci
 
       - name: Run license cleanup
-        run: npm run clean:duplicates || echo "License cleanup completed"
+        run: npm run clean:duplicates || echo "⚠️ License cleanup skipped or failed"
 
       - name: Type check
         run: npm run type-check
