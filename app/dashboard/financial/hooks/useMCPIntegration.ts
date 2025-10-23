@@ -80,6 +80,28 @@ const mockMCPClient = {
   }
 };
 
+// Returns true if the error message contains googleapis.com host or subdomain in any URL found.
+function containsGoogleAPIDomain(errorMessage: string): boolean {
+  // Find all candidate URLs using a simple regex
+  const urlRegex = /(https?:\/\/[^\s]+)/g;
+  const matches = errorMessage.match(urlRegex) || [];
+  for (const urlString of matches) {
+    try {
+      const url = new URL(urlString);
+      // Accept googleapis.com or any subdomain (eg: dataproc.googleapis.com)
+      if (
+        url.hostname === 'googleapis.com' ||
+        url.hostname.endsWith('.googleapis.com')
+      ) {
+        return true;
+      }
+    } catch (_) {
+      // Ignore parse errors
+    }
+  }
+  return false;
+}
+
 export function useMCPIntegration() {
   const [state, setState] = useState<MCPIntegrationState>({
     isInitialized: false,
@@ -140,7 +162,9 @@ export function useMCPIntegration() {
           console.warn(`Failed to initialize ${serverName}: ${errorMessage}`);
           
           // Check if this is a Google Cloud API error
-          if (errorMessage.includes('Dataproc') || errorMessage.includes('googleapis.com')) {
+          if (
+            errorMessage.includes('Dataproc') || containsGoogleAPIDomain(errorMessage)
+          ) {
             console.info(
               `💡 Tip: ${serverName} requires Google Cloud API access. ` +
               'If you don\'t need this server, it will be automatically skipped. ' +
