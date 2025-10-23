@@ -2,9 +2,9 @@ name: Deploy Office Add-in to Vercel
 
 on:
   push:
-    branches: [main, office-addin-figma]
+    branches: [main, office-addin-figma, copilot/cleanup-project-diagnostic]
   pull_request:
-    branches: [main]
+    branches: [main, copilot/cleanup-project-diagnostic]
 
 jobs:
   deploy:
