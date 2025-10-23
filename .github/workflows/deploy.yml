@@ -89,6 +89,5 @@ jobs:
             echo "🌍 **Status:** Production deployment " \
                  initiated >> $GITHUB_STEP_SUMMARY
           else
-            echo "🔍 **Status:** Branch build completed" \
-                 >> $GITHUB_STEP_SUMMARY
+            echo "🔍 **Status:** Branch build completed" >> $GITHUB_STEP_SUMMARY
           fi
