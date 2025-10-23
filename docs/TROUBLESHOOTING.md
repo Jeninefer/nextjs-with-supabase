@@ -369,7 +369,7 @@ If you continue to experience issues after following this guide:
 1. **Check existing issues:** Review [GitHub Issues](https://github.com/nextjs-with-supabase/issues)
 2. **Create a new issue:** Include error messages, steps to reproduce, and your environment details
 3. **Contact support:**
-   - Technical support: <tech@abaco-platform.com>
+   - Technical support: Please contact us via [GitHub Issues](https://github.com/nextjs-with-supabase/issues) or your organization's official support channel.
    - Community discussions: [GitHub Discussions](https://github.com/abaco-platform/abaco/discussions)
 
 ---
