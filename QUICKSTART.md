@@ -2,7 +2,7 @@
 
 ## Prerequisites
 - Node.js >= 18.0.0
-- npm >= 9.0.0
+- npm >= 8.19.0
 
 > **Need to install Node.js and npm?**  
 > Download and install the latest LTS version from [nodejs.org](https://nodejs.org/).  
