@@ -80,9 +80,8 @@ export async function GET() {
     const totalMs = Date.now() - startTotal;
     // Sanitize error message for client
     let errorMessage = "An unexpected error occurred.";
-    if (err && typeof err === "object" && "message" in err && typeof (err as any).message === "string") {
-      const errObj = err as { message: string };
-      errorMessage = `An unexpected error occurred: ${errObj.message}`;
+    if (err instanceof Error) {
+      errorMessage = `An unexpected error occurred: ${err.message}`;
     } else if (typeof err === "string") {
       errorMessage = `An unexpected error occurred: ${err}`;
     }
