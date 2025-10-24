@@ -3,11 +3,12 @@ import type { Config } from "tailwindcss";
 const config: Config = {
   darkMode: ["class"],
   content: [
-    "./pages/**/*.{js,ts,jsx,tsx,mdx}",
-    "./components/**/*.{js,ts,jsx,tsx,mdx}",
-    "./app/**/*.{js,ts,jsx,tsx,mdx}",
-    "./lib/**/*.{js,ts,jsx,tsx,mdx}",
+    "./pages/**/*.{ts,tsx}",
+    "./components/**/*.{ts,tsx}",
+    "./app/**/*.{ts,tsx}",
+    "./src/**/*.{ts,tsx}",
   ],
+  prefix: "",
   theme: {
     extend: {
       // ABACO Color System
@@ -92,14 +93,14 @@ const config: Config = {
           "5": "hsl(var(--chart-5))",
         },
       },
-      
+
       // ABACO Typography
       fontFamily: {
         lato: ['Lato', 'sans-serif'],
         poppins: ['Poppins', 'sans-serif'],
         sans: ['Lato', 'sans-serif'],
       },
-      
+
       // 4K Optimized Spacing
       spacing: {
         '18': '4.5rem',
@@ -107,7 +108,7 @@ const config: Config = {
         '128': '32rem',
         '144': '36rem',
       },
-      
+
       // Enhanced Shadows for Glass Morphism
       boxShadow: {
         'abaco-sm': '0 1px 2px 0 rgba(168, 85, 247, 0.05)',
@@ -117,7 +118,7 @@ const config: Config = {
         'abaco-glow': '0 0 20px rgba(168, 85, 247, 0.3)',
         'abaco-inner': 'inset 0 2px 4px 0 rgba(168, 85, 247, 0.1)',
       },
-      
+
       // ABACO Gradient Backgrounds
       backgroundImage: {
         'abaco-primary': 'linear-gradient(135deg, #C1A6FF 0%, #A855F7 50%, #5F4896 100%)',
@@ -125,7 +126,7 @@ const config: Config = {
         'abaco-glass': 'linear-gradient(135deg, rgba(15, 23, 42, 0.4) 0%, rgba(30, 41, 59, 0.2) 100%)',
         'abaco-glow': 'radial-gradient(ellipse at center, rgba(168, 85, 247, 0.15) 0%, transparent 70%)',
       },
-      
+
       // Border Radius for Modern Design
       borderRadius: {
         'abaco-sm': '0.25rem',
@@ -137,20 +138,20 @@ const config: Config = {
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
       },
-      
+
       // Animation Curves
       transitionTimingFunction: {
         'abaco': 'cubic-bezier(0.4, 0, 0.2, 1)',
         'abaco-bounce': 'cubic-bezier(0.68, -0.55, 0.265, 1.55)',
       },
-      
+
       // Custom Animations
       animation: {
         'abaco-pulse': 'abaco-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
         'abaco-glow': 'abaco-glow 3s ease-in-out infinite alternate',
         'abaco-float': 'abaco-float 6s ease-in-out infinite',
       },
-      
+
       // Keyframes
       keyframes: {
         'abaco-pulse': {
@@ -166,13 +167,13 @@ const config: Config = {
           '50%': { transform: 'translateY(-10px)' },
         },
       },
-      
+
       // Backdrop Blur
       backdropBlur: {
         'abaco': '12px',
         'abaco-lg': '16px',
       },
-      
+
       // Screen Sizes for 4K Support
       screens: {
         '3xl': '1920px',
@@ -183,27 +184,20 @@ const config: Config = {
   },
   plugins: [
     require("tailwindcss-animate"),
-    // If you have custom plugins, ensure they don't import internal Tailwind modules
-    // Example fix for color palette utilities:
-    function({ addUtilities, theme }) {
-      // Access colors directly from theme
-      const colors = theme('colors')
+    function ({ addUtilities, theme }: { addUtilities: any; theme: any }) {
+      // Access colors directly from theme instead of using internal utilities
+      const colors = theme('colors');
+
       // Your custom utilities here
-    }
+      const newUtilities = {
+        '.text-balance': {
+          'text-wrap': 'balance',
+        },
+      };
+
+      addUtilities(newUtilities);
+    },
   ],
-} satisfies Config;
-
-// Add this function with proper error handling
-function addVariablesForColors({ addBase, theme }: any) {
-  const colors = theme("colors") ?? {};
-  const allColors = flattenColorPalette(colors);
-  const newVars = Object.fromEntries(
-    Object.entries(allColors).map(([key, val]) => [`--${key}`, val])
-  );
-
-  addBase({
-    ":root": newVars,
-  });
-}
+};
 
 export default config;
