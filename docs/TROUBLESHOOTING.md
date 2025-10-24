@@ -65,8 +65,14 @@ docker --version
 # Check if Docker daemon is running
 docker info
 
-# On macOS, ensure Docker Desktop is running
+# On macOS:
+# If you installed Docker Desktop, start it with:
 open -a Docker
+# If you installed Docker via Homebrew or other methods, ensure the Docker daemon is running:
+# For Homebrew, you can start the service with:
+brew services start docker
+# Or check if the Docker daemon is running:
+pgrep -fl dockerd
 ```
 
 #### Solution 3: Install Docker if Not Present
