@@ -274,7 +274,7 @@ _______________________________________________________________
 
 ### Channel Efficiency
 
-- **Digital Small:** $120-160k/mes netode Meta/WA
+- **Digital Small:** $120-160k/mes neto de Meta/WA
 - **Mid:** $180-220k/mes neto de Inbound+KAM
 - **Anchors:** $320k/mes neto de KAM only
 
