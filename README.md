@@ -158,6 +158,7 @@ For detailed setup instructions, error resolution, and platform status, see:
 - [Complete Setup Guide](../Library/Application%20Support/Code/User/cs-script.user/integration-error.md)
 - [Quick Start Guide](./QUICK_START.md)
 - [Build Success Log](./BUILD_SUCCESS.md)
+- [MCP Troubleshooting Guide](./docs/MCP_TROUBLESHOOTING.md)
 
 ### Common Issues
 
@@ -182,6 +183,10 @@ git push origin main
 ```bash
 python3 notebooks/abaco_financial_intelligence.py
 ```
+
+**Google Cloud API errors (e.g., Cloud Dataproc):**
+
+The application now handles Google Cloud API errors gracefully. MCP servers requiring Google Cloud APIs are disabled by default. See the [MCP Troubleshooting Guide](./docs/MCP_TROUBLESHOOTING.md) for details.
 
 For comprehensive troubleshooting, environment status, and performance metrics, refer to the [Complete Setup Guide](../Library/Application%20Support/Code/User/cs-script.user/integration-error.md).
 
