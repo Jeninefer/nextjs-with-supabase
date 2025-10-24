@@ -68,7 +68,8 @@ configure_auto_setup() {
     echo "🔧 Configuring automatic push setup..."
     
     # Check current setting
-    local current_setting=$(git config --get push.autoSetupRemote 2>/dev/null || echo "false")
+    local current_setting
+    current_setting=$(git config --get push.autoSetupRemote 2>/dev/null || echo "false")
     
     if [ "$current_setting" = "true" ]; then
         echo "✅ Automatic push setup is already enabled"
@@ -85,7 +86,8 @@ update_fetch_refspec() {
     echo ""
     echo "🔄 Updating fetch configuration to track all branches..."
     
-    local current_fetch=$(git config --get remote.origin.fetch 2>/dev/null || echo "")
+    local current_fetch
+    current_fetch=$(git config --get remote.origin.fetch 2>/dev/null || echo "")
     
     # Check if already configured to fetch all branches
     if [[ "$current_fetch" == "+refs/heads/*:refs/remotes/origin/*" ]]; then
@@ -115,7 +117,8 @@ main() {
     check_git_repo
     check_remote
     
-    local current_branch=$(get_current_branch)
+    local current_branch
+    current_branch=$(get_current_branch)
     
     if [ -z "$current_branch" ]; then
         echo "❌ Error: Could not determine current branch"
