@@ -10,7 +10,7 @@
         "when": "editorTextFocus"
     },
     {
-        "key": "ctrl+shift+g",
+        "key": "ctrl+shift+alt+g",
         "command": "cloudcode.duetAI.inEditor.generate",
         "when": "editorTextFocus"
     }
