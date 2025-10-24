@@ -357,7 +357,7 @@ git branch -d hotfix/critical-bug
 5. **Review before pushing** - Use `git diff` and `git status`
 6. **Don't commit sensitive data** - Check `.env.local` is in `.gitignore`
 7. **Don't commit build artifacts** - Keep `.gitignore` updated
-8. **Don't create troubleshooting scripts in the repo** - Use `/tmp` for temporary scripts
+8. **Don't create troubleshooting scripts in the repo** - Use your system's temporary directory (e.g., `/tmp` on Unix/Linux, `%TEMP%` on Windows) for temporary scripts
 
 ---
 
