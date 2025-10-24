@@ -23,7 +23,13 @@ class SupabaseConnector:
     """Manages secure connections to Supabase (Free PostgreSQL database)"""
 
     def __init__(self):
-        """Initialize with environment variables"""
+        """
+        Initializes the connector using environment variables.
+
+        Requires:
+            NEXT_PUBLIC_SUPABASE_URL: The Supabase project URL.
+            NEXT_PUBLIC_SUPABASE_ANON_KEY: The Supabase anonymous API key.
+        """
         self.url = os.getenv("NEXT_PUBLIC_SUPABASE_URL")
         self.key = os.getenv("NEXT_PUBLIC_SUPABASE_ANON_KEY")
         self.client: Optional[Client] = None
