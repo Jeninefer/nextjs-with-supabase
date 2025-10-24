@@ -1,13 +1,10 @@
 const HUGGINGFACE_API_KEY = process.env.HUGGINGFACE_API_KEY;
 
+if (!HUGGINGFACE_API_KEY) {
+  throw new Error("HUGGINGFACE_API_KEY environment variable is not set. Please set it before importing this module.");
+}
+
 export async function generateText(prompt: string) {
-  if (!HUGGINGFACE_API_KEY) {
-    throw new Error("HUGGINGFACE_API_KEY environment variable is not set. Please set it before using generateText.");
-  }
-  const response = await fetch(
-    "https://api-inference.huggingface.co/models/mistralai/Mistral-7B-Instruct-v0.2",
-    {
-      headers: { Authorization: `Bearer ${HUGGINGFACE_API_KEY}` },
       method: "POST",
       body: JSON.stringify({ inputs: prompt }),
     }
