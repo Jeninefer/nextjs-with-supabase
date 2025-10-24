@@ -155,7 +155,7 @@ gcloud run deploy abaco-platform --source .
 
 For detailed setup instructions, error resolution, and platform status, see:
 
-- [Complete Setup Guide](../Library/Application%20Support/Code/User/cs-script.user/integration-error.md)
+- [Git Troubleshooting Guide](./docs/GIT_TROUBLESHOOTING.md) - **Comprehensive guide for Git sync issues**
 - [Quick Start Guide](./QUICK_START.md)
 - [Build Success Log](./BUILD_SUCCESS.md)
 
@@ -171,9 +171,19 @@ npm run dev
 
 **Git sync issues:**
 
+See the comprehensive [Git Troubleshooting Guide](./docs/GIT_TROUBLESHOOTING.md) for detailed solutions to:
+- Push failures and upstream branch issues
+- Non-fast-forward errors
+- Merge conflicts
+- Diverged branches
+- And more...
+
+Quick fix for common sync issue:
 ```bash
-git status
+# Pull latest changes first
 git pull origin main
+
+# Then push your changes
 git push origin main
 ```
 
