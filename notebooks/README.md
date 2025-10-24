@@ -8,7 +8,7 @@ The `abaco_financial_intelligence.ipynb` notebook implements a complete financia
 
 ### Cells Overview
 
-1. **Cell 1: Error Output** - Displays any error output or initial notebook state (if present).
+1. **Cell 1: Feature Engineering** - Performs customer segmentation and calculates financial metrics, serving as the foundation for subsequent analysis.
 
 2. **Cell 2: Feature Engineering** - Merges datasets and computes various financial metrics including customer types, delinquency buckets, and risk indicators.
 
