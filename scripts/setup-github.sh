@@ -28,7 +28,9 @@ if echo "$RESPONSE" | grep -q '"login"'; then
     echo "📋 Next steps:"
     echo "   1. Configure in VS Code: Ctrl+Shift+P → 'GitHub Copilot: Configure'"
     echo "   2. API URL: https://api.github.com"
-    echo "   3. Token: $GITHUB_TOKEN"
+    # Mask the token: show first 4 and last 4 characters only
+    MASKED_TOKEN="${GITHUB_TOKEN:0:4}****${GITHUB_TOKEN: -4}"
+    echo "   3. Token: $MASKED_TOKEN"
 else
     echo "❌ Invalid token or network error"
     echo "Response: $RESPONSE"
