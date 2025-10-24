@@ -27,6 +27,18 @@ Transform raw lending data into superior, predictive intelligence with deep lear
 
 ## 🚀 Quick Start
 
+### Prerequisites
+
+Before you begin, ensure you have:
+
+- **Node.js 18+** installed
+- **npm** package manager
+- **Git** for version control
+- **Supabase account** ([Sign up](https://supabase.com))
+- **(Optional) Google Cloud account** for Cloud Run deployment ([Setup guide](./docs/GOOGLE_CLOUD_SETUP.md))
+
+### Installation
+
 ```bash
 # Clone the repository
 git clone https://github.com/your-org/nextjs-with-supabase
@@ -131,18 +143,79 @@ For detailed documentation, see [notebooks/README_ABACO_DATASET.md](./notebooks/
 
 ## 🚀 Deployment
 
+### Prerequisites
+
+Before deploying, ensure:
+- [ ] Supabase project is configured
+- [ ] Environment variables are set
+- [ ] Application builds successfully (`npm run build`)
+- [ ] Google Cloud account setup (for Cloud Run) - [Setup Guide](./docs/GOOGLE_CLOUD_SETUP.md)
+
 ### Vercel (Recommended)
 
 ```bash
+# Build locally first
 npm run build
+
+# Deploy to Vercel
 vercel deploy
+
+# Or deploy for production
+vercel --prod
 ```
+
+**Environment Variables on Vercel**:
+1. Go to Project Settings → Environment Variables
+2. Add all variables from `.env.local`
+3. Redeploy after adding variables
 
 ### Google Cloud Run
 
+**First-time Setup**:
+
 ```bash
+# 1. Login to Google Cloud
+gcloud auth login
+
+# 2. Set your project
+gcloud config set project YOUR-PROJECT-ID
+
+# 3. Enable required APIs
+gcloud services enable run.googleapis.com cloudbuild.googleapis.com
+
+# 4. Deploy
+gcloud run deploy abaco-platform \
+    --source . \
+    --platform managed \
+    --region us-central1 \
+    --allow-unauthenticated \
+    --set-env-vars "NEXT_PUBLIC_SUPABASE_URL=your-url,NEXT_PUBLIC_SUPABASE_PUBLISHABLE_OR_ANON_KEY=your-key"
+```
+
+**Subsequent Deployments**:
+
+```bash
+# Quick deploy with existing config
 gcloud run deploy abaco-platform --source .
 ```
+
+**Troubleshooting Deployment**:
+
+If you encounter permission errors:
+```bash
+# Check your access
+gcloud projects list
+
+# Enable necessary APIs
+gcloud services enable run.googleapis.com
+
+# See full troubleshooting guide
+# docs/TROUBLESHOOTING.md
+```
+
+For complete Google Cloud setup instructions, see:
+- [Google Cloud Setup Guide](./docs/GOOGLE_CLOUD_SETUP.md)
+- [Troubleshooting Guide](./docs/TROUBLESHOOTING.md)
 
 ## 🔒 Security & Compliance
 
@@ -155,7 +228,9 @@ gcloud run deploy abaco-platform --source .
 
 For detailed setup instructions, error resolution, and platform status, see:
 
-- [Complete Setup Guide](../Library/Application%20Support/Code/User/cs-script.user/integration-error.md)
+- [📚 Documentation Index](./docs/README.md) - Complete documentation overview
+- [Google Cloud Setup Guide](./docs/GOOGLE_CLOUD_SETUP.md) - Complete GCP integration guide
+- [Troubleshooting Guide](./docs/TROUBLESHOOTING.md) - Common issues and solutions
 - [Quick Start Guide](./QUICK_START.md)
 - [Build Success Log](./BUILD_SUCCESS.md)
 
@@ -172,9 +247,24 @@ npm run dev
 **Git sync issues:**
 
 ```bash
-git status
+# Set upstream branch
+git push -u origin main
+
+# Pull and push
 git pull origin main
 git push origin main
+```
+
+**Google Cloud access issues:**
+
+```bash
+# Check project access
+gcloud projects list
+
+# Enable required APIs
+gcloud services enable run.googleapis.com
+
+# See full guide: docs/TROUBLESHOOTING.md
 ```
 
 **Python analysis not running:**
@@ -183,7 +273,9 @@ git push origin main
 python3 notebooks/abaco_financial_intelligence.py
 ```
 
-For comprehensive troubleshooting, environment status, and performance metrics, refer to the [Complete Setup Guide](../Library/Application%20Support/Code/User/cs-script.user/integration-error.md).
+For comprehensive troubleshooting, see:
+- [Google Cloud Troubleshooting](./docs/TROUBLESHOOTING.md)
+- [Google Cloud Setup](./docs/GOOGLE_CLOUD_SETUP.md)
 
 ## 📄 License
 
