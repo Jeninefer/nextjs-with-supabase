@@ -17,7 +17,7 @@
                 "NODE_ENV": "development"
             },
             "serverReadyAction": {
-                "pattern": "Local:.+(https?://localhost:[0-9]+)",
+                "pattern": "started server on.+(https?://[^\\s]+)",
                 "uriFormat": "%s",
                 "action": "openExternally"
             }
