@@ -14,20 +14,25 @@ PASSED=0
 FAILED=0
 WARNINGS=0
 
+# Function to check for Google Cloud environment variables
+check_google_cloud_vars() {
+    GOOGLE_VARS=$(env | grep -E "^(GOOGLE_|GCLOUD_|CLOUDSDK_|GCP_|DATAPROC_)" | grep -v "CHROME_BIN" || true)
+    if [ -z "$GOOGLE_VARS" ]; then
+        echo -e "${GREEN}✅ PASS${NC}: No Google Cloud environment variables found"
+        ((PASSED++))
+    else
+        echo -e "${RED}❌ FAIL${NC}: Found Google Cloud environment variables:"
+        echo "$GOOGLE_VARS"
+        echo ""
+        echo "Run: ./scripts/clear_google_cloud_env.sh"
+        ((FAILED++))
+    fi
+}
+
 # Test 1: Check for Google Cloud environment variables
 echo "Test 1: Google Cloud Environment Variables"
 echo "-------------------------------------------"
-GOOGLE_VAR_COUNT=$(env | grep -E "^(GOOGLE_|GCLOUD_|CLOUDSDK_|GCP_|DATAPROC_)" | grep -v "CHROME_BIN" | grep -c .)
-if [ "$GOOGLE_VAR_COUNT" -eq 0 ]; then
-    echo -e "${GREEN}✅ PASS${NC}: No Google Cloud environment variables found"
-    ((PASSED++))
-else
-    echo -e "${RED}❌ FAIL${NC}: Found Google Cloud environment variables:"
-    env | grep -E "^(GOOGLE_|GCLOUD_|CLOUDSDK_|GCP_|DATAPROC_)" | grep -v "CHROME_BIN"
-    echo ""
-    echo "Run: ./scripts/clear_google_cloud_env.sh"
-    ((FAILED++))
-fi
+check_google_cloud_vars
 echo ""
 
 # Test 2: Check Node.js availability
