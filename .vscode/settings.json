@@ -88,8 +88,9 @@
         "plaintext",
         "shellscript"
     ],
+    // Added Docker Desktop's default binary path for macOS to ensure Docker CLI tools are available.
     "terminal.integrated.env.osx": {
-        "PATH": "/usr/local/bin:/usr/bin:${env:PATH}"
+        "PATH": "/Applications/Docker.app/Contents/Resources/bin:/usr/local/bin:/usr/bin:${env:PATH}"
     },
     "terminal.integrated.env.linux": {
         "PATH": "/usr/local/bin:/usr/bin:${env:PATH}"
