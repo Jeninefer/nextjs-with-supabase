@@ -1,11 +1,5 @@
-declare const Deno: {
-  env: {
-    get(key: string): string | undefined;
-  };
-  serve: (handler: (req: Request) => Response | Promise<Response>) => void;
-};
-
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+// Fix: Use proper Supabase import for Edge Functions
+import { createClient } from "jsr:@supabase/supabase-js@2";
 
 type SummarizeRequest = {
   thread_id: string;

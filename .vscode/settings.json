@@ -1,0 +1,6 @@
+{
+    "sonarlint.connectedMode.project": {
+        "connectionId": "jeninefer",
+        "projectKey": "Jeninefer_nextjs-with-supabase"
+    }
+}
