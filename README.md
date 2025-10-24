@@ -169,13 +169,22 @@ kill -9 <PID>
 npm run dev
 ```
 
-**Git sync issues:**
+**Git branch tracking issues:**
+
+If you encounter errors like "no tracking information for the current branch" or "no upstream branch":
 
 ```bash
-git status
-git pull origin main
-git push origin main
+# Quick fix - run the automated setup script
+bash setup-git-tracking.sh
+
+# Or manually set tracking for current branch
+git branch --set-upstream-to=origin/main main
+
+# Or push with upstream setup
+git push -u origin main
 ```
+
+For detailed Git troubleshooting, see [Git Troubleshooting Guide](./docs/GIT_TROUBLESHOOTING.md)
 
 **Python analysis not running:**
 
