@@ -74,9 +74,4 @@ jobs:
             echo "🔍 **Preview deployment created**" >> $GITHUB_STEP_SUMMARY
           fi
 
-      - name: Notify Vercel deployment
-        run: |
-          if [ "${{ github.event_name }}" == "pull_request" ]; then
-            DEPLOYMENT_URL=$(echo ${{ steps.vercel.outputs.details }} | jq -r '.url')
-            echo "🔗 View Preview Deployment: $DEPLOYMENT_URL" >> $GITHUB_STEP_SUMMARY
-          fi
+      # The "Notify Vercel deployment" step was removed because it referenced an undefined output.
