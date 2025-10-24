@@ -454,7 +454,7 @@ When troubleshooting, check these in order:
 
 ### ABACO Platform Support
 
-- **Email**: tech@abaco-platform.com
+- **Email**: [UPDATE_WITH_ACTUAL_SUPPORT_EMAIL]
 - **GitHub Issues**: [Report an issue](https://github.com/Jeninefer/nextjs-with-supabase/issues)
 - **Documentation**: Check `/docs` directory
 
