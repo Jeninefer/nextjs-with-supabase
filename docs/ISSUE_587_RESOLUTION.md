@@ -73,7 +73,7 @@ Updated the main README.md to reference the Cloud Code setup guide in the troubl
 
 **Method 1: Keyboard Shortcuts**
 - Select code that needs fixing
-- Press `Ctrl+Shift+F` (Windows/Linux) or `Cmd+Shift+F` (Mac)
+- Press `Ctrl+Shift+Alt+F` (Windows/Linux) or `Cmd+Shift+Alt+F` (Mac)
 - Duet AI will suggest fixes
 
 **Method 2: Command Palette**
