@@ -1,6 +1,7 @@
 #!/bin/bash
 
-cd /home/codespace/OfficeAddinApps/Figma
+# Change to the Figma directory relative to this script's location
+cd "$(dirname "$0")/../Figma"
 
 echo "🚨 EMERGENCY: Disk Space + Supabase Fix"
 echo "========================================"
