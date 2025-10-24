@@ -87,5 +87,8 @@
         "latex",
         "plaintext",
         "shellscript"
-    ]
+    ],
+    "cloudcode.duetAI.enabled": true,
+    "cloudcode.duetAI.inlineCompletions.enabled": true,
+    "cloudcode.autoDependencies": "on"
 }
