@@ -67,8 +67,8 @@ docker info
 # On macOS:
 # If you use Docker Desktop (the recommended way to run Docker on macOS):
 open -a Docker
-# Wait for Docker Desktop's GUI to show that Docker is "running" before running Docker commands.
 
+**Wait for Docker Desktop's GUI to show that Docker is "running" before running Docker commands.**
 # If you use a command-line Docker installation (e.g., via Homebrew), check if the Docker daemon is running:
 pgrep -fl dockerd
 ```
