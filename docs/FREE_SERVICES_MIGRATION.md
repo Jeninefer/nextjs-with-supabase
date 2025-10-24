@@ -114,7 +114,7 @@ jobs:
 ##### A. Hugging Face (Gratis para uso personal)
 
 ```javascript
-// filepath: /home/codespace/OfficeAddinApps/Figma/src/api/huggingface.js
+// filepath: src/api/huggingface.js
 
 const HUGGINGFACE_API_KEY = process.env.HUGGINGFACE_API_KEY; // Gratis!
 
