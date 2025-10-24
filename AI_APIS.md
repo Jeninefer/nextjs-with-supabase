@@ -1,6 +1,6 @@
 # AI APIs Integration Guide
 
-This project integrates multiple AI APIs: OpenAI (GPT), xAI (Grok), and Figma API.
+This project integrates multiple AI APIs: OpenAI (GPT), xAI (Grok), Figma API, Microsoft Learn MCP Server, and Claude Desktop MCP.
 
 ## Table of Contents
 
@@ -8,56 +8,45 @@ This project integrates multiple AI APIs: OpenAI (GPT), xAI (Grok), and Figma AP
 - [OpenAI API](#openai-api)
 - [xAI (Grok) API](#xai-grok-api)
 - [Figma API](#figma-api)
+- [Microsoft Learn MCP Server](#microsoft-learn-mcp-server)
+- [Claude Desktop MCP Configuration](#claude-desktop-mcp-configuration)
 - [Usage Examples](#usage-examples)
 - [Best Practices](#best-practices)
 
 ## Setup
 
-### 1. Get API Keys
-
-#### OpenAI
-
-1. Go to [OpenAI Platform](https://platform.openai.com/)
-2. Sign up or log in
-3. Navigate to [API Keys](https://platform.openai.com/api-keys)
-4. Click "Create new secret key"
-5. Copy the key (starts with `sk-`)
-
-#### xAI (Grok)
-
-1. Go to [xAI Console](https://console.x.ai/)
-2. Sign up for API access
-3. Navigate to API settings
-4. Generate an API key
-5. Copy the key
-
-#### Figma
-
-1. Go to [Figma Settings](https://www.figma.com/settings)
-2. Scroll to "Personal Access Tokens"
-3. Click "Create new token"
-4. Name it and copy the token (starts with `figd_`)
-
-### 2. Configure Environment Variables
-
-Add to your `.env` file:
+### Environment Variables
 
 ```env
+# Supabase
+NEXT_PUBLIC_SUPABASE_URL=http://localhost:54321
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+
+# OpenAI
 OPENAI_API_KEY=sk-proj-your-key-here
+
+# xAI (Grok)
 XAI_API_KEY=xai-your-key-here
+
+# Figma
 FIGMA_ACCESS_TOKEN=figd_your-token-here
-FIGMA_FILE_KEY=your-figma-file-key
+FIGMA_FILE_KEY=nuVKwuPuLS7VmLFvqzOX1G
 ```
 
-### 3. Extract Figma File Key
+## Quick Start
 
-From your Figma URL:
+```bash
+# Install Supabase CLI (if not installed)
+curl -L https://github.com/supabase/cli/releases/latest/download/supabase_linux_amd64.tar.gz | tar -xz
+sudo mv supabase /usr/local/bin/
 
-```text
-https://www.figma.com/design/nuVKwuPuLS7VmLFvqzOX1G/Create-Dark-Editable-Slides
+# Initialize and start Supabase
+supabase init
+supabase start
+
+# Start development
+npm run dev
 ```
-
-The file key is: `nuVKwuPuLS7VmLFvqzOX1G`
 
 ## OpenAI API
 
@@ -188,6 +177,445 @@ await figma.postComment('file-key', 'Great design!', { x: 100, y: 200 });
 ```text
 https://api.figma.com/v1/
 ```
+
+## Microsoft Learn MCP Server
+
+### Features
+
+- **Real-time Microsoft Documentation**: Access up-to-date Microsoft Learn content
+- **Semantic Search**: Advanced vector search for contextually relevant docs
+- **Code Sample Discovery**: Find official Microsoft/Azure code examples
+- **Multi-language Support**: Filter code samples by programming language
+- **Official Source of Truth**: Always get the latest official documentation
+
+### MCP Server Endpoint
+
+```text
+https://learn.microsoft.com/api/mcp
+```
+
+### Available Tools
+
+| Tool | Description | Parameters |
+|------|-------------|------------|
+| `microsoft_docs_search` | Semantic search against Microsoft documentation | `query` (string) |
+| `microsoft_docs_fetch` | Fetch and convert docs page to markdown | `url` (string) |
+| `microsoft_code_sample_search` | Search for code snippets | `query` (string), `language` (optional) |
+
+### Setup in VS Code
+
+1. **Automatic Setup** (Recommended):
+
+   ```bash
+   # Install in VS Code
+   code --install-extension GitHub.copilot
+   ```
+
+2. **Manual Configuration**:
+   Add to `.vscode/settings.json`:
+
+   ```json
+   {
+     "mcp.servers": {
+       "microsoft-docs": {
+         "type": "http",
+         "url": "https://learn.microsoft.com/api/mcp"
+       }
+     },
+     "github.copilot.chat.mcp.enabled": true
+   }
+   ```
+
+## Claude Desktop MCP Configuration
+
+### Overview
+
+Claude Desktop supports Model Context Protocol (MCP) for integrating custom data sources and tools directly into your conversations.
+
+### Configuration File Location
+
+- **Windows**: `%AppData%\Claude\claude_desktop_config.json`
+- **macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
+- **Linux/Codespaces**: `~/.config/Claude/claude_desktop_config.json`
+
+### Quick Setup (Automated)
+
+Run the automated setup script:
+
+```bash
+cd /home/codespace/OfficeAddinApps/Figma
+bash scripts/fix-claude-config.sh
+```
+
+### Manual Setup Instructions
+
+1. **Open Configuration File**:
+
+   **Linux/Codespaces**:
+
+   ```bash
+   mkdir -p ~/.config/Claude
+   nano ~/.config/Claude/claude_desktop_config.json
+   ```
+
+   **macOS**:
+
+   ```bash
+   mkdir -p ~/Library/Application\ Support/Claude
+   nano ~/Library/Application\ Support/Claude/claude_desktop_config.json
+   ```
+
+   **Windows**:
+
+   ```powershell
+   mkdir %AppData%\Claude
+   notepad %AppData%\Claude\claude_desktop_config.json
+   ```
+
+2. **Add Configuration**:
+
+   ```json
+   {
+     "mcpServers": {
+       "microsoft-learn": {
+         "command": "npx",
+         "args": ["-y", "@modelcontextprotocol/server-microsoft-learn"]
+       },
+       "unity-mcp": {
+         "command": "uv",
+         "args": [
+           "--directory",
+           "/home/codespace/OfficeAddinApps/Figma/unity_mcp_server_src",
+           "run",
+           "server.py"
+         ],
+         "env": {
+           "MCP_SERVER_PORT": "8080"
+         }
+       },
+       "sonarqube-analysis": {
+         "command": "npx",
+         "args": ["sonarqube-scanner"],
+         "env": {
+           "SONAR_TOKEN": "your-token-here",
+           "SONAR_HOST_URL": "http://localhost:9000"
+         }
+       }
+     }
+   }
+   ```
+
+3. **Save and Exit**:
+   - **nano**: Ctrl+O → Enter → Ctrl+X
+   - **notepad**: File → Save → Close
+
+4. **Restart Claude Desktop**
+
+### Troubleshooting Configuration
+
+```bash
+# Verificar ubicación correcta del archivo
+ls -la ~/.config/Claude/claude_desktop_config.json  # Linux
+ls -la ~/Library/Application\ Support/Claude/claude_desktop_config.json  # macOS
+
+# Validar JSON
+cat ~/.config/Claude/claude_desktop_config.json | jq .
+
+# Ver logs de Claude Desktop
+tail -f ~/Library/Logs/Claude/main.log  # macOS
+tail -f ~/.config/Claude/logs/main.log  # Linux
+
+# Verificar permisos
+chmod 644 ~/.config/Claude/claude_desktop_config.json
+```
+
+### Available MCP Servers
+
+#### 1. Microsoft Learn MCP Server
+
+**Purpose**: Access real-time Microsoft documentation and code samples
+
+**Tools**:
+
+- `microsoft_docs_search` - Search Microsoft Learn docs
+- `microsoft_docs_fetch` - Fetch and convert docs to markdown
+- `microsoft_code_sample_search` - Find code snippets
+
+**Example Query**:
+
+```text
+"Can you search Microsoft Learn for Azure Functions best practices?"
+```
+
+#### 2. Clarity Analytics MCP Server
+
+**Purpose**: Fetch website analytics data from Microsoft Clarity
+
+**Tools**:
+
+- `get-clarity-data` - Retrieve analytics data
+
+**Required Parameters**:
+
+- `numOfDays` (1-3): Number of days to retrieve
+- `dimensions` (optional): Filter dimensions (e.g., Browser, Country, OS)
+- `metrics` (optional): Metrics to retrieve (e.g., Sessions, PageViews, Traffic)
+
+**Example Query**:
+
+```text
+"Can you fetch my Clarity data for the last day, filtered by Browser and showing Traffic metrics?"
+```
+
+**Response Format**:
+
+```json
+{
+  "period": "2025-01-30",
+  "dimensions": ["Browser"],
+  "metrics": {
+    "sessions": 1234,
+    "pageViews": 5678,
+    "avgSessionDuration": "00:03:45"
+  },
+  "breakdowns": {
+    "Chrome": { "sessions": 800, "percentage": 64.8 },
+    "Safari": { "sessions": 300, "percentage": 24.3 },
+    "Firefox": { "sessions": 134, "percentage": 10.9 }
+  }
+}
+```
+
+#### 3. Unity MCP Server
+
+**Purpose**: Execute Unity commands and get project status
+
+**Tools**:
+
+- `execute_unity_command` - Run Unity commands via MCP
+- `get_unity_status` - Check Unity connection status
+
+**Example Query**:
+
+```text
+"Can you create a cube object in Unity at position (0, 0, 0)?"
+```
+
+#### 4. SonarQube Analysis MCP Server
+
+**Purpose**: Run code quality analysis and fetch metrics
+
+**Tools**:
+
+- `run_sonarqube_analysis` - Execute code analysis
+- `get_quality_metrics` - Retrieve quality gate metrics
+
+**Example Query**:
+
+```text
+"Can you run a SonarQube analysis on the current project?"
+```
+
+### Using MCP Servers in Claude Desktop
+
+Once configured, you can interact with MCP servers naturally:
+
+**Example Conversations**:
+
+1. **Microsoft Documentation**:
+
+   ```text
+   You: "Search Microsoft Learn for Next.js deployment on Azure"
+
+   Claude: [Uses microsoft_docs_search tool]
+   "I found several resources about deploying Next.js to Azure..."
+   ```
+
+2. **Clarity Analytics**:
+
+   ```text
+   You: "Show me traffic metrics for the last 3 days grouped by country"
+
+   Claude: [Prompts to run get-clarity-data with:
+     numOfDays: 3
+     dimensions: ["Country"]
+     metrics: ["Sessions", "PageViews", "Traffic"]
+   ]
+   ```
+
+3. **Unity Integration**:
+
+   ```text
+   You: "Create a red sphere in Unity at coordinates (5, 0, 5)"
+
+   Claude: [Uses execute_unity_command tool with action: "create_object"]
+   ```
+
+4. **Code Quality**:
+
+   ```text
+   You: "Analyze code quality and show me bugs and vulnerabilities"
+   
+   Claude: [Uses run_sonarqube_analysis and get_quality_metrics]
+   ```
+
+### Environment Variables for MCP Servers
+
+Add these to your MCP server configurations:
+
+```json
+{
+  "mcpServers": {
+    "clarity-analytics": {
+      "env": {
+        "CLARITY_API_KEY": "your-clarity-api-key",
+        "CLARITY_PROJECT_ID": "your-project-id"
+      }
+    },
+    "unity-mcp": {
+      "env": {
+        "MCP_SERVER_HOST": "0.0.0.0",
+        "MCP_SERVER_PORT": "8080",
+        "UNITY_PROJECT_PATH": "/path/to/unity/project"
+      }
+    },
+    "sonarqube-analysis": {
+      "env": {
+        "SONAR_TOKEN": "your-sonar-token",
+        "SONAR_HOST_URL": "http://localhost:9000",
+        "SONAR_PROJECT_KEY": "abaco-office-addin"
+      }
+    }
+  }
+}
+```
+
+### Troubleshooting MCP Configuration
+
+| Issue | Solution |
+|-------|----------|
+| MCP server not appearing | Restart Claude Desktop completely |
+| Command not found error | Verify `command` path in config |
+| Connection refused | Check server is running: `lsof -i :8080` |
+| Permission denied | Make server script executable: `chmod +x server.py` |
+| Environment variables not working | Check `.env` file exists and is loaded |
+
+### Testing MCP Server Connection
+
+```bash
+# Test Unity MCP Server
+curl http://localhost:8080/health
+
+# Test SonarQube connection
+curl -H "Authorization: Bearer YOUR_TOKEN" \
+  http://localhost:9000/api/system/status
+
+# Check Claude Desktop logs
+# macOS: ~/Library/Logs/Claude/
+# Windows: %AppData%\Claude\logs\
+```
+
+### Advanced Configuration
+
+**Custom MCP Server with Multiple Tools**:
+
+```json
+{
+  "mcpServers": {
+    "abaco-custom": {
+      "command": "node",
+      "args": [
+        "/home/codespace/OfficeAddinApps/Figma/custom-mcp-server.js"
+      ],
+      "env": {
+        "OPENAI_API_KEY": "${OPENAI_API_KEY}",
+        "XAI_API_KEY": "${XAI_API_KEY}",
+        "FIGMA_ACCESS_TOKEN": "${FIGMA_ACCESS_TOKEN}",
+        "FIGMA_FILE_KEY": "${FIGMA_FILE_KEY}",
+        "NEXT_PUBLIC_SUPABASE_URL": "${NEXT_PUBLIC_SUPABASE_URL}",
+        "NEXT_PUBLIC_SUPABASE_ANON_KEY": "${NEXT_PUBLIC_SUPABASE_ANON_KEY}"
+      }
+    }
+  }
+}
+```
+
+### MCP Server Development
+
+To create your own MCP server:
+
+1. **Install MCP SDK**:
+
+   ```bash
+   npm install @modelcontextprotocol/sdk
+   ```
+
+2. **Create Server**:
+
+   ```typescript
+   import { Server } from '@modelcontextprotocol/sdk/server/index.js';
+   import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
+   
+   const server = new Server({
+     name: 'abaco-mcp-server',
+     version: '1.0.0',
+   }, {
+     capabilities: {
+       tools: {},
+     },
+   });
+   
+   // Define tools
+   server.setRequestHandler('tools/list', async () => ({
+     tools: [
+       {
+         name: 'fetch_figma_data',
+         description: 'Fetch data from Figma',
+         inputSchema: {
+           type: 'object',
+           properties: {
+             fileKey: { type: 'string' }
+           }
+         }
+       }
+     ]
+   }));
+   ```
+
+3. **Add to Claude Config**:
+
+   ```json
+   {
+     "mcpServers": {
+       "abaco-custom": {
+         "command": "node",
+         "args": ["./custom-server.js"]
+       }
+     }
+   }
+   ```
+
+### Security Best Practices for MCP
+
+1. **Never commit API keys in config**:
+   - Use environment variables
+   - Store sensitive data in `.env` files
+   - Reference with `${VARIABLE_NAME}` in config
+
+2. **Validate inputs**:
+   - Check parameters before execution
+   - Sanitize user input
+   - Implement rate limiting
+
+3. **Use least privilege**:
+   - Grant minimal required permissions
+   - Separate read/write access
+   - Use scoped tokens
+
+4. **Monitor usage**:
+   - Log MCP server requests
+   - Track API usage
+   - Set up alerts for anomalies
 
 ## Usage Examples
 
@@ -345,6 +773,9 @@ async function getFigmaFile(fileKey, cacheDuration = 300000) {
 - [xAI API Documentation](https://docs.x.ai/)
 - [Figma API Documentation](https://www.figma.com/developers/api)
 - [Office Add-ins Documentation](https://learn.microsoft.com/en-us/office/dev/add-ins/)
+- [Model Context Protocol Specification](https://modelcontextprotocol.io/)
+- [Claude Desktop MCP Documentation](https://docs.anthropic.com/claude/docs/model-context-protocol)
+- [Microsoft Clarity API](https://learn.microsoft.com/en-us/clarity/setup-and-installation/clarity-api)
 
 ## Support
 
@@ -353,6 +784,8 @@ For API-specific issues:
 - **OpenAI**: [help.openai.com](https://help.openai.com/)
 - **xAI**: [x.ai/support](https://x.ai/support)
 - **Figma**: [help.figma.com](https://help.figma.com/)
+- **Claude Desktop**: [support.anthropic.com](https://support.anthropic.com/)
+- **Microsoft Clarity**: [clarity.microsoft.com/support](https://clarity.microsoft.com/support)
 
 ---
 
