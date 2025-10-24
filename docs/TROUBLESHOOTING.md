@@ -65,12 +65,10 @@ docker --version
 docker info
 
 # On macOS:
-# If you installed Docker Desktop, start it with:
+# Start Docker Desktop (the recommended way to run Docker on macOS):
 open -a Docker
-# If you installed Docker via Homebrew or other methods, ensure the Docker daemon is running:
-# For Homebrew, you can start the service with:
-brew services start docker
-# Or check if the Docker daemon is running:
+# Wait for Docker Desktop to finish starting before running Docker commands.
+# To check if the Docker daemon is running:
 pgrep -fl dockerd
 ```
 
