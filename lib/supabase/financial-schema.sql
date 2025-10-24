@@ -8,12 +8,9 @@ create extension if not exists "uuid-ossp";
 create table if not exists portfolio_analysis (
     id uuid primary key default gen_random_uuid(),
     tenant_id text not null default 'abaco_financial',
-    analysis_date date not null default current_date,
-    analysis_type text not null,
-    kpis jsonb not null default '{}',
-    insights text[] default '{}',
-    recommendations text[] default '{}',
-    metadata jsonb default '{}',
+    customer_id text not null,
+    "timestamp" timestamptz not null default now(),
+    data jsonb not null default '{}',
     created_at timestamptz default now(),
     updated_at timestamptz default now()
 );
