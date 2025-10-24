@@ -12,8 +12,7 @@ Runs on every push and pull request to the `main` branch:
 - Sets up Node.js 20
 - Installs dependencies
 - Runs ESLint
-- Performs TypeScript type checking
-- Builds the Next.js application
+- Builds the Next.js application (TypeScript type checking is performed as part of the build)
 - Uploads build artifacts
 
 ### 2. Deploy Job
