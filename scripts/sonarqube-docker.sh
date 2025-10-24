@@ -22,7 +22,17 @@ case "${1:-start}" in
         
         echo ""
         echo "⏳ Waiting for SonarQube to start..."
-        sleep 10
+        # Wait for SonarQube to become healthy (max 60 seconds)
+        timeout=60
+        elapsed=0
+        until docker exec sonarqube curl -fs http://localhost:9000/api/system/health >/dev/null 2>&1; do
+            if [ $elapsed -ge $timeout ]; then
+                echo "❌ SonarQube did not become healthy after $timeout seconds."
+                exit 1
+            fi
+            sleep 2
+            elapsed=$((elapsed + 2))
+        done
         
         echo ""
         echo "✅ SonarQube started"
