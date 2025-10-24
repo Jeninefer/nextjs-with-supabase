@@ -8,9 +8,16 @@
     "type-check": "tsc --noEmit",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "clean": "rm -rf .next out node_modules/.cache"
+    "clean": "rm -rf .next out node_modules/.cache",
+    "mcp:server": "uv --directory ./unity_mcp_server_src run server.py",
+    "mcp:dev": "npm run mcp:server",
+    "sonarqube:start": "docker start sonarqube || docker run -d --name sonarqube -p 9000:9000 -p 64120:64120 -e SONAR_ES_BOOTSTRAP_CHECKS_DISABLE=true sonarqube:latest",
+    "sonarqube:stop": "docker stop sonarqube",
+    "sonarqube:analyze": "sonar-scanner",
+    "test:coverage": "echo 'Tests not configured yet' && exit 0"
   },
   "dependencies": {
+    "@google/generative-ai": "^0.24.1",
     "@modelcontextprotocol/sdk": "^0.5.0",
     "@radix-ui/react-checkbox": "^1.3.1",
     "@radix-ui/react-dropdown-menu": "^2.1.14",
@@ -19,10 +26,13 @@
     "@supabase/ssr": "^0.7.0",
     "@supabase/supabase-js": "^2.75.1",
     "class-variance-authority": "^0.7.1",
+    "cloudinary": "^2.8.0",
     "clsx": "^2.1.1",
     "lucide-react": "^0.511.0",
+    "netlify-cli": "^23.9.5",
     "next": "^15.5.6",
     "next-themes": "^0.4.6",
+    "pocketbase": "^0.26.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "tailwind-merge": "^3.3.0"
@@ -37,6 +47,7 @@
     "eslint-config-next": "15.3.1",
     "postcss": "^8.5.6",
     "prettier": "^3.6.2",
+    "sonarqube-scanner": "^4.3.2",
     "tailwindcss": "^3.4.18",
     "tailwindcss-animate": "^1.0.7",
     "typescript": "^5.9.3"
