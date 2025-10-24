@@ -1,6 +1,6 @@
 name: Deploy Office Add-in to Vercel
 
-on:
+"on":
   push:
     branches: [main, office-addin-figma]
   pull_request:
@@ -9,7 +9,7 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4

@@ -1,51 +1,45 @@
 {
   "name": "office-addin-figma",
+  "private": true,
   "version": "1.0.0",
-  "description": "Abaco - Office Add-in with Figma, OpenAI, and xAI integration",
   "type": "module",
+  "description": "Abaco Office Add-in with Figma Integration and Market Analysis",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "tsc -b && vite build",
+    "lint": "eslint .",
     "preview": "vite preview",
-    "lint": "eslint . --ext ts,tsx",
-    "lint:fix": "eslint . --ext ts,tsx --fix",
     "type-check": "tsc --noEmit",
-    "clean": "rm -rf dist build .cache .parcel-cache .vite node_modules package-lock.json",
-    "clean:duplicates": "find . -type f \\( -name '*.bak' -o -name '*.old' -o -name '*.copy' -o -name '*copy*' \\) -not -path '*/node_modules/*' -delete",
-    "clean:licenses": "find . -type f -name 'LICENSE*' -not -path './LICENSE' -not -path '*/node_modules/*' -delete",
-    "clean:all": "npm run clean:duplicates && npm run clean:licenses && npm run clean",
-    "reinstall": "npm run clean && npm install",
-    "test:urls": "node scripts/test-urls.js",
-    "verify": "npm run clean:duplicates && npm run type-check && npm run lint",
-    "find-licenses": "node scripts/find-license-matches.js",
-    "cleanup:now": "bash scripts/cleanup-now.sh"
+    "clean:duplicates": "node scripts/find-duplicates.js"
   },
   "dependencies": {
-    "@supabase/supabase-js": "^2.39.0",
-    "openai": "^4.24.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "recharts": "^2.10.0"
+    "axios": "^1.7.2",
+    "date-fns": "^3.6.0",
+    "recharts": "^2.12.7"
   },
   "devDependencies": {
-    "@types/node": "^20.10.6",
-    "@types/react": "^18.3.26",
-    "@types/react-dom": "^18.3.7",
-    "@typescript-eslint/eslint-plugin": "^6.14.0",
-    "@typescript-eslint/parser": "^6.14.0",
-    "@vitejs/plugin-react": "^4.7.0",
-    "autoprefixer": "^10.4.16",
-    "eslint": "^8.55.0",
-    "eslint-plugin-react-hooks": "^4.6.0",
-    "eslint-plugin-react-refresh": "^0.4.5",
-    "postcss": "^8.4.32",
-    "tailwindcss": "^3.4.0",
-    "typescript": "^5.9.3",
-    "vite": "^7.1.11"
+    "@eslint/js": "^9.13.0",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.3.3",
+    "eslint": "^9.13.0",
+    "eslint-plugin-react-hooks": "^5.0.0",
+    "eslint-plugin-react-refresh": "^0.4.14",
+    "globals": "^15.11.0",
+    "typescript": "~5.6.2",
+    "vite": "^5.4.10",
+    "@types/d3": "^7.4.3",
+    "plotly.js-dist-min": "^2.34.0"
   },
-  "engines": {
-    "node": ">=18.0.0",
-    "npm": ">=9.0.0"
-  },
+  "keywords": [
+    "office-add-in",
+    "figma-integration", 
+    "abaco-technologies",
+    "market-analysis",
+    "business-intelligence"
+  ],
+  "author": "Abaco Technologies",
   "license": "MIT"
 }
