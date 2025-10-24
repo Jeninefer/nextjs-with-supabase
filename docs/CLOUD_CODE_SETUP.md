@@ -31,17 +31,17 @@ This project is configured to use Google Cloud Code with Duet AI for enhanced de
 Once Cloud Code is installed and you're authenticated, you can use these Duet AI commands:
 
 1. **Fix Code Issues** - `cloudcode.duetAI.inEditor.fix`
-   - Keyboard shortcut: `Ctrl+Shift+F` (Windows/Linux) or `Cmd+Shift+F` (Mac)
+   - Keyboard shortcut: `Ctrl+Shift+Alt+F` (Windows/Linux) or `Cmd+Shift+Alt+F` (Mac)
    - Select problematic code and run this command to get AI-powered fixes
    - Usage: Select code → Right-click → "Duet AI: Fix"
 
 2. **Explain Code** - `cloudcode.duetAI.inEditor.explain`
-   - Keyboard shortcut: `Ctrl+Shift+E` (Windows/Linux) or `Cmd+Shift+E` (Mac)
+   - Keyboard shortcut: `Ctrl+Shift+Alt+E` (Windows/Linux) or `Cmd+Shift+Alt+E` (Mac)
    - Get detailed explanations of selected code
    - Usage: Select code → Right-click → "Duet AI: Explain"
 
 3. **Generate Code** - `cloudcode.duetAI.inEditor.generate`
-   - Keyboard shortcut: `Ctrl+Shift+G` (Windows/Linux) or `Cmd+Shift+G` (Mac)
+   - Keyboard shortcut: `Ctrl+Shift+Alt+G` (Windows/Linux) or `Cmd+Shift+Alt+G` (Mac)
    - Generate code based on comments or descriptions
    - Usage: Write a comment describing what you need → Run command
 
