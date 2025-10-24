@@ -80,7 +80,11 @@ const mockMCPClient = {
   }
 };
 
-// Returns true if the error message contains googleapis.com host or subdomain in any URL found.
+/**
+ * Checks if the error message contains googleapis.com host or subdomain in any URL.
+ * @param errorMessage - The error message to check
+ * @returns True if googleapis.com domain is found
+ */
 function containsGoogleAPIDomain(errorMessage: string): boolean {
   // Find all candidate URLs using a simple regex
   const urlRegex = /(https?:\/\/[^\s]+)/g;
