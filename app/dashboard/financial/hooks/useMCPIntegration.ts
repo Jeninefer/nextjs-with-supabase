@@ -95,7 +95,7 @@ function containsGoogleAPIDomain(errorMessage: string): boolean {
       // Accept googleapis.com or any subdomain (eg: dataproc.googleapis.com)
       if (
         url.hostname === 'googleapis.com' ||
-        url.hostname.endsWith('.googleapis.com')
+    } catch (parseError) {
       ) {
         return true;
       }
