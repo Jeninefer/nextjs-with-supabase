@@ -57,7 +57,16 @@ case "${1:-start}" in
     clean)
         echo "🗑️ Removing SonarQube container and data..."
         docker rm -f sonarqube
-        docker volume rm sonarqube_data sonarqube_extensions sonarqube_logs 2>/dev/null || true
+        for vol in sonarqube_data sonarqube_extensions sonarqube_logs; do
+            if ! out=$(docker volume rm "$vol" 2>&1); then
+                if [[ "$out" == *"No such volume"* ]]; then
+                    # Volume does not exist, ignore
+                    :
+                else
+                    echo "⚠️  Failed to remove volume '$vol': $out"
+                fi
+            fi
+        done
         echo "✅ SonarQube removed"
         ;;
     
