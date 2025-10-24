@@ -166,8 +166,8 @@ Python financial analysis scripts are not executing.
 # Ensure Python 3 is installed
 python3 --version
 
-# Run the analysis script directly
-python3 notebooks/abaco_financial_intelligence.py
+# Open the analysis notebook
+jupyter notebook notebooks/abaco_financial_intelligence_unified.ipynb
 
 # Check for missing dependencies
 pip3 install -r requirements.txt
