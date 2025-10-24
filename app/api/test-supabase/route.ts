@@ -76,7 +76,19 @@ export async function GET() {
     });
   } catch (err: unknown) {
     // Log error details server-side for diagnostics
-    console.error("Unhandled error in GET /api/test-supabase:", err);
+    if (process.env.NODE_ENV !== "production") {
+      if (err instanceof Error) {
+        console.error("Unhandled error in GET /api/test-supabase:", err.message, err.stack);
+      } else {
+        console.error("Unhandled error in GET /api/test-supabase:", err);
+      }
+    } else {
+      if (err instanceof Error) {
+        console.error("Unhandled error in GET /api/test-supabase:", err.message);
+      } else {
+        console.error("Unhandled error in GET /api/test-supabase:", err);
+      }
+    }
     const totalMs = Date.now() - startTotal;
     // Sanitize error message for client
     let errorMessage = "An unexpected error occurred.";
