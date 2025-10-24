@@ -155,7 +155,7 @@ curl http://localhost:11434/api/generate -d '{
 ```
 
 ```javascript
-// filepath: /home/codespace/OfficeAddinApps/Figma/src/api/ollama.js
+// filepath: src/api/ollama.js
 
 async function ollamaGenerate(prompt, model = 'mistral') {
   const response = await fetch('http://localhost:11434/api/generate', {
