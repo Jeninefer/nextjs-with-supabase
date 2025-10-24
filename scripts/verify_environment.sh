@@ -17,13 +17,13 @@ WARNINGS=0
 # Test 1: Check for Google Cloud environment variables
 echo "Test 1: Google Cloud Environment Variables"
 echo "-------------------------------------------"
-GOOGLE_VARS=$(env | grep -E "^(GOOGLE_|GCLOUD_|CLOUDSDK_|GCP_|DATAPROC_)" | grep -v "CHROME_BIN" || true)
-if [ -z "$GOOGLE_VARS" ]; then
+GOOGLE_VAR_COUNT=$(env | grep -E "^(GOOGLE_|GCLOUD_|CLOUDSDK_|GCP_|DATAPROC_)" | grep -v "CHROME_BIN" | grep -c .)
+if [ "$GOOGLE_VAR_COUNT" -eq 0 ]; then
     echo -e "${GREEN}✅ PASS${NC}: No Google Cloud environment variables found"
     ((PASSED++))
 else
     echo -e "${RED}❌ FAIL${NC}: Found Google Cloud environment variables:"
-    echo "$GOOGLE_VARS"
+    env | grep -E "^(GOOGLE_|GCLOUD_|CLOUDSDK_|GCP_|DATAPROC_)" | grep -v "CHROME_BIN"
     echo ""
     echo "Run: ./scripts/clear_google_cloud_env.sh"
     ((FAILED++))
