@@ -10,7 +10,10 @@ This directory contains data files used by the Abaco Financial Intelligence note
 
 **Purpose**: Market analysis and insights from the MYPE (Micro and Small Enterprises) 2025 report.
 
-**Usage**: Cell 10 of the notebook extracts market insights from this PDF, specifically from pages 1, 2, and 35.
+**Usage**: Cell 10 of the notebook extracts market insights from this PDF, specifically from pages 1, 2, and 35:
+- **Page 1**: Executive summary and GDP statistics
+- **Page 2**: Total Addressable Market (TAM) data
+- **Page 35**: Market challenges and risk factors
 
 **Note**: If this file is not present, the notebook will use fallback market statistics automatically.
 
