@@ -1,6 +1,7 @@
 # AI APIs Integration Guide
 
-This project integrates multiple AI APIs: OpenAI (GPT), xAI (Grok), and Figma API.
+This project integrates multiple AI APIs: OpenAI (GPT) and xAI (Grok).
+The Figma API is integrated specifically for the Office Add-in functionality.
 
 ## Table of Contents
 
@@ -164,13 +165,13 @@ https://api.x.ai/v1/chat/completions
 import { figma } from './api/figma';
 
 // Get entire file
-const file = await figma.getFile('YOUR_FILE_KEY');
+const file = await figma.getFile(process.env.FIGMA_FILE_KEY);
 
 // Get specific frame
-const frame = await figma.getFrame('YOUR_FILE_KEY', 'Frame Name');
+const frame = await figma.getFrame(process.env.FIGMA_FILE_KEY, 'Frame Name');
 
 // Extract all text
-const textNodes = await figma.extractText('YOUR_FILE_KEY');
+const textNodes = await figma.extractText(process.env.FIGMA_FILE_KEY);
 
 // Export images
 const images = await figma.getImages('file-key', ['node-id-1', 'node-id-2'], {
@@ -225,7 +226,7 @@ async function generatePresentation(topic, slideCount = 10) {
 }
 ```
 
-### Example 3: Figma to PowerPoint
+### Example 3: Figma to PowerPoint Integration
 
 ```javascript
 import { figma } from './api/figma';
@@ -287,7 +288,7 @@ async function callWithRetry(apiFunction, maxRetries = 3) {
 }
 ```
 
-### 4. Caching
+### 4. Caching Strategy
 
 ```javascript
 const cache = new Map();
