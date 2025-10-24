@@ -69,10 +69,19 @@ See [notebooks/README.md](./notebooks/README.md) for detailed notebook documenta
 
 - **Frontend**: Next.js 15, React, TypeScript
 - **Styling**: Tailwind CSS with ABACO design system
-- **Database**: Supabase (PostgreSQL)
+- **Database**: Supabase (PostgreSQL) - **Free tier available** ✨
 - **Authentication**: Supabase Auth
-- **Deployment**: Vercel, Google Cloud Run
+- **Deployment**: Vercel (free tier), Google Cloud Run (optional)
 - **AI Integration**: MCP (Model Context Protocol)
+- **Analytics**: Python/Jupyter notebooks with pandas, plotly
+
+### Why Supabase?
+
+- ✅ **Free tier**: Perfect for development and small projects
+- ✅ **No credit card**: Free tier doesn't require payment info
+- ✅ **PostgreSQL**: Industry-standard database
+- ✅ **Real-time**: Built-in subscriptions and live updates
+- ✅ **Auth included**: User management out of the box
 
 ## 📁 Project Structure
 
