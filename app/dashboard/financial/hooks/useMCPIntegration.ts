@@ -27,7 +27,7 @@ const mockMCPClient = {
   },
   searchFinancialData: async (query: string) => ({ success: true, data: `Mock analysis for: ${query}` }),
   fetchMarketData: async (url: string) => ({ success: true, data: `Mock data from: ${url}` }),
-  storeMemory: async (key: string, _value: any) => ({ success: true, data: `Stored ${key}` }),
+  storeMemory: async (key: string, _value: unknown) => ({ success: true, data: `Stored ${key}` }),
   getMemory: async (key: string) => ({ success: true, data: `Retrieved ${key}` }),
   disconnect: async () => console.log('Mock: Disconnected')
 };
