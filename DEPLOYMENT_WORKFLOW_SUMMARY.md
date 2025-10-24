@@ -39,13 +39,13 @@ A complete GitHub Actions CI/CD workflow has been created for the ABACO Financia
 - **Trigger**: Pull requests to `main` branch
 - Deploys to Vercel preview environment
 - Provides unique preview URL for testing
-- Only runs when `VERCEL_TOKEN` secret is configured
+- **Requires** `VERCEL_TOKEN` secret to be configured; job will fail if missing
 
 #### 5. Deploy Production (`deploy-production`)
 - **Trigger**: Push to `main` branch
 - Deploys to Vercel production environment
 - Updates production site automatically
-- Only runs when `VERCEL_TOKEN` secret is configured
+- **Requires** `VERCEL_TOKEN` secret to be configured; job will fail if missing
 
 ## 🔧 Configuration Required
 
