@@ -1,35 +1,101 @@
 import { createClient } from "@supabase/supabase-js";
-import { NextResponse } from "next/server";
 
 export async function GET() {
+  const startTotal = Date.now();
   try {
-    const supabase = createClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.SUPABASE_SERVICE_ROLE_KEY!
-    );
+    const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
-    // Test connection with your existing kv_store table
+    if (!url || !serviceKey) {
+      const body = {
+        error:
+          "Missing environment variables NEXT_PUBLIC_SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY",
+      };
+      return new Response(JSON.stringify(body), {
+        status: 500,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+    }
+
+    const supabase = createClient(url, serviceKey, {
+      auth: { persistSession: false },
+      global: { headers: { "x-application-name": "nextjs-test-supabase" } },
+    });
+
+    // Measure query time
+    const queryStart = Date.now();
     const { data, error } = await supabase
       .from("kv_store_08a31cde")
       .select("*")
-      .limit(1);
+      .limit(10);
+    const queryEnd = Date.now();
+    const queryTimeMs = queryEnd - queryStart;
 
-    return NextResponse.json({
-      status: "connected",
-      supabaseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL,
-      hasData: !!data,
-      dataCount: data?.length || 0,
-      error: error?.message || null,
-      timestamp: new Date().toISOString(),
-    });
-  } catch (error) {
-    return NextResponse.json(
-      {
-        status: "error",
-        message: error instanceof Error ? error.message : "Unknown error",
-        timestamp: new Date().toISOString(),
+    if (error) {
+      const body = { error: error.message, queryTimeMs };
+      return new Response(JSON.stringify(body), {
+        status: 500,
+        headers: {
+          "Content-Type": "application/json",
+          "X-Query-Time-ms": String(queryTimeMs),
+          // server-timing helps browsers show metrics in DevTools
+          "Server-Timing": `db;dur=${queryTimeMs}`,
+        },
+      });
+    }
+
+    const totalMs = Date.now() - startTotal;
+
+    const responseBody = {
+      ok: true,
+      meta: {
+        timings: {
+          query_ms: queryTimeMs,
+          total_request_ms: totalMs,
+        },
+        environment: {
+          url_present: !!url,
+          service_key_present: !!serviceKey,
+        },
       },
-      { status: 500 }
-    );
+      count: (data || []).length,
+      data,
+    };
+
+    return new Response(JSON.stringify(responseBody), {
+      status: 200,
+      headers: {
+        "Content-Type": "application/json",
+        "X-Query-Time-ms": String(queryTimeMs),
+        "X-Total-Time-ms": String(totalMs),
+        // Server-Timing header format: <metricname>;dur=<duration-ms>
+        "Server-Timing": `db;dur=${queryTimeMs}, total;dur=${totalMs}`,
+      },
+    });
+  } catch (err: unknown) {
+    // Log error details server-side for diagnostics
+    console.error("Unhandled error in GET /api/test-supabase:", err);
+    const totalMs = Date.now() - startTotal;
+    // Sanitize error message for client
+    let errorMessage = "An unexpected error occurred.";
+    if (err instanceof Error) {
+      errorMessage = `An unexpected error occurred: ${err.message}`;
+    } else if (typeof err === "string") {
+      errorMessage = `An unexpected error occurred: ${err}`;
+    }
+    const body = {
+      error: errorMessage,
+      meta: { timings: { total_request_ms: totalMs } },
+    };
+    return new Response(JSON.stringify(body), {
+      status: 500,
+      headers: {
+        "Content-Type": "application/json",
+        "X-Total-Time-ms": String(totalMs),
+        "Server-Timing": `total;dur=${totalMs}`,
+      },
+    });
   }
 }
