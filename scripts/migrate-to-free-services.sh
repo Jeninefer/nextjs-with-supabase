@@ -73,6 +73,10 @@ case "$ARCH" in
         ;;
 esac
 
+# PocketBase version is pinned for compatibility and reproducibility.
+# If you wish to use a newer version, update the value below.
+# Check for the latest releases at: https://github.com/pocketbase/pocketbase/releases
+# After updating, ensure the migration process works as expected with the new version.
 POCKETBASE_VERSION="0.22.0"
 POCKETBASE_DIR="$PROJECT_ROOT/backend/pocketbase"
 mkdir -p "$POCKETBASE_DIR"
