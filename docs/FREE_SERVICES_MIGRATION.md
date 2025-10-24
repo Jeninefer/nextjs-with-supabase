@@ -364,7 +364,7 @@ export const pocketbase = {
 ### Paso 3: Actualizar .env
 
 ```env
-# filepath: /home/codespace/OfficeAddinApps/Figma/.env.local
+# filepath: path/to/your/project/.env.local
 
 # PocketBase (GRATIS)
 POCKETBASE_URL=http://127.0.0.1:8090
