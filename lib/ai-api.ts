@@ -26,5 +26,8 @@ export async function ollamaGenerate(
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ model, prompt, stream: false })
   });
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(`Ollama API request failed: ${response.status} ${response.statusText} - ${errorText}`);
+  }
   return await response.json();
-}
