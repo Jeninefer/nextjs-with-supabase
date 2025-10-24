@@ -110,32 +110,28 @@ export function useMCPIntegration() {
   }, []);
 
   const searchFinancialInsights = useCallback(async (query: string) => {
-    if (!state.servers.has('perplexity-ask')) {
-      return { success: false, error: 'Perplexity server not available' };
-    }
+    const serverCheck = checkServer('perplexity-ask');
+    if (serverCheck) return serverCheck;
     return await mockMCPClient.searchFinancialData(query);
-  }, [state.servers]);
+  }, [checkServer]);
 
   const fetchMarketData = useCallback(async (source: string) => {
-    if (!state.servers.has('fetch')) {
-      return { success: false, error: 'Fetch server not available' };
-    }
+    const serverCheck = checkServer('fetch');
+    if (serverCheck) return serverCheck;
     return await mockMCPClient.fetchMarketData(source);
-  }, [state.servers]);
+  }, [checkServer]);
 
   const storeAnalysisResult = useCallback(async (analysisId: string, result: any) => {
-    if (!state.servers.has('memory')) {
-      return { success: false, error: 'Memory server not available' };
-    }
+    const serverCheck = checkServer('memory');
+    if (serverCheck) return serverCheck;
     return await mockMCPClient.storeMemory(`analysis_${analysisId}`, result);
-  }, [state.servers]);
+  }, [checkServer]);
 
   const getStoredAnalysis = useCallback(async (analysisId: string) => {
-    if (!state.servers.has('memory')) {
-      return { success: false, error: 'Memory server not available' };
-    }
-    return await mockMCPClient.getMemory(`analysis_${analysisId}`);
-  }, [state.servers]);
+    const serverCheck = checkServer('memory');
+    if (serverCheck) return serverCheck;
+    return mockMCPClient.getMemory(`analysis_${analysisId}`);
+  }, [checkServer]);
 
   useEffect(() => {
     initializeMCPServers();
