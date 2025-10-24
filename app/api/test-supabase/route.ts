@@ -78,8 +78,15 @@ export async function GET() {
     // Log error details server-side for diagnostics
     console.error("Unhandled error in GET /api/test-supabase:", err);
     const totalMs = Date.now() - startTotal;
+    // Sanitize error message for client
+    let errorMessage = "An unexpected error occurred.";
+    if (err && typeof err === "object" && "message" in err && typeof (err as any).message === "string") {
+      errorMessage = `An unexpected error occurred: ${(err as any).message}`;
+    } else if (typeof err === "string") {
+      errorMessage = `An unexpected error occurred: ${err}`;
+    }
     const body = {
-      error: "An unexpected error occurred.",
+      error: errorMessage,
       meta: { timings: { total_request_ms: totalMs } },
     };
     return new Response(JSON.stringify(body), {
