@@ -155,24 +155,6 @@ git commit -m "Resolve merge conflicts"
 git push origin main
 ```
 
-## Python Analysis Not Running
-
-### Problem
-Python financial analysis scripts are not executing.
-
-### Solutions
-
-```bash
-# Ensure Python 3 is installed
-python3 --version
-
-# Open the analysis notebook
-jupyter notebook notebooks/abaco_financial_intelligence_unified.ipynb
-
-# Check for missing dependencies
-pip3 install -r requirements.txt
-```
-
 ## Build Failures
 
 ### Problem
