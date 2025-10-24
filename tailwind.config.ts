@@ -1,6 +1,4 @@
-import plugin from "tailwindcss/plugin";
 import type { Config } from "tailwindcss";
-const { default: flattenColorPalette } = require("tailwindcss/lib/util/flattenColorPalette");
 
 const config: Config = {
   darkMode: ["class"],
@@ -185,7 +183,13 @@ const config: Config = {
   },
   plugins: [
     require("tailwindcss-animate"),
-    addVariablesForColors,
+    // If you have custom plugins, ensure they don't import internal Tailwind modules
+    // Example fix for color palette utilities:
+    function({ addUtilities, theme }) {
+      // Access colors directly from theme
+      const colors = theme('colors')
+      // Your custom utilities here
+    }
   ],
 } satisfies Config;
 
