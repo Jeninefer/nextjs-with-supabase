@@ -152,4 +152,4 @@ For issues with the workflow:
 1. Check the Actions tab for detailed error logs
 2. Verify all secrets and variables are correctly configured
 3. Review the troubleshooting section above
-4. Contact: tech@abaco-platform.com
+4. [Open a support issue](../../issues/new?template=support_request.md)
