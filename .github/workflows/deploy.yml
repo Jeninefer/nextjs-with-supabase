@@ -41,10 +41,10 @@ jobs:
           NODE_ENV: production
 
       - name: Install Vercel CLI
+        if: github.event_name == 'pull_request' || github.ref == 'refs/heads/main' || github.ref == 'refs/heads/office-addin-figma'
         run: npm install --global vercel@latest
 
       - name: Deploy to Vercel (Preview)
-        if: github.event_name == 'pull_request'
         run: vercel --token=${{ secrets.VERCEL_TOKEN }} --confirm
         env:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
