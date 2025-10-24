@@ -43,6 +43,10 @@ mkdir -p notebooks/exports
 
 # Run the financial analysis
 echo "💰 Running ABACO Financial Intelligence Analysis..."
+if [ ! -f notebooks/abaco_financial_intelligence.py ]; then
+    echo "❌ Error: notebooks/abaco_financial_intelligence.py not found!"
+    exit 1
+fi
 $PYTHON_CMD notebooks/abaco_financial_intelligence.py
 
 echo "✅ Analysis complete!"
