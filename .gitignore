@@ -60,3 +60,8 @@ SECURITY_WARNING.md
 **/*secret*
 **/*token*
 **/*key*.txt
+
+# Git artifacts
+FETCH_HEAD
+ORIG_HEAD
+MERGE_HEAD
