@@ -5,7 +5,7 @@
         "when": "editorTextFocus"
     },
     {
-        "key": "ctrl+shift+e",
+        "key": "ctrl+shift+alt+e",
         "command": "cloudcode.duetAI.inEditor.explain",
         "when": "editorTextFocus"
     },
