@@ -1,16 +1,16 @@
 [
     {
-        "key": "ctrl+shift+alt+f",
+        "key": "ctrl+shift+f",
         "command": "cloudcode.duetAI.inEditor.fix",
         "when": "editorTextFocus"
     },
     {
-        "key": "ctrl+shift+alt+e",
+        "key": "ctrl+shift+e",
         "command": "cloudcode.duetAI.inEditor.explain",
         "when": "editorTextFocus"
     },
     {
-        "key": "ctrl+shift+alt+g",
+        "key": "ctrl+shift+g",
         "command": "cloudcode.duetAI.inEditor.generate",
         "when": "editorTextFocus"
     }
