@@ -26,7 +26,7 @@ Reemplazar todos los servicios pagos por alternativas gratuitas sin perder funci
 
 ```bash
 # Descargar PocketBase
-cd /home/codespace/OfficeAddinApps/Figma
+cd path/to/your/project/Figma
 mkdir pocketbase && cd pocketbase
 
 # Linux/macOS
