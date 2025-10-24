@@ -286,4 +286,4 @@ To avoid branch tracking issues in the future:
 ---
 
 **Last Updated:** October 2025  
-**Maintained by:** ABACO Development Team
+**Maintained by:** ExampleOrg DevOps Team
