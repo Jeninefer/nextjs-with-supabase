@@ -1,6 +1,6 @@
 [
     {
-        "key": "ctrl+shift+f",
+        "key": "ctrl+shift+alt+f",
         "command": "cloudcode.duetAI.inEditor.fix",
         "when": "editorTextFocus"
     },
