@@ -301,7 +301,7 @@ _______________________________________________________________
 
 ## Métricas Clave para Análisis
 
-### KPIs a Calcular
+### KPIs a Calcular:
 
 1. **NPS (Net Promoter Score)**
    - % Promotores - % Detractores
