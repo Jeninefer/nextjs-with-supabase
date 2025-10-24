@@ -15,6 +15,7 @@ Welcome to the ABACO Financial Intelligence Platform documentation. This index h
 
 | Document | Purpose | When to Use |
 |----------|---------|-------------|
+| [GITHUB_ACTIONS_DEPLOYMENT.md](./GITHUB_ACTIONS_DEPLOYMENT.md) | GitHub Actions & Vercel deployment (recommended) | Setting up automated CI/CD deployments |
 | [GOOGLE_CLOUD_SETUP.md](./GOOGLE_CLOUD_SETUP.md) | Complete Google Cloud setup guide | Setting up GCP integration for first time |
 | [GOOGLE_CLOUD_QUICK_REFERENCE.md](./GOOGLE_CLOUD_QUICK_REFERENCE.md) | Quick command reference | Need quick GCP commands |
 | [DEPLOYMENT-READY.md](../DEPLOYMENT-READY.md) | Deployment checklist | Before deploying to production |
@@ -49,6 +50,20 @@ Welcome to the ABACO Financial Intelligence Platform documentation. This index h
 2. Follow [QUICK_START.md](../QUICK_START.md) for setup
 3. Configure [.env.example](../.env.example) → `.env.local`
 4. Check [supabase-setup.md](../supabase-setup.md) for database
+
+### "I'm deploying to production"
+
+1. **For Vercel (Recommended)**: Follow [GITHUB_ACTIONS_DEPLOYMENT.md](./GITHUB_ACTIONS_DEPLOYMENT.md)
+   - Setup automated CI/CD with GitHub Actions
+   - Configure Vercel project and secrets
+   - Enable preview deployments for PRs
+
+2. **For Google Cloud**: Follow [GOOGLE_CLOUD_SETUP.md](./GOOGLE_CLOUD_SETUP.md)
+   - Complete GCP setup
+   - Keep [GOOGLE_CLOUD_QUICK_REFERENCE.md](./GOOGLE_CLOUD_QUICK_REFERENCE.md) handy
+   - Use [DEPLOYMENT-READY.md](../DEPLOYMENT-READY.md) checklist
+
+3. **For any platform**: Check [TROUBLESHOOTING.md](./TROUBLESHOOTING.md) if issues arise
 
 ### "I'm deploying to Google Cloud"
 
@@ -95,7 +110,8 @@ Welcome to the ABACO Financial Intelligence Platform documentation. This index h
 - **Access denied**: [TROUBLESHOOTING.md](./TROUBLESHOOTING.md) → Permission Issues
 
 #### Deployment
-- **Vercel**: [README.md](../README.md) → Deployment section
+- **GitHub Actions & Vercel (Recommended)**: [GITHUB_ACTIONS_DEPLOYMENT.md](./GITHUB_ACTIONS_DEPLOYMENT.md) → Complete CI/CD setup
+- **Vercel manual**: [README.md](../README.md) → Deployment section
 - **Cloud Run**: [GOOGLE_CLOUD_SETUP.md](./GOOGLE_CLOUD_SETUP.md) → Deployment Options
 - **Checklist**: [DEPLOYMENT-READY.md](../DEPLOYMENT-READY.md)
 
@@ -216,6 +232,8 @@ Deployment history and status tracking.
 This documentation was last updated: **October 2025**
 
 ### Recent Additions
+- ✅ GitHub Actions deployment workflow with Vercel integration
+- ✅ Comprehensive GitHub Actions & Vercel deployment guide
 - ✅ Comprehensive Google Cloud setup guide
 - ✅ Troubleshooting guide for GCP and Git issues
 - ✅ Quick reference for common GCP commands
