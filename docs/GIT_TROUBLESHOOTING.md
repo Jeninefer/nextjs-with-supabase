@@ -20,7 +20,7 @@ There is no tracking information for the current branch.
 Please specify which branch you want to merge with.
 ```
 
-**Symptoms:**
+**Error:**
 ```bash
 $ git push
 fatal: The current branch main has no upstream branch.
