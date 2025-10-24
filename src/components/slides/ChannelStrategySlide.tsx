@@ -16,4 +16,4 @@ export default function ChannelStrategySlide() {
       </div>
     </div>
   );
-};
+}
