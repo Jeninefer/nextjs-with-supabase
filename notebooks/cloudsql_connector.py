@@ -246,7 +246,14 @@ class CloudSQLConnector:
             placeholders = ", ".join(["%s"] * len(df.columns))
             # Use new syntax instead of deprecated VALUES() function
             update_cols = [col for col in df.columns if col != 'customer_id']
-            update_clause = ', '.join([f'{escape_identifier(col)}=NEW.{escape_identifier(col)}' for col in update_cols]) if update_cols else ''
+            if update_cols:
+                update_assignments = [
+                    f"{escape_identifier(col)}=NEW.{escape_identifier(col)}"
+                    for col in update_cols
+                ]
+                update_clause = ', '.join(update_assignments)
+            else:
+                update_clause = ''
             
             if update_clause:
                 insert_query = f"""
