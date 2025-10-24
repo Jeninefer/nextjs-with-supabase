@@ -53,17 +53,17 @@ Welcome to the ABACO Financial Intelligence Platform documentation. This index h
 
 ### "I'm deploying to production"
 
-1. **For Vercel (Recommended)**: Follow [GITHUB_ACTIONS_DEPLOYMENT.md](./GITHUB_ACTIONS_DEPLOYMENT.md)
+1. For **Vercel (Recommended)**: Follow [GITHUB_ACTIONS_DEPLOYMENT.md](./GITHUB_ACTIONS_DEPLOYMENT.md)
    - Setup automated CI/CD with GitHub Actions
    - Configure Vercel project and secrets
    - Enable preview deployments for PRs
 
-2. **For Google Cloud**: Follow [GOOGLE_CLOUD_SETUP.md](./GOOGLE_CLOUD_SETUP.md)
+2. For **Google Cloud**: Follow [GOOGLE_CLOUD_SETUP.md](./GOOGLE_CLOUD_SETUP.md)
    - Complete GCP setup
    - Keep [GOOGLE_CLOUD_QUICK_REFERENCE.md](./GOOGLE_CLOUD_QUICK_REFERENCE.md) handy
    - Use [DEPLOYMENT-READY.md](../DEPLOYMENT-READY.md) checklist
 
-3. **For any platform**: Check [TROUBLESHOOTING.md](./TROUBLESHOOTING.md) if issues arise
+3. For **any platform**: Check [TROUBLESHOOTING.md](./TROUBLESHOOTING.md) if issues arise
 
 ### "I'm deploying to Google Cloud"
 
