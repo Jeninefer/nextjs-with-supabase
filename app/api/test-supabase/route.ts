@@ -75,9 +75,11 @@ export async function GET() {
       },
     });
   } catch (err: unknown) {
+    // Log error details server-side for diagnostics
+    console.error("Unhandled error in GET /api/test-supabase:", err);
     const totalMs = Date.now() - startTotal;
     const body = {
-      error: err instanceof Error ? err.message : String(err),
+      error: "An unexpected error occurred.",
       meta: { timings: { total_request_ms: totalMs } },
     };
     return new Response(JSON.stringify(body), {
