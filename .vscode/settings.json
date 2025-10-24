@@ -6,10 +6,13 @@
     "typescript.preferences.importModuleSpecifier": "relative",
     "typescript.suggest.autoImports": true,
     "editor.formatOnSave": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.codeActionsOnSave": {
         "source.fixAll.eslint": "explicit",
         "source.organizeImports": "explicit"
     },
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true,
     "files.associations": {
         "*.tsx": "typescriptreact",
         "*.ts": "typescript",
@@ -26,15 +29,20 @@
     "tailwindCSS.experimental.classRegex": [
         "cn\\(([^)]*)\\)"
     ],
-    "python.defaultInterpreterPath": "/usr/local/bin/python3",
+    "python.analysis.typeCheckingMode": "basic",
     "python.terminal.activateEnvironment": false,
+    "[python]": {
+        "editor.defaultFormatter": "ms-python.black-formatter",
+        "editor.formatOnSave": true,
+        "editor.tabSize": 4
+    },
     "files.exclude": {
         "**/.git": true,
-        "**/.DS_Store": true,
-        "**/node_modules": true,
         "**/.next": true,
+        "**/node_modules": true,
         "**/__pycache__": true,
-        "**/*.pyc": true
+        "**/.pytest_cache": true,
+        "**/abaco_venv": true
     },
     "search.exclude": {
         "**/node_modules": true,
@@ -52,40 +60,33 @@
     "cs-script.execMode": "Standard",
     "cs-script.syntaxCheckOnSave": true,
     "spellright.language": [
-        "en",
-        "cs",
-        "da",
-        "de",
-        "fr",
-        "id",
-        "it",
-        "is",
-        "lt",
-        "hu",
-        "nl",
-        "pl",
-        "pt",
-        "ro",
-        "sl",
-        "fi",
-        "sv",
-        "vi",
-        "tr",
-        "el",
-        "bg",
-        "ru",
-        "uk",
-        "he",
-        "ar",
-        "hi",
-        "pa",
-        "te",
-        "ko"
+        "en"
     ],
     "spellright.documentTypes": [
         "markdown",
         "latex",
         "plaintext",
-        "shellscript"
-    ]
+        "shellscript",
+        "jsonc"
+    ],
+    "editor.codeActions.triggerOnFocusChange": true,
+    "typescript.tsdk": "node_modules/typescript/lib",
+    "typescript.enablePromptUseWorkspaceTsdk": true,
+    "[typescript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[typescriptreact]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    // Disable conflicting extensions
+    "gemini.enabled": false,
+    "lingma.enabled": false,
+    "sonarlint.disableTelemetry": true,
+    // GitHub Copilot (if you use it)
+    "github.copilot.enable": {
+        "*": true,
+        "yaml": false,
+        "plaintext": false,
+        "markdown": false
+    }
 }

@@ -9,54 +9,72 @@
             "type": "node",
             "request": "launch",
             "program": "${workspaceFolder}/node_modules/.bin/next",
-            "args": ["dev"],
+            "args": [
+                "dev"
+            ],
             "console": "integratedTerminal",
             "env": {
                 "NODE_ENV": "development"
             },
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "cwd": "${workspaceFolder}"
+            "serverReadyAction": {
+                "pattern": "started server on.+(https?://[^\\s]+)",
+                "uriFormat": "%s",
+                "action": "openExternally"
+            }
         },
         {
-            "name": "ABACO: Next.js Build",
+            "name": "ABACO: Next.js Production Build",
             "type": "node",
             "request": "launch",
             "program": "${workspaceFolder}/node_modules/.bin/next",
-            "args": ["build"],
+            "args": [
+                "start"
+            ],
             "console": "integratedTerminal",
             "env": {
                 "NODE_ENV": "production"
-            },
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "cwd": "${workspaceFolder}"
+            }
         },
         {
-            "name": "ABACO: Python Streamlit App",
+            "name": "ABACO: Debug API Route",
+            "type": "node",
+            "request": "attach",
+            "port": 9229,
+            "restart": true,
+            "sourceMaps": true,
+            "localRoot": "${workspaceFolder}",
+            "remoteRoot": "${workspaceFolder}"
+        },
+        {
+            "name": "ABACO: Python Financial Analysis",
             "type": "debugpy",
             "request": "launch",
-            "program": "${workspaceFolder}/streamlit_app/app.py",
+            "program": "${workspaceFolder}/notebooks/abaco_financial_intelligence.py",
             "console": "integratedTerminal",
-            "justMyCode": true,
+            "python": "${command:python.interpreterPath}",
             "env": {
-                "PYTHONPATH": "${workspaceFolder}/streamlit_app"
-            },
-            "cwd": "${workspaceFolder}/streamlit_app"
+                "PYTHONPATH": "${workspaceFolder}"
+            }
         },
         {
-            "name": "ABACO: TypeScript Type Check",
-            "type": "node",
+            "name": "ABACO: Python Validation Script",
+            "type": "debugpy",
             "request": "launch",
-            "program": "${workspaceFolder}/node_modules/.bin/tsc",
-            "args": ["--noEmit"],
+            "program": "${workspaceFolder}/notebooks/generate_validation_results.py",
             "console": "integratedTerminal",
-            "skipFiles": [
-                "<node_internals>/**"
+            "python": "${command:python.interpreterPath}"
+        }
+    ],
+    "compounds": [
+        {
+            "name": "ABACO: Full Stack Debug",
+            "configurations": [
+                "ABACO: Next.js Development Server",
+                "ABACO: Debug API Route"
             ],
-            "cwd": "${workspaceFolder}"
+            "presentation": {
+                "order": 1
+            }
         }
     ]
 }
