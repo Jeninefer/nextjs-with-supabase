@@ -4,7 +4,7 @@ echo "🚀 ABACO Environment Setup - Virtual Environment Solution"
 echo "========================================================"
 
 # Get the script's directory and use it as base
-SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+SCRIPT_DIR="$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")"
 cd "$SCRIPT_DIR"
 
 # Check for Python installation
