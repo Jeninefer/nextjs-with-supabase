@@ -1,7 +1,9 @@
 #!/bin/bash
 
-# Change to the Figma directory relative to this script's location
-cd "$(dirname "$0")/../Figma"
+# Find the project root (parent of this script's directory), then cd into Figma
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
+cd "$PROJECT_ROOT/Figma"
 
 echo "🚨 EMERGENCY: Disk Space + Supabase Fix"
 echo "========================================"
