@@ -27,6 +27,24 @@ Transform raw lending data into superior, predictive intelligence with deep lear
 
 ## 🚀 Quick Start
 
+### 💰 Free Services Migration
+
+**Want to run this platform for FREE?** We provide an automated migration script to switch from paid services to 100% free alternatives:
+
+```bash
+# Run the automated migration script
+bash scripts/migrate-to-free-services.sh
+```
+
+This will:
+- Replace Supabase with PocketBase (self-hosted, unlimited)
+- Configure Google Gemini AI (free tier)
+- Set up Cloudinary for storage (25GB free)
+- Prepare Netlify deployment (100GB bandwidth free)
+- **Save $120+/month → $0**
+
+See [Migration Guide](./MIGRATION_GUIDE.md) (generated after running script) for details.
+
 ### Prerequisites
 
 Before you begin, ensure you have:
@@ -34,11 +52,12 @@ Before you begin, ensure you have:
 - **Node.js 18+** installed
 - **npm** package manager
 - **Git** for version control
-- **Supabase account** ([Sign up](https://supabase.com))
+- **Supabase account** ([Sign up](https://supabase.com)) OR run migration script for free alternatives
 - **(Optional) Google Cloud account** for Cloud Run deployment ([Setup guide](./docs/GOOGLE_CLOUD_SETUP.md))
 
 ### Installation
 
+**Option 1: With Supabase (Paid)**
 ```bash
 # Clone the repository
 git clone https://github.com/your-org/nextjs-with-supabase
@@ -55,16 +74,51 @@ cp .env.example .env.local
 npm run dev
 ```
 
+**Option 2: With Free Services Stack (Recommended)**
+```bash
+# Clone the repository
+git clone https://github.com/your-org/nextjs-with-supabase
+cd nextjs-with-supabase
+
+# Install dependencies
+npm install
+
+# Run migration script
+bash scripts/migrate-to-free-services.sh
+
+# Get free API keys (links provided by script)
+# Update .env.local with your keys
+
+# Start PocketBase (in one terminal)
+npm run pocketbase:start
+
+# Start development server (in another terminal)
+npm run dev
+```
+
 Open [http://localhost:3000](http://localhost:3000) to access the ABACO platform.
 
 ## 🏗️ Tech Stack
 
+### Current Stack (Paid)
 - **Frontend**: Next.js 15, React, TypeScript
 - **Styling**: Tailwind CSS with ABACO design system
 - **Database**: Supabase (PostgreSQL)
 - **Authentication**: Supabase Auth
 - **Deployment**: Vercel, Google Cloud Run
 - **AI Integration**: MCP (Model Context Protocol)
+
+### Free Services Alternative (via Migration Script)
+- **Frontend**: Next.js 15, React, TypeScript
+- **Styling**: Tailwind CSS with ABACO design system
+- **Backend**: PocketBase (self-hosted)
+- **Database**: PocketBase (SQLite)
+- **Authentication**: PocketBase Auth
+- **AI**: Google Gemini (free tier)
+- **Storage**: Cloudinary (25GB free)
+- **Deployment**: Netlify (100GB bandwidth free)
+
+Run `bash scripts/migrate-to-free-services.sh` to switch to the free stack.
 
 ## 📁 Project Structure
 
