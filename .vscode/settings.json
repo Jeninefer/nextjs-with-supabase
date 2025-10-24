@@ -90,7 +90,7 @@
     ],
     // The following PATH includes Docker Desktop's default binary path for macOS (/Applications/Docker.app/Contents/Resources/bin),
     // as well as common Homebrew locations (/opt/homebrew/bin for Apple Silicon, /usr/local/bin for Intel).
-        // This ensures Docker CLI tools are available regardless of installation method.
+    // This ensures Docker CLI tools are available regardless of installation method.
     "terminal.integrated.env.osx": {
         "PATH": "/Applications/Docker.app/Contents/Resources/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:${env:PATH}"
     },
