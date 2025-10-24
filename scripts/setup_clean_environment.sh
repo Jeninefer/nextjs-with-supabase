@@ -29,7 +29,7 @@ GOOGLE_VARS=(
 )
 
 for var in "${GOOGLE_VARS[@]}"; do
-    if [ ! -z "${!var}" ]; then
+    if [ -n "${!var}" ]; then
         echo "  ✓ Unsetting $var"
         unset $var
     fi
