@@ -40,8 +40,6 @@ export function useMCPIntegration() {
     servers: new Set()
   });
 
-// Mapping from server ids to display names
-
   const initializeMCPServers = useCallback(async () => {
     setState(prev => ({ ...prev, isLoading: true, error: null }));
 
