@@ -6,18 +6,18 @@ set -e
 echo "🚀 Setting up Financial Intelligence environment..."
 
 # Check Node version
-NODE_VERSION=$(node --version | cut -d'v' -f2 | cut -d'.' -f1)
-if [ "$NODE_VERSION" -lt 18 ]; then
-    echo "❌ Node.js version must be >= 18.0.0 (current: $(node --version))"
+NODE_VERSION=$(node --version 2>/dev/null | sed 's/v//' | cut -d'.' -f1)
+if [ -z "$NODE_VERSION" ] || [ "$NODE_VERSION" -lt 18 ] 2>/dev/null; then
+    echo "❌ Node.js version must be >= 18.0.0 (current: $(node --version 2>/dev/null || echo 'not found'))"
     exit 1
 fi
 
 echo "✅ Node.js version check passed"
 
 # Check npm version
-NPM_VERSION=$(npm --version | cut -d'.' -f1)
-if [ "$NPM_VERSION" -lt 8 ]; then
-    echo "❌ npm version must be >= 8.0.0 (current: $(npm --version))"
+NPM_VERSION=$(npm --version 2>/dev/null | cut -d'.' -f1)
+if [ -z "$NPM_VERSION" ] || [ "$NPM_VERSION" -lt 8 ] 2>/dev/null; then
+    echo "❌ npm version must be >= 8.0.0 (current: $(npm --version 2>/dev/null || echo 'not found'))"
     exit 1
 fi
 
