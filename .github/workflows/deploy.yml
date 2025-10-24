@@ -42,7 +42,6 @@ jobs:
 
       - name: Install Vercel CLI
         run: npm install --global vercel@latest
-        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/office-addin-figma'
 
       - name: Deploy to Vercel (Preview)
         if: github.event_name == 'pull_request'
