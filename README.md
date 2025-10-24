@@ -233,6 +233,7 @@ For detailed setup instructions, error resolution, and platform status, see:
 - [Troubleshooting Guide](./docs/TROUBLESHOOTING.md) - Common issues and solutions
 - [Quick Start Guide](./QUICK_START.md)
 - [Build Success Log](./BUILD_SUCCESS.md)
+- [Cloud Code and Duet AI Setup](./docs/CLOUD_CODE_SETUP.md)
 
 ### Common Issues
 
