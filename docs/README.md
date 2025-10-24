@@ -15,7 +15,7 @@ Welcome to the ABACO Financial Intelligence Platform documentation. This index h
 
 | Document | Purpose | When to Use |
 |----------|---------|-------------|
-| [GITHUB_ACTIONS_DEPLOYMENT.md](./GITHUB_ACTIONS_DEPLOYMENT.md) | GitHub Actions & Vercel deployment (recommended) | Setting up automated CI/CD deployments |
+| [GITHUB_ACTIONS_DEPLOYMENT.md](./GITHUB_ACTIONS_DEPLOYMENT.md) | Complete CI/CD setup guide | Setting up automated CI/CD deployments |
 | [GOOGLE_CLOUD_SETUP.md](./GOOGLE_CLOUD_SETUP.md) | Complete Google Cloud setup guide | Setting up GCP integration for first time |
 | [GOOGLE_CLOUD_QUICK_REFERENCE.md](./GOOGLE_CLOUD_QUICK_REFERENCE.md) | Quick command reference | Need quick GCP commands |
 | [DEPLOYMENT-READY.md](../DEPLOYMENT-READY.md) | Deployment checklist | Before deploying to production |
