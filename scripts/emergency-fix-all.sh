@@ -1,7 +1,8 @@
 
 #!/bin/bash
 
-cd /home/codespace/OfficeAddinApps/Figma
+# Change to the directory where this script is located
+cd "$(dirname "${BASH_SOURCE[0]}")"
 
 echo "🚨 EMERGENCY FIX: Supabase + Cache + Duplicates"
 echo "=============================================="
