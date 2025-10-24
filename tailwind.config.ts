@@ -51,13 +51,55 @@ export default {
           "4": "hsl(var(--chart-4))",
           "5": "hsl(var(--chart-5))",
         },
+        // Financial Intelligence Platform specific colors
+        financial: {
+          primary: "hsl(var(--financial-primary))",
+          secondary: "hsl(var(--financial-secondary))",
+          success: "hsl(var(--financial-success))",
+          warning: "hsl(var(--financial-warning))",
+          danger: "hsl(var(--financial-danger))",
+        },
+        // AI Toolkit integration colors
+        agent: {
+          active: "hsl(var(--agent-active))",
+          inactive: "hsl(var(--agent-inactive))",
+          processing: "hsl(var(--agent-processing))",
+        }
       },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
       },
+      // Financial dashboard specific spacing
+      spacing: {
+        '18': '4.5rem',
+        '88': '22rem',
+        '128': '32rem',
+      },
+      // Animation for AI agent status indicators
+      animation: {
+        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+        'agent-thinking': 'pulse 1.5s ease-in-out infinite',
+      }
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [
+    require("tailwindcss-animate"),
+    // Plugin for financial dashboard components
+    function({ addUtilities }: { addUtilities: Function }) {
+      const newUtilities = {
+        '.financial-card': {
+          '@apply bg-card border border-border rounded-lg shadow-sm': {},
+        },
+        '.agent-status': {
+          '@apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium': {},
+        },
+        '.kpi-value': {
+          '@apply text-2xl font-bold text-foreground': {},
+        }
+      };
+      addUtilities(newUtilities);
+    }
+  ],
 } satisfies Config;
