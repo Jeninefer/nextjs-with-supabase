@@ -76,13 +76,19 @@ export async function GET() {
     });
   } catch (err: unknown) {
     // Log error details server-side for diagnostics
+    let errorLogDetail;
+    if (err instanceof Error) {
+      if (process.env.NODE_ENV !== "production") {
+        errorLogDetail = `${err.message}\n${err.stack}`;
+      } else {
+        errorLogDetail = err.message;
+      }
+    } else {
+      errorLogDetail = err;
+    }
     console.error(
       "Unhandled error in GET /api/test-supabase:",
-      err instanceof Error
-        ? (process.env.NODE_ENV !== "production"
-            ? `${err.message}\n${err.stack}`
-            : err.message)
-        : err
+      errorLogDetail
     );
     const totalMs = Date.now() - startTotal;
     // Sanitize error message for client
