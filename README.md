@@ -12,8 +12,8 @@
   <a href="#demo"><strong>Demo</strong></a> ·
   <a href="#deploy-to-vercel"><strong>Deploy to Vercel</strong></a> ·
   <a href="#clone-and-run-locally"><strong>Clone and run locally</strong></a> ·
+  <a href="#financial-intelligence"><strong>Financial Intelligence</strong></a> ·
   <a href="#feedback-and-issues"><strong>Feedback and issues</strong></a>
-  <a href="#more-supabase-examples"><strong>More Examples</strong></a>
 </p>
 <br/>
 
@@ -32,10 +32,11 @@
 - Components with [shadcn/ui](https://ui.shadcn.com/)
 - Optional deployment with [Supabase Vercel Integration and Vercel deploy](#deploy-your-own)
   - Environment variables automatically assigned to Vercel project
-- Financial Intelligence Notebook with market analysis integration
+- **Financial Intelligence Platform** with AI-powered analysis
   - Jupyter notebook for comprehensive financial analysis
-  - Market insights extraction from MYPE 2025 report
-  - KPI calculations, risk analysis, and growth projections
+  - Azure Cosmos DB integration for scalable data storage
+  - Real-time KPI calculations and risk assessment
+  - AI-powered insights and recommendations
 
 ## Demo
 
@@ -49,10 +50,6 @@ After installation of the Supabase integration, all relevant environment variabl
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fvercel%2Fnext.js%2Ftree%2Fcanary%2Fexamples%2Fwith-supabase&project-name=nextjs-with-supabase&repository-name=nextjs-with-supabase&demo-title=nextjs-with-supabase&demo-description=This+starter+configures+Supabase+Auth+to+use+cookies%2C+making+the+user%27s+session+available+throughout+the+entire+Next.js+app+-+Client+Components%2C+Server+Components%2C+Route+Handlers%2C+Server+Actions+and+Middleware.&demo-url=https%3A%2F%2Fdemo-nextjs-with-supabase.vercel.app%2F&external-id=https%3A%2F%2Fgithub.com%2Fvercel%2Fnext.js%2Ftree%2Fcanary%2Fexamples%2Fwith-supabase&demo-image=https%3A%2F%2Fdemo-nextjs-with-supabase.vercel.app%2Fopengraph-image.png)
 
-The above will also clone the Starter kit to your GitHub, you can clone that locally and develop locally.
-
-If you wish to just develop locally and not deploy to Vercel, [follow the steps below](#clone-and-run-locally).
-
 ## Clone and run locally
 
 1. You'll first need a Supabase project which can be made [via the Supabase dashboard](https://database.new)
@@ -61,14 +58,6 @@ If you wish to just develop locally and not deploy to Vercel, [follow the steps 
 
    ```bash
    npx create-next-app --example with-supabase with-supabase-app
-   ```
-
-   ```bash
-   yarn create next-app --example with-supabase with-supabase-app
-   ```
-
-   ```bash
-   pnpm create next-app --example with-supabase with-supabase-app
    ```
 
 3. Use `cd` to change into the app's directory
@@ -94,41 +83,131 @@ If you wish to just develop locally and not deploy to Vercel, [follow the steps 
 
    The starter kit should now be running on [localhost:3000](http://localhost:3000/).
 
-6. This template comes with the default shadcn/ui style initialized. If you instead want other ui.shadcn styles, delete `components.json` and [re-install shadcn/ui](https://ui.shadcn.com/docs/installation/next)
+## Financial Intelligence
 
-> Check out [the docs for Local Development](https://supabase.com/docs/guides/getting-started/local-development) to also run Supabase locally.
+This repository includes an advanced Financial Intelligence platform powered by AI and modern data storage:
 
-## Financial Intelligence Notebook
+### Architecture
 
-This repository includes an Abaco Financial Intelligence Jupyter notebook that provides comprehensive financial analysis capabilities:
+- **Frontend**: Next.js with TypeScript and shadcn/ui components
+- **Authentication**: Supabase Auth with row-level security
+- **Data Storage**: 
+  - Supabase for transactional data and user management
+  - Azure Cosmos DB for financial analytics and time-series data
+- **Analytics Engine**: Jupyter notebook with pandas, numpy, and AI insights
+- **AI Integration**: Following AI Toolkit best practices for agent development
+
+### Quick Start
+
+1. **Set up environment variables**:
+
+   ```bash
+   # Copy the environment template
+   cp .env.example .env.local
+   
+   # Add your Supabase credentials
+   NEXT_PUBLIC_SUPABASE_URL=your-supabase-url
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+   SUPABASE_SERVICE_ROLE_KEY=your-service-key
+   
+   # Add Azure Cosmos DB credentials (optional)
+   COSMOS_DB_ENDPOINT=your-cosmos-endpoint
+   COSMOS_DB_KEY=your-cosmos-key
+   ```
+
+2. **Install dependencies**:
+
+   ```bash
+   npm install
+   pip install pandas numpy jupyter matplotlib seaborn
+   ```
+
+3. **Run the financial analysis**:
+
+   ```bash
+   # Start the web application
+   npm run dev
+   
+   # Run the financial intelligence notebook
+   jupyter notebook notebooks/abaco_financial_intelligence.ipynb
+   ```
 
 ### Features
 
-- **Feature Engineering**: Customer segmentation, delinquency analysis, and risk indicators
-- **KPI Calculation**: Assets Under Management (AUM), default rates, and portfolio metrics
-- **Growth Analysis**: Future projections and trend analysis
-- **Risk Analysis**: Roll rate calculations and portfolio health monitoring
-- **Market Analysis**: Integration with MYPE 2025 market research data
-- **AI-Powered Insights**: Automated summary generation with market context
+- **Real-time KPI Dashboard**: Monitor AUM, default rates, and portfolio health
+- **Customer Segmentation**: AI-powered risk analysis and customer categorization  
+- **Risk Assessment**: Delinquency tracking, roll-rate analysis, and predictive modeling
+- **Market Intelligence**: Integration with economic indicators and market research
+- **Automated Reporting**: Generate comprehensive financial reports with insights
+- **Multi-tenant Architecture**: Support for multiple organizations with data isolation
 
-### Getting Started
+### Data Models
 
-```bash
-# Install Jupyter and required packages
-pip install pandas numpy plotly pdfplumber jupyter
+The system uses hierarchical partition keys in Cosmos DB for optimal performance:
 
-# Navigate to notebooks directory
-cd notebooks
-
-# Start Jupyter
-jupyter notebook abaco_financial_intelligence.ipynb
+```typescript
+// Partition Key Structure: tenantId/customerSegment/analysisDate
+// Examples:
+// "abaco_financial/enterprise/2024-10-24"
+// "abaco_financial/sme/2024-10-24"
 ```
 
-For detailed documentation, see [`notebooks/README.md`](notebooks/README.md).
+This approach provides:
+- **Scalability**: Overcome the 20GB partition limit
+- **Performance**: Fast queries within customer segments
+- **Cost Efficiency**: Minimize cross-partition operations
 
-### Data Requirements
+## API Routes
 
-Place your financial data files in the `data/` directory. See [`data/README.md`](data/README.md) for the expected format. Sample data is provided in `data/sample_financial_data.csv`.
+### Financial Intelligence Endpoints
+
+- `GET /api/financial/dashboard` - Portfolio overview and KPIs
+- `GET /api/financial/customers` - Customer profiles and risk scores
+- `POST /api/financial/analysis` - Trigger new analysis run
+- `GET /api/financial/reports` - Download generated reports
+
+## Deployment
+
+### Vercel Deployment
+
+1. Connect your repository to Vercel
+2. Set environment variables in Vercel dashboard:
+   - `NEXT_PUBLIC_SUPABASE_URL`
+   - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+   - `SUPABASE_SERVICE_ROLE_KEY`
+   - `COSMOS_DB_ENDPOINT` (optional)
+   - `COSMOS_DB_KEY` (optional)
+
+3. Deploy:
+
+   ```bash
+   vercel deploy
+   ```
+
+### Database Setup
+
+1. **Supabase Setup**:
+   - Create a new Supabase project
+   - Run the SQL schema from `lib/supabase/financial-schema.sql`
+   - Enable Row Level Security (RLS)
+
+2. **Azure Cosmos DB Setup** (optional):
+   - Create a Cosmos DB account with SQL API
+   - Create database: `abaco-financial`
+   - Create container: `financial-intelligence`
+   - Set partition key: `/partitionKey`
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feature/amazing-feature`
+3. Commit changes: `git commit -m 'Add amazing feature'`
+4. Push to branch: `git push origin feature/amazing-feature`
+5. Open a Pull Request
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## Feedback and issues
 
@@ -139,18 +218,3 @@ Please file feedback and issues over on the [Supabase GitHub org](https://github
 - [Next.js Subscription Payments Starter](https://github.com/vercel/nextjs-subscription-payments)
 - [Cookie-based Auth and the Next.js 13 App Router (free course)](https://youtube.com/playlist?list=PL5S4mPUpp4OtMhpnp93EFSo42iQ40XjbF)
 - [Supabase Auth and the Next.js App Router](https://github.com/supabase/supabase/tree/master/examples/auth/nextjs)
-
-## Deployment to Vercel
-
-1. Connect your repository to Vercel
-2. Set environment variables in Vercel dashboard:
-   - `NEXT_PUBLIC_SUPABASE_URL`: Your Supabase project URL
-   - `NEXT_PUBLIC_SUPABASE_ANON_KEY`: Your Supabase anon key
-   - `SUPABASE_SERVICE_ROLE_KEY`: Your Supabase service role key
-
-3. Deploy using the Vercel dashboard or CLI:
-   ```bash
-   vercel deploy
-   ```
-
-Note: Make sure to use your hosted Supabase project URLs, not localhost URLs for production.

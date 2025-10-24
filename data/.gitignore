@@ -1,0 +1,9 @@
+# Generated files
+*.json
+*.csv
+*.md
+*.log
+
+# Keep structure
+!.gitignore
+!README.md
