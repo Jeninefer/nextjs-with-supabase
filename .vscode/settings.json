@@ -29,8 +29,7 @@
   "sonarlint.connectedMode.connections.sonarqube": [
     {
       "connectionId": "abaco-sonarqube",
-      "serverUrl": "http://localhost:9000",
-      "token": "7852347c583ef4851c5ea2c14413d55865888b8b"
+      "serverUrl": "http://localhost:9000"
     }
   ],
   "sonarlint.connectedMode.project": {
