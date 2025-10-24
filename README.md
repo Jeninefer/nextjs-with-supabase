@@ -228,6 +228,7 @@ For complete Google Cloud setup instructions, see:
 
 For detailed setup instructions, error resolution, and platform status, see:
 
+- [📚 Documentation Index](./docs/README.md) - Complete documentation overview
 - [Google Cloud Setup Guide](./docs/GOOGLE_CLOUD_SETUP.md) - Complete GCP integration guide
 - [Troubleshooting Guide](./docs/TROUBLESHOOTING.md) - Common issues and solutions
 - [Quick Start Guide](./QUICK_START.md)
