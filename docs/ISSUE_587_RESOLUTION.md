@@ -46,6 +46,9 @@ Created `.vscode/keybindings.json` with convenient shortcuts for common Duet AI 
 - `Ctrl+Shift+E`: Explain code
 - `Ctrl+Shift+G`: Generate code
 
+> **Note:**  
+> Ensure that these keyboard shortcuts are kept consistent across all documentation files, including `docs/CLOUD_CODE_SETUP.md` (see lines 34, 39, 44) and `.vscode/keybindings.json`.  
+> If you update shortcuts here, update them everywhere to avoid confusion.
 ### 4. Comprehensive Documentation
 Created `docs/CLOUD_CODE_SETUP.md` that includes:
 - Step-by-step installation instructions
