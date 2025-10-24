@@ -4,6 +4,9 @@
 - Node.js >= 18.0.0
 - npm >= 9.0.0
 
+> **Need to install Node.js and npm?**  
+> Download and install the latest LTS version from [nodejs.org](https://nodejs.org/).  
+> npm is included with Node.js. For more details, see the [npm documentation](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm).
 ## Setup Instructions
 
 ### 1. Install Dependencies
