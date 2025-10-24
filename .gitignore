@@ -4,59 +4,94 @@ node_modules/
 .pnp.js
 
 # Testing
-coverage/
+/coverage
+
+# Next.js
+.next/
+out/
 
 # Production
-dist/
 build/
+dist/
 
-# Misc
-.DS_Store
-.env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
+# Environment variables
+.env*
+!.env.example
 
-# Logs
+# Debug logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-lerna-debug.log*
-.pnpm-debug.log*
 
-# Editor
-.vscode/*
-!.vscode/extensions.json
-.idea/
-*.swp
-*.swo
-*~
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
 
-# Cache
-.cache/
-.parcel-cache/
-.eslintcache
-.stylelintcache
+# Coverage directory used by tools like istanbul
+coverage/
 
-# Build
+# nyc test coverage
+.nyc_output
+
+# Grunt intermediate storage
+.grunt
+
+# Dependency directories
+jspm_packages/
+
+# TypeScript cache
 *.tsbuildinfo
 
-# Vercel
-.vercel
+# Optional npm cache directory
+.npm
 
-# Duplicates & Backups
-*.bak
-*.old
-*.copy
-*copy*
+# Optional eslint cache
+.eslintcache
 
-# Security - Never commit these
-SECURITY_WARNING.md
+# Microbundle cache
+.rpt2_cache/
+.rts2_cache_cjs/
+.rts2_cache_es/
+.rts2_cache_umd/
+
+# Optional REPL history
+.node_repl_history
+
+# Output of 'npm pack'
+*.tgz
+
+# Yarn Integrity file
+.yarn-integrity
+
+# dotenv environment variables file
 .env
+.env.test
 .env.local
-.env.*.local
-**/secrets/
-**/*secret*
-**/*token*
-**/*key*.txt
+.env.production
+
+# Stores VSCode versions used for testing VSCode extensions
+.vscode-test
+
+# yarn v2
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
+.pnp.*
+
+# Supabase
+.branches
+.temp
+
+# Office Add-in specific
+*.log
+.DS_Store
+.vscode/settings.json
+.idea/
+
+# Abaco specific
+/notebooks/*.log
+/scripts/*.log
+/dist/
