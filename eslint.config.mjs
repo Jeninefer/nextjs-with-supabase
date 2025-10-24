@@ -13,6 +13,12 @@ const eslintConfig = [
   ...compat.extends("next/core-web-vitals"),
   {
     ignores: ["supabase/functions/**/*"]
+  },
+  {
+    files: ["**/*.ts", "**/*.tsx"],
+    rules: {
+      "@typescript-eslint/no-unused-vars": "error"
+    }
   }
 ];
 
