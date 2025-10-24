@@ -202,7 +202,7 @@ When you first clone the repository:
 
 ```bash
 # Clone the repository
-git clone https://github.com/Jeninefer/nextjs-with-supabase.git
+git clone <your-repo-url>
 cd nextjs-with-supabase
 
 # Main branch should already have tracking configured
