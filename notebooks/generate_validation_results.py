@@ -96,7 +96,12 @@ def perform_validation_checks(df):
         # Check if utilization ratio makes sense
         if 'monthly_spending' in df.columns and 'credit_limit' in df.columns:
             if NUMPY_AVAILABLE:
-                utilization_ratio = df['monthly_spending'] / df['credit_limit'].replace(0, np.nan)
+                utilization_ratio = np.divide(
+                    df['monthly_spending'],
+                    df['credit_limit'],
+                    out=np.full(len(df), np.nan),
+                    where=df['credit_limit'] != 0
+                )
                 invalid_ratios = int((
                     (utilization_ratio < 0) | 
                     (utilization_ratio > 2) | 
