@@ -37,8 +37,11 @@ sleep 5
 SUPA_URL=$(supabase status 2>/dev/null | grep "API URL" | awk '{print $3}')
 SUPA_KEY=$(supabase status 2>/dev/null | grep "anon key" | awk '{print $3}')
 
-# Use existing SonarQube token (from your config)
-SONAR_TOKEN="7852347c583ef4851c5ea2c14413d55865888b8b"
+# Use SonarQube token from environment variable
+if [ -z "$SONAR_TOKEN" ]; then
+  echo "❌ Error: SONAR_TOKEN environment variable is not set. Please export your SonarQube token before running this script."
+  exit 1
+fi
 
 # Create .env.local with REAL values
 cat > .env.local << EOF
