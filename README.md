@@ -155,7 +155,7 @@ gcloud run deploy abaco-platform --source .
 
 For detailed setup instructions, error resolution, and platform status, see:
 
-- [Complete Setup Guide](../Library/Application%20Support/Code/User/cs-script.user/integration-error.md)
+- [Troubleshooting Guide](./docs/TROUBLESHOOTING.md)
 - [Quick Start Guide](./QUICK_START.md)
 - [Build Success Log](./BUILD_SUCCESS.md)
 
@@ -183,7 +183,7 @@ git push origin main
 python3 notebooks/abaco_financial_intelligence.py
 ```
 
-For comprehensive troubleshooting, environment status, and performance metrics, refer to the [Complete Setup Guide](../Library/Application%20Support/Code/User/cs-script.user/integration-error.md).
+For comprehensive troubleshooting, environment status, and performance metrics, refer to the [Troubleshooting Guide](./docs/TROUBLESHOOTING.md).
 
 ## 📄 License
 
