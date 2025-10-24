@@ -22,6 +22,5 @@ export default defineConfig({
     open: /^(true|1|yes|on)$/i.test(process.env.VITE_OPEN ?? ''),
   },
   resolve: {
-    extensions: ['.ts', '.tsx', '.js', '.jsx'],
   },
 });
