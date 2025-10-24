@@ -223,7 +223,6 @@ Error listing clusters: Cloud Dataproc API has not been used or is disabled.
 
 If you encounter issues not covered in this guide:
 
-- **Technical Support:** tech@abaco-platform.com
 - **GitHub Issues:** Create an issue in the repository
 
 ---
