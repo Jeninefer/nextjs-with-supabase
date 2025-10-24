@@ -1,6 +1,6 @@
 # Troubleshooting Guide
 
-This guide covers common issues and their solutions for the ABACO Financial Intelligence Platform.
+This guide covers common issues and their solutions for the Next.js with Supabase Starter Template.
 
 ## Table of Contents
 
