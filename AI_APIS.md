@@ -1,6 +1,7 @@
 # AI APIs Integration Guide
 
-This project integrates multiple AI APIs: OpenAI (GPT), xAI (Grok), and Figma API for the Abaco Office Add-in.
+This project integrates multiple AI APIs: OpenAI (GPT) and xAI (Grok).
+The Figma API is integrated specifically for the Abaco Office Add-in.
 
 ## Table of Contents
 
