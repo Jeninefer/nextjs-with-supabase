@@ -7,7 +7,6 @@ This guide covers common issues and their solutions for the Next.js with Supabas
 - [SonarQube Docker ENOENT Error](#sonarqube-docker-enoent-error)
 - [Port Already in Use](#port-already-in-use)
 - [Git Sync Issues](#git-sync-issues)
-- [Python Analysis Not Running](#python-analysis-not-running)
 - [Build Failures](#build-failures)
 
 ## SonarQube Docker ENOENT Error
@@ -121,6 +120,29 @@ If you don't need SonarQube analysis immediately:
 3. Click "Disable" to temporarily disable the extension
 4. Restart VSCode
 
+#### Solution 6: Use SonarQube Docker Script
+
+This repository includes a management script for running SonarQube in Docker:
+
+```bash
+# Start SonarQube
+./scripts/sonarqube-docker.sh start
+
+# Check status
+./scripts/sonarqube-docker.sh status
+
+# View logs
+./scripts/sonarqube-docker.sh logs
+
+# Stop SonarQube
+./scripts/sonarqube-docker.sh stop
+
+# Clean up (remove container and volumes)
+./scripts/sonarqube-docker.sh clean
+```
+
+After starting SonarQube, access the admin UI at http://localhost:9000 with default credentials (admin/admin).
+
 ## Port Already in Use
 
 ### Problem
@@ -185,19 +207,6 @@ npm run lint -- --fix
 # Try building again
 npm run build
 ```
-
-## Cloud Dataproc API Issues
-
-### Problem
-Error listing clusters: Cloud Dataproc API has not been used or is disabled.
-
-### Solution
-
-1. Go to [Google Cloud Console](https://console.cloud.google.com)
-2. Select your project
-3. Navigate to APIs & Services > Library
-4. Search for "Cloud Dataproc API"
-5. Click "Enable"
 
 ## Additional Resources
 
