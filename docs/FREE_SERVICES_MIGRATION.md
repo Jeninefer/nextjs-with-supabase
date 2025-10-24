@@ -317,7 +317,7 @@ EOF
 ### Paso 2: Migrar código de Supabase a PocketBase
 
 ```javascript
-// filepath: /home/codespace/OfficeAddinApps/Figma/src/api/pocketbase.js
+// filepath: src/api/pocketbase.js
 
 import PocketBase from 'pocketbase';
 
