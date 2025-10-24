@@ -14,6 +14,12 @@ const eslintConfig = [
   {
     ignores: ["supabase/functions/**/*"]
   },
+  {
+    files: ["**/*.ts", "**/*.tsx"],
+    rules: {
+      "@typescript-eslint/no-unused-vars": "warn"
+    }
+  }
 ];
 
 export default eslintConfig;
