@@ -1,6 +1,6 @@
 # GitHub Actions Deployment Setup Guide
 
-This guide explains how to set up automated deployments for the ABACO Financial Intelligence Platform using GitHub Actions and Vercel.
+This guide explains how to set up automated deployments for this Next.js application using GitHub Actions and Vercel.
 
 ## Overview
 
