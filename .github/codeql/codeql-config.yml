@@ -1,0 +1,24 @@
+name: "CodeQL Config"
+
+# Disable default setup to prevent automatic language detection
+disable-default-path-filters: false
+
+# Only scan JavaScript/TypeScript files for this Office Add-in project  
+paths:
+  - "src/**"
+  - "*.js"
+  - "*.ts" 
+  - "*.tsx"
+  - "*.jsx"
+
+# Explicitly ignore Python files (if any exist accidentally)
+paths-ignore:
+  - "**/*.py"
+  - "**/*.python"
+  - "**/venv/**"
+  - "**/__pycache__/**"
+
+# Query filters for JavaScript/TypeScript only
+queries:
+  - uses: security-and-quality
+  - uses: security-extended
