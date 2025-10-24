@@ -43,13 +43,13 @@ The ABACO notebook itself doesn't use Cloud Dataproc - this is an environment co
 
 ## Complete Solution Paths
 
-### Path 1: Local-Only Setup (Recommended)
+### Path 1: Local-Only Setup (Recommended for Getting Started)
 
-**Best for:** Most users, development, testing, small to medium datasets
+**Best for:** Learning, development, testing, small datasets
 
 **Advantages:**
 - No cloud costs
-- Faster setup
+- Fastest setup
 - No API configuration needed
 - Works offline
 
@@ -74,14 +74,56 @@ jupyter notebook
 
 See: [notebooks/README.md](../notebooks/README.md)
 
-### Path 2: Google Cloud Integration (Advanced)
+### Path 2: Supabase Integration (Recommended for Production) ✨
 
-**Best for:** Production deployments, large datasets, team collaboration
+**Best for:** Production apps, persistent data, team collaboration, real-time features
+
+**Advantages:**
+- ✅ **Free tier**: 500MB database, 1GB storage, no credit card required
+- ✅ **PostgreSQL**: Industry-standard relational database
+- ✅ **Managed**: Automatic backups, updates, and scaling
+- ✅ **Auth included**: User management built-in
+- ✅ **Real-time**: Live data subscriptions
 
 **Prerequisites:**
-- Google Cloud Platform account
-- Project with billing enabled
+- Free Supabase account (no credit card required)
+
+**Setup:**
+1. Sign up at [supabase.com](https://supabase.com)
+2. Create a new project (free tier)
+3. Copy your project URL and anon key from Settings > API
+4. Add to `.env.local`:
+   ```bash
+   NEXT_PUBLIC_SUPABASE_URL=your-project-url
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+   ```
+5. Install Supabase client:
+   ```bash
+   pip install supabase
+   ```
+
+**Usage in notebooks:**
+```python
+from supabase_connector import get_connection
+
+db = get_connection()
+if db:
+    results = db.query("customers", limit=10)
+    db.disconnect()
+```
+
+See: [notebooks/supabase_connector.py](../notebooks/supabase_connector.py)
+
+### Path 3: Google Cloud Integration (Enterprise Only)
+
+**Best for:** Large enterprises with existing GCP infrastructure
+
+**Prerequisites:**
+- Google Cloud Platform account with billing enabled
 - Understanding of GCP services and costs
+- Budget for cloud resources (~$50-500+/month)
+
+**⚠️ Note:** This is an advanced option and not recommended for most users. Use Supabase (Path 2) for a free, managed database instead.
 
 **Setup:**
 1. Follow the comprehensive guide: [GOOGLE_CLOUD_SETUP.md](GOOGLE_CLOUD_SETUP.md)
@@ -207,18 +249,32 @@ Expected output:
 - ✅ All processing on your machine
 - ✅ No cloud service charges
 - ✅ No API quotas to worry about
+- ✅ Perfect for learning and development
 
-### Google Cloud Integration (Costs Apply)
-- 💰 Cloud SQL: ~$10-50/month for small instances
+### Supabase (Free Tier Available) ✨
+- ✅ **Free forever**: Up to 500MB database
+- ✅ **No credit card**: Free tier doesn't require payment info
+- ✅ **1GB file storage**: Included in free tier
+- ✅ **50,000 monthly active users**: More than enough for most apps
+- ✅ **Social OAuth**: Google, GitHub, etc. included
+- 💰 **Paid tiers**: Start at $25/month for 8GB database (optional)
+
+**Recommendation:** Use Supabase for any app that needs a database. The free tier is generous and perfect for most use cases.
+
+### Google Cloud Integration (Paid Only)
+- 💰 Cloud SQL: ~$10-50/month for small instances (no free tier)
 - 💰 Cloud Storage: ~$0.02/GB/month
 - 💰 Cloud Dataproc: ~$0.01/cluster/hour + compute costs
 - 💰 API calls: Usually included in free tier but may incur costs at scale
+- ⚠️ **Not recommended**: Use Supabase instead for free managed database
 
-**Recommendation:** Start with local development. Only move to cloud when you have specific requirements for scale, availability, or collaboration.
+**Recommendation:** Start with local development for learning. Use Supabase (free) for production apps. Only use Google Cloud if you have specific enterprise requirements.
 
 ## Documentation Index
 
 - **[notebooks/README.md](../notebooks/README.md)** - Complete notebook setup and usage guide
+- **[notebooks/supabase_connector.py](../notebooks/supabase_connector.py)** - Free Supabase database connector ✨
+- **[notebooks/cloudsql_connector.py](../notebooks/cloudsql_connector.py)** - Google Cloud SQL connector (enterprise)
 - **[docs/GOOGLE_CLOUD_SETUP.md](./GOOGLE_CLOUD_SETUP.md)** - Detailed GCP integration guide
 - **[README.md](../README.md)** - Main platform documentation
 - **[.env.example](../.env.example)** - Environment variable template

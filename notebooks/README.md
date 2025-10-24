@@ -169,14 +169,53 @@ pip install -r notebooks/requirements.txt
 python -c "import plotly; print('✅ Plotly installed')"
 ```
 
-## Cloud Integration (Optional)
+## Database Integration (Optional)
 
-The notebooks can optionally integrate with Google Cloud Platform for:
+The notebooks can optionally integrate with databases for persistent storage:
+
+### Supabase (Recommended - Free Tier Available) ✨
+
+**Why Supabase:**
+- ✅ **Free tier**: Up to 500MB database, 1GB file storage
+- ✅ **PostgreSQL**: Industry-standard relational database
+- ✅ **Easy setup**: No credit card required for free tier
+- ✅ **Already configured**: This project uses Supabase
+
+**Setup:**
+1. Sign up at [supabase.com](https://supabase.com)
+2. Create a new project (free tier)
+3. Copy your project URL and anon key
+4. Add to `.env.local`:
+   ```bash
+   NEXT_PUBLIC_SUPABASE_URL=your-project-url
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+   ```
+
+**Usage in notebooks:**
+```python
+from supabase_connector import get_connection
+
+db = get_connection()
+if db:
+    # Query data
+    results = db.query("customers", limit=10)
+    
+    # Insert data
+    db.insert("customers", {"name": "John", "email": "john@example.com"})
+    
+    db.disconnect()
+```
+
+See [Supabase Connector Documentation](supabase_connector.py) for full API.
+
+### Google Cloud SQL (Advanced - Paid)
+
+For enterprise use cases requiring Google Cloud:
 - Cloud SQL database connections
 - Cloud Storage for large datasets
-- Distributed processing with Dataproc (advanced)
+- Distributed processing with Dataproc
 
-**Note:** Cloud integration is **not required** for normal operation. All analysis can run locally.
+**Note:** Cloud SQL requires a paid Google Cloud account.
 
 For cloud setup, see:
 - [Google Cloud Setup Guide](../docs/GOOGLE_CLOUD_SETUP.md)
