@@ -1,6 +1,7 @@
 #!/bin/bash
 
-cd /home/codespace/OfficeAddinApps/Figma
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+cd "$SCRIPT_DIR"
 
 echo "🚨 ULTIMATE FIX: Supabase + Real Credentials"
 echo "============================================"
