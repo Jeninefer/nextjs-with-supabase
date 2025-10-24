@@ -22,7 +22,26 @@ else
 fi
 
 git commit -m "$COMMIT_MSG"
+COMMIT_EXIT_CODE=$?
+if [ $COMMIT_EXIT_CODE -ne 0 ]; then
+    echo "❌ Commit failed. Aborting push."
+    exit $COMMIT_EXIT_CODE
+fi
+
+# Pull latest changes with rebase before pushing
+git pull --rebase
+PULL_EXIT_CODE=$?
+if [ $PULL_EXIT_CODE -ne 0 ]; then
+    echo "❌ git pull --rebase failed. Please resolve any conflicts and try again."
+    exit $PULL_EXIT_CODE
+fi
+
 # Push to remote
 git push
+PUSH_EXIT_CODE=$?
+if [ $PUSH_EXIT_CODE -ne 0 ]; then
+    echo "❌ Push failed. Please check the error above."
+    exit $PUSH_EXIT_CODE
+fi
 
 echo "✅ All changes committed and pushed successfully!"
