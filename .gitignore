@@ -57,3 +57,14 @@ __pycache__/
 *.bak
 *.swp
 *~
+
+# Troubleshooting scripts (keep only official scripts)
+*cleanup*.sh
+*sync*.sh
+*emergency*.sh
+*fix_all*.sh
+git-*.sh
+!fix_abaco_environment.sh
+!setup_abaco_environment.sh
+!demo_abaco_dataset.sh
+!run_financial_analysis.sh
