@@ -373,7 +373,7 @@ For Google Cloud specific issues:
 - [Stack Overflow - google-cloud-platform](https://stackoverflow.com/questions/tagged/google-cloud-platform)
 
 For ABACO platform issues:
-- Email: tech@abaco-platform.com
+- Email: support@abaco-platform.com
 - GitHub Issues: [Create an issue](https://github.com/Jeninefer/nextjs-with-supabase/issues)
 
 ---
