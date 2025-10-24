@@ -79,5 +79,3 @@ jobs:
             DEPLOYMENT_URL=$(echo ${{ steps.vercel.outputs.details }} | jq -r '.url')
             echo "🔗 View Preview Deployment: $DEPLOYMENT_URL" >> $GITHUB_STEP_SUMMARY
           fi
-        env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
