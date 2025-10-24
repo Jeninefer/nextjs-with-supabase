@@ -2,7 +2,7 @@
 
 ## 🎉 Successfully Implemented
 
-A complete GitHub Actions CI/CD workflow has been created for the ABACO Financial Intelligence Platform.
+A complete GitHub Actions CI/CD workflow has been created for the nextjs-with-supabase project.
 
 ## 📁 Files Created/Modified
 
