@@ -25,6 +25,10 @@
 
 Transform raw lending data into superior, predictive intelligence with deep learning, behavioral modeling, and KPI automation in one cohesive system.
 
+> **💡 New!** Run this platform for **$0/month** with our [free services migration script](./QUICK_START_MIGRATION.md)!  
+> Save **$120+/month** by switching to PocketBase, Google Gemini, and Cloudinary.  
+> [Compare options →](./SERVICE_COMPARISON.md)
+
 ## 🚀 Quick Start
 
 ### 💰 Free Services Migration
@@ -283,6 +287,8 @@ For complete Google Cloud setup instructions, see:
 For detailed setup instructions, error resolution, and platform status, see:
 
 - [📚 Documentation Index](./docs/README.md) - Complete documentation overview
+- [🚀 Free Services Migration](./QUICK_START_MIGRATION.md) - Quick guide to migrate to free stack
+- [📊 Service Comparison](./SERVICE_COMPARISON.md) - Compare paid vs free services
 - [Google Cloud Setup Guide](./docs/GOOGLE_CLOUD_SETUP.md) - Complete GCP integration guide
 - [Troubleshooting Guide](./docs/TROUBLESHOOTING.md) - Common issues and solutions
 - [Quick Start Guide](./QUICK_START.md)
