@@ -1,4 +1,5 @@
 # Abaco Design System
+
 ## Commercial Deck - Reglas de Diseño y Presentación
 
 *Última actualización: Enero 2025*
