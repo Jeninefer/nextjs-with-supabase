@@ -54,7 +54,7 @@ When the PDF is not available, the cell uses these fallback metrics:
 
 ### Data Requirements
 
-To use the full PDF extraction feature, place the MYPE 2025 report PDF file at:
+To use the full PDF extraction feature, place the MYPE 2025 report PDF file in the `data` directory, so that its path (relative to the `notebooks` directory) is:
 
 ```
 ../data/mype_report_2025.pdf
