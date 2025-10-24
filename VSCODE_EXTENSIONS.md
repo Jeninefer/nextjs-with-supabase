@@ -128,8 +128,9 @@ code --install-extension ms-mssql.mssql
 
 ## Compatibility Note
 
-While this project primarily uses **Supabase (PostgreSQL)** for its database, the MSSQL extension can be useful for:
+> **Note:** The MSSQL extension is **not required** for developing or running this project. This project uses **Supabase (PostgreSQL)** as its primary database. The MSSQL extension is included here for general developer convenience, in case you work with SQL Server in other projects, need to migrate data, or want to practice T-SQL.
 
+The MSSQL extension can be useful for:
 - Developers working with SQL Server in other projects
 - Learning and practicing T-SQL
 - Migrating data from SQL Server to PostgreSQL
