@@ -243,8 +243,8 @@ git push origin main       # Push local changes
 
 ### Undo Changes
 ```bash
-git checkout -- <file>     # Discard changes to file
-git reset HEAD <file>      # Unstage file
+git restore <file>         # Discard changes to file
+git restore --staged <file> # Unstage file
 git reset --soft HEAD^     # Undo last commit, keep changes
 git reset --hard HEAD^     # Undo last commit, discard changes (DANGEROUS)
 ```
