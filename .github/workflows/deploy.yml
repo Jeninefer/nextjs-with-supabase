@@ -80,4 +80,3 @@ jobs:
           fi
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-          GITHUB_STEP_SUMMARY: ${{ github.step_summary }}
