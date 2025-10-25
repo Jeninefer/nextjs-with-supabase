@@ -26,10 +26,9 @@
     "tailwindCSS.experimental.classRegex": [
         "cn\\(([^)]*)\\)"
     ],
-    // NOTE: The following path assumes you have run 'setup_abaco_environment.sh' to create the virtual environment.
-    // If the virtual environment does not exist yet, VS Code will show an error for the interpreter path.
-    // To resolve this, run 'setup_abaco_environment.sh' to create the environment.
-    "python.defaultInterpreterPath": "${workspaceFolder}/abaco_venv/bin/python",
+    // NOTE: After running 'setup_abaco_environment.sh' to create the virtual environment,
+    // use the VS Code command palette (Ctrl+Shift+P) and select "Python: Select Interpreter"
+    // to choose the interpreter at '${workspaceFolder}/abaco_venv/bin/python'.
     "python.terminal.activateEnvironment": false,
     "files.exclude": {
         "**/.git": true,
