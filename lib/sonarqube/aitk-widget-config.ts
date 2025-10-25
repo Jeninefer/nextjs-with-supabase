@@ -1,5 +1,12 @@
 // SonarQube dashboard widget configuration for AI Toolkit integrated financial platform
 
+// Minimal definition for SonarQubeMetrics, update as needed
+export interface SonarQubeMetrics {
+  coverage: number;
+  securityRating: string;
+  vulnerabilities: number;
+  // Add other properties as needed
+}
 export interface AITKSonarMetrics extends SonarQubeMetrics {
   agentComplexity: number;
   tracingCoverage: number;
