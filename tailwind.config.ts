@@ -87,7 +87,7 @@ export default {
   plugins: [
     require("tailwindcss-animate"),
     // Plugin for financial dashboard components
-    function({ addUtilities }: { addUtilities: Function }) {
+    function({ addUtilities }: { addUtilities: (utilities: Record<string, unknown>, options?: unknown) => void }) {
       const newUtilities = {
         '.financial-card': {
           '@apply bg-card border border-border rounded-lg shadow-sm': {},
