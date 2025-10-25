@@ -43,10 +43,12 @@ fi
 # Test 4: Response time
 echo "Test 4: Response time..."
 RESPONSE_TIME=$(curl -o /dev/null -s -w '%{time_total}' "$PROD_URL")
-if awk "BEGIN {exit !($RESPONSE_TIME < 2.0)}"; then
+if [[ "$RESPONSE_TIME" =~ ^[0-9]+(\.[0-9]+)?$ ]] && awk -v rt="$RESPONSE_TIME" 'BEGIN {exit !(rt < 2.0)}'; then
     echo -e "${GREEN}✅ Response time: ${RESPONSE_TIME}s${NC}"
-else
+elif [[ "$RESPONSE_TIME" =~ ^[0-9]+(\.[0-9]+)?$ ]]; then
     echo -e "${RED}⚠️  Response time: ${RESPONSE_TIME}s (slow)${NC}"
+else
+    echo -e "${RED}❌ Response time: Failed to get valid response time${NC}"
 fi
 
 echo ""
