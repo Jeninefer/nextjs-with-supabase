@@ -33,10 +33,16 @@ describe('FinancialIntelligenceAgent', () => {
     it('should handle storage errors gracefully', async () => {
       const mockCustomer = testUtils.createMockCustomer();
       
-      // Mock Cosmos DB error
-      jest.spyOn(agent as any, '_getContainer').mockRejectedValue(
-        new Error('Cosmos DB connection failed')
-      );
+      // Mock Cosmos DB error by mocking the container's 'items.create' method to throw
+      const container = (agent as any).container;
+      if (container && container.items && typeof container.items.create === 'function') {
+        jest.spyOn(container.items, 'create').mockRejectedValue(
+          new Error('Cosmos DB connection failed')
+        );
+      } else {
+        // If container is not accessible, skip the test or fail
+        throw new Error('Unable to access container for mocking');
+      }
       
       await expect(
         agent.storeCustomerProfile('enterprise', mockCustomer)
