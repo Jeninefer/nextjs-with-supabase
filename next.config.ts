@@ -12,7 +12,7 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  webpack(config, options) {
+  webpack(config) {
     // Add @svgr/webpack loader for SVG files
     config.module.rules.push({
       test: /\.svg$/,
