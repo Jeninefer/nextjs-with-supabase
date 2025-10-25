@@ -1,4 +1,4 @@
-import { UpdatePasswordForm } from "@/components/auth/update-password-form";
+import { UpdatePasswordForm } from "@/components/update-password-form";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default function Page() {
