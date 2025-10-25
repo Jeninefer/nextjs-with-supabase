@@ -284,5 +284,5 @@ if __name__ == "__main__":
     else:
         print("❌ Connection failed - check your environment variables:")
         print("  - NEXT_PUBLIC_SUPABASE_URL")
-        print("  - NEXT_PUBLIC_SUPABASE_ANON_KEY")
+        print("  - NEXT_PUBLIC_SUPABASE_PUBLISHABLE_OR_ANON_KEY")
         print("\nThese should be set in .env.local or .env file")
