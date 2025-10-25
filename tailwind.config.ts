@@ -188,8 +188,9 @@ const config: Config = {
 } satisfies Config;
 
 // Inline implementation of flattenColorPalette to avoid internal module dependency
-function flattenColorPalette(colors: Record<string, any>): Record<string, string> {
-  function flatten(obj: Record<string, any>, prefix = ''): Record<string, string> {
+type ColorObject = Record<string, string | ColorObject>;
+function flattenColorPalette(colors: ColorObject): Record<string, string> {
+  function flatten(obj: ColorObject, prefix = ''): Record<string, string> {
     let result: Record<string, string> = {};
     for (const [key, value] of Object.entries(obj)) {
       if (typeof value === 'string') {
