@@ -102,12 +102,12 @@ def perform_validation_checks(df):
                     out=np.full(len(df), np.nan),
                     where=df['credit_limit'] != 0
                 )
-                invalid_ratios = int((
+                invalid_ratios = (
                     (utilization_ratio < 0) | 
                     (utilization_ratio > 2) | 
                     np.isnan(utilization_ratio) | 
                     np.isinf(utilization_ratio)
-                ).sum())
+                ).sum()
             else:
                 # Fallback without numpy
                 invalid_ratios = 0
