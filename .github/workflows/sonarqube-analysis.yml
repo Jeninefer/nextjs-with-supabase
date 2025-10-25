@@ -1,4 +1,6 @@
 name: SonarQube Analysis - Abaco Financial Intelligence Platform
+permissions:
+  contents: read
 
 on:
   push:
