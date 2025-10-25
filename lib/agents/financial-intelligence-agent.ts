@@ -556,9 +556,3 @@ export class AbacoFinancialIntelligenceAgent {
 // Export types for external use
 export type { FinancialCustomer, PortfolioAlert, FinancialKPIs, AgentAnalysisResult };
 
-/ Now let me clean up the SQL migrations:
-
-```bash
-# Clean up database schema
-echo "🧹 Cleaning database schema..."
-```
