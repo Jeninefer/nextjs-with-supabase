@@ -71,14 +71,21 @@ try {
 
 # Test Next.js config
 echo "Testing Next.js configuration..."
-node -e "
-try {
-  const config = require('./next.config.ts');
-  console.log('✅ Next.js config loads successfully');
-} catch (e) {
-  console.log('⚠️ Next.js config has issues:', e.message);
-}
-"
+if [ -f "next.config.js" ]; then
+  node -e "
+  try {
+    const config = require('./next.config.js');
+    console.log('✅ Next.js config loads successfully');
+  } catch (e) {
+    console.log('⚠️ Next.js config has issues:', e.message);
+  }
+  "
+elif [ -f "next.config.ts" ]; then
+  echo "⚠️ Skipping runtime validation of next.config.ts (Node.js cannot require TypeScript files directly)."
+  echo "   Please ensure your next.config.ts compiles and is valid."
+else
+  echo "❌ No Next.js config file found (next.config.js or next.config.ts missing)."
+fi
 
 # Step 5: Create backup Tailwind config without problematic imports
 echo "🔧 Step 5: Creating safe Tailwind configuration..."
