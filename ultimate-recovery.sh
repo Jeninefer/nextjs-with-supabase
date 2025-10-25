@@ -140,14 +140,14 @@ echo "✅ Safe Tailwind config created"
 
 # Step 6: Test build process
 echo "🏗️ Step 6: Testing build process..."
-if npm run build; then
+if npm run build > /dev/null 2>&1; then
     echo "✅ Build successful with current config!"
 else
     echo "⚠️ Build failed, trying with safe config..."
     mv tailwind.config.ts tailwind.config.original.ts
     mv tailwind.config.safe.ts tailwind.config.ts
     
-    if npm run build; then
+    if npm run build > /dev/null 2>&1; then
         echo "✅ Build successful with safe config!"
         echo "ℹ️ Original config saved as tailwind.config.original.ts"
     else
