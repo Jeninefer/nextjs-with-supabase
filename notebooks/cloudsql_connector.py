@@ -248,7 +248,7 @@ class CloudSQLConnector:
             update_cols = [col for col in df.columns if col != 'customer_id']
             if update_cols:
                 update_assignments = [
-                    f"{escape_identifier(col)}=NEW.{escape_identifier(col)}"
+                    f"{escape_identifier(col)}=NEW.{col}"
                     for col in update_cols
                 ]
                 update_clause = ', '.join(update_assignments)
