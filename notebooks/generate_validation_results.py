@@ -129,7 +129,7 @@ def perform_validation_checks(df):
     
     # Check 4: Reasonable Final Balance Check
     if df is not None:
-        very_high_balances = int((df['account_balance'] > 1000000).sum())
+        very_high_balances = (df['account_balance'] > 1000000).sum()
         checks['reasonableFinalBalance'] = {
             'passed': very_high_balances < len(df) * 0.05,  # Less than 5% with very high balances
             'message': 'All account balances are within reasonable ranges' if very_high_balances == 0
