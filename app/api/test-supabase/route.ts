@@ -88,17 +88,11 @@ export async function GET() {
     }
 
     // Log error details server-side for diagnostics
-    let errorLogDetail;
-    if (process.env.NODE_ENV !== "production") {
-      errorLogDetail = errorStack
-        ? `${errorMessage}\n${errorStack}`
-        : errorMessage;
-    } else {
-      errorLogDetail = errorMessage;
-    }
     console.error(
       "Unhandled error in GET /api/test-supabase:",
-      errorLogDetail
+      process.env.NODE_ENV !== "production"
+        ? (errorStack ? `${errorMessage}\n${errorStack}` : errorMessage)
+        : errorMessage
     );
     const totalMs = Date.now() - startTotal;
     const clientErrorMessage = errorMessage
