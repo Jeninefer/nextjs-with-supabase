@@ -32,7 +32,10 @@
 - Components with [shadcn/ui](https://ui.shadcn.com/)
 - Optional deployment with [Supabase Vercel Integration and Vercel deploy](#deploy-your-own)
   - Environment variables automatically assigned to Vercel project
-- Financial Intelligence Notebook with market analysis integration
+
+## Planned Features
+
+- Financial Intelligence Notebook with market analysis integration (planned)
   - Jupyter notebook for comprehensive financial analysis
   - Market insights extraction from MYPE 2025 report
   - KPI calculations, risk analysis, and growth projections
