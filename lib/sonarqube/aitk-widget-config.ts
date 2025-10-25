@@ -13,6 +13,11 @@ export interface AITKSonarMetrics extends SonarQubeMetrics {
   performanceMetricsCount: number;
 }
 
+// Minimal definition for QualityGateStatus, update as needed
+export interface QualityGateStatus {
+  status: 'OK' | 'WARN' | 'ERROR';
+  // Add other properties as needed
+}
 export interface AITKQualityGate extends QualityGateStatus {
   aitkConditions: Array<{
     metric: 'agent_tracing' | 'agent_evaluation' | 'performance_monitoring' | 'error_handling';
