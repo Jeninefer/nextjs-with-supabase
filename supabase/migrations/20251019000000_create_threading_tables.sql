@@ -245,14 +245,14 @@ declare
   start_id integer;
   end_id integer;
   batch_report_interval constant integer := 10;
-  min_batch_num constant integer := 1;
+  FIRST_BATCH constant integer := 1;
 begin
   -- Calculate batches for efficient bulk inserts
   total_batches := ceil(sample_size::decimal / batch_size);
   
   -- Use dynamic loop bounds based on calculated batches - PostgreSQL best practice
-  for current_batch in min_batch_num..total_batches loop
-    start_id := (current_batch - min_batch_num) * batch_size + min_batch_num;
+  for current_batch in FIRST_BATCH..total_batches loop
+    start_id := (current_batch - FIRST_BATCH) * batch_size + FIRST_BATCH;
     end_id := least(current_batch * batch_size, sample_size);
     
     -- Bulk insert using generate_series and arrays - PostgreSQL best practice
