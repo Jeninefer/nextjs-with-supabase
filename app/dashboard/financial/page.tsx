@@ -44,11 +44,11 @@ export default async function FinancialDashboard() {
           </p>
         </header>
         
-        <FinancialMetrics kpiData={kpiData} />
+        <FinancialMetrics kpiData={safeKpi} />
         
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-          <GrowthChart data={loanData} />
-          <RiskAnalysis data={loanData} />
+          <GrowthChart data={safeLoans} />
+          <RiskAnalysis data={safeLoans} />
         </div>
 
         <AIInsights />
