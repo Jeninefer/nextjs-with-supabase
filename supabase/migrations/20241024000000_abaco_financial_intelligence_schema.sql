@@ -141,7 +141,9 @@ $$ language plpgsql;
 create or replace function validate_financial_data()
 returns trigger as $$
 declare
-  -- Use a named constant for maximum days past due: 7 years * 365.25 days/year = 2556.75 ≈ 2557
+  -- Use a named constant for maximum days past due.
+  -- 7 years * 365.25 days/year = 2556.75 ≈ 2557
+  -- Business rule: 7 years is the maximum period for delinquency tracking, based on industry standards and regulatory requirements (e.g., credit reporting agencies typically limit negative information to 7 years).
   MAX_DAYS_PAST_DUE constant integer := 2557;
 begin
   -- Validate utilization ratio doesn't exceed 150%
