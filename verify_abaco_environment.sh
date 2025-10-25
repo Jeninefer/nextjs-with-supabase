@@ -41,7 +41,7 @@ fi
 echo ""
 echo "3️⃣ Checking Jupyter kernel..."
 if command -v jupyter &> /dev/null; then
-    if jupyter kernelspec list 2>/dev/null | grep -q "abaco_env"; then
+    if jupyter kernelspec list | grep -q "abaco_env"; then
         echo "   ✅ ABACO kernel registered"
     else
         echo "   ⚠️  ABACO kernel not found"
