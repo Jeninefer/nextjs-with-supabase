@@ -315,7 +315,7 @@ python3 notebooks/generate_validation_results.py`}</code>
                 Avg Credit Score
               </p>
               <p className="text-3xl font-bold text-gray-900">
-                {results.summary.avgCreditScore.toFixed(1)}
+                {(results.summary.avgCreditScore ?? 0).toFixed(1)}
               </p>
             </div>
             <div className="p-4 bg-gray-50 rounded-lg">
