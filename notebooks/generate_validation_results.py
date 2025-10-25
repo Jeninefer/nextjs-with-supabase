@@ -191,7 +191,7 @@ def generate_validation_results():
     summary = calculate_summary_stats(df)
     
     # Calculate totals
-    total_loans = int(len(df)) if df is not None else 0
+    total_loans = len(df) if df is not None else 0
     total_disbursements = f"${df['loan_amount'].sum():,.2f}" if df is not None and 'loan_amount' in df.columns else "$0.00"
     total_outstanding = f"${df['account_balance'].sum():,.2f}" if df is not None and 'account_balance' in df.columns else "$0.00"
     
