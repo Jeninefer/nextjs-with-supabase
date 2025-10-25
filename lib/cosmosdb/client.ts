@@ -133,40 +133,14 @@ export const getCosmosClient = (diagnosticLogger?: (info: DiagnosticInfo) => voi
   return cosmosClient;
 };
 
-// When ready to use actual Azure Cosmos DB, uncomment and install @azure/cosmos:
-/*
-import { CosmosClient, CosmosClientOptions, Container, Database } from '@azure/cosmos';
-
-class FinancialCosmosClient {
-  private readonly client: CosmosClient;
-  private database: Database | null = null;
-  private container: Container | null = null;
-  private readonly config: CosmosConfig;
-  private readonly diagnosticLogger: (info: DiagnosticInfo) => void;
-
-  constructor(config: CosmosConfig, diagnosticLogger?: (info: DiagnosticInfo) => void) {
-    this.config = config;
-    this.diagnosticLogger = diagnosticLogger || this.defaultDiagnosticLogger;
-    
-    const clientOptions: CosmosClientOptions = {
-      connectionPolicy: {
-        requestTimeout: 30000,
-        retryOptions: {
-          maxRetryAttemptCount: 3,
-          fixedRetryIntervalInMilliseconds: 1000,
-          maxRetryWaitTimeInSeconds: 30
-        }
-      },
-      userAgentSuffix: 'AbacoFinancialIntelligence/1.0'
-    };
-
-    this.client = new CosmosClient({
-      endpoint: config.endpoint,
-      key: config.key,
-      ...clientOptions
-    });
-  }
-
-  // ... rest of implementation
-}
-*/
+// When ready to use actual Azure Cosmos DB, see the official documentation and provide a full implementation here.
+// The following is a placeholder. For a complete example, see:
+// https://learn.microsoft.com/en-us/azure/cosmos-db/nosql/sdk-node
+//
+// import { CosmosClient, CosmosClientOptions, Container, Database } from '@azure/cosmos';
+//
+// class FinancialCosmosClient {
+//   // TODO: Implement full production client using @azure/cosmos.
+//   // See Azure Cosmos DB SDK documentation for details:
+//   // https://learn.microsoft.com/en-us/azure/cosmos-db/nosql/sdk-node
+// }
