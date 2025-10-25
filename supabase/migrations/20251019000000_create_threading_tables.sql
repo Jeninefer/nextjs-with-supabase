@@ -252,7 +252,7 @@ begin
   
   -- Use dynamic loop bounds based on calculated batches - PostgreSQL best practice
   for current_batch in FIRST_BATCH..total_batches loop
-    start_id := (current_batch - FIRST_BATCH) * batch_size + FIRST_BATCH;
+    start_id := (current_batch - 1) * batch_size + 1; -- Simplified: FIRST_BATCH is always 1
     end_id := least(current_batch * batch_size, sample_size);
     
     -- Bulk insert using generate_series and arrays - PostgreSQL best practice
