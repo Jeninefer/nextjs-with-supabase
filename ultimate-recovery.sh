@@ -60,14 +60,21 @@ echo "⚙️ Step 4: Testing configuration files..."
 
 # Test Tailwind config without problematic imports
 echo "Testing Tailwind CSS configuration..."
-node -e "
-try {
-  const config = require('./tailwind.config.ts');
-  console.log('✅ Tailwind config loads successfully');
-} catch (e) {
-  console.log('⚠️ Tailwind config has issues:', e.message);
-}
-"
+if [ -f "tailwind.config.js" ]; then
+  node -e "
+  try {
+    const config = require('./tailwind.config.js');
+    console.log('✅ Tailwind config loads successfully');
+  } catch (e) {
+    console.log('⚠️ Tailwind config has issues:', e.message);
+  }
+  "
+elif [ -f "tailwind.config.ts" ]; then
+  echo "⚠️ Skipping runtime validation of tailwind.config.ts (Node.js cannot require TypeScript files directly)."
+  echo "   Please ensure your tailwind.config.ts compiles and is valid."
+else
+  echo "❌ No Tailwind config file found (tailwind.config.js or tailwind.config.ts missing)."
+fi
 
 # Test Next.js config
 echo "Testing Next.js configuration..."
