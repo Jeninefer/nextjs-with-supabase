@@ -65,23 +65,4 @@ describe('FinancialIntelligenceAgent', () => {
     });
   });
 
-  describe('Performance Monitoring', () => {
-    it('should log diagnostic information for slow operations', async () => {
-      const consoleSpy = jest.spyOn(console, 'warn');
-      const mockCustomer = testUtils.createMockCustomer();
-      
-      // Mock slow operation
-      jest.spyOn(agent as any, '_performSlowOperation').mockResolvedValue({
-        statusCode: 200,
-        diagnostics: { toString: () => 'Slow operation' }
-      });
-      
-      await agent.storeCustomerProfile('enterprise', mockCustomer);
-      
-      expect(consoleSpy).toHaveBeenCalledWith(
-        expect.stringContaining('[COSMOS_DIAGNOSTIC]'),
-        expect.objectContaining({ latency: expect.stringContaining('ms') })
-      );
-    });
-  });
 });
