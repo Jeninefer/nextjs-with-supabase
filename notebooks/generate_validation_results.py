@@ -165,7 +165,7 @@ def calculate_summary_stats(df):
     
     # Calculate summary
     summary = {
-        'totalCustomers': int(len(df)),
+        'totalCustomers': len(df),
         'avgBalance': f"${df['account_balance'].mean():,.2f}" if 'account_balance' in df.columns else "$0.00",
         'avgCreditScore': float(df['credit_score'].mean()) if 'credit_score' in df.columns else 0,
         'riskDistribution': risk_dist
