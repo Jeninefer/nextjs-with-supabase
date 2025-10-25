@@ -28,8 +28,8 @@ const flattenColorPalette = (colors: Record<string, unknown>, prefix = ""): Reco
 };
 
 const addVariablesForColors = plugin(({ addBase, theme }) => {
-  const colors = theme("colors") ?? {};
-  const flattened = flattenColorPalette(colors as Record<string, unknown>);
+  const colors = (theme("colors") ?? {}) as Record<string, unknown>;
+  const flattened = flattenColorPalette(colors);
   const cssVariables = Object.fromEntries(
     Object.entries(flattened).map(([name, value]) => [`--${name.replaceAll(/[./]/g, '-')}`, value])
   );
