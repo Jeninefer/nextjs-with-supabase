@@ -240,7 +240,7 @@ export class AbacoFinancialIntelligenceAgent {
 
     // Top 10 customer concentration
     const topCustomerConcentration = customers
-      .sort((a, b) => b.balance - a.balance)
+      .toSorted((a, b) => b.balance - a.balance)
       .slice(0, 10)
       .reduce((sum, c) => sum + c.balance, 0) / totalBalance * 100;
 
