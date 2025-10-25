@@ -175,12 +175,12 @@ const fetchMessages = async (
 };
 
 // Type guard to check if an object is a SenderRecord
-const isSenderRecord = (obj: any): obj is SenderRecord => {
+const isSenderRecord = (obj: unknown): obj is SenderRecord => {
   return (
     obj !== null &&
     typeof obj === "object" &&
-    typeof obj.id === "string" &&
-    (typeof obj.display_name === "string" || obj.display_name == null)
+    typeof (obj as { id?: unknown }).id === "string" &&
+    (typeof (obj as { display_name?: unknown }).display_name === "string" || (obj as { display_name?: unknown }).display_name == null)
   );
 };
 
