@@ -140,15 +140,18 @@ $$ language plpgsql;
 
 create or replace function validate_financial_data()
 returns trigger as $$
+declare
+  -- Use a named constant for maximum days past due: 7 years * 365.25 days/year = 2556.75 ≈ 2557
+  MAX_DAYS_PAST_DUE constant integer := 2557;
 begin
   -- Validate utilization ratio doesn't exceed 150%
   if new.balance > new.credit_limit * 1.5 then
     raise exception 'Balance exceeds 150%% of credit limit for customer %', new.customer_id;
   end if;
   
-  -- Validate days past due is reasonable
-  if new.days_past_due > 2555 then -- ~7 years
-    raise exception 'Days past due exceeds maximum allowed (2555) for customer %', new.customer_id;
+  -- Validate days past due is reasonable (max 7 years)
+  if new.days_past_due > MAX_DAYS_PAST_DUE then
+    raise exception 'Days past due exceeds maximum allowed (%s) for customer %', MAX_DAYS_PAST_DUE, new.customer_id;
   end if;
   
   return new;
