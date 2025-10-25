@@ -77,8 +77,6 @@ gcloud run deploy abaco-platform \
   --memory 512Mi \
   --cpu 1 \
   --max-instances 10
-```
-
 ### 6. Set Environment Variables
 
 ```bash
