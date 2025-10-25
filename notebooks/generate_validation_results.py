@@ -79,7 +79,7 @@ def perform_validation_checks(df):
     
     # Check 2: Monotonic Disbursement Check (simplified - checking for reasonable loan amounts)
     if df is not None and 'loan_amount' in df.columns:
-        unreasonable_loans = int(((df['loan_amount'] > 500000) | (df['loan_amount'] < 0)).sum())
+        unreasonable_loans = ((df['loan_amount'] > 500000) | (df['loan_amount'] < 0)).sum()
         checks['monotonicDisbursement'] = {
             'passed': unreasonable_loans == 0,
             'message': 'All loan disbursements are within reasonable limits' if unreasonable_loans == 0
