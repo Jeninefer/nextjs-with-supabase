@@ -159,7 +159,7 @@ def calculate_summary_stats(df):
     risk_dist = {}
     if 'risk_category' in df.columns:
         for category in ['Low', 'Medium', 'High']:
-            risk_dist[category] = int((df['risk_category'] == category).sum())
+            risk_dist[category] = (df['risk_category'] == category).sum()
     else:
         risk_dist = {'Low': 0, 'Medium': 0, 'High': 0}
     
