@@ -137,7 +137,7 @@ See: [notebooks/supabase_connector.py](../notebooks/supabase_connector.py)
 
 ```bash
 NEXT_PUBLIC_SUPABASE_URL=your-project-url
-NEXT_PUBLIC_SUPABASE_PUBLISHABLE_OR_ANON_KEY=your-anon-key
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
 ```
 
 ### Google Cloud (Optional - Advanced Use Only)
