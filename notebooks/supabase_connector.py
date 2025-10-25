@@ -31,7 +31,7 @@ class SupabaseConnector:
             NEXT_PUBLIC_SUPABASE_ANON_KEY: The Supabase anonymous API key.
         """
         self.url = os.getenv("NEXT_PUBLIC_SUPABASE_URL")
-        self.key = os.getenv("NEXT_PUBLIC_SUPABASE_ANON_KEY")
+        self.key = os.getenv("NEXT_PUBLIC_SUPABASE_PUBLISHABLE_OR_ANON_KEY")
         self.client: Optional[Client] = None
         
         if not SUPABASE_AVAILABLE:
