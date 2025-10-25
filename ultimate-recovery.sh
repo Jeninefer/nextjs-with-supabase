@@ -11,7 +11,7 @@ echo "==============================================="
 echo "🗑️ Step 1: Complete system cleanup..."
 rm -rf node_modules
 rm -f package-lock.json
-rm -f .next
+rm -rf .next
 rm -rf .turbo
 npm cache clean --force
 
