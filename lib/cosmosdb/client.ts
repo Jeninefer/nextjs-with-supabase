@@ -89,15 +89,7 @@ class MockCosmosClient {
       return response.resource;
     } catch (error: unknown) {
       const latency = Date.now() - startTime;
-      let errorCode = 500;
-      if (error instanceof Error && 'code' in error) {
-        const rawCode = (error as any).code;
-        if (typeof rawCode === 'number') {
-          errorCode = rawCode;
-        } else if (typeof rawCode === 'string' && !isNaN(Number(rawCode))) {
-          errorCode = Number(rawCode);
-        }
-      }
+      const errorCode = Number((error as any)?.code) || 500;
       const errorMessage = error instanceof Error ? error.message : String(error);
       
       this.diagnosticLogger({
