@@ -70,7 +70,7 @@ def perform_validation_checks(df):
     checks = {}
     
     # Check 1: Negative Balance Check
-    negative_balances = int((df['account_balance'] < 0).sum()) if df is not None else 0
+    negative_balances = (df['account_balance'] < 0).sum() if df is not None else 0
     checks['negativeBalance'] = {
         'passed': negative_balances == 0,
         'message': f'All account balances are positive' if negative_balances == 0 
