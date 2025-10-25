@@ -17,17 +17,19 @@ export default async function FinancialDashboard() {
   }
 
   // Fetch financial data from Supabase
-  const { data: kpiData } = await supabase
+  const { data: kpiData, error: kpiErr } = await supabase
     .from('kpi_snapshots')
     .select('*')
     .order('recorded_at', { ascending: false })
     .limit(10)
 
-  const { data: loanData } = await supabase
+  const { data: loanData, error: loanErr } = await supabase
     .from('loan_data')
     .select('*')
     .limit(100)
 
+  const safeKpi = kpiErr || !kpiData ? [] : kpiData
+  const safeLoans = loanErr || !loanData ? [] : loanData
   return (
     <div className="min-h-screen bg-gray-900 text-white">
       <div className="container mx-auto px-4 py-8">
