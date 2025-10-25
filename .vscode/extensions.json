@@ -7,9 +7,9 @@
         // Essential for Python
         "ms-python.python",
         "ms-python.debugpy",
-        // AI Assistant (choose ONE)
-        "github.copilot",
-        "github.copilot-chat",
+        // AI Assistant (Copilot provides inline suggestions, Copilot Chat provides chat interface; both can be used together)
+        "github.copilot",         // Inline code suggestions
+        "github.copilot-chat",    // Chat-based AI assistant
         // Quality of Life
         "formulahendry.auto-close-tag",
         "formulahendry.auto-rename-tag",
