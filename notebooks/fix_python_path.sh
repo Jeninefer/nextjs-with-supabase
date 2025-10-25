@@ -31,7 +31,7 @@ if [ ! -d "venv" ]; then
 fi
 
 # Activate the virtual environment
-source venv/bin/activate
+. venv/bin/activate
 PYTHON_CMD="python"
 
 echo "✅ Python virtual environment setup complete!"
