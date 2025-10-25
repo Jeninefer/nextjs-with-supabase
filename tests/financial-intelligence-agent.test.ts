@@ -1,5 +1,5 @@
 import { testUtils } from '@/lib/test/test-utils';
-import { FinancialIntelligenceAgent } from '@/lib/cosmosdb/financial-intelligence-agent';
+import { FinancialIntelligenceAgent } from '@/lib/agents/financial-intelligence-agent';
 import { jest } from '@jest/globals';
 
 describe('FinancialIntelligenceAgent', () => {
