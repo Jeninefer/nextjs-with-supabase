@@ -54,7 +54,7 @@ export class AbacoAnalytics {
     const totalAUM = activeLoans.reduce((sum, loan) => sum + loan.outstanding_balance, 0)
     const activeClients = new Set(activeLoans.map(loan => loan.customer_id)).size
     const defaultedLoans = loans.filter(loan => loan.dpd > 180)
-    const defaultRate = (defaultedLoans.length / loans.length) * 100
+    const defaultRate = loans.length > 0 ? (defaultedLoans.length / loans.length) * 100 : 0
 
     return {
       total_aum: totalAUM,
