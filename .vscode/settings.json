@@ -87,5 +87,9 @@
         "latex",
         "plaintext",
         "shellscript"
-    ]
+    ],
+    "sonarlint.connectedMode.servers": [],
+    "sonarlint.disableTelemetry": true,
+    "sonarlint.output.showAnalyzerLogs": false,
+    "sonarlint.rules": {}
 }
