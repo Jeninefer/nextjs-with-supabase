@@ -75,34 +75,37 @@ export async function GET() {
       },
     });
   } catch (err: unknown) {
+    // Extract error message and stack trace once
+    let errorMessage = "";
+    let errorStack = "";
+    if (err instanceof Error) {
+      errorMessage = err.message;
+      errorStack = err.stack ?? "";
+    } else if (typeof err === "string") {
+      errorMessage = err;
+    } else {
+      errorMessage = String(err);
+    }
+
     // Log error details server-side for diagnostics
     let errorLogDetail;
-    if (err instanceof Error) {
-      if (process.env.NODE_ENV !== "production") {
-        errorLogDetail = `${err.message}\n${err.stack}`;
-      } else {
-        errorLogDetail = err.message;
-      }
+    if (process.env.NODE_ENV !== "production") {
+      errorLogDetail = errorStack
+        ? `${errorMessage}\n${errorStack}`
+        : errorMessage;
     } else {
-      errorLogDetail = err;
+      errorLogDetail = errorMessage;
     }
     console.error(
       "Unhandled error in GET /api/test-supabase:",
       errorLogDetail
     );
     const totalMs = Date.now() - startTotal;
-    // Sanitize error message for client
-    let errorDetail = "";
-    if (err instanceof Error) {
-      errorDetail = err.message;
-    } else if (typeof err === "string") {
-      errorDetail = err;
-    }
-    const errorMessage = errorDetail
-      ? `An unexpected error occurred: ${errorDetail}`
+    const clientErrorMessage = errorMessage
+      ? `An unexpected error occurred: ${errorMessage}`
       : "An unexpected error occurred.";
     const body = {
-      error: errorMessage,
+      error: clientErrorMessage,
       meta: { timings: { total_request_ms: totalMs } },
     };
     return new Response(JSON.stringify(body), {
