@@ -113,7 +113,7 @@ vercel deploy
 
 ### Google Cloud Run
 
-Deploy this Next.js application as a containerized service using **Google Cloud Run** (not Dataproc - which is for data processing clusters).
+Deploy this Next.js application as a containerized service using **Google Cloud Run** (not Dataproc — which is for data processing clusters).
 
 **Prerequisites:**
 1. Enable the Cloud Run API (not Dataproc API):
