@@ -142,8 +142,10 @@ create or replace function validate_financial_data()
 returns trigger as $$
 declare
   -- Use a named constant for maximum days past due.
-  -- 7 years * 365.25 days/year = 2556.75 ≈ 2557
-  -- Maximum 7 years per credit reporting standards
+  -- Calculation: 7 years * 365.25 days/year = 2556.75 days.
+  -- Rounded up to 2557 days to ensure a full 7-year period is always allowed, even in cases with multiple leap years.
+  -- This aligns with US credit reporting standards (e.g., FCRA, 15 U.S.C. § 1681c), which require most negative information to be removed after 7 years.
+  -- Choosing 2557 (instead of 2556) ensures no valid 7-year period is ever excluded due to leap year variations.
   MAX_DAYS_PAST_DUE constant integer := 2557;
 begin
   -- Validate utilization ratio doesn't exceed 150%
