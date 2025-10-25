@@ -1,5 +1,5 @@
 import { FinancialIntelligenceAgent } from '../financial-intelligence-agent';
-import type { FinancialData } from '../financial-intelligence-agent';
+import type { FinancialCustomer as FinancialData } from '../financial-intelligence-agent';
 
 // Mock the dependencies
 jest.mock('../../cosmosdb/client');
