@@ -1,0 +1,81 @@
+import { testUtils } from '@/lib/test/test-utils';
+import { FinancialIntelligenceAgent } from '@/lib/cosmosdb/financial-intelligence-agent';
+import { jest } from '@jest/globals';
+
+describe('FinancialIntelligenceAgent', () => {
+  let agent: FinancialIntelligenceAgent;
+  
+  beforeEach(() => {
+    agent = new FinancialIntelligenceAgent({
+      tenantId: 'test-tenant',
+      traceEnabled: false
+    });
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  describe('Customer Profile Management', () => {
+    it('should store customer profile with proper partition key', async () => {
+      const mockCustomer = testUtils.createMockCustomer();
+      
+      const result = await agent.storeCustomerProfile(
+        'enterprise',
+        mockCustomer
+      );
+      
+      expect(result.partitionKey).toMatch(/test-tenant\/enterprise\/\d{4}-\d{2}-\d{2}/);
+      expect(result.documentType).toBe('customer_profile');
+      expect(result.customerId).toBe(mockCustomer.customerId);
+    });
+
+    it('should handle storage errors gracefully', async () => {
+      const mockCustomer = testUtils.createMockCustomer();
+      
+      // Mock Cosmos DB error
+      jest.spyOn(agent as any, '_getContainer').mockRejectedValue(
+        new Error('Cosmos DB connection failed')
+      );
+      
+      await expect(
+        agent.storeCustomerProfile('enterprise', mockCustomer)
+      ).rejects.toThrow('Cosmos DB connection failed');
+    });
+  });
+
+  describe('Portfolio Analysis', () => {
+    it('should store portfolio analysis with embedded KPIs', async () => {
+      const mockPortfolio = testUtils.createMockPortfolio();
+      
+      const result = await agent.storePortfolioAnalysis(
+        'enterprise',
+        mockPortfolio
+      );
+      
+      expect(result.kpis.totalAum).toBe(10000000);
+      expect(result.insights).toHaveLength(2);
+      expect(result.recommendations).toHaveLength(2);
+    });
+  });
+
+  describe('Performance Monitoring', () => {
+    it('should log diagnostic information for slow operations', async () => {
+      const consoleSpy = jest.spyOn(console, 'warn');
+      const mockCustomer = testUtils.createMockCustomer();
+      
+      // Mock slow operation
+      jest.spyOn(agent as any, '_performSlowOperation').mockResolvedValue({
+        statusCode: 200,
+        diagnostics: { toString: () => 'Slow operation' }
+      });
+      
+      await agent.storeCustomerProfile('enterprise', mockCustomer);
+      
+      expect(consoleSpy).toHaveBeenCalledWith(
+        expect.stringContaining('[COSMOS_DIAGNOSTIC]'),
+        expect.objectContaining({ latency: expect.stringContaining('ms') })
+      );
+    });
+  });
+});
