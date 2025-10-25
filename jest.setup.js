@@ -6,7 +6,7 @@ global.aitk_span = jest.fn();
 global.aitk_diagnostic = jest.fn();
 
 // Mock Cosmos DB client for testing
-jest.mock('./lib/cosmosdb/client', () => ({
+jest.mock('<rootDir>/lib/cosmosdb/client', () => ({
   getCosmosClient: jest.fn(() => ({
     getContainer: jest.fn(() => Promise.resolve({
       items: {
