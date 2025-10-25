@@ -26,6 +26,7 @@ export async function GET() {
 
       // Test connection with a simple query
       // Use a lightweight system table to check database connectivity
+      // Use a lightweight query on a user table to check database connectivity
       const { error } = await supabase
         .from("abaco_customers")
         .select("id")
