@@ -1,17 +1,7 @@
 # Multi-stage Dockerfile for ABACO Financial Intelligence Platform
 # Optimized for Google Cloud Run deployment
 
-# Stage 1: Dependencies
-FROM node:20-alpine AS deps
-WORKDIR /app
-
-# Copy package files
-COPY package.json package-lock.json ./
-
-# Install dependencies
-RUN npm ci --omit=dev
-
-# Stage 2: Builder
+# Stage 1: Builder
 FROM node:20-alpine AS builder
 WORKDIR /app
 
