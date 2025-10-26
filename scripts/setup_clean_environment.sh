@@ -122,6 +122,34 @@ echo "  1. Start Next.js: npm run dev"
 echo "  2. Run Python analysis: ./run_financial_analysis.sh"
 echo "  3. Open http://localhost:3000"
 echo ""
+
+# Try to add the configuration to the user's shell profile automatically
+ADDED_TO_PROFILE="false"
+PROFILE_FILE=""
+if [ -n "$ZSH_VERSION" ]; then
+  PROFILE_FILE="$HOME/.zshrc"
+elif [ -n "$BASH_VERSION" ]; then
+  PROFILE_FILE="$HOME/.bashrc"
+elif [ -f "$HOME/.bash_profile" ]; then
+  PROFILE_FILE="$HOME/.bash_profile"
+fi
+
+if [ -n "$PROFILE_FILE" ] && [ -w "$PROFILE_FILE" ]; then
+  # Only add if not already present
+  if ! grep -q "ABACO: Prevent Google Cloud auto-configuration" "$PROFILE_FILE"; then
+    {
+      echo ""
+      echo "# ABACO: Prevent Google Cloud auto-configuration"
+      echo "export CLOUDSDK_CORE_DISABLE_PROMPTS=1"
+      echo "export CLOUDSDK_CORE_DISABLE_USAGE_REPORTING=1"
+    } >> "$PROFILE_FILE"
+    ADDED_TO_PROFILE="true"
+    echo "✅ Added Google Cloud config disables to $PROFILE_FILE"
+  else
+    ADDED_TO_PROFILE="true"
+    echo "✅ Google Cloud config disables already present in $PROFILE_FILE"
+  fi
+fi
 if [ "$ADDED_TO_PROFILE" != "true" ]; then
   echo "💡 To make these changes permanent, add the following to your ~/.bashrc or ~/.zshrc:"
   echo ""
