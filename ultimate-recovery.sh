@@ -15,8 +15,12 @@ rm -rf .next
 rm -rf .turbo
 npm cache clean --force
 
-# Clear any VS Code Tailwind cache
-rm -rf ~/.vscode/extensions/bradlc.vscode-tailwindcss-*/cache 2>/dev/null || true
+# (Optional) Clear VS Code Tailwind CSS extension cache.
+# This path assumes the extension ID is 'bradlc.vscode-tailwindcss-*' and may vary by installation.
+# If you use a different extension or VS Code is installed elsewhere, adjust or skip this step.
+for d in ~/.vscode/extensions/bradlc.vscode-tailwindcss-*/cache; do
+  [ -d "$d" ] && rm -rf "$d"
+done
 
 echo "✅ System completely cleaned"
 
