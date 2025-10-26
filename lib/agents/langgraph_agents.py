@@ -1,8 +1,8 @@
 """
 ABACO Financial Intelligence - Multi-Agent Analysis System
 
-Core agents for financial data extraction, quantitative analysis, and 
-supervision. Implements hierarchical agent orchestration using LangGraph 
+Core agents for financial data extraction, quantitative analysis, and
+supervision. Implements hierarchical agent orchestration using LangGraph
 patterns.
 """
 
@@ -19,12 +19,10 @@ import pandas as pd
 import numpy as np
 
 try:
-    from langchain_core.messages import (
-        BaseMessage, HumanMessage, AIMessage, SystemMessage
-    )
+    # LangChain imports for future LangGraph integration
+    import langchain_core
     LANGCHAIN_AVAILABLE = True
 except ImportError:
-    BaseMessage = HumanMessage = AIMessage = SystemMessage = None
     LANGCHAIN_AVAILABLE = False
 
 try:
@@ -93,7 +91,8 @@ class AgentResult:
 class BaseFinancialAgent:
     """Base class for all financial analysis agents"""
 
-    def __init__(self, role: AgentRole, logger: Optional[logging.Logger] = None):
+    def __init__(self, role: AgentRole,
+                 logger: Optional[logging.Logger] = None):
         self.role = role
         self.logger = logger or logging.getLogger(f"ABACO.{role.value}")
         self.trace_id = str(uuid.uuid4())[:8]
@@ -122,8 +121,8 @@ class BaseFinancialAgent:
 
 class SupervisorAgent(BaseFinancialAgent):
     """
-    Orchestrates workflow, routes queries, delegates tasks to specialized 
-    agents. Maintains conversation history and aggregates results from 
+    Orchestrates workflow, routes queries, delegates tasks to specialized
+    agents. Maintains conversation history and aggregates results from
     other agents.
     """
 
@@ -136,7 +135,8 @@ class SupervisorAgent(BaseFinancialAgent):
     def register_agent(self, agent: BaseFinancialAgent) -> None:
         """Register a specialized agent"""
         self.agent_registry[agent.role] = agent
-        self.log_operation("registered", f"Agent {agent.role.value} registered")
+        self.log_operation("registered",
+                          f"Agent {agent.role.value} registered")
 
     async def execute(self, context: AgentContext) -> AgentResult:
         """Route request and coordinate agent execution"""
@@ -233,7 +233,7 @@ class SupervisorAgent(BaseFinancialAgent):
             if any(keyword in query_lower for keyword in keywords):
                 identified_roles.add(role)
 
-        return (list(identified_roles) if identified_roles 
+        return (list(identified_roles) if identified_roles
                 else [AgentRole.QUANTITATIVE_ANALYSIS])
 
     def get_conversation_history(self) -> List[Dict[str, str]]:
@@ -261,8 +261,8 @@ class DataExtractionAgent(BaseFinancialAgent):
         errors = []
 
         input_data = context.input_data
-        if ("data_source" not in input_data and 
-            "dataframe" not in input_data):
+        if ("data_source" not in input_data and
+                "dataframe" not in input_data):
             errors.append("Missing data_source or dataframe in input")
 
         return len(errors) == 0, errors
@@ -295,8 +295,10 @@ class DataExtractionAgent(BaseFinancialAgent):
                     "original_shape": dataframe.shape,
                     "normalized_shape": normalized_df.shape,
                     "columns_normalized": list(normalized_df.columns),
-                    "missing_values": normalized_df.isnull().sum().to_dict(),
-                    "data_types": normalized_df.dtypes.astype(str).to_dict()
+                    "missing_values": (normalized_df.isnull()
+                                     .sum().to_dict()),
+                    "data_types": (normalized_df.dtypes
+                                 .astype(str).to_dict())
                 }
 
                 output = {
@@ -366,7 +368,7 @@ class DataExtractionAgent(BaseFinancialAgent):
                 return pd.read_excel(source_path)
             elif source_path in self.extraction_cache:
                 return self.extraction_cache[source_path]
-        except (FileNotFoundError, pd.errors.EmptyDataError, 
+        except (FileNotFoundError, pd.errors.EmptyDataError,
                 pd.errors.ParserError) as e:
             self.log_operation("error", f"Failed to load source: {str(e)}")
 
@@ -390,8 +392,8 @@ class QuantitativeAnalysisAgent(BaseFinancialAgent):
         input_data = context.input_data
         previous_results = context.previous_results
 
-        if ("dataframe" not in input_data and 
-            "previous_results" not in previous_results):
+        if ("dataframe" not in input_data and
+                "previous_results" not in previous_results):
             errors.append("Missing dataframe or previous extraction results")
 
         if "analysis_type" not in input_data:
@@ -419,11 +421,11 @@ class QuantitativeAnalysisAgent(BaseFinancialAgent):
             )
 
             dataframe = context.input_data.get("dataframe")
-            analysis_type = context.input_data.get("analysis_type", 
+            analysis_type = context.input_data.get("analysis_type",
                                                    "comprehensive")
 
-            if (dataframe is None and 
-                "previous_results" in context.previous_results):
+            if (dataframe is None and
+                    "previous_results" in context.previous_results):
                 extraction_result = context.previous_results.get(
                     "data_extraction", {}
                 )
@@ -464,8 +466,8 @@ class QuantitativeAnalysisAgent(BaseFinancialAgent):
             metadata={"execution_count": self.execution_count}
         )
 
-    def _perform_analyses(self, df: pd.DataFrame, 
-                         analysis_type: str) -> Dict[str, Any]:
+    def _perform_analyses(self, df: pd.DataFrame,
+                          analysis_type: str) -> Dict[str, Any]:
         """Perform requested analyses"""
         analyses = {}
 
@@ -502,10 +504,10 @@ class QuantitativeAnalysisAgent(BaseFinancialAgent):
         for col in numeric_cols[:3]:
             if len(df[col].dropna()) > 1:
                 values = df[col].dropna().values
-                trend_direction = ("increasing" if values[-1] > values[0] 
-                                 else "decreasing")
-                trend_magnitude = (abs(values[-1] - values[0]) / 
-                                 (values[0] + 1e-10))
+                trend_direction = ("increasing" if values[-1] > values[0]
+                                   else "decreasing")
+                trend_magnitude = (abs(values[-1] - values[0]) /
+                                   (values[0] + 1e-10))
 
                 trends[col] = {
                     "direction": trend_direction,
@@ -555,8 +557,8 @@ class AgentOrchestrator:
         self.supervisor.register_agent(data_agent)
         self.supervisor.register_agent(analysis_agent)
 
-    async def execute_query(self, query: str, 
-                           input_data: Dict[str, Any]) -> Dict[str, Any]:
+    async def execute_query(self, query: str,
+                            input_data: Dict[str, Any]) -> Dict[str, Any]:
         """Execute a query through the agent system"""
         context = AgentContext(
             trace_id=str(uuid.uuid4())[:8],
@@ -576,20 +578,21 @@ class AgentOrchestrator:
     def get_execution_summary(self) -> Dict[str, Any]:
         """Get summary of all executions"""
         completed_count = sum(
-            1 for r in self.execution_history 
+            1 for r in self.execution_history
             if r.status == AgentStatus.COMPLETED
         )
         failed_count = sum(
-            1 for r in self.execution_history 
+            1 for r in self.execution_history
             if r.status == AgentStatus.FAILED
         )
-        total_duration = sum(r.duration_seconds for r in self.execution_history)
+        total_duration = sum(r.duration_seconds
+                             for r in self.execution_history)
 
         return {
             "total_executions": len(self.execution_history),
             "successful": completed_count,
             "failed": failed_count,
             "total_duration": total_duration,
-            "execution_history": [r.to_dict() for r in 
-                                self.execution_history[-10:]]
+            "execution_history": [r.to_dict() for r in
+                                  self.execution_history[-10:]]
         }
