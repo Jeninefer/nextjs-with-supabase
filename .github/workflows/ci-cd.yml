@@ -8,6 +8,8 @@ on:
 jobs:
   quality-check:
     name: Code Quality & Security Analysis
+    permissions:
+      contents: read
     runs-on: ubuntu-latest
     
     steps:
