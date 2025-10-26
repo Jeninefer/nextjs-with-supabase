@@ -20,10 +20,15 @@ const { default: flattenColorPalette } = require("tailwindcss/lib/util/flattenCo
 Replaced the external dependency with an inline implementation of the `flattenColorPalette` function:
 
 ```typescript
-function flattenColorPalette(colors: Record<string, any>): Record<string, string> {
+// Type-safe color object type, matching the implementation in tailwind.config.ts
+type ColorObject = {
+  [key: string]: string | ColorObject;
+};
+
+function flattenColorPalette(colors: ColorObject): Record<string, string> {
   const result: Record<string, string> = {};
   
-  function flatten(obj: Record<string, any>, prefix = ''): void {
+  function flatten(obj: ColorObject, prefix = ''): void {
     for (const [key, value] of Object.entries(obj)) {
       if (typeof value === 'string') {
         const colorKey = prefix ? `${prefix}-${key}` : key;
