@@ -12,8 +12,8 @@ Missing or blocked permissions: resourcemanager.projects.get
 
 Contact your Google Cloud administrator and request:
 
-**Your Email:** jeninefer@abacocapital.co  
-**Project ID:** gen-lang-client-0516194156  
+**Your Email:** your-email@example.com  
+**Project ID:** your-project-id  
 **Required Role:** Editor (or Viewer for read-only)
 
 ### Solution 2: Create Your Own Project
