@@ -152,19 +152,6 @@ const config: Config = {
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
       },
-<<<<<<< HEAD
-      // Financial dashboard specific spacing
-      spacing: {
-        '18': '4.5rem',
-        '88': '22rem',
-        '128': '32rem',
-      },
-      // Animation for AI agent status indicators
-      animation: {
-        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-        'agent-thinking': 'pulse 1.5s ease-in-out infinite',
-      }
-=======
 
       // Animation Curves
       transitionTimingFunction: {
@@ -177,6 +164,8 @@ const config: Config = {
         'abaco-pulse': 'abaco-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
         'abaco-glow': 'abaco-glow 3s ease-in-out infinite alternate',
         'abaco-float': 'abaco-float 6s ease-in-out infinite',
+        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+        'agent-thinking': 'pulse 1.5s ease-in-out infinite',
       },
 
       // Keyframes
@@ -207,15 +196,19 @@ const config: Config = {
         '4xl': '2560px',
         '5xl': '3840px',
       },
->>>>>>> a420387e78678797632369e28629f802ce050805
     },
   },
   plugins: [
     require("tailwindcss-animate"),
-<<<<<<< HEAD
-    // Plugin for financial dashboard components
-    function({ addUtilities }: { addUtilities: (utilities: Record<string, unknown>, options?: unknown) => void }) {
+    function ({ addUtilities, theme }: { addUtilities: any; theme: any }) {
+      // Access colors directly from theme instead of using internal utilities
+      const colors = theme('colors');
+
+      // Custom utilities for financial dashboard components
       const newUtilities = {
+        '.text-balance': {
+          'text-wrap': 'balance',
+        },
         '.financial-card': {
           '@apply bg-card border border-border rounded-lg shadow-sm': {},
         },
@@ -226,26 +219,10 @@ const config: Config = {
           '@apply text-2xl font-bold text-foreground': {},
         }
       };
-      addUtilities(newUtilities);
-    }
-  ],
-} satisfies Config;
-=======
-    function ({ addUtilities, theme }: { addUtilities: any; theme: any }) {
-      // Access colors directly from theme instead of using internal utilities
-      const colors = theme('colors');
-
-      // Your custom utilities here
-      const newUtilities = {
-        '.text-balance': {
-          'text-wrap': 'balance',
-        },
-      };
 
       addUtilities(newUtilities);
     },
   ],
-};
+} satisfies Config;
 
 export default config;
->>>>>>> a420387e78678797632369e28629f802ce050805
