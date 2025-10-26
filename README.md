@@ -145,7 +145,7 @@ Missing or blocked permissions: resourcemanager.projects.get
 
 **Quick Solutions:**
 - See: [Google Cloud Quick Start Guide](./GOOGLE_CLOUD_QUICK_START.md)
-- Full documentation: [docs/GOOGLE_CLOUD_SETUP.md](./docs/GOOGLE_CLOUD_SETUP.md)
+- Full documentation: [docs/GOOGLE_CLOUD_SETUP.md](docs/GOOGLE_CLOUD_SETUP.md)
 - Or contact your Google Cloud administrator to request access
 
 **Common fixes:**
