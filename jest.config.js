@@ -10,40 +10,23 @@ const customJestConfig = {
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
   testEnvironment: 'jest-environment-jsdom',
   
-  // Coverage configuration for SonarQube
-  collectCoverage: true,
-  coverageDirectory: 'coverage',
-  coverageReporters: ['text', 'lcov', 'cobertura', 'json'],
+  // Module path mapping
+  moduleNameMapper: {
+    '^@/(.*)$': '<rootDir>/$1',
+    '^@/components/(.*)$': '<rootDir>/components/$1',
+    '^@/lib/(.*)$': '<rootDir>/lib/$1'
+  },
   
   // Test patterns
   testMatch: [
-    '<rootDir>/**/*.test.{js,jsx,ts,tsx}',
-    '<rootDir>/**/*.spec.{js,jsx,ts,tsx}'
+    '<rootDir>/**/__tests__/**/*.{js,jsx,ts,tsx}',
+    '<rootDir>/**/*.{test,spec}.{js,jsx,ts,tsx}'
   ],
   
-  // Coverage thresholds following AI Toolkit best practices
-  coverageThreshold: {
-    global: {
-      branches: 70,
-      functions: 75,
-      lines: 80,
-      statements: 80
-    },
-    // Higher thresholds for AI agents
-    './lib/agents/': {
-      branches: 80,
-      functions: 85,
-      lines: 90,
-      statements: 90
-    }
-  },
-  
-  // Module path mapping
-  moduleNameMapping: {
-    '^@/(.*)$': '<rootDir>/$1',
-    '^@/lib/(.*)$': '<rootDir>/lib/$1',
-    '^@/components/(.*)$': '<rootDir>/components/$1'
-  },
+  // Coverage configuration
+  collectCoverage: true,
+  coverageDirectory: 'coverage',
+  coverageReporters: ['text', 'lcov', 'cobertura', 'json'],
   
   // Files to collect coverage from
   collectCoverageFrom: [
@@ -52,10 +35,25 @@ const customJestConfig = {
     'lib/**/*.{js,jsx,ts,tsx}',
     '!**/*.d.ts',
     '!**/node_modules/**',
-    '!**/.next/**',
-    '!**/coverage/**',
-    '!**/dist/**'
+    '!**/.next/**'
   ],
+  
+  // Coverage thresholds
+  coverageThreshold: {
+    global: {
+      statements: 80,
+      branches: 70,
+      lines: 80,
+      functions: 75
+    },
+    // Higher thresholds for AI agents
+    './lib/agents/': {
+      statements: 90,
+      branches: 80,
+      lines: 90,
+      functions: 85
+    }
+  },
   
   // SonarQube test reporter
   testResultsProcessor: 'jest-sonar-reporter',
