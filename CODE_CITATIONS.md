@@ -92,7 +92,7 @@ const { default: flattenColorPalette } = require("tailwindcss/lib/util/flattenCo
 ### Safe Implementation Strategy
 
 ```typescript
-// filepath: /Users/jenineferderas/Documents/GitHub/nextjs-with-supabase/tailwind.config.ts
+// filepath: ./tailwind.config.ts
 // ABACO Financial Intelligence Platform - Tailwind Configuration
 // Attribution: Based on Apache-2.0 licensed implementations
 // Primary reference: Grida Project (Apache-2.0)
@@ -102,7 +102,6 @@ import type { Config } from "tailwindcss";
 
 // Standard Tailwind utility - community pattern with proper attribution
 const { default: flattenColorPalette } = require("tailwindcss/lib/util/flattenColorPalette");
-
 function addVariablesForColors({ addBase, theme }: any) {
   // Safe implementation with proper error handling
   const colors = theme("colors") ?? {};
