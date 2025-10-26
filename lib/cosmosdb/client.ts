@@ -125,14 +125,5 @@ export const getCosmosClient = (diagnosticLogger?: (info: DiagnosticInfo) => voi
   return cosmosClient;
 };
 
-// When ready to use actual Azure Cosmos DB, see the official documentation and provide a full implementation here.
-// The following is a placeholder. For a complete example, see:
+// When ready to use actual Azure Cosmos DB, see the official documentation and provide a full implementation here:
 // https://learn.microsoft.com/en-us/azure/cosmos-db/nosql/sdk-node
-//
-// import { CosmosClient, CosmosClientOptions, Container, Database } from '@azure/cosmos';
-//
-// class FinancialCosmosClient {
-//   // TODO: Implement full production client using @azure/cosmos.
-//   // See Azure Cosmos DB SDK documentation for details:
-//   // https://learn.microsoft.com/en-us/azure/cosmos-db/nosql/sdk-node
-// }
