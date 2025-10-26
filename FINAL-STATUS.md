@@ -34,20 +34,8 @@ npm run dev
 
 ## Alternative: Fresh Project (Recommended)
 
-The fresh project at `/Users/jenineferderas/Documents/GitHub/abaco-platform-fresh` is completely clean and ready:
+The fresh project directory <FRESH_PROJECT_DIR> is clean and ready:
 
-```bash
-cd /Users/jenineferderas/Documents/GitHub/abaco-platform-fresh
-
-# Install ABACO dependencies
-npm install @supabase/ssr @supabase/supabase-js clsx tailwind-merge next-themes
-
-# Copy environment
-cp ../nextjs-with-supabase/.env.local .
-
-# Start development
-npm run dev
-```
 
 ## Repository Status Summary
 
