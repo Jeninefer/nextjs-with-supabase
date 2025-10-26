@@ -29,8 +29,8 @@ This error occurs when your Google Cloud user account lacks the necessary IAM pe
 
 1. Contact your Google Cloud project administrator
 2. Provide them with:
-   - Your Google Cloud email: `jeninefer@abacocapital.co`
-   - Project ID: `gen-lang-client-0516194156`
+   - Your Google Cloud email: `user@example.com`
+   - Project ID: `your-project-id`
    - Required permission: `resourcemanager.projects.get`
    - Recommended role: **Viewer** or **Editor**
 
