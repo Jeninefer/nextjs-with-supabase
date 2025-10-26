@@ -23,9 +23,20 @@ Replaced the external dependency with an inline implementation of the `flattenCo
 // Type-safe color object type, matching the implementation in tailwind.config.ts
 type ColorObject = Record<string, string | ColorObject>;
 
+/**
+ * Flattens a nested color object into a flat Record<string, string> suitable for Tailwind CSS.
+ * @param colors - The nested color object to flatten.
+ * @returns A flat object mapping color keys to color values.
+ */
 function flattenColorPalette(colors: ColorObject): Record<string, string> {
   const result: Record<string, string> = {};
   
+  /**
+   * Recursively flattens the color object into the result object.
+   * @param obj - The current color object to flatten.
+   * @param prefix - The prefix for nested keys.
+   * @returns void
+   */
   function flatten(obj: ColorObject, prefix = ''): void {
     for (const [key, value] of Object.entries(obj)) {
       if (typeof value === 'string') {
