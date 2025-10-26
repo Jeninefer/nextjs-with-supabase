@@ -1,7 +1,23 @@
-import { testUtils } from '@/lib/test/test-utils';
+// import { testUtils } from '@/lib/test/test-utils'; // Removed: file does not exist
 import { FinancialIntelligenceAgent } from '@/lib/agents/financial-intelligence-agent';
 import { jest } from '@jest/globals';
 
+// Minimal local testUtils for mock data
+const testUtils = {
+  createMockCustomer: () => ({
+    customerId: 'mock-customer-id',
+    name: 'Test Customer',
+   email: 'test@example.com',
+   // Add other properties as needed for the test
+ }),
+ createMockPortfolio: () => ({
+   portfolioId: 'mock-portfolio-id',
+   kpis: { totalAum: 10000000 },
+   insights: [{ id: 1 }, { id: 2 }],
+   recommendations: [{ id: 1 }, { id: 2 }],
+   // Add other properties as needed for the test
+ }),
+};
 describe('FinancialIntelligenceAgent', () => {
   let agent: FinancialIntelligenceAgent;
   
