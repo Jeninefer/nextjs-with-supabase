@@ -128,6 +128,7 @@ gcloud run deploy abaco-platform --source .
 
 For detailed setup instructions, error resolution, and platform status, see:
 
+- [Complete Setup Guide](./docs/COMPLETE_SETUP_GUIDE.md) - **Full installation and configuration instructions**
 - [Fix Google Cloud Dataproc Error](./docs/FIX_GOOGLE_CLOUD_ERROR.md) - **Complete solution for cloud interference**
 - [Quick Start Guide](./QUICK_START.md)
 - [Build Success Log](./BUILD_SUCCESS.md)
