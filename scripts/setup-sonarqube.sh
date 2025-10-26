@@ -333,7 +333,7 @@ print_status "Jest configuration created"
 
 # Create comprehensive test setup
 cat > jest.setup.js << 'EOF'
-import '@testing-library/jest-dom';
+require('@testing-library/jest-dom');
 
 // Mock AI Toolkit functions for testing
 global.aitk_trace = jest.fn();
