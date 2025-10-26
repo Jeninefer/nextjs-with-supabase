@@ -154,8 +154,12 @@ check_permissions() {
                 fi
                 ;;
             "storage.buckets.get")
-                if gcloud storage buckets list --project="$PROJECT_ID" &> /dev/null || gsutil ls -p "$PROJECT_ID" &> /dev/null; then
+                if gcloud storage buckets list --project="$PROJECT_ID" &> /dev/null; then
                     print_success "$permission"
+                elif command -v gsutil &> /dev/null && gsutil ls -p "$PROJECT_ID" &> /dev/null; then
+                    print_success "$permission"
+                elif ! command -v gsutil &> /dev/null; then
+                    print_warning "$permission - Cannot verify (gsutil not installed; may need Editor role)"
                 else
                     print_warning "$permission - Cannot verify (may need Editor role)"
                 fi
