@@ -74,7 +74,6 @@ export class StructuredLogger {
 
     const sanitized: Record<string, any> = {};
     for (const [key, value] of Object.entries(data)) {
-      const isStandardKey = key.toLowerCase().includes(key);
       const isSensitive = SENSITIVE_KEYS.some(sensitiveKey => key.toLowerCase().includes(sensitiveKey));
 
       if (isSensitive && this.config.sanitizeSensitiveData) {
