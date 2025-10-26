@@ -47,6 +47,15 @@ export function UpdatePasswordForm({
     }
 
     try {
+      // AI Toolkit tracing for password update operations
+      if (process.env.NODE_ENV !== 'production') {
+        console.log('🔍 [AI Toolkit Trace] ABACO Password update initiated', {
+          timestamp: new Date().toISOString(),
+          operation: 'password_update',
+          platform: 'abaco_financial_intelligence'
+        });
+      }
+
       // Update the user's password
       const { error: updateError } = await supabase.auth.updateUser({
         password: password
@@ -56,9 +65,9 @@ export function UpdatePasswordForm({
         setError(updateError.message);
       } else {
         setSuccess("Password updated successfully! Redirecting...");
-        // Redirect to dashboard after successful password update
+        // Redirect to protected area after successful password update
         setTimeout(() => {
-          router.push("/dashboard");
+          router.push("/protected");
         }, 2000);
       }
     } catch (err) {
@@ -125,7 +134,8 @@ export function UpdatePasswordForm({
 
               <Button 
                 type="submit" 
-                className="w-full bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white font-['Poppins'] font-semibold transition-all duration-200" 
+                variant="financial"
+                className="w-full bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-['Poppins'] font-semibold transition-all duration-200" 
                 disabled={isLoading}
               >
                 {isLoading ? "Saving..." : "Save new password"}

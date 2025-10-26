@@ -22,7 +22,10 @@ next-env.d.ts
 
 # Environment variables
 .env*.local
-.env
+.env.local
+
+# Vercel
+.vercel
 
 # IDE
 .vscode/settings.json
@@ -60,3 +63,12 @@ __pycache__/
 
 # TypeScript
 tsconfig.node.json
+
+# Prevent problematic files
+docs/
+*citations*.md
+.copilot*
+nextjs-with-supabase/
+
+# Security files
+*.key

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 interface MCPIntegrationState {
   isInitialized: boolean;
@@ -108,6 +108,16 @@ export function useMCPIntegration() {
       }));
     }
   }, []);
+
+  const checkServer = useCallback((serverName: string) => {
+    if (!state.isInitialized) {
+      return { success: false, error: 'MCP servers not initialized' };
+    }
+    if (!state.servers.has(serverName)) {
+      return { success: false, error: `Server ${serverName} not available` };
+    }
+    return null; // Server is available
+  }, [state.isInitialized, state.servers]);
 
   const searchFinancialInsights = useCallback(async (query: string) => {
     const serverCheck = checkServer('perplexity-ask');

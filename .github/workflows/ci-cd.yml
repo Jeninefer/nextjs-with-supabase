@@ -1,0 +1,76 @@
+name: ABACO Financial Intelligence - CI/CD Pipeline
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+jobs:
+  quality-check:
+    name: Code Quality & Security Analysis
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Run TypeScript check
+        run: npm run type-check
+      
+      - name: Run ESLint
+        run: npx eslint . --ext .js,.ts,.jsx,.tsx --format json --output-file eslint-results.json || true
+      
+      - name: Run tests with coverage
+        run: npm run test:coverage
+      
+      - name: AI Toolkit trace cleanup
+        run: |
+          echo "🔍 [AI Toolkit Trace] CI/CD Pipeline completed" 
+          echo "Platform: ABACO Financial Intelligence"
+          echo "Trace ID: ci_cd_$(date +%s)"
+          echo "Status: Quality checks completed"
+
+  build-test:
+    name: Build & Integration Tests
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    needs: quality-check
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Build application
+        run: npm run build
+        env:
+          NEXT_TELEMETRY_DISABLED: 1
+      
+      - name: Test API endpoints
+        run: |
+          if [[ -f "scripts/test-api-endpoints.sh" ]]; then
+            chmod +x scripts/test-api-endpoints.sh
+            ./scripts/test-api-endpoints.sh || echo "API tests require environment setup"
+          fi

@@ -92,6 +92,20 @@ const config: Config = {
           "4": "hsl(var(--chart-4))",
           "5": "hsl(var(--chart-5))",
         },
+        // Financial Intelligence Platform specific colors
+        financial: {
+          primary: "hsl(var(--financial-primary))",
+          secondary: "hsl(var(--financial-secondary))",
+          success: "hsl(var(--financial-success))",
+          warning: "hsl(var(--financial-warning))",
+          danger: "hsl(var(--financial-danger))",
+        },
+        // AI Toolkit integration colors
+        agent: {
+          active: "hsl(var(--agent-active))",
+          inactive: "hsl(var(--agent-inactive))",
+          processing: "hsl(var(--agent-processing))",
+        }
       },
 
       // ABACO Typography
@@ -150,6 +164,8 @@ const config: Config = {
         'abaco-pulse': 'abaco-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
         'abaco-glow': 'abaco-glow 3s ease-in-out infinite alternate',
         'abaco-float': 'abaco-float 6s ease-in-out infinite',
+        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+        'agent-thinking': 'pulse 1.5s ease-in-out infinite',
       },
 
       // Keyframes
@@ -188,16 +204,25 @@ const config: Config = {
       // Access colors directly from theme instead of using internal utilities
       const colors = theme('colors');
 
-      // Your custom utilities here
+      // Custom utilities for financial dashboard components
       const newUtilities = {
         '.text-balance': {
           'text-wrap': 'balance',
         },
+        '.financial-card': {
+          '@apply bg-card border border-border rounded-lg shadow-sm': {},
+        },
+        '.agent-status': {
+          '@apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium': {},
+        },
+        '.kpi-value': {
+          '@apply text-2xl font-bold text-foreground': {},
+        }
       };
 
       addUtilities(newUtilities);
     },
   ],
-};
+} satisfies Config;
 
 export default config;

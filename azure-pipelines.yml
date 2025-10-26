@@ -1,0 +1,244 @@
+# Azure DevOps Pipeline for Abaco Financial Intelligence Platform
+# Comprehensive SonarQube Analysis with AI Toolkit Integration
+
+trigger:
+  branches:
+    include:
+      - main
+      - develop
+      - feature/*
+      - release/*
+  paths:
+    exclude:
+      - README.md
+      - docs/*
+      - .anima/**
+      - .vscode/**
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  # SonarQube Cloud Configuration
+  SONAR_ORGANIZATION: 'abaco-financial'
+  SONAR_PROJECT_KEY: 'abaco-financial-intelligence-platform'
+  NODE_VERSION: '20.x'
+  
+  # AI Toolkit Configuration
+  AITK_TRACING_ENABLED: true
+  AITK_EVALUATION_MODE: 'ci'
+
+stages:
+- stage: 'Quality_Analysis'
+  displayName: 'Code Quality & Security Analysis'
+  jobs:
+  - job: 'SonarQube_Analysis'
+    displayName: 'SonarQube Cloud Analysis'
+    steps:
+    
+    # Setup Node.js environment
+    - task: NodeTool@0
+      displayName: 'Install Node.js $(NODE_VERSION)'
+      inputs:
+        versionSpec: '$(NODE_VERSION)'
+    
+    # Cache dependencies for faster builds
+    - task: Cache@2
+      displayName: 'Cache npm dependencies'
+      inputs:
+        key: 'npm | "$(Agent.OS)" | package-lock.json'
+        restoreKeys: |
+          npm | "$(Agent.OS)"
+        path: '$(npm_config_cache)'
+    
+    # Install dependencies
+    - script: |
+        npm ci
+        npm install -g sonar-scanner
+      displayName: 'Install dependencies'
+    
+    # Prepare SonarQube Analysis Configuration
+    - task: SonarCloudPrepare@1
+      displayName: 'Prepare SonarQube Cloud Analysis'
+      inputs:
+        SonarCloud: 'SonarCloud-Connection'
+        organization: '$(SONAR_ORGANIZATION)'
+        scannerMode: 'CLI'
+        configMode: 'manual'
+        cliProjectKey: '$(SONAR_PROJECT_KEY)'
+        cliProjectName: '$(SONAR_PROJECT_NAME)'
+        cliProjectVersion: '$(Build.BuildNumber)'
+        cliSources: './app,./components,./lib,./supabase'
+        extraProperties: |
+          sonar.tests=./tests,./app/**/*.test.ts,./lib/**/*.test.ts
+          sonar.exclusions=**/node_modules/**,**/*.test.ts,**/*.spec.ts,**/coverage/**,**/*.d.ts,**/dist/**,**/.next/**
+          sonar.test.inclusions=**/*.test.ts,**/*.spec.ts
+          sonar.typescript.lcov.reportPaths=coverage/lcov.info
+          sonar.javascript.lcov.reportPaths=coverage/lcov.info
+          sonar.sourceEncoding=UTF-8
+          sonar.qualitygate.wait=true
+          sonar.coverage.exclusions=**/lib/agents/**/*.ts,**/lib/cosmosdb/**/*.ts
+          sonar.typescript.tsconfigPath=tsconfig.json
+          sonar.security.hotspots.checkAll=true
+          sonar.security.vulnerabilities.checkAll=true
+          sonar.javascript.environments=node,browser,jest
+          sonar.eslint.reportPaths=eslint-report.json
+    
+    # Run TypeScript compilation check
+    - script: |
+        npx tsc --noEmit --skipLibCheck
+      displayName: 'TypeScript Compilation Check'
+      continueOnError: false
+    
+    # Run ESLint and generate report
+    - script: |
+        npm run lint:report || true
+      displayName: 'ESLint Analysis'
+      continueOnError: true
+    
+    # Run tests with coverage for AI agents and financial intelligence
+    - script: |
+        npm run test:coverage
+      displayName: 'Run Tests with Coverage'
+      continueOnError: false
+    
+    # AI Toolkit Agent Evaluation (if tests exist)
+    - script: |
+        if [ -d "./tests/agents" ]; then
+          echo "Running AI Agent Evaluation..."
+          npm run test -- --testPathPattern=agents --coverage
+        else
+          echo "No AI agent tests found, skipping evaluation"
+        fi
+      displayName: 'AI Toolkit Agent Evaluation'
+      continueOnError: true
+    
+    # Run Code Analysis (SonarQube Scanner CLI)
+    - task: SonarCloudAnalyze@1
+      displayName: 'Run SonarQube Cloud Analysis'
+    
+    # Publish Quality Gate Result
+    - task: SonarCloudPublish@1
+      displayName: 'Publish SonarQube Quality Gate Result'
+      inputs:
+        pollingTimeoutSec: '300'
+    
+    # Publish test results
+    - task: PublishTestResults@2
+      displayName: 'Publish Test Results'
+      condition: succeededOrFailed()
+      inputs:
+        testResultsFormat: 'JUnit'
+        testResultsFiles: 'coverage/test-reporter.xml'
+        mergeTestResults: true
+    
+    # Publish code coverage results
+    - task: PublishCodeCoverageResults@1
+      displayName: 'Publish Code Coverage'
+      condition: succeededOrFailed()
+      inputs:
+        codeCoverageTool: 'Cobertura'
+        summaryFileLocation: 'coverage/cobertura-coverage.xml'
+        reportDirectory: 'coverage'
+    
+    # Archive analysis artifacts
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publish Analysis Artifacts'
+      condition: succeededOrFailed()
+      inputs:
+        pathToPublish: '$(Build.SourcesDirectory)'
+        artifactName: 'analysis-results'
+        artifactType: 'Container'
+
+- stage: 'Security_Scan'
+  displayName: 'Security & Dependency Scanning'
+  dependsOn: 'Quality_Analysis'
+  condition: succeeded()
+  jobs:
+  - job: 'Security_Analysis'
+    displayName: 'Security Vulnerability Scan'
+    steps:
+    
+    - task: NodeTool@0
+      displayName: 'Install Node.js $(NODE_VERSION)'
+      inputs:
+        versionSpec: '$(NODE_VERSION)'
+    
+    # Install dependencies
+    - script: npm ci
+      displayName: 'Install dependencies'
+    
+    # Run npm audit for security vulnerabilities
+    - script: |
+        npm audit --audit-level moderate --json > npm-audit-report.json || true
+        npm audit --audit-level moderate
+      displayName: 'NPM Security Audit'
+      continueOnError: true
+    
+    # Financial Intelligence Platform specific security checks
+    - script: |
+        echo "Running Financial Intelligence Platform Security Checks..."
+        # Check for hardcoded secrets
+        grep -r "password\|secret\|key\|token" --include="*.ts" --include="*.js" ./lib ./app || echo "No hardcoded secrets found"
+        
+        # Check for SQL injection patterns
+        grep -r "SELECT\|INSERT\|UPDATE\|DELETE" --include="*.ts" ./lib/supabase || echo "SQL patterns check complete"
+        
+        # Check for insecure API endpoints
+        grep -r "auth.*false\|security.*false" --include="*.ts" ./app ./lib || echo "No insecure API patterns found"
+      displayName: 'Financial Platform Security Scan'
+      continueOnError: true
+    
+    # Publish security artifacts
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publish Security Reports'
+      condition: succeededOrFailed()
+      inputs:
+        pathToPublish: '$(Build.SourcesDirectory)'
+        artifactName: 'security-reports'
+        artifactType: 'Container'
+
+- stage: 'AI_Agent_Quality'
+  displayName: 'AI Agent Quality & Performance'
+  dependsOn: 'Quality_Analysis'
+  condition: succeeded()
+  jobs:
+  - job: 'Agent_Validation'
+    displayName: 'AI Agent Validation & Tracing'
+    steps:
+    
+    - task: NodeTool@0
+      displayName: 'Install Node.js $(NODE_VERSION)'
+      inputs:
+        versionSpec: '$(NODE_VERSION)'
+    
+    - script: npm ci
+      displayName: 'Install dependencies'
+    
+    # AI Toolkit specific validations
+    - script: |
+        echo "Validating AI Agent Implementation..."
+        
+        # Check for proper tracing implementation
+        if grep -r "trace\|span\|diagnostic" --include="*.ts" ./lib/agents; then
+          echo "✅ AI Toolkit tracing patterns found"
+        else
+          echo "⚠️  Consider adding AI Toolkit tracing to agents"
+        fi
+        
+        # Check for proper error handling in agents
+        if grep -r "try.*catch\|throw\|Error" --include="*.ts" ./lib/agents; then
+          echo "✅ Error handling patterns found in agents"
+        else
+          echo "⚠️  Consider adding error handling to agents"
+        fi
+        
+        # Check for agent evaluation patterns
+        if [ -f "./lib/agents/financial-intelligence-agent.ts" ]; then
+          echo "✅ Financial Intelligence Agent found"
+          if grep -r "performance\|metrics\|evaluation" ./lib/agents/financial-intelligence-agent.ts; then
+            echo "✅ Performance tracking patterns found"
+          fi
+        fi
+      displayName: 'AI Agent Code Quality Check'
+      continueOnError: true
