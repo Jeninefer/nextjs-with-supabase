@@ -39,8 +39,8 @@ const eslintConfig = [
       ],
 
       // TypeScript specific rules for ABACO - with fallbacks
-      // Allow unused function parameters if they are prefixed with an underscore (e.g., `_unusedParam`), following a common TypeScript convention.
-      "@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
+      
+      "@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_" }], // Allow unused function parameters if they are prefixed with an underscore (e.g., `_unusedParam`), following a common TypeScript convention.
       "@typescript-eslint/explicit-function-return-type": "warn",
       "@typescript-eslint/prefer-nullish-coalescing": "error",
       "@typescript-eslint/prefer-optional-chain": "error",
