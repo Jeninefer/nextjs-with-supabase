@@ -44,3 +44,5 @@ nextjs-with-supabase/
 *.log
 *.bak
 *~
+.env.local
+*.key

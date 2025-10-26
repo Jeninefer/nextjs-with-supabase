@@ -1,24 +1,26 @@
 #!/bin/bash
-# ABACO Financial Intelligence Platform - Development Startup
-# Optimized for AI Toolkit tracing and Azure Cosmos DB integration
+# ABACO Financial Intelligence Platform - Development Server Startup
+# Following AI Toolkit best practices
 
-set -euo pipefail
+echo "🏦 Starting ABACO Financial Intelligence Platform Development Server"
+echo "================================================================="
 
-cd /workspaces/nextjs-with-supabase
+# AI Toolkit tracing for development session
+DEV_TRACE_ID="dev_session_$(date +%s)"
+echo "🔍 AI Toolkit Trace ID: $DEV_TRACE_ID"
 
-echo "🚀 ABACO Financial Intelligence Platform - Development Startup"
-echo "============================================================"
+# Pre-flight checks
+echo "🔧 Running pre-flight checks..."
 
-# Pre-flight checks following AI Toolkit best practices
-echo "🔍 Pre-flight checks..."
-
-# Verify Node.js version for AI Toolkit compatibility
-node_version=$(node --version | sed 's/v//' | cut -d. -f1)
-if [[ $node_version -ge 18 ]]; then
-    echo "✅ Node.js $(node --version) - AI Toolkit compatible"
-else
-    echo "❌ Node.js version too old. Upgrade to v18+ for AI Toolkit support"
+# Check environment
+if [[ ! -f ".env.local" ]]; then
+    echo "❌ .env.local not found - run ./scripts/complete-setup.sh first"
     exit 1
+fi
+
+# Check for placeholder values
+if grep -q "your_.*\|example" .env.local; then
+    echo "⚠️  WARNING: Placeholder values in .env.local - update with real API keys"
 fi
 
 # Check dependencies
@@ -27,44 +29,33 @@ if [[ ! -d "node_modules" ]]; then
     npm install
 fi
 
-# Environment setup check
-if [[ ! -f ".env.local" ]]; then
-    echo "⚠️ .env.local not found"
-    if [[ -f ".env.example" ]]; then
-        echo "📋 Creating .env.local from template..."
-        cp .env.example .env.local
-        echo "🔧 Please edit .env.local with your Supabase credentials:"
-        echo "   • NEXT_PUBLIC_SUPABASE_URL"
-        echo "   • NEXT_PUBLIC_SUPABASE_ANON_KEY"
-        echo ""
+# Auto-fix build issues if needed
+if [[ -f "./scripts/fix-build-issues.sh" ]]; then
+    echo "🔧 Auto-checking for build issues..."
+    if ! npm run build --dry-run >/dev/null 2>&1; then
+        echo "🔧 Running build fix script..."
+        chmod +x ./scripts/fix-build-issues.sh
+        ./scripts/fix-build-issues.sh
     fi
 fi
 
-# Clear previous build artifacts for clean start
-echo "🧹 Clearing build cache..."
-rm -rf .next || true
+# Type check
+echo "🔍 Running TypeScript validation..."
+if npm run type-check; then
+    echo "✅ TypeScript validation passed"
+else
+    echo "⚠️  TypeScript issues detected - fix before proceeding"
+fi
 
-# Start development server with AI Toolkit optimizations
-echo "🎯 Starting ABACO Financial Intelligence Platform..."
 echo ""
-echo "🌐 Application will be available at:"
-echo "   Local:    http://localhost:3000"
-echo "   Network:  http://$(hostname -I | awk '{print $1}'):3000"
+echo "🚀 Starting Next.js development server with AI Toolkit tracing..."
+echo "📋 Platform: ABACO Financial Intelligence v2.0.0"
+echo "🔍 Trace ID: $DEV_TRACE_ID"
+echo "🌐 URL: http://localhost:3000"
+echo "🏥 Health Check: http://localhost:3000/api/health"
 echo ""
-echo "🤖 AI Toolkit Features Enabled:"
-echo "   • Comprehensive tracing for financial operations"
-echo "   • Azure Cosmos DB client with HPK optimization"
-echo "   • Supabase SSR authentication with security enhancements"
-echo "   • Real-time financial intelligence processing"
-echo ""
-echo "📊 Development Features:"
-echo "   • Hot reload with Next.js 15 Turbopack"
-echo "   • TypeScript strict mode validation"
-echo "   • Tailwind CSS with shadcn/ui components"
-echo "   • ESLint with financial platform rules"
-echo ""
-echo "Press Ctrl+C to stop the development server"
-echo "=========================================="
 
-# Start the development server with Turbopack for optimal performance
+# Start development server with tracing
+AITK_TRACE_ID="$DEV_TRACE_ID" \
+AITK_TRACE_ENABLED="true" \
 npm run dev
