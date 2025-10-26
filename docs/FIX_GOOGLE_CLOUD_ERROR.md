@@ -204,7 +204,6 @@ If you still encounter issues after applying this fix:
 
 - [ABACO Quick Start Guide](../QUICK_START.md)
 - [Build Success Documentation](./BUILD_SUCCESS.md)
-- [Deployment Guide](./DEPLOYMENT-READY.md)
 
 ---
 
