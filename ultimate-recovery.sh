@@ -189,7 +189,7 @@ else
     echo "---- Build log (last 40 lines) ----"
     tail -n 40 "$BUILD_LOG"
     echo "-----------------------------------"
-    mv tailwind.config.ts tailwind.config.original.ts
+    [ ! -f tailwind.config.original.ts ] && mv tailwind.config.ts tailwind.config.original.ts
     mv tailwind.config.safe.ts tailwind.config.ts
     
     if npm run build > "$BUILD_LOG" 2>&1; then
