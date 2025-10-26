@@ -20,6 +20,12 @@ export interface DiagnosticInfo {
 }
 
 // Mock implementation for development - replace with actual Azure Cosmos DB when available
+/**
+ * Mock implementation of Azure Cosmos DB client for development.
+ * Intended to mimic the interface of {@link CosmosClient} and {@link Container} from the `@azure/cosmos` package.
+ * When transitioning to production, replace this with the actual CosmosClient from `@azure/cosmos`.
+ * See: https://docs.microsoft.com/en-us/javascript/api/@azure/cosmos/cosmosclient
+ */
 class MockCosmosClient {
   private readonly config: CosmosConfig;
   private readonly diagnosticLogger: (info: DiagnosticInfo) => void;
