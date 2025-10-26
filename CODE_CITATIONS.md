@@ -170,7 +170,7 @@ export default config;
 ### Pure ABACO Implementation (Zero Dependencies)
 
 ```typescript
-// filepath: /Users/jenineferderas/Documents/GitHub/nextjs-with-supabase/lib/theme/color-variables.ts
+// filepath: ./lib/theme/color-variables.ts
 // ABACO Financial Intelligence Platform - Pure Custom Implementation
 // No third-party code dependencies
 
