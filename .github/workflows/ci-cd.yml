@@ -43,6 +43,8 @@ jobs:
 
   build-test:
     name: Build & Integration Tests
+    permissions:
+      contents: read
     runs-on: ubuntu-latest
     needs: quality-check
     
