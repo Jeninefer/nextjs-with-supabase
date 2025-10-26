@@ -111,8 +111,8 @@ if [ -f "tailwind.config.js" ]; then
   }
   "
 elif [ -f "tailwind.config.ts" ]; then
-  echo "⚠️ Skipping dynamic runtime validation of tailwind.config.ts (Node.js cannot load TypeScript files via require() directly)."
-  echo "   Please ensure your tailwind.config.ts compiles and is valid."
+  echo "⚠️ Skipping dynamic runtime validation of tailwind.config.ts (Node.js cannot require TypeScript files directly without additional tooling)."
+  echo "   Your tailwind.config.ts will be validated during the build process. To validate it at runtime, consider using 'ts-node' (e.g., 'npx ts-node tailwind.config.ts')."
 else
   echo "❌ No Tailwind config file found (tailwind.config.js or tailwind.config.ts missing)."
 fi
