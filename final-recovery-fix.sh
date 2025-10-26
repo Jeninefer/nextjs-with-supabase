@@ -71,11 +71,22 @@ if command -v timeout >/dev/null 2>&1; then
     fi
 else
     echo "⚠️ 'timeout' command not found. Running 'npm run dev' without timeout. Please manually stop after a few seconds."
-    npm run dev > /dev/null 2>&1 &
-    dev_pid=$!
-    # Wait 10 seconds, then kill the process
+    # Start npm run dev in a new process group so we can kill all children
+    if command -v setsid >/dev/null 2>&1; then
+        setsid npm run dev > /dev/null 2>&1 &
+        dev_pid=$!
+    else
+        # Fallback: start in background, but may not kill all children
+        npm run dev > /dev/null 2>&1 &
+        dev_pid=$!
+    fi
+    # Wait 10 seconds, then kill the process group (or just the process if setsid not available)
     sleep 10
-    kill $dev_pid >/dev/null 2>&1
+    if command -v setsid >/dev/null 2>&1; then
+        kill -- -$dev_pid >/dev/null 2>&1
+    else
+        kill $dev_pid >/dev/null 2>&1
+    fi
     wait $dev_pid 2>/dev/null
     status=$?
     if [ $status -eq 0 ]; then
