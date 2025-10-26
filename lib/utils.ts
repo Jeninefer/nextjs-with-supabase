@@ -1,14 +1,20 @@
+<<<<<<< HEAD
 // filepath: /lib/utils.ts
 // ABACO Financial Intelligence Platform - Component Utilities
 // Following AI Toolkit best practices with Azure Cosmos DB integration
 
 import { type ClassValue, clsx } from "clsx"
 import { twMerge } from "tailwind-merge"
+=======
+import { type ClassValue, clsx } from "clsx";
+import { twMerge } from "tailwind-merge";
+>>>>>>> a420387e78678797632369e28629f802ce050805
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
+<<<<<<< HEAD
 // AI Toolkit tracing utility for components
 export function traceComponentRender(componentName: string, props?: any) {
   if (process.env.NODE_ENV !== 'production' && process.env.AITK_TRACE_ENABLED === 'true') {
@@ -80,3 +86,8 @@ export function createAbacoTrace(operation: string, metadata?: any) {
     metadata: metadata || {}
   }
 }
+=======
+// If you have custom color utilities, update them:
+// Instead of: import flattenColorPalette from 'tailwindcss/lib/util/flattenColorPalette'
+// Use: Access colors directly from Tailwind config
+>>>>>>> a420387e78678797632369e28629f802ce050805
