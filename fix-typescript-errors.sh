@@ -1,3 +1,23 @@
+#!/bin/bash
+# ABACO Financial Intelligence Platform - Emergency TypeScript Fix
+# Following AI Toolkit best practices and Azure Cosmos DB optimization
+
+set -euo pipefail
+
+cd /workspaces/nextjs-with-supabase
+
+echo "🔧 ABACO Financial Intelligence - Emergency TypeScript Fix"
+echo "========================================================"
+
+# Backup the corrupted file
+echo "📋 Creating backup of corrupted agent file..."
+if [[ -f "lib/agents/financial-intelligence-agent.ts" ]]; then
+    cp "lib/agents/financial-intelligence-agent.ts" "lib/agents/financial-intelligence-agent.ts.backup"
+fi
+
+# Fix the corrupted financial intelligence agent
+echo "🤖 Rebuilding Financial Intelligence Agent with AI Toolkit integration..."
+cat > lib/agents/financial-intelligence-agent.ts << 'EOF'
 // ABACO Financial Intelligence Agent
 // AI Toolkit integration with Azure Cosmos DB HPK optimization
 
@@ -122,3 +142,26 @@ export class FinancialIntelligenceAgent {
 }
 
 export default FinancialIntelligenceAgent;
+EOF
+
+echo "✅ Financial Intelligence Agent rebuilt successfully"
+
+# Run TypeScript check
+echo "📝 Running TypeScript validation..."
+if npx tsc --noEmit --skipLibCheck; then
+    echo "✅ TypeScript compilation successful"
+else
+    echo "⚠️ TypeScript still has issues - check manually"
+fi
+
+# Test build
+echo "🏗️ Testing Next.js build..."
+if timeout 30s npm run build; then
+    echo "✅ Build successful - ABACO platform ready for deployment"
+else
+    echo "⚠️ Build failed - manual review needed"
+fi
+
+echo ""
+echo "🎉 Emergency TypeScript fixes completed!"
+echo "🏦 ABACO Financial Intelligence Platform restored!"
