@@ -59,14 +59,30 @@ fi
 
 # Step 6: Test development server
 echo "🚀 Step 6: Testing development server startup..."
-timeout 10s npm run dev > /dev/null 2>&1
-status=$?
-if [ $status -eq 124 ]; then
-    echo "⚠️ Dev server test timeout (normal)"
-elif [ $status -eq 0 ]; then
-    echo "✅ Dev server starts successfully"
+if command -v timeout >/dev/null 2>&1; then
+    timeout 10s npm run dev > /dev/null 2>&1
+    status=$?
+    if [ $status -eq 124 ]; then
+        echo "⚠️ Dev server test timeout (normal)"
+    elif [ $status -eq 0 ]; then
+        echo "✅ Dev server starts successfully"
+    else
+        echo "❌ Dev server failed to start (exit code $status)"
+    fi
 else
-    echo "❌ Dev server failed to start (exit code $status)"
+    echo "⚠️ 'timeout' command not found. Running 'npm run dev' without timeout. Please manually stop after a few seconds."
+    npm run dev > /dev/null 2>&1 &
+    dev_pid=$!
+    # Wait 10 seconds, then kill the process
+    sleep 10
+    kill $dev_pid >/dev/null 2>&1
+    wait $dev_pid 2>/dev/null
+    status=$?
+    if [ $status -eq 0 ]; then
+        echo "✅ Dev server starts successfully (timeout simulated)"
+    else
+        echo "❌ Dev server may have failed to start (exit code $status)"
+    fi
 fi
 
 echo ""
