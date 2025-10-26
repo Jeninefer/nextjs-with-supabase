@@ -18,9 +18,19 @@ npm cache clean --force
 # (Optional) Clear VS Code Tailwind CSS extension cache.
 # This path assumes the extension ID is 'bradlc.vscode-tailwindcss-*' and may vary by installation.
 # If you use a different extension or VS Code is installed elsewhere, adjust or skip this step.
+echo "🧹 Attempting to clear VSCode Tailwind CSS extension cache (if present)..."
+found_cache=0
 for d in ~/.vscode/extensions/bradlc.vscode-tailwindcss-*/cache; do
-  [ -d "$d" ] && rm -rf "$d"
+  if [ -d "$d" ]; then
+    rm -rf "$d"
+    found_cache=1
+  fi
 done
+if [ "$found_cache" -eq 1 ]; then
+  echo "✅ VSCode Tailwind CSS extension cache cleared."
+else
+  echo "ℹ️  No VSCode Tailwind CSS extension cache found to clear."
+fi
 
 echo "✅ System completely cleaned"
 
