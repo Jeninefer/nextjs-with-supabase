@@ -10,32 +10,43 @@ globalThis.process.env.NODE_ENV = 'test';
 globalThis.process.env.AZURE_COSMOS_DB_ENDPOINT = 'https://test.documents.azure.com:443/';
 globalThis.process.env.AZURE_COSMOS_DB_KEY = 'test-key';
 
-// Mock AI Toolkit functions for testing
-global.aitk_trace = jest.fn();
-global.aitk_span = jest.fn();
-global.aitk_diagnostic = jest.fn();
-
-// Mock Cosmos DB client for testing
-jest.mock('<rootDir>/lib/cosmosdb/client', () => ({
+// Mock Cosmos DB client for testing - updated path
+jest.mock('./lib/cosmosdb/client', () => ({
   getCosmosClient: jest.fn(() => ({
     getContainer: jest.fn(() => Promise.resolve({
       items: {
-        create: jest.fn(() => Promise.resolve({
-          resource: { id: 'test-id' },
-          statusCode: 201,
-          requestCharge: 5.2
+        create: jest.fn(() => Promise.resolve({ resource: {} })),
+        query: jest.fn(() => ({
+          fetchAll: jest.fn(() => Promise.resolve({ resources: [] }))
         }))
       }
-    })),
-    executeWithDiagnostics: jest.fn((op, fn) => fn())
+    }))
   }))
 }));
 
-// Mock Supabase client
-jest.mock('./lib/supabase/financial-client', () => ({
-  getFinancialClient: jest.fn(() => ({
-    getFinancialData: jest.fn(() => Promise.resolve([])),
-    saveKPIResults: jest.fn(() => Promise.resolve()),
-    getLatestKPIs: jest.fn(() => Promise.resolve(null))
-  }))
+// Mock Supabase client for testing
+jest.mock('./lib/supabase/client', () => ({
+  createClient: jest.fn(() => ({
+    auth: {
+      updateUser: jest.fn(() => Promise.resolve({ error: null })),
+      getUser: jest.fn(() => Promise.resolve({ data: { user: null }, error: null }))
+    }
+  })),
+  updatePassword: jest.fn(() => Promise.resolve({ error: null }))
 }));
+
+// Test utilities for financial data
+globalThis.testUtils = {
+  createMockFinancialData: (count = 10) => {
+    return Array.from({ length: count }, (_, i) => ({
+      id: `customer_${i}`,
+      balance: Math.random() * 100000,
+      creditLimit: Math.random() * 50000,
+      utilizationRate: Math.random(),
+      delinquencyStatus: Math.random() > 0.8 ? 'delinquent' : 'current',
+      sector: ['technology', 'finance', 'healthcare', 'retail'][i % 4],
+      region: ['US', 'EU', 'APAC', 'LATAM'][i % 4],
+      type: ['equity', 'bond', 'cash', 'alternative'][i % 4]
+    }));
+  }
+};
