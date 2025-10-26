@@ -193,7 +193,7 @@ const isSenderRecord = (obj: unknown): obj is SenderRecord => {
 };
 
 const resolveSender = (sender: MessageRow["sender"]): SenderRecord | null => {
-  let resolved: any = sender;
+  let resolved: unknown = sender;
   if (Array.isArray(sender)) {
     resolved = sender[0];
   }
