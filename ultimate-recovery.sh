@@ -140,22 +140,30 @@ echo "✅ Safe Tailwind config created"
 
 # Step 6: Test build process
 echo "🏗️ Step 6: Testing build process..."
-if npm run build > /dev/null 2>&1; then
+BUILD_LOG=$(mktemp)
+if npm run build > "$BUILD_LOG" 2>&1; then
     echo "✅ Build successful with current config!"
 else
     echo "⚠️ Build failed, trying with safe config..."
+    echo "---- Build log (last 40 lines) ----"
+    tail -n 40 "$BUILD_LOG"
+    echo "-----------------------------------"
     mv tailwind.config.ts tailwind.config.original.ts
     mv tailwind.config.safe.ts tailwind.config.ts
     
-    if npm run build > /dev/null 2>&1; then
+    if npm run build > "$BUILD_LOG" 2>&1; then
         echo "✅ Build successful with safe config!"
         echo "ℹ️ Original config saved as tailwind.config.original.ts"
     else
         echo "❌ Build still failing, manual intervention needed"
+        echo "---- Build log (last 40 lines) ----"
+        tail -n 40 "$BUILD_LOG"
+        echo "-----------------------------------"
         mv tailwind.config.ts tailwind.config.safe.ts
         mv tailwind.config.original.ts tailwind.config.ts
     fi
 fi
+rm -f "$BUILD_LOG"
 
 # Step 7: (Skipped) Development server test
 echo "🚀 Step 7: Skipping development server test for efficiency (see build test above)..."
