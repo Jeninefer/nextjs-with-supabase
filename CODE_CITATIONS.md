@@ -100,8 +100,20 @@ const { default: flattenColorPalette } = require("tailwindcss/lib/util/flattenCo
 
 import type { Config } from "tailwindcss";
 
-// Standard Tailwind utility - community pattern with proper attribution
-const { default: flattenColorPalette } = require("tailwindcss/lib/util/flattenColorPalette");
+// Inline implementation of flattenColorPalette (no external require)
+function flattenColorPalette(colors: Record<string, any>): Record<string, string> {
+  const result: Record<string, string> = {};
+  for (const [color, value] of Object.entries(colors)) {
+    if (typeof value === "object" && value !== null) {
+      for (const [shade, shadeValue] of Object.entries(value)) {
+        result[`${color}-${shade}`] = shadeValue as string;
+      }
+    } else {
+      result[color] = value as string;
+    }
+  }
+  return result;
+}
 function addVariablesForColors({ addBase, theme }: any) {
   // Safe implementation with proper error handling
   const colors = theme("colors") ?? {};
