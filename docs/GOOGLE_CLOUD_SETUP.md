@@ -102,7 +102,7 @@ If you're a project administrator, grant permissions to a user:
 ```bash
 # Replace with actual values
 export PROJECT_ID="your-project-id"
-export USER_EMAIL="jeninefer@abacocapital.co"
+export USER_EMAIL="user@example.com"
 
 # Grant Editor role (recommended for deployment)
 gcloud projects add-iam-policy-binding $PROJECT_ID \
