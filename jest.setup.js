@@ -1,5 +1,15 @@
 import '@testing-library/jest-dom';
 
+// Use globalThis instead of global for better compatibility
+globalThis.fetch = require('node-fetch');
+globalThis.Request = require('node-fetch').Request;
+globalThis.Response = require('node-fetch').Response;
+
+// AI Toolkit test environment setup
+globalThis.process.env.NODE_ENV = 'test';
+globalThis.process.env.AZURE_COSMOS_DB_ENDPOINT = 'https://test.documents.azure.com:443/';
+globalThis.process.env.AZURE_COSMOS_DB_KEY = 'test-key';
+
 // Mock AI Toolkit functions for testing
 global.aitk_trace = jest.fn();
 global.aitk_span = jest.fn();
