@@ -16,15 +16,42 @@ rm -rf .turbo
 npm cache clean --force
 
 # (Optional) Clear VS Code Tailwind CSS extension cache.
-# This path assumes the extension ID is 'bradlc.vscode-tailwindcss-*' and may vary by installation.
-# If you use a different extension or VS Code is installed elsewhere, adjust or skip this step.
+# This will attempt to clear the Tailwind CSS extension cache in the most common VSCode extension directories.
+# You can override the extensions directory by setting the VSCODE_EXTENSIONS_DIR environment variable.
 echo "🧹 Attempting to clear VSCode Tailwind CSS extension cache (if present)..."
 found_cache=0
-for d in ~/.vscode/extensions/bradlc.vscode-tailwindcss-*/cache; do
-  if [ -d "$d" ]; then
-    rm -rf "$d"
-    found_cache=1
-  fi
+
+# Build a list of candidate extension directories
+candidate_dirs=()
+
+# 1. User override
+if [ -n "$VSCODE_EXTENSIONS_DIR" ]; then
+  candidate_dirs+=("$VSCODE_EXTENSIONS_DIR")
+fi
+
+# 2. Standard VSCode
+if [ -d "$HOME/.vscode/extensions" ]; then
+  candidate_dirs+=("$HOME/.vscode/extensions")
+fi
+
+# 3. VSCode Insiders
+if [ -d "$HOME/.vscode-insiders/extensions" ]; then
+  candidate_dirs+=("$HOME/.vscode-insiders/extensions")
+fi
+
+# 4. VSCode Portable (if set)
+if [ -n "$VSCODE_PORTABLE" ] && [ -d "$VSCODE_PORTABLE/extensions" ]; then
+  candidate_dirs+=("$VSCODE_PORTABLE/extensions")
+fi
+
+# Search for Tailwind CSS extension cache in all candidate directories
+for ext_dir in "${candidate_dirs[@]}"; do
+  for d in "$ext_dir"/bradlc.vscode-tailwindcss-*/cache; do
+    if [ -d "$d" ]; then
+      rm -rf "$d"
+      found_cache=1
+    fi
+  done
 done
 if [ "$found_cache" -eq 1 ]; then
   echo "✅ VSCode Tailwind CSS extension cache cleared."
