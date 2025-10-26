@@ -7,7 +7,7 @@ import { tracer } from './tracer';
 import { logger } from './structured-logger';
 import { cosmosDbTracer } from './cosmos-db-tracer';
 import { createTraceContext, setTraceContextAsync, getTraceContext } from './trace-context';
-import { FinancialIntelligenceAgent } from '../agents/financial-intelligence-agent';
+import { FinancialIntelligenceAgent } from '@/lib/agents/financial-intelligence-agent';
 
 /**
  * Example 1: Basic Tracing
