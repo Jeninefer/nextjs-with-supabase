@@ -56,12 +56,17 @@ export class AbacoAnalytics {
     const defaultedLoans = loans.filter(loan => loan.dpd > 180)
     const defaultRate = loans.length > 0 ? (defaultedLoans.length / loans.length) * 100 : 0
 
+    // TODO: Replace the following mock values with real calculations when data is available.
+    // For now, these are clearly marked as placeholders.
+    const ltvCacRatio = NaN; // Placeholder: LTV:CAC ratio calculation requires LTV and CAC data
+    const growthRate = NaN;  // Placeholder: Growth rate calculation requires historical data
+
     return {
       total_aum: totalAUM,
       active_clients: activeClients,
       default_rate: defaultRate,
-      ltv_cac_ratio: 3.2, // Calculated separately
-      growth_rate: 12.5   // Month-over-month growth
+      ltv_cac_ratio: ltvCacRatio, // Placeholder
+      growth_rate: growthRate      // Placeholder
     }
   }
 
