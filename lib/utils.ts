@@ -83,3 +83,16 @@ export function createAbacoTrace(operation: string, metadata?: any) {
 
 // Custom color utilities for Tailwind config compatibility
 // Note: Use colors directly from Tailwind config instead of flattenColorPalette
+
+// Environment variables validation utility
+export function hasEnvVars(): boolean {
+  const required = [
+    'NEXT_PUBLIC_SUPABASE_URL',
+    'NEXT_PUBLIC_SUPABASE_ANON_KEY'
+  ]
+
+  return required.every(envVar => {
+    const value = process.env[envVar]
+    return value && value !== ''
+  })
+}
