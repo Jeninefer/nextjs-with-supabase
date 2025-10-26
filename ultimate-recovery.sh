@@ -209,8 +209,8 @@ rm -f "$BUILD_LOG"
 # Step 7: (Skipped) Development server test
 echo "🚀 Step 7: Skipping development server test for efficiency (see build test above)..."
 # If you wish to manually test the dev server, run: npm run dev
-# Step 8: Final verification
-echo "✅ Step 8: Final verification..."
+# Step 7: Final verification
+echo "✅ Step 7: Final verification..."
 echo ""
 echo "📊 ABACO RECOVERY SUMMARY:"
 echo "========================="
