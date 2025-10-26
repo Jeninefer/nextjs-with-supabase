@@ -21,7 +21,7 @@ const eslintConfig = [
       // String literal duplication prevention
       "no-duplicate-string": "off", // Handled by SonarLint
 
-      // Import organization - with error handling for missing plugins
+      // Import organization
       "import/order": [
         "error",
         {
