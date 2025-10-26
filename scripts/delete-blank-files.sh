@@ -238,7 +238,7 @@ cat > "$SUMMARY_REPORT" << EOF
   },
   "performance_metrics": {
     "files_per_second": $(( SCANNED_COUNT > 0 && DURATION > 0 ? SCANNED_COUNT / DURATION : 0 )),
-    "deletions_per_second": $(( DELETED_COUNT > 0 && DURATION > 0 ? DELETED_COUNT / DURATION : 0 )),
+    "deletions_per_second": $(if [[ $DELETED_COUNT -gt 0 && $DURATION -gt 0 ]]; then echo $((DELETED_COUNT / DURATION)); else echo 0; fi),
     "success_rate": $(( SCANNED_COUNT > 0 ? (SCANNED_COUNT - ERROR_COUNT) * 100 / SCANNED_COUNT : 100 ))
   }
 }
