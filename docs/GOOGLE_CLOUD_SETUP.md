@@ -35,7 +35,7 @@ This error occurs when your Google Cloud user account lacks the necessary IAM pe
    - Recommended role: **Viewer** or **Editor**
 
 3. Ask them to grant you one of these roles:
-   - **Viewer** (4 permissions) - For read-only access
+   - **Viewer** – For broad read-only access to most resources
    - **Editor** - For deployment capabilities
    - **Owner** - For full project control
 
