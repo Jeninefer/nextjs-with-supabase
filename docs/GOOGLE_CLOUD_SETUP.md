@@ -17,7 +17,7 @@ This guide will help you set up the necessary Google Cloud Platform (GCP) resour
 
 **Error Message:**
 ```
-You need additional access to the project: gen-lang-client-0516194156
+You need additional access to the project: your-project-id
 Missing or blocked permissions: resourcemanager.projects.get
 ```
 
