@@ -89,7 +89,8 @@ else
     fi
     wait $dev_pid 2>/dev/null
     status=$?
-    if [ $status -eq 0 ]; then
+    # After kill, process exits with signal 15 (SIGTERM = 143)
+    if [ $status -eq 143 ] || [ $status -eq 0 ]; then
         echo "✅ Dev server starts successfully (timeout simulated)"
     else
         echo "❌ Dev server may have failed to start (exit code $status)"
