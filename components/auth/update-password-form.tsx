@@ -1,19 +1,5 @@
 "use client";
 
-<<<<<<< HEAD
-import { cn } from "@/lib/utils";
-import { createClient } from "@/lib/supabase/client";
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-=======
 import { Button } from "@/components/ui/button";
 import {
     Card,
@@ -26,7 +12,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { createClient } from "@/lib/supabase/client";
 import { cn } from "@/lib/utils";
->>>>>>> a420387e78678797632369e28629f802ce050805
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -35,13 +20,6 @@ export function UpdatePasswordForm({
   ...props
 }: React.ComponentPropsWithoutRef<"div">) {
   const [password, setPassword] = useState("");
-<<<<<<< HEAD
-  const [error, setError] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const router = useRouter();
-
-  const handleForgotPassword = async (e: React.FormEvent) => {
-=======
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
@@ -49,21 +27,10 @@ export function UpdatePasswordForm({
   const router = useRouter();
 
   const handleUpdatePassword = async (e: React.FormEvent) => {
->>>>>>> a420387e78678797632369e28629f802ce050805
     e.preventDefault();
     const supabase = createClient();
     setIsLoading(true);
     setError(null);
-<<<<<<< HEAD
-
-    try {
-      const { error } = await supabase.auth.updateUser({ password });
-      if (error) throw error;
-      // Update this route to redirect to an authenticated route. The user already has an active session.
-      router.push("/protected");
-    } catch (error: unknown) {
-      setError(error instanceof Error ? error.message : "An error occurred");
-=======
     setSuccess(null);
 
     // Client-side validation
@@ -80,6 +47,15 @@ export function UpdatePasswordForm({
     }
 
     try {
+      // AI Toolkit tracing for password update operations
+      if (process.env.NODE_ENV !== 'production') {
+        console.log('🔍 [AI Toolkit Trace] ABACO Password update initiated', {
+          timestamp: new Date().toISOString(),
+          operation: 'password_update',
+          platform: 'abaco_financial_intelligence'
+        });
+      }
+
       // Update the user's password
       const { error: updateError } = await supabase.auth.updateUser({
         password: password
@@ -89,15 +65,14 @@ export function UpdatePasswordForm({
         setError(updateError.message);
       } else {
         setSuccess("Password updated successfully! Redirecting...");
-        // Redirect to dashboard after successful password update
+        // Redirect to protected area after successful password update
         setTimeout(() => {
-          router.push("/dashboard");
+          router.push("/protected");
         }, 2000);
       }
     } catch (err) {
       setError("An unexpected error occurred. Please try again.");
       console.error("Password update error:", err);
->>>>>>> a420387e78678797632369e28629f802ce050805
     } finally {
       setIsLoading(false);
     }
@@ -105,34 +80,20 @@ export function UpdatePasswordForm({
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
-<<<<<<< HEAD
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-2xl">Reset Your Password</CardTitle>
-          <CardDescription>
-=======
       <Card className="mx-auto max-w-sm bg-gradient-to-br from-purple-900/20 to-slate-900/40 backdrop-blur-sm border border-purple-500/20 shadow-lg">
         <CardHeader>
           <CardTitle className="text-2xl text-white font-['Lato']">Reset Your Password</CardTitle>
           <CardDescription className="text-purple-300 font-['Poppins']">
->>>>>>> a420387e78678797632369e28629f802ce050805
             Please enter your new password below.
           </CardDescription>
         </CardHeader>
         <CardContent>
-<<<<<<< HEAD
-          <form onSubmit={handleForgotPassword}>
-            <div className="flex flex-col gap-6">
-              <div className="grid gap-2">
-                <Label htmlFor="password">New password</Label>
-=======
           <form onSubmit={handleUpdatePassword}>
             <div className="flex flex-col gap-6">
               <div className="grid gap-2">
                 <Label htmlFor="password" className="text-purple-200 font-['Poppins']">
                   New password
                 </Label>
->>>>>>> a420387e78678797632369e28629f802ce050805
                 <Input
                   id="password"
                   type="password"
@@ -140,12 +101,6 @@ export function UpdatePasswordForm({
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-<<<<<<< HEAD
-                />
-              </div>
-              {error && <p className="text-sm text-red-500">{error}</p>}
-              <Button type="submit" className="w-full" disabled={isLoading}>
-=======
                   className="bg-slate-800/50 border-purple-400/20 text-white placeholder:text-gray-400 focus:border-purple-400"
                 />
               </div>
@@ -179,10 +134,10 @@ export function UpdatePasswordForm({
 
               <Button 
                 type="submit" 
-                className="w-full bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white font-['Poppins'] font-semibold transition-all duration-200" 
+                variant="financial"
+                className="w-full bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-['Poppins'] font-semibold transition-all duration-200" 
                 disabled={isLoading}
               >
->>>>>>> a420387e78678797632369e28629f802ce050805
                 {isLoading ? "Saving..." : "Save new password"}
               </Button>
             </div>
