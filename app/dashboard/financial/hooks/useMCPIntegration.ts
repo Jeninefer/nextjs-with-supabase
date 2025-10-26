@@ -21,13 +21,24 @@ function hasEnvConfig(x: unknown): x is { env: Record<string, string | undefined
 
 // Mock MCP client para evitar dependencias externas por ahora
 const mockMCPClient = {
-  initializeServer: async (name: string, command: string, args: string[], env?: Record<string, string>) => {
+  initializeServer: async (
+    name: string,
+    command: string,
+    args: string[],
+    env?: Record<string, string>
+  ) => {
     console.log(`Mock: Initializing ${name} with ${command} ${args.join(' ')}`);
+    if (env) {
+      console.log(`Mock: Using environment variables`, env);
+    }
     return Math.random() > 0.3; // Simula éxito en 70% de casos
   },
   searchFinancialData: async (query: string) => ({ success: true, data: `Mock analysis for: ${query}` }),
   fetchMarketData: async (url: string) => ({ success: true, data: `Mock data from: ${url}` }),
-  storeMemory: async (key: string, value: any) => ({ success: true, data: `Stored ${key}` }),
+  storeMemory: async (key: string, value: unknown) => {
+    console.log(`Mock: Storing ${key}`, value);
+    return { success: true, data: `Stored ${key}` };
+  },
   getMemory: async (key: string) => ({ success: true, data: `Retrieved ${key}` }),
   disconnect: async () => console.log('Mock: Disconnected')
 };
@@ -39,6 +50,20 @@ export function useMCPIntegration() {
     error: null,
     servers: new Set()
   });
+
+  const checkServer = useCallback(
+    (serverName: string) => {
+      if (!state.servers.has(serverName)) {
+        return {
+          success: false,
+          error: `${serverName} server is not initialized`,
+        } as const;
+      }
+
+      return null;
+    },
+    [state.servers]
+  );
 
   const initializeMCPServers = useCallback(async () => {
     setState(prev => ({ ...prev, isLoading: true, error: null }));
