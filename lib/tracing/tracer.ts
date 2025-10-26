@@ -186,21 +186,22 @@ export class Tracer {
 
         const startTime = Date.now();
         const originalSend = res.send;
+        const tracer = this;
 
         res.send = function (data: any) {
           const duration = Date.now() - startTime;
           span.duration = duration;
           span.status = res.statusCode < 400 ? 'success' : 'error';
 
-          this.addEvent(span, 'http_response', {
+          tracer.addEvent(span, 'http_response', {
             statusCode: res.statusCode,
             duration,
             contentLength: data?.length
           });
 
-          this.endSpan(span);
+          tracer.endSpan(span);
           return originalSend.call(this, data);
-        }.bind(this);
+        };
 
         next();
       });
