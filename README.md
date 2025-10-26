@@ -277,6 +277,27 @@ For comprehensive troubleshooting, see:
 - [Google Cloud Troubleshooting](./docs/TROUBLESHOOTING.md)
 - [Google Cloud Setup](./docs/GOOGLE_CLOUD_SETUP.md)
 
+## 🔁 Automating Pull Request Assignee Management
+
+Ensure every open pull request is assigned to the Codex user with the dedicated maintenance script.
+
+1. Export a GitHub personal access token with permissions to read and modify pull requests.
+2. Provide the repository coordinates via environment variables.
+3. Run the npm script to assign Codex to all open pull requests.
+
+```bash
+export GITHUB_TOKEN="<your-token>"
+export GITHUB_OWNER="<org-or-user>"
+export GITHUB_REPO="<repository>"
+
+# Optional: override the default Codex assignee
+# export ASSIGNEE_LOGIN="Codex"
+
+npm run assign:codex
+```
+
+The script fetches all open pull requests, adds Codex as an assignee when missing, and prints a summary of assignments.
+
 ## 📄 License
 
 Proprietary software. See [LICENSE](./LICENSE) for details.
