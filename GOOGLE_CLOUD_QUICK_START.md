@@ -48,7 +48,7 @@ For full deployment capabilities, you need one of:
 
 | Role | Permissions | Use Case |
 |------|-------------|----------|
-| Viewer | 4 permissions | Read-only access |
+| Viewer | Basic read access | Read-only access |
 | Editor | Full deployment | Deploy applications |
 | Owner | Complete control | Manage project |
 
