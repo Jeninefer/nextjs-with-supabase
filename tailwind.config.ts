@@ -195,7 +195,8 @@ function flattenColorPalette(colors: ColorObject): Record<string, string> {
     for (const [key, value] of Object.entries(obj)) {
       if (typeof value === 'string') {
         const colorKey = prefix ? `${prefix}-${key}` : key;
-        result[key === 'DEFAULT' && prefix ? prefix : colorKey] = value;
+        const finalKey = (key === 'DEFAULT' && prefix) ? prefix : colorKey;
+        result[finalKey] = value;
       } else if (typeof value === 'object' && value !== null) {
         const nested = flatten(value, prefix ? `${prefix}-${key}` : key);
         result = { ...result, ...nested };
