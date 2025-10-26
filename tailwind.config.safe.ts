@@ -13,6 +13,9 @@ const config: Config = {
       // ABACO Financial Intelligence Platform colors
       colors: {
         abaco: {
+          // WARNING: The abaco.primary color values below are duplicated from the main Tailwind config.
+          // If you change these values in tailwind.config.ts, you MUST update them here as well.
+          // Consider automating this or generating this file from a shared source.
           primary: {
             light: '#C1A6FF',
             DEFAULT: '#A855F7', 
