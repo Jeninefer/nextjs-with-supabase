@@ -1,4 +1,4 @@
-import { createClient } from "npm:@supabase/supabase-js";
+import { createClient } from "@supabase/supabase-js";
 
 export async function GET(request: Request) {
   const startTotal = Date.now();
