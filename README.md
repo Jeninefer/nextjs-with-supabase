@@ -79,7 +79,7 @@ The project can also run on container platforms such as Google Cloud Run. Use th
 The following initiatives are in progress and tracked in [`ABACO_IMPLEMENTATION_SUMMARY.md`](./ABACO_IMPLEMENTATION_SUMMARY.md):
 
 - ✅ Directory scaffolding to preserve ABACO runtime export structure in version control.
-- 🛠️ Secure ingestion pipeline that synchronizes live Supabase tables with the analytics lakehouse (design complete, implementation scheduled).
+- 🛠️ Secure ingestion pipeline that synchronizes live Supabase tables with the analytics lakehouse. This capability is not yet implemented; see the "Data Synchronization" section of the implementation summary for the design and delivery milestones.
 - 🛠️ Expanded observability for data export jobs, including retention policies and audit logging.
 
 Contributions and feedback are welcome. Please open an issue or submit a pull request to discuss improvements.
