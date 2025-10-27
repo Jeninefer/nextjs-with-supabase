@@ -13,9 +13,15 @@ const eslintConfig = [
   ...compat.extends("next/core-web-vitals"),
   {
     rules: {
-      "@typescript-eslint/no-unused-vars": "warn"
+      "no-unused-vars": [
+        "warn",
+        {
+          argsIgnorePattern: "^_",
+          varsIgnorePattern: "^ignored",
+        },
+      ],
     },
-    ignorePatterns: ["supabase/functions/**/*"]
+    ignores: ["supabase/functions/**/*"],
   },
 ];
 
