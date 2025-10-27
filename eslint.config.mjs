@@ -15,7 +15,7 @@ const eslintConfig = [
     rules: {
       "@typescript-eslint/no-unused-vars": "warn"
     },
-    ignorePatterns: ["supabase/functions/**/*"]
+    ignores: ["supabase/functions/**/*"],
   },
 ];
 
