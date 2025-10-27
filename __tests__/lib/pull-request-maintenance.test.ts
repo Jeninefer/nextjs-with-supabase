@@ -19,6 +19,7 @@ describe("isAssignedToAi", () => {
   it("matches identifiers on token boundaries to avoid false positives", () => {
     expect(isAssignedToAi(["OpenAI Release Bot"], ["openai"])).toBe(true);
     expect(isAssignedToAi(["grokowski"], ["grok"])).toBe(false);
+    expect(isAssignedToAi(["release-openai"], ["openai"])).toBe(true);
   });
 });
 
@@ -67,6 +68,23 @@ describe("closeDuplicatePullRequests", () => {
     const closedNumbers = result.closed.map(({ pullRequest }) => pullRequest.number);
     expect(closedNumbers).toContain(302);
   });
+
+  it("can close human-maintained duplicates when configured", () => {
+    const result = closeDuplicatePullRequests(sample, {
+      requireAiOwner: false,
+    });
+
+    const closure = result.closed.find(({ pullRequest }) => pullRequest.number === 103);
+    expect(closure?.reason).toBe("duplicate detected via title normalisation");
+  });
+
+  it("does not mutate the original pull request records", () => {
+    const snapshot = JSON.parse(JSON.stringify(sample));
+
+    closeDuplicatePullRequests(sample);
+
+    expect(sample).toEqual(snapshot);
+  });
 });
 
 describe("isAiOwnedPullRequest", () => {
@@ -79,5 +97,17 @@ describe("isAiOwnedPullRequest", () => {
       assignees: [],
     };
     expect(isAiOwnedPullRequest(pr, DEFAULT_AI_IDENTIFIERS)).toBe(true);
+  });
+
+  it("ignores human contributors whose names merely contain AI-like substrings", () => {
+    const pr: PullRequestRecord = {
+      number: 556,
+      title: "Demo",
+      state: "open",
+      author: "Maya Grokowski",
+      assignees: ["Sam"],
+    };
+
+    expect(isAiOwnedPullRequest(pr, DEFAULT_AI_IDENTIFIERS)).toBe(false);
   });
 });
