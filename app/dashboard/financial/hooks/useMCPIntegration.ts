@@ -46,6 +46,22 @@ const mockMCPClient = {
   disconnect: async () => console.log('Mock: Disconnected')
 };
 
+/**
+ * React hook that manages initialization, state, and access to mock MCP servers used for financial queries, market fetching, and memory storage.
+ *
+ * Exposes state reflecting whether any MCP servers have been initialized, a loading flag, an error message, and the set of initialized server names, along with actions to initialize servers and perform MCP-backed operations.
+ *
+ * @returns An object with:
+ * - `isInitialized` — `true` if at least one MCP server was successfully initialized, `false` otherwise.
+ * - `isLoading` — `true` while server initialization is in progress, `false` otherwise.
+ * - `error` — an error message string when initialization failed, or `null`.
+ * - `servers` — a Set of initialized server names.
+ * - `initializeMCPServers` — function to (re)attempt initialization of configured MCP servers.
+ * - `searchFinancialInsights` — function accepting a query string and returning the result or an object with `success: false` and `error` if the required server is not initialized.
+ * - `fetchMarketData` — function accepting a source string and returning the fetched market data or a server-check error object.
+ * - `storeAnalysisResult` — function accepting an `analysisId` and a result payload to persist to memory, or a server-check error object.
+ * - `getStoredAnalysis` — function accepting an `analysisId` and returning the stored payload or a server-check error object.
+ */
 export function useMCPIntegration() {
   const [state, setState] = useState<MCPIntegrationState>({
     isInitialized: false,
