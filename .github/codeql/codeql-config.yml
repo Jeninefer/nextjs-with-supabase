@@ -1,0 +1,19 @@
+name: "CodeQL JavaScript configuration"
+paths:
+  - app
+  - components
+  - lib
+  - scripts
+  - src
+  - types
+  - middleware.ts
+  - tailwind.config.ts
+paths-ignore:
+  - node_modules
+  - .next
+  - dist
+  - build
+  - coverage
+  - supabase
+  - abaco_runtime/exports
+  - docs

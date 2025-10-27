@@ -5,6 +5,12 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-// If you have custom color utilities, update them:
-// Instead of: import flattenColorPalette from 'tailwindcss/lib/util/flattenColorPalette'
-// Use: Access colors directly from Tailwind config
+const REQUIRED_ENV_VARS = [
+  "NEXT_PUBLIC_SUPABASE_URL",
+  "NEXT_PUBLIC_SUPABASE_ANON_KEY"
+] as const;
+
+export const hasEnvVars = REQUIRED_ENV_VARS.every((key) => {
+  const value = process.env[key];
+  return typeof value === "string" && value.trim().length > 0;
+});
