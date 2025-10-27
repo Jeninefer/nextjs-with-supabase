@@ -17,6 +17,7 @@ Welcome to the ABACO Financial Intelligence Platform documentation. This index h
 |----------|---------|-------------|
 | [GOOGLE_CLOUD_SETUP.md](./GOOGLE_CLOUD_SETUP.md) | Complete Google Cloud setup guide | Setting up GCP integration for first time |
 | [GOOGLE_CLOUD_QUICK_REFERENCE.md](./GOOGLE_CLOUD_QUICK_REFERENCE.md) | Quick command reference | Need quick GCP commands |
+| [GITHUB_ACTION_DOCKER_BUILD.md](./GITHUB_ACTION_DOCKER_BUILD.md) | GitHub Actions guide for Docker Buildx | Automating container builds and pushes |
 | [DEPLOYMENT-READY.md](../DEPLOYMENT-READY.md) | Deployment checklist | Before deploying to production |
 
 ### Configuration
