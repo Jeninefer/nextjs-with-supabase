@@ -10,12 +10,14 @@ const compat = new FlatCompat({
 });
 
 const eslintConfig = [
+  {
+    ignores: ["supabase/functions/**/*"],
+  },
   ...compat.extends("next/core-web-vitals"),
   {
     rules: {
-      "@typescript-eslint/no-unused-vars": "warn"
+      "no-unused-vars": "off",
     },
-    ignorePatterns: ["supabase/functions/**/*"]
   },
 ];
 

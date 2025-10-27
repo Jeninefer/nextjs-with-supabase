@@ -22,7 +22,7 @@
     "ignoreDeprecations": "5.0",
     "paths": {
       "@/*": [
-        "./src/*"
+        "./*"
       ]
     },
     "allowJs": true,
@@ -35,7 +35,13 @@
     ]
   },
   "include": [
-    "src",
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "**/*.mts",
+    "**/*.cts",
+    "**/*.js",
+    "**/*.jsx",
     ".next/types/**/*.ts"
   ],
   "references": [
@@ -44,6 +50,8 @@
     }
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "supabase/functions",
+    ".next"
   ]
 }

@@ -52,6 +52,19 @@ jobs:
 
 ---
 
+## 🏗️ Repository Integration
+
+This repository now includes an end-to-end Docker workflow that builds the Next.js app, creates a production-ready container, and publishes it to GitHub Container Registry (GHCR):
+
+- [`Dockerfile`](../Dockerfile) – Multi-stage build optimized for the app's dependencies and standalone Next.js runtime.
+- [`next.config.ts`](../next.config.ts) – Enables `output: "standalone"` so the Docker image ships a lightweight production server.
+- [`.dockerignore`](../.dockerignore) – Keeps build contexts lean by excluding development artifacts and secrets.
+- [`.github/workflows/docker-build.yml`](../.github/workflows/docker-build.yml) – Automates multi-platform builds with Buildx, caching, metadata labelling, and conditional pushes on protected branches.
+
+To customize the published image name or registry, edit the `REGISTRY` and `IMAGE_NAME` environment variables at the top of the workflow. The default configuration targets `ghcr.io/<owner>/<repo>` and publishes on pushes to `main` or version tags while still building (without pushing) for pull requests.
+
+---
+
 ## 🌿 Git Context
 
 By default the Buildx action builds directly from the Git reference associated with the triggering event. That means:

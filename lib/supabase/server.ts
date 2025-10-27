@@ -33,13 +33,18 @@ async function createCookiesAdapter(cookieSource: unknown) {
       return [];
     },
     setAll(cookiesToSet: Array<{ name: string; value: string; options?: Record<string, unknown> }>) {
-      try {
-        if (cookieStore && typeof (cookieStore as Record<string, unknown>).set === "function") {
-          cookiesToSet.forEach(({ name, value, options }) =>
-            (cookieStore as { set: (name: string, value: string, options?: Record<string, unknown>) => void }).set(name, value, options)
-          );
-          return;
-        }
+        try {
+          if (cookieStore && typeof (cookieStore as Record<string, unknown>).set === "function") {
+            cookiesToSet.forEach((cookie) => {
+              const { name, value, options } = cookie;
+              (cookieStore as { set: (name: string, value: string, options?: Record<string, unknown>) => void }).set(
+                name,
+                value,
+                options,
+              );
+            });
+            return;
+          }
 
         // If cookieStore has a write method with a different name or is readonly,
         // just swallow the call (this happens when called from Server Components).

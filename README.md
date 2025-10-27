@@ -169,6 +169,29 @@ vercel --prod
 2. Add all variables from `.env.local`
 3. Redeploy after adding variables
 
+### Docker & GitHub Container Registry
+
+Use the provided [`Dockerfile`](./Dockerfile) to build a production-grade container image for the platform. The image relies on Next.js standalone output, so the app boots instantly with only the required runtime files.
+
+```bash
+# Build the image locally
+docker build -t ghcr.io/your-org/nextjs-with-supabase:dev .
+
+# Run the container
+docker run --rm -p 3000:3000 \
+  -e NEXT_PUBLIC_SUPABASE_URL=... \
+  -e NEXT_PUBLIC_SUPABASE_ANON_KEY=... \
+  ghcr.io/your-org/nextjs-with-supabase:dev
+```
+
+> **Tip:** Replace the Supabase environment variables with your project credentials. Additional secrets (e.g., AI provider keys) should be passed in via `-e` flags or Docker secrets.
+
+Continuous builds and pushes are handled by [`.github/workflows/docker-build.yml`](./.github/workflows/docker-build.yml):
+
+- Builds on every pull request to validate Docker compatibility
+- Pushes multi-architecture images (`linux/amd64`, `linux/arm64`) to GHCR on `main` and version tags
+- Automatically annotates images with Git metadata and caches layers between runs
+
 ### Google Cloud Run
 
 **First-time Setup**:
