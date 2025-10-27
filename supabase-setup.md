@@ -57,9 +57,11 @@ Create `.env.local` with local Supabase credentials:
 
 ```env
 NEXT_PUBLIC_SUPABASE_URL=http://127.0.0.1:54321
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key-from-supabase-start
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_OR_ANON_KEY=your-anon-key-from-supabase-start
 SUPABASE_SERVICE_ROLE_KEY=your-service-role-key-from-supabase-start
 ```
+
+> ℹ️ Heads up: the legacy `NEXT_PUBLIC_SUPABASE_ANON_KEY` variable still works for backwards compatibility, but the application now logs a warning and will drop support in a future release. Rename it when you update your environment files.
 
 ## Useful Commands
 

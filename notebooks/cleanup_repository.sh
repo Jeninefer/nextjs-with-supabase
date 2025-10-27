@@ -54,7 +54,7 @@ if [ ! -f ".env.local" ]; then
     cat > .env.local << EOF
 # ABACO Financial Intelligence Platform Environment
 NEXT_PUBLIC_SUPABASE_URL=http://127.0.0.1:54321
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key-here
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_OR_ANON_KEY=your-anon-key-here
 SUPABASE_SERVICE_ROLE_KEY=your-service-role-key-here
 
 # ABACO Configuration
