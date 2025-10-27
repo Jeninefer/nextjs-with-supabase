@@ -147,7 +147,7 @@ For detailed documentation, see [notebooks/README_ABACO_DATASET.md](./notebooks/
 
 Before deploying, ensure:
 - [ ] Supabase project is configured
-- [ ] Environment variables are set (the app validates `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_OR_ANON_KEY` during startup and will fail fast if they are missing)
+- [ ] Environment variables are set (the app validates `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_OR_ANON_KEY` during startup and will fail fast if they are missing; the legacy `NEXT_PUBLIC_SUPABASE_ANON_KEY` alias is still read but emits a warning)
 - [ ] Application builds successfully (`npm run build`)
 - [ ] Google Cloud account setup (for Cloud Run) - [Setup Guide](./docs/GOOGLE_CLOUD_SETUP.md)
 
