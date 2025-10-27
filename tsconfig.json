@@ -20,9 +20,15 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     "ignoreDeprecations": "5.0",
+    "baseUrl": ".",
     "paths": {
       "@/*": [
-        "./src/*"
+        "./app/*",
+        "./components/*",
+        "./lib/*",
+        "./supabase/*",
+        "./types/*",
+        "./*"
       ]
     },
     "allowJs": true,
@@ -35,11 +41,16 @@
     ]
   },
   "include": [
+    "app",
+    "components",
     "lib",
-    "src",
+    "supabase",
+    "types",
+    "next-env.d.ts",
     ".next/types/**/*.ts"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "supabase/functions"
   ]
 }
