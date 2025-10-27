@@ -1,6 +1,8 @@
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 
+import { assertEnvVar } from "../utils";
+
 /**
  * Ensure cookieStoreRef is the actual cookie store object (not a Promise)
  */
@@ -59,10 +61,18 @@ async function createCookiesAdapter(cookieSource: unknown) {
 export async function createClient() {
   const cookieStore = await cookies();
   const cookiesAdapter = await createCookiesAdapter(cookieStore);
+  const supabaseUrl = assertEnvVar(
+    process.env.NEXT_PUBLIC_SUPABASE_URL,
+    "NEXT_PUBLIC_SUPABASE_URL",
+  );
+  const supabaseAnonKey = assertEnvVar(
+    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_OR_ANON_KEY,
+    "NEXT_PUBLIC_SUPABASE_PUBLISHABLE_OR_ANON_KEY",
+  );
 
   return createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_OR_ANON_KEY!,
+    supabaseUrl,
+    supabaseAnonKey,
     {
       cookies: cookiesAdapter,
     },
