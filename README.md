@@ -193,7 +193,7 @@ gcloud run deploy abaco-platform \
     --platform managed \
     --region us-central1 \
     --allow-unauthenticated \
-    --set-env-vars "NEXT_PUBLIC_SUPABASE_URL=your-url,NEXT_PUBLIC_SUPABASE_PUBLISHABLE_OR_ANON_KEY=your-key"
+    --set-env-vars "NEXT_PUBLIC_SUPABASE_URL=your-url,NEXT_PUBLIC_SUPABASE_ANON_KEY=your-key"
 ```
 
 **Subsequent Deployments**:
