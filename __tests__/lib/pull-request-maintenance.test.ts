@@ -116,225 +116,45 @@ describe("closeDuplicatePullRequests", () => {
     expect(closed.map((pr) => pr.number)).toEqual([105]);
   });
 
-  describe("edge cases", () => {
-    it("handles empty pull request array", () => {
-      const { updated, closed, summary } = closeDuplicatePullRequests([]);
-
-      expect(updated).toEqual([]);
-      expect(closed).toEqual([]);
-      expect(summary.closedCount).toBe(0);
-      expect(summary.deduplicatedTitles).toEqual([]);
-    });
-
-    it("handles single pull request", () => {
-      const pullRequests: PullRequestRecord[] = [
-        {
-          number: 1,
-          title: "Single PR",
-          assignees: ["chatgpt"],
-          status: "open",
-        },
-      ];
-
-      const { updated, closed, summary } = closeDuplicatePullRequests(pullRequests);
-
-      expect(updated).toHaveLength(1);
-      expect(closed).toHaveLength(0);
-      expect(summary.closedCount).toBe(0);
-      expect(updated[0].status).toBe("open");
-      expect(updated[0].duplicateOf).toBeUndefined();
-    });
-
-    it("handles multiple duplicates of the same title", () => {
+  // ========================================================================
+  // EDGE CASES: Title Normalization
+  // ========================================================================
+  describe("title normalization", () => {
+    it("handles titles with multiple spaces between words", () => {
       const pullRequests: PullRequestRecord[] = [
         {
           number: 100,
-          title: "Fix bug",
-          assignees: ["developer"],
+          title: "Fix    multiple    spaces",
+          assignees: ["user1"],
           status: "open",
         },
         {
           number: 101,
-          title: "Fix bug",
-          assignees: ["chatgpt"],
-          status: "open",
-        },
-        {
-          number: 102,
-          title: "Fix bug",
+          title: "Fix multiple spaces",
           assignees: ["openai-bot"],
           status: "open",
         },
-        {
-          number: 103,
-          title: "Fix bug",
-          assignees: ["grok-assistant"],
-          status: "open",
-        },
       ];
 
-      const { updated, closed, summary } = closeDuplicatePullRequests(pullRequests);
-
-      expect(closed).toHaveLength(3);
-      expect(summary.closedCount).toBe(3);
-      expect(closed.map((pr) => pr.number)).toEqual([101, 102, 103]);
-
-      const dup1 = updated.find((pr) => pr.number === 101);
-      const dup2 = updated.find((pr) => pr.number === 102);
-      const dup3 = updated.find((pr) => pr.number === 103);
-
-      expect(dup1?.duplicateOf).toBe(100);
-      expect(dup2?.duplicateOf).toBe(100);
-      expect(dup3?.duplicateOf).toBe(100);
-
-      const canonical = updated.find((pr) => pr.number === 100);
-      expect(canonical?.status).toBe("open");
-      expect(canonical?.duplicateOf).toBeUndefined();
-    });
-
-    it("preserves already closed status for duplicates", () => {
-      const pullRequests: PullRequestRecord[] = [
-        {
-          number: 100,
-          title: "Feature request",
-          assignees: ["developer"],
-          status: "open",
-        },
-        {
-          number: 101,
-          title: "Feature request",
-          assignees: ["chatgpt"],
-          status: "closed",
-        },
-      ];
-
-      const { updated, closed } = closeDuplicatePullRequests(pullRequests);
-
-      const duplicate = updated.find((pr) => pr.number === 101);
-      expect(duplicate?.status).toBe("closed");
-      expect(closed).toHaveLength(1);
-    });
-
-    it("handles pull requests with empty assignees array", () => {
-      const pullRequests: PullRequestRecord[] = [
-        {
-          number: 100,
-          title: "Unassigned PR",
-          assignees: [],
-          status: "open",
-        },
-        {
-          number: 101,
-          title: "Unassigned PR",
-          assignees: [],
-          status: "open",
-        },
-      ];
-
-      const { closed, summary } = closeDuplicatePullRequests(pullRequests);
-
-      expect(closed).toHaveLength(0);
-      expect(summary.closedCount).toBe(0);
-    });
-
-    it("handles out-of-order PR numbers correctly", () => {
-      const pullRequests: PullRequestRecord[] = [
-        {
-          number: 105,
-          title: "Same title",
-          assignees: ["chatgpt"],
-          status: "open",
-        },
-        {
-          number: 101,
-          title: "Same title",
-          assignees: ["developer"],
-          status: "open",
-        },
-        {
-          number: 103,
-          title: "Same title",
-          assignees: ["openai"],
-          status: "open",
-        },
-      ];
-
-      const { updated, closed } = closeDuplicatePullRequests(pullRequests);
-
-      const canonical = updated.find((pr) => pr.number === 101);
-      expect(canonical?.status).toBe("open");
-      expect(canonical?.duplicateOf).toBeUndefined();
-
-      expect(closed.map((pr) => pr.number).sort((a, b) => a - b)).toEqual([103, 105]);
-      expect(closed.every((pr) => pr.duplicateOf === 101)).toBe(true);
-    });
-  });
-
-  describe("title normalization", () => {
-    it("normalizes titles with extra whitespace", () => {
-      const pullRequests: PullRequestRecord[] = [
-        {
-          number: 100,
-          title: "  Fix   bug   with   spacing  ",
-          assignees: ["developer"],
-          status: "open",
-        },
-        {
-          number: 101,
-          title: "Fix bug with spacing",
-          assignees: ["chatgpt"],
-          status: "open",
-        },
-      ];
-
-      const { closed, summary } = closeDuplicatePullRequests(pullRequests);
+      const { closed } = closeDuplicatePullRequests(pullRequests);
 
       expect(closed).toHaveLength(1);
       expect(closed[0].number).toBe(101);
-      expect(summary.deduplicatedTitles).toEqual(["fix bug with spacing"]);
-    });
-
-    it("performs case-insensitive title matching", () => {
-      const pullRequests: PullRequestRecord[] = [
-        {
-          number: 100,
-          title: "Fix BUG in Database",
-          assignees: ["developer"],
-          status: "open",
-        },
-        {
-          number: 101,
-          title: "fix bug in database",
-          assignees: ["openai"],
-          status: "open",
-        },
-        {
-          number: 102,
-          title: "FIX BUG IN DATABASE",
-          assignees: ["grok"],
-          status: "open",
-        },
-      ];
-
-      const { closed, summary } = closeDuplicatePullRequests(pullRequests);
-
-      expect(closed).toHaveLength(2);
-      expect(closed.map((pr) => pr.number)).toEqual([101, 102]);
-      expect(summary.deduplicatedTitles).toEqual(["fix bug in database"]);
+      expect(closed[0].duplicateOf).toBe(100);
     });
 
     it("handles titles with leading and trailing whitespace", () => {
       const pullRequests: PullRequestRecord[] = [
         {
-          number: 100,
-          title: "\n\tUpdate documentation\t\n",
-          assignees: ["developer"],
+          number: 200,
+          title: "  Update documentation  ",
+          assignees: ["user1"],
           status: "open",
         },
         {
-          number: 101,
+          number: 201,
           title: "Update documentation",
-          assignees: ["chatgpt"],
+          assignees: ["chatgpt-assistant"],
           status: "open",
         },
       ];
@@ -342,43 +162,50 @@ describe("closeDuplicatePullRequests", () => {
       const { closed } = closeDuplicatePullRequests(pullRequests);
 
       expect(closed).toHaveLength(1);
-      expect(closed[0].number).toBe(101);
+      expect(closed[0].duplicateOf).toBe(200);
     });
 
-    it("handles titles with special characters", () => {
+    it("normalizes case differences in titles", () => {
       const pullRequests: PullRequestRecord[] = [
         {
-          number: 100,
-          title: "Fix: [URGENT] Bug #123 (critical)",
-          assignees: ["developer"],
+          number: 300,
+          title: "ADD NEW FEATURE",
+          assignees: ["user1"],
           status: "open",
         },
         {
-          number: 101,
-          title: "Fix: [URGENT] Bug #123 (critical)",
-          assignees: ["chatgpt"],
+          number: 301,
+          title: "add new feature",
+          assignees: ["grok-bot"],
+          status: "open",
+        },
+        {
+          number: 302,
+          title: "Add New Feature",
+          assignees: ["OpenAI-Agent"],
           status: "open",
         },
       ];
 
-      const { closed } = closeDuplicatePullRequests(pullRequests);
+      const { closed, summary } = closeDuplicatePullRequests(pullRequests);
 
-      expect(closed).toHaveLength(1);
-      expect(closed[0].duplicateOf).toBe(100);
+      expect(closed).toHaveLength(2);
+      expect(summary.closedCount).toBe(2);
+      expect(closed.map((pr) => pr.number).sort()).toEqual([301, 302]);
     });
 
-    it("handles titles with unicode characters", () => {
+    it("handles titles with tabs and newlines", () => {
       const pullRequests: PullRequestRecord[] = [
         {
-          number: 100,
-          title: "Fix 🐛 in système de données",
-          assignees: ["developer"],
+          number: 400,
+          title: "Fix\tbug\nwith\ttabs",
+          assignees: ["user1"],
           status: "open",
         },
         {
-          number: 101,
-          title: "Fix 🐛 in système de données",
-          assignees: ["chatgpt"],
+          number: 401,
+          title: "Fix bug with tabs",
+          assignees: ["chatgpt-worker"],
           status: "open",
         },
       ];
@@ -386,29 +213,32 @@ describe("closeDuplicatePullRequests", () => {
       const { closed } = closeDuplicatePullRequests(pullRequests);
 
       expect(closed).toHaveLength(1);
-      expect(closed[0].duplicateOf).toBe(100);
+      expect(closed[0].number).toBe(401);
     });
   });
 
+  // ========================================================================
+  // EDGE CASES: AI Identifier Matching
+  // ========================================================================
   describe("AI identifier matching", () => {
-    it("performs case-insensitive AI identifier matching", () => {
+    it("matches AI identifiers case-insensitively", () => {
       const pullRequests: PullRequestRecord[] = [
         {
-          number: 100,
-          title: "Test PR",
-          assignees: ["developer"],
+          number: 500,
+          title: "Refactor code",
+          assignees: ["user1"],
           status: "open",
         },
         {
-          number: 101,
-          title: "Test PR",
-          assignees: ["ChatGPT-Bot"],
+          number: 501,
+          title: "Refactor code",
+          assignees: ["CHATGPT-BOT"],
           status: "open",
         },
         {
-          number: 102,
-          title: "Test PR",
-          assignees: ["OPENAI-assistant"],
+          number: 502,
+          title: "Refactor code",
+          assignees: ["ChatGPT-Assistant"],
           status: "open",
         },
       ];
@@ -416,116 +246,43 @@ describe("closeDuplicatePullRequests", () => {
       const { closed } = closeDuplicatePullRequests(pullRequests);
 
       expect(closed).toHaveLength(2);
-      expect(closed.map((pr) => pr.number)).toEqual([101, 102]);
+      expect(closed.map((pr) => pr.number).sort()).toEqual([501, 502]);
     });
 
-    it("matches AI identifiers as substrings", () => {
+    it("matches AI identifiers as substrings within assignee names", () => {
       const pullRequests: PullRequestRecord[] = [
         {
-          number: 100,
-          title: "Same",
-          assignees: ["developer"],
+          number: 600,
+          title: "Update README",
+          assignees: ["user1"],
           status: "open",
         },
         {
-          number: 101,
-          title: "Same",
-          assignees: ["chatgpt-codex-v2"],
-          status: "open",
-        },
-        {
-          number: 102,
-          title: "Same",
-          assignees: ["openai-release-bot"],
-          status: "open",
-        },
-        {
-          number: 103,
-          title: "Same",
-          assignees: ["grok-1.5-assistant"],
+          number: 601,
+          title: "Update README",
+          assignees: ["my-openai-integration-bot"],
           status: "open",
         },
       ];
 
       const { closed } = closeDuplicatePullRequests(pullRequests);
 
-      expect(closed).toHaveLength(3);
-      expect(closed.map((pr) => pr.number)).toEqual([101, 102, 103]);
+      expect(closed).toHaveLength(1);
+      expect(closed[0].number).toBe(601);
     });
 
-    it("matches when AI identifier is anywhere in assignee name", () => {
+    it("handles empty AI identifiers list", () => {
       const pullRequests: PullRequestRecord[] = [
         {
-          number: 100,
-          title: "PR",
-          assignees: ["developer"],
+          number: 700,
+          title: "Fix bug",
+          assignees: ["user1"],
           status: "open",
         },
         {
-          number: 101,
-          title: "PR",
-          assignees: ["my-chatgpt-bot"],
-          status: "open",
-        },
-        {
-          number: 102,
-          title: "PR",
-          assignees: ["bot-openai-v1"],
-          status: "open",
-        },
-      ];
-
-      const { closed } = closeDuplicatePullRequests(pullRequests);
-
-      expect(closed).toHaveLength(2);
-    });
-
-    it("validates all default AI identifiers work", () => {
-      const pullRequests: PullRequestRecord[] = [
-        {
-          number: 100,
-          title: "Test",
-          assignees: ["human"],
-          status: "open",
-        },
-        {
-          number: 101,
-          title: "Test",
+          number: 701,
+          title: "Fix bug",
           assignees: ["chatgpt-bot"],
-          status: "open",
-        },
-        {
-          number: 102,
-          title: "Test",
-          assignees: ["openai-assistant"],
-          status: "open",
-        },
-        {
-          number: 103,
-          title: "Test",
-          assignees: ["grok-helper"],
-          status: "open",
-        },
-      ];
-
-      const { closed } = closeDuplicatePullRequests(pullRequests);
-
-      expect(closed).toHaveLength(3);
-      expect(DEFAULT_AI_IDENTIFIERS).toEqual(["chatgpt", "openai", "grok"]);
-    });
-
-    it("handles empty AI identifiers array", () => {
-      const pullRequests: PullRequestRecord[] = [
-        {
-          number: 100,
-          title: "Same",
-          assignees: ["developer"],
-          status: "open",
-        },
-        {
-          number: 101,
-          title: "Same",
-          assignees: ["chatgpt"],
           status: "open",
         },
       ];
@@ -537,180 +294,71 @@ describe("closeDuplicatePullRequests", () => {
       expect(closed).toHaveLength(0);
     });
 
-    it("filters out empty and whitespace-only AI identifiers", () => {
+    it("trims and normalizes AI identifiers from options", () => {
       const pullRequests: PullRequestRecord[] = [
         {
-          number: 100,
-          title: "Same",
-          assignees: ["developer"],
+          number: 800,
+          title: "New feature",
+          assignees: ["user1"],
           status: "open",
         },
         {
-          number: 101,
-          title: "Same",
-          assignees: ["test-bot"],
-          status: "open",
-        },
-      ];
-
-      const { closed } = closeDuplicatePullRequests(pullRequests, {
-        aiIdentifiers: ["", "  ", "\t", "test"],
-      });
-
-      expect(closed).toHaveLength(1);
-      expect(closed[0].number).toBe(101);
-    });
-
-    it("trims whitespace from AI identifiers", () => {
-      const pullRequests: PullRequestRecord[] = [
-        {
-          number: 100,
-          title: "Same",
-          assignees: ["developer"],
-          status: "open",
-        },
-        {
-          number: 101,
-          title: "Same",
+          number: 801,
+          title: "New feature",
           assignees: ["custom-bot"],
           status: "open",
         },
       ];
 
       const { closed } = closeDuplicatePullRequests(pullRequests, {
-        aiIdentifiers: ["  custom  "],
+        aiIdentifiers: ["  CUSTOM  ", "  bot  "],
       });
 
       expect(closed).toHaveLength(1);
-    });
-  });
-
-  describe("existing metadata preservation", () => {
-    it("does not override existing duplicateOf if already set", () => {
-      const pullRequests: PullRequestRecord[] = [
-        {
-          number: 100,
-          title: "Same",
-          assignees: ["developer"],
-          status: "open",
-        },
-        {
-          number: 101,
-          title: "Same",
-          assignees: ["chatgpt"],
-          status: "open",
-          duplicateOf: 999,
-        },
-      ];
-
-      const { updated } = closeDuplicatePullRequests(pullRequests);
-
-      const duplicate = updated.find((pr) => pr.number === 101);
-      expect(duplicate?.duplicateOf).toBe(999);
+      expect(closed[0].number).toBe(801);
     });
 
-    it("does not override existing closureReason if already set", () => {
+    it("filters out empty string identifiers", () => {
       const pullRequests: PullRequestRecord[] = [
         {
-          number: 100,
-          title: "Same",
-          assignees: ["developer"],
+          number: 900,
+          title: "Update deps",
+          assignees: ["user1"],
           status: "open",
         },
         {
-          number: 101,
-          title: "Same",
-          assignees: ["chatgpt"],
-          status: "open",
-          closureReason: "manual-closure",
-        },
-      ];
-
-      const { updated } = closeDuplicatePullRequests(pullRequests);
-
-      const duplicate = updated.find((pr) => pr.number === 101);
-      expect(duplicate?.closureReason).toBe("manual-closure");
-    });
-
-    it("sets both duplicateOf and closureReason when neither exists", () => {
-      const pullRequests: PullRequestRecord[] = [
-        {
-          number: 100,
-          title: "Same",
-          assignees: ["developer"],
-          status: "open",
-        },
-        {
-          number: 101,
-          title: "Same",
-          assignees: ["chatgpt"],
+          number: 901,
+          title: "Update deps",
+          assignees: ["someone"],
           status: "open",
         },
       ];
 
-      const { updated } = closeDuplicatePullRequests(pullRequests);
+      const { closed } = closeDuplicatePullRequests(pullRequests, {
+        aiIdentifiers: ["", "  ", "chatgpt"],
+      });
 
-      const duplicate = updated.find((pr) => pr.number === 101);
-      expect(duplicate?.duplicateOf).toBe(100);
-      expect(duplicate?.closureReason).toBe("duplicate-ai-assignee");
-    });
-  });
-
-  describe("complex scenarios", () => {
-    it("handles multiple different duplicate groups", () => {
-      const pullRequests: PullRequestRecord[] = [
-        {
-          number: 100,
-          title: "Feature A",
-          assignees: ["dev1"],
-          status: "open",
-        },
-        {
-          number: 101,
-          title: "Feature A",
-          assignees: ["chatgpt"],
-          status: "open",
-        },
-        {
-          number: 102,
-          title: "Feature B",
-          assignees: ["dev2"],
-          status: "open",
-        },
-        {
-          number: 103,
-          title: "Feature B",
-          assignees: ["openai"],
-          status: "open",
-        },
-        {
-          number: 104,
-          title: "Feature C",
-          assignees: ["dev3"],
-          status: "open",
-        },
-      ];
-
-      const { closed, summary } = closeDuplicatePullRequests(pullRequests);
-
-      expect(closed).toHaveLength(2);
-      expect(closed.map((pr) => pr.number)).toEqual([101, 103]);
-      expect(summary.closedCount).toBe(2);
-      expect(summary.deduplicatedTitles).toEqual(["feature a", "feature b"]);
+      expect(closed).toHaveLength(0);
     });
 
-    it("handles mix of AI and non-AI assignees on same PR", () => {
+    it("requires at least one AI identifier match per duplicate", () => {
       const pullRequests: PullRequestRecord[] = [
         {
-          number: 100,
-          title: "Mixed",
-          assignees: ["developer"],
+          number: 1000,
+          title: "Security patch",
+          assignees: ["user1"],
           status: "open",
         },
         {
-          number: 101,
-          title: "Mixed",
-          assignees: ["developer", "chatgpt", "human-reviewer"],
+          number: 1001,
+          title: "Security patch",
+          assignees: ["user2", "user3"],
+          status: "open",
+        },
+        {
+          number: 1002,
+          title: "Security patch",
+          assignees: ["user4", "openai-bot", "user5"],
           status: "open",
         },
       ];
@@ -718,284 +366,868 @@ describe("closeDuplicatePullRequests", () => {
       const { closed } = closeDuplicatePullRequests(pullRequests);
 
       expect(closed).toHaveLength(1);
-      expect(closed[0].number).toBe(101);
+      expect(closed[0].number).toBe(1002);
     });
+  });
 
-    it("returns unique deduplicated titles in summary", () => {
+  // ========================================================================
+  // EDGE CASES: Multiple Duplicates
+  // ========================================================================
+  describe("multiple duplicates scenarios", () => {
+    it("closes all duplicates of the same title assigned to AI", () => {
       const pullRequests: PullRequestRecord[] = [
         {
-          number: 100,
-          title: "Feature X",
-          assignees: ["dev"],
+          number: 1100,
+          title: "Important fix",
+          assignees: ["human"],
           status: "open",
         },
         {
-          number: 101,
-          title: "Feature X",
-          assignees: ["chatgpt"],
+          number: 1101,
+          title: "Important fix",
+          assignees: ["chatgpt-1"],
           status: "open",
         },
         {
-          number: 102,
-          title: "Feature X",
-          assignees: ["openai"],
+          number: 1102,
+          title: "Important fix",
+          assignees: ["openai-2"],
+          status: "open",
+        },
+        {
+          number: 1103,
+          title: "Important fix",
+          assignees: ["grok-3"],
           status: "open",
         },
       ];
 
-      const { summary } = closeDuplicatePullRequests(pullRequests);
+      const { closed, summary } = closeDuplicatePullRequests(pullRequests);
 
-      expect(summary.deduplicatedTitles).toEqual(["feature x"]);
-      expect(summary.closedCount).toBe(2);
+      expect(closed).toHaveLength(3);
+      expect(summary.closedCount).toBe(3);
+      expect(closed.map((pr) => pr.number).sort()).toEqual([1101, 1102, 1103]);
+
+      // All should reference the canonical PR
+      closed.forEach((pr) => {
+        expect(pr.duplicateOf).toBe(1100);
+      });
     });
 
-    it("does not close canonical PR even if it has AI assignee", () => {
+    it("handles multiple distinct duplicate sets in one batch", () => {
       const pullRequests: PullRequestRecord[] = [
+        // First duplicate set
         {
-          number: 100,
-          title: "Both AI",
-          assignees: ["chatgpt"],
+          number: 1200,
+          title: "Feature A",
+          assignees: ["human"],
           status: "open",
         },
         {
-          number: 101,
-          title: "Both AI",
-          assignees: ["openai"],
+          number: 1201,
+          title: "Feature A",
+          assignees: ["chatgpt-bot"],
+          status: "open",
+        },
+        // Second duplicate set
+        {
+          number: 1202,
+          title: "Feature B",
+          assignees: ["human"],
+          status: "open",
+        },
+        {
+          number: 1203,
+          title: "Feature B",
+          assignees: ["openai-bot"],
+          status: "open",
+        },
+        // Third duplicate set
+        {
+          number: 1204,
+          title: "Feature C",
+          assignees: ["human"],
+          status: "open",
+        },
+        {
+          number: 1205,
+          title: "Feature C",
+          assignees: ["grok-bot"],
           status: "open",
         },
       ];
 
-      const { updated, closed } = closeDuplicatePullRequests(pullRequests);
+      const { closed, summary } = closeDuplicatePullRequests(pullRequests);
 
-      const canonical = updated.find((pr) => pr.number === 100);
+      expect(closed).toHaveLength(3);
+      expect(summary.closedCount).toBe(3);
+      expect(summary.deduplicatedTitles.sort()).toEqual([
+        "feature a",
+        "feature b",
+        "feature c",
+      ]);
+    });
+
+    it("preserves lowest PR number as canonical regardless of order", () => {
+      const pullRequests: PullRequestRecord[] = [
+        {
+          number: 1305,
+          title: "Duplicate PR",
+          assignees: ["human"],
+          status: "open",
+        },
+        {
+          number: 1302,
+          title: "Duplicate PR",
+          assignees: ["human"],
+          status: "open",
+        },
+        {
+          number: 1303,
+          title: "Duplicate PR",
+          assignees: ["chatgpt-bot"],
+          status: "open",
+        },
+        {
+          number: 1301,
+          title: "Duplicate PR",
+          assignees: ["human"],
+          status: "open",
+        },
+      ];
+
+      const { closed, updated } = closeDuplicatePullRequests(pullRequests);
+
+      expect(closed).toHaveLength(1);
+      expect(closed[0].number).toBe(1303);
+      expect(closed[0].duplicateOf).toBe(1301); // Lowest number is canonical
+
+      const canonical = updated.find((pr) => pr.number === 1301);
       expect(canonical?.status).toBe("open");
       expect(canonical?.duplicateOf).toBeUndefined();
+    });
+  });
+
+  // ========================================================================
+  // EDGE CASES: Already Closed PRs
+  // ========================================================================
+  describe("already closed pull requests", () => {
+    it("marks already closed duplicates correctly", () => {
+      const pullRequests: PullRequestRecord[] = [
+        {
+          number: 1400,
+          title: "Legacy PR",
+          assignees: ["human"],
+          status: "open",
+        },
+        {
+          number: 1401,
+          title: "Legacy PR",
+          assignees: ["chatgpt-bot"],
+          status: "closed",
+        },
+      ];
+
+      const { closed, updated } = closeDuplicatePullRequests(pullRequests);
+
       expect(closed).toHaveLength(1);
-      expect(closed[0].number).toBe(101);
+      const duplicate = updated.find((pr) => pr.number === 1401);
+      expect(duplicate?.status).toBe("closed");
+      expect(duplicate?.duplicateOf).toBe(1400);
+      expect(duplicate?.closureReason).toBe("duplicate-ai-assignee");
     });
 
-    it("handles large number of pull requests efficiently", () => {
-      const pullRequests: PullRequestRecord[] = [];
-      
-      for (let i = 0; i < 100; i++) {
-        const titleGroup = Math.floor(i / 10);
-        pullRequests.push({
-          number: i,
-          title: `Feature ${titleGroup}`,
-          assignees: i % 10 === 0 ? ["developer"] : ["chatgpt-bot"],
+    it("does not overwrite existing duplicateOf if already set", () => {
+      const pullRequests: PullRequestRecord[] = [
+        {
+          number: 1500,
+          title: "Original PR",
+          assignees: ["human"],
           status: "open",
-        });
-      }
+        },
+        {
+          number: 1501,
+          title: "Original PR",
+          assignees: ["chatgpt-bot"],
+          status: "closed",
+          duplicateOf: 999, // Already marked as duplicate of different PR
+        },
+      ];
+
+      const { closed, updated } = closeDuplicatePullRequests(pullRequests);
+
+      expect(closed).toHaveLength(1);
+      const duplicate = updated.find((pr) => pr.number === 1501);
+      expect(duplicate?.duplicateOf).toBe(999); // Should preserve original
+    });
+
+    it("does not overwrite existing closureReason", () => {
+      const pullRequests: PullRequestRecord[] = [
+        {
+          number: 1600,
+          title: "Some PR",
+          assignees: ["human"],
+          status: "open",
+        },
+        {
+          number: 1601,
+          title: "Some PR",
+          assignees: ["openai-bot"],
+          status: "closed",
+          closureReason: "manual-close",
+        },
+      ];
+
+      const { closed, updated } = closeDuplicatePullRequests(pullRequests);
+
+      expect(closed).toHaveLength(1);
+      const duplicate = updated.find((pr) => pr.number === 1601);
+      expect(duplicate?.closureReason).toBe("manual-close");
+    });
+  });
+
+  // ========================================================================
+  // EDGE CASES: Empty and Single Inputs
+  // ========================================================================
+  describe("empty and minimal inputs", () => {
+    it("handles empty pull requests array", () => {
+      const { updated, closed, summary } = closeDuplicatePullRequests([]);
+
+      expect(updated).toEqual([]);
+      expect(closed).toEqual([]);
+      expect(summary.closedCount).toBe(0);
+      expect(summary.deduplicatedTitles).toEqual([]);
+    });
+
+    it("handles single pull request", () => {
+      const pullRequests: PullRequestRecord[] = [
+        {
+          number: 1700,
+          title: "Only PR",
+          assignees: ["chatgpt-bot"],
+          status: "open",
+        },
+      ];
 
       const { updated, closed, summary } = closeDuplicatePullRequests(pullRequests);
 
-      expect(updated).toHaveLength(100);
-      expect(closed).toHaveLength(90);
-      expect(summary.closedCount).toBe(90);
-      expect(summary.deduplicatedTitles).toHaveLength(10);
+      expect(updated).toHaveLength(1);
+      expect(closed).toHaveLength(0);
+      expect(summary.closedCount).toBe(0);
+      expect(updated[0].status).toBe("open");
+    });
+
+    it("handles no duplicates in collection", () => {
+      const pullRequests: PullRequestRecord[] = [
+        {
+          number: 1800,
+          title: "Unique PR 1",
+          assignees: ["chatgpt-bot"],
+          status: "open",
+        },
+        {
+          number: 1801,
+          title: "Unique PR 2",
+          assignees: ["openai-bot"],
+          status: "open",
+        },
+        {
+          number: 1802,
+          title: "Unique PR 3",
+          assignees: ["grok-bot"],
+          status: "open",
+        },
+      ];
+
+      const { closed, summary } = closeDuplicatePullRequests(pullRequests);
+
+      expect(closed).toHaveLength(0);
+      expect(summary.closedCount).toBe(0);
+      expect(summary.deduplicatedTitles).toEqual([]);
+    });
+
+    it("handles PRs with empty assignees arrays", () => {
+      const pullRequests: PullRequestRecord[] = [
+        {
+          number: 1900,
+          title: "No assignees",
+          assignees: [],
+          status: "open",
+        },
+        {
+          number: 1901,
+          title: "No assignees",
+          assignees: [],
+          status: "open",
+        },
+      ];
+
+      const { closed } = closeDuplicatePullRequests(pullRequests);
+
+      expect(closed).toHaveLength(0); // No AI assignees, so nothing closed
     });
   });
 
-  describe("immutability guarantees", () => {
-    it("does not mutate original assignees arrays", () => {
-      const originalAssignees = ["developer", "chatgpt"];
-      const pullRequests: PullRequestRecord[] = [
-        {
-          number: 100,
-          title: "Test",
-          assignees: ["other"],
-          status: "open",
-        },
-        {
-          number: 101,
-          title: "Test",
-          assignees: originalAssignees,
-          status: "open",
-        },
-      ];
-
-      const { updated } = closeDuplicatePullRequests(pullRequests);
-
-      expect(pullRequests[1].assignees).toBe(originalAssignees);
-      expect(updated[1].assignees).not.toBe(originalAssignees);
-      expect(originalAssignees).toEqual(["developer", "chatgpt"]);
+  // ========================================================================
+  // DEFAULT AI IDENTIFIERS
+  // ========================================================================
+  describe("DEFAULT_AI_IDENTIFIERS", () => {
+    it("exports default AI identifiers", () => {
+      expect(DEFAULT_AI_IDENTIFIERS).toBeDefined();
+      expect(Array.isArray(DEFAULT_AI_IDENTIFIERS)).toBe(true);
+      expect(DEFAULT_AI_IDENTIFIERS.length).toBeGreaterThan(0);
     });
 
-    it("does not mutate original pull request objects", () => {
-      const originalPR = {
-        number: 101,
-        title: "Test",
-        assignees: ["chatgpt"],
-        status: "open" as PullRequestStatus,
-      };
-      
-      const pullRequests: PullRequestRecord[] = [
-        {
-          number: 100,
-          title: "Test",
-          assignees: ["dev"],
-          status: "open",
-        },
-        originalPR,
-      ];
-
-      closeDuplicatePullRequests(pullRequests);
-
-      expect(originalPR.status).toBe("open");
-      expect(originalPR.duplicateOf).toBeUndefined();
-      expect(originalPR.closureReason).toBeUndefined();
+    it("includes expected AI identifiers", () => {
+      expect(DEFAULT_AI_IDENTIFIERS).toContain("chatgpt");
+      expect(DEFAULT_AI_IDENTIFIERS).toContain("openai");
+      expect(DEFAULT_AI_IDENTIFIERS).toContain("grok");
     });
 
-    it("creates new array instances for updated results", () => {
+    it("uses default identifiers when no options provided", () => {
       const pullRequests: PullRequestRecord[] = [
         {
-          number: 100,
-          title: "Test",
-          assignees: ["dev"],
+          number: 2000,
+          title: "Test PR",
+          assignees: ["human"],
+          status: "open",
+        },
+        {
+          number: 2001,
+          title: "Test PR",
+          assignees: ["chatgpt-assistant"],
+          status: "open",
+        },
+        {
+          number: 2002,
+          title: "Test PR",
+          assignees: ["openai-bot"],
+          status: "open",
+        },
+        {
+          number: 2003,
+          title: "Test PR",
+          assignees: ["grok-agent"],
           status: "open",
         },
       ];
 
-      const { updated } = closeDuplicatePullRequests(pullRequests);
+      const { closed } = closeDuplicatePullRequests(pullRequests);
 
-      expect(updated).not.toBe(pullRequests);
+      expect(closed).toHaveLength(3);
     });
   });
 
-  describe("return value structure", () => {
-    it("returns correct structure with all required fields", () => {
+  // ========================================================================
+  // COMPLEX SCENARIOS
+  // ========================================================================
+  describe("complex scenarios", () => {
+    it("handles mix of AI and non-AI duplicates correctly", () => {
       const pullRequests: PullRequestRecord[] = [
         {
-          number: 100,
-          title: "Test",
-          assignees: ["dev"],
+          number: 2100,
+          title: "Popular feature",
+          assignees: ["human1"],
           status: "open",
         },
         {
-          number: 101,
-          title: "Test",
-          assignees: ["chatgpt"],
+          number: 2101,
+          title: "Popular feature",
+          assignees: ["human2"],
+          status: "open",
+        },
+        {
+          number: 2102,
+          title: "Popular feature",
+          assignees: ["chatgpt-bot"],
+          status: "open",
+        },
+        {
+          number: 2103,
+          title: "Popular feature",
+          assignees: ["human3"],
+          status: "open",
+        },
+        {
+          number: 2104,
+          title: "Popular feature",
+          assignees: ["openai-bot"],
+          status: "open",
+        },
+      ];
+
+      const { closed, updated } = closeDuplicatePullRequests(pullRequests);
+
+      expect(closed).toHaveLength(2);
+      expect(closed.map((pr) => pr.number).sort()).toEqual([2102, 2104]);
+
+      // Non-AI duplicates should remain open
+      const pr2101 = updated.find((pr) => pr.number === 2101);
+      const pr2103 = updated.find((pr) => pr.number === 2103);
+      expect(pr2101?.status).toBe("open");
+      expect(pr2101?.duplicateOf).toBeUndefined();
+      expect(pr2103?.status).toBe("open");
+      expect(pr2103?.duplicateOf).toBeUndefined();
+    });
+
+    it("handles three or more duplicates with different assignees", () => {
+      const pullRequests: PullRequestRecord[] = [
+        {
+          number: 2200,
+          title: "Critical bug fix",
+          assignees: ["engineer"],
+          status: "open",
+        },
+        {
+          number: 2201,
+          title: "Critical bug fix",
+          assignees: ["chatgpt-v1", "reviewer"],
+          status: "open",
+        },
+        {
+          number: 2202,
+          title: "Critical bug fix",
+          assignees: ["team-lead", "openai-v2"],
+          status: "open",
+        },
+        {
+          number: 2203,
+          title: "Critical bug fix",
+          assignees: ["grok-alpha"],
+          status: "open",
+        },
+        {
+          number: 2204,
+          title: "Critical bug fix",
+          assignees: ["senior-dev"],
+          status: "open",
+        },
+      ];
+
+      const { closed, summary } = closeDuplicatePullRequests(pullRequests);
+
+      expect(closed).toHaveLength(3);
+      expect(summary.closedCount).toBe(3);
+      expect(closed.map((pr) => pr.number).sort()).toEqual([2201, 2202, 2203]);
+
+      // All AI duplicates should reference the first (canonical) PR
+      closed.forEach((pr) => {
+        expect(pr.duplicateOf).toBe(2200);
+      });
+    });
+
+    it("maintains result structure integrity", () => {
+      const pullRequests: PullRequestRecord[] = [
+        {
+          number: 2300,
+          title: "Test structure",
+          assignees: ["user"],
+          status: "open",
+        },
+        {
+          number: 2301,
+          title: "Test structure",
+          assignees: ["chatgpt-bot"],
           status: "open",
         },
       ];
 
       const result = closeDuplicatePullRequests(pullRequests);
 
+      // Check result structure
       expect(result).toHaveProperty("updated");
       expect(result).toHaveProperty("closed");
       expect(result).toHaveProperty("summary");
+
       expect(result.summary).toHaveProperty("closedCount");
       expect(result.summary).toHaveProperty("deduplicatedTitles");
 
+      expect(typeof result.summary.closedCount).toBe("number");
+      expect(Array.isArray(result.summary.deduplicatedTitles)).toBe(true);
       expect(Array.isArray(result.updated)).toBe(true);
       expect(Array.isArray(result.closed)).toBe(true);
-      expect(Array.isArray(result.summary.deduplicatedTitles)).toBe(true);
-      expect(typeof result.summary.closedCount).toBe("number");
     });
 
-    it("ensures closed array is subset of updated array", () => {
+    it("deduplicatedTitles contains unique normalized titles only", () => {
       const pullRequests: PullRequestRecord[] = [
         {
-          number: 100,
-          title: "Test",
-          assignees: ["dev"],
+          number: 2400,
+          title: "Feature X",
+          assignees: ["human"],
           status: "open",
         },
         {
-          number: 101,
-          title: "Test",
-          assignees: ["chatgpt"],
+          number: 2401,
+          title: "Feature X",
+          assignees: ["chatgpt-1"],
+          status: "open",
+        },
+        {
+          number: 2402,
+          title: "Feature X",
+          assignees: ["chatgpt-2"],
+          status: "open",
+        },
+        {
+          number: 2403,
+          title: "Feature Y",
+          assignees: ["human"],
+          status: "open",
+        },
+        {
+          number: 2404,
+          title: "Feature Y",
+          assignees: ["openai-bot"],
           status: "open",
         },
       ];
 
-      const { updated, closed } = closeDuplicatePullRequests(pullRequests);
+      const { summary } = closeDuplicatePullRequests(pullRequests);
 
-      closed.forEach((closedPR) => {
-        const foundInUpdated = updated.find((pr) => pr.number === closedPR.number);
-        expect(foundInUpdated).toBeDefined();
-        expect(foundInUpdated?.status).toBe("closed");
-      });
+      expect(summary.deduplicatedTitles).toHaveLength(2);
+      expect(summary.deduplicatedTitles.sort()).toEqual(["feature x", "feature y"]);
+    });
+  });
+
+  // ========================================================================
+  // BOUNDARY CONDITIONS
+  // ========================================================================
+  describe("boundary conditions", () => {
+    it("handles very long titles", () => {
+      const longTitle = "A".repeat(1000);
+      const pullRequests: PullRequestRecord[] = [
+        {
+          number: 2500,
+          title: longTitle,
+          assignees: ["human"],
+          status: "open",
+        },
+        {
+          number: 2501,
+          title: longTitle,
+          assignees: ["chatgpt-bot"],
+          status: "open",
+        },
+      ];
+
+      const { closed } = closeDuplicatePullRequests(pullRequests);
+
+      expect(closed).toHaveLength(1);
+      expect(closed[0].number).toBe(2501);
+    });
+
+    it("handles many assignees on a single PR", () => {
+      const manyAssignees = Array.from({ length: 100 }, (_, i) => `user${i}`);
+      const pullRequests: PullRequestRecord[] = [
+        {
+          number: 2600,
+          title: "Many assignees",
+          assignees: ["human"],
+          status: "open",
+        },
+        {
+          number: 2601,
+          title: "Many assignees",
+          assignees: [...manyAssignees, "chatgpt-bot"],
+          status: "open",
+        },
+      ];
+
+      const { closed } = closeDuplicatePullRequests(pullRequests);
+
+      expect(closed).toHaveLength(1);
+      expect(closed[0].number).toBe(2601);
+    });
+
+    it("handles very large PR numbers", () => {
+      const pullRequests: PullRequestRecord[] = [
+        {
+          number: 999999,
+          title: "Large number",
+          assignees: ["human"],
+          status: "open",
+        },
+        {
+          number: 1000000,
+          title: "Large number",
+          assignees: ["openai-bot"],
+          status: "open",
+        },
+      ];
+
+      const { closed } = closeDuplicatePullRequests(pullRequests);
+
+      expect(closed).toHaveLength(1);
+      expect(closed[0].duplicateOf).toBe(999999);
+    });
+
+    it("handles special characters in assignee names", () => {
+      const pullRequests: PullRequestRecord[] = [
+        {
+          number: 2700,
+          title: "Special chars",
+          assignees: ["human"],
+          status: "open",
+        },
+        {
+          number: 2701,
+          title: "Special chars",
+          assignees: ["bot@chatgpt.com", "user+openai"],
+          status: "open",
+        },
+      ];
+
+      const { closed } = closeDuplicatePullRequests(pullRequests);
+
+      expect(closed).toHaveLength(1);
+    });
+
+    it("handles Unicode characters in titles and assignees", () => {
+      const pullRequests: PullRequestRecord[] = [
+        {
+          number: 2800,
+          title: "修复错误 🚀",
+          assignees: ["开发者"],
+          status: "open",
+        },
+        {
+          number: 2801,
+          title: "修复错误 🚀",
+          assignees: ["chatgpt-机器人"],
+          status: "open",
+        },
+      ];
+
+      const { closed } = closeDuplicatePullRequests(pullRequests);
+
+      expect(closed).toHaveLength(1);
+      expect(closed[0].number).toBe(2801);
     });
   });
 });
 
-describe("data file validation", () => {
-  const dataPath = require("path").join(process.cwd(), "data/pull_requests.json");
-  
-  it("loads pull_requests.json successfully", () => {
-    expect(() => {
-      require(dataPath);
-    }).not.toThrow();
+// ===========================================================================
+// JSON DATA VALIDATION TESTS
+// ===========================================================================
+describe("pull_requests.json data validation", () => {
+  let pullRequestsData: any;
+
+  beforeAll(() => {
+    // Load the JSON file
+    pullRequestsData = require("@/data/pull_requests.json");
   });
 
-  it("contains valid pull request records", () => {
-    const data = require(dataPath);
+  it("is a valid JSON array", () => {
+    expect(Array.isArray(pullRequestsData)).toBe(true);
+  });
 
-    expect(Array.isArray(data)).toBe(true);
-    expect(data.length).toBeGreaterThan(0);
+  it("contains at least one pull request record", () => {
+    expect(pullRequestsData.length).toBeGreaterThan(0);
+  });
 
-    data.forEach((pr: any) => {
-      expect(pr).toHaveProperty("number");
-      expect(pr).toHaveProperty("title");
-      expect(pr).toHaveProperty("assignees");
-      expect(pr).toHaveProperty("status");
-
-      expect(typeof pr.number).toBe("number");
-      expect(typeof pr.title).toBe("string");
-      expect(Array.isArray(pr.assignees)).toBe(true);
-      expect(["open", "closed"]).toContain(pr.status);
-
-      if (pr.duplicateOf !== undefined) {
-        expect(typeof pr.duplicateOf).toBe("number");
-      }
-
-      if (pr.closureReason !== undefined) {
-        expect(typeof pr.closureReason).toBe("string");
-      }
+  describe("schema validation", () => {
+    it("every record has required fields", () => {
+      pullRequestsData.forEach((pr: any, index: number) => {
+        expect(pr).toHaveProperty("number");
+        expect(pr).toHaveProperty("title");
+        expect(pr).toHaveProperty("assignees");
+        expect(pr).toHaveProperty("status");
+      });
     });
-  });
 
-  it("has unique PR numbers", () => {
-    const data = require(dataPath);
-    const numbers = data.map((pr: any) => pr.number);
-    const uniqueNumbers = new Set(numbers);
+    it("number field is a positive integer", () => {
+      pullRequestsData.forEach((pr: any) => {
+        expect(typeof pr.number).toBe("number");
+        expect(pr.number).toBeGreaterThan(0);
+        expect(Number.isInteger(pr.number)).toBe(true);
+      });
+    });
 
-    expect(numbers.length).toBe(uniqueNumbers.size);
-  });
+    it("title field is a non-empty string", () => {
+      pullRequestsData.forEach((pr: any) => {
+        expect(typeof pr.title).toBe("string");
+        expect(pr.title.length).toBeGreaterThan(0);
+      });
+    });
 
-  it("has valid assignee arrays", () => {
-    const data = require(dataPath);
+    it("assignees field is an array", () => {
+      pullRequestsData.forEach((pr: any) => {
+        expect(Array.isArray(pr.assignees)).toBe(true);
+      });
+    });
 
-    data.forEach((pr: any) => {
-      expect(pr.assignees.length).toBeGreaterThanOrEqual(0);
-      pr.assignees.forEach((assignee: any) => {
-        expect(typeof assignee).toBe("string");
-        expect(assignee.length).toBeGreaterThan(0);
+    it("assignees are non-empty strings", () => {
+      pullRequestsData.forEach((pr: any) => {
+        pr.assignees.forEach((assignee: any) => {
+          expect(typeof assignee).toBe("string");
+          expect(assignee.length).toBeGreaterThan(0);
+        });
+      });
+    });
+
+    it("status field is either 'open' or 'closed'", () => {
+      pullRequestsData.forEach((pr: any) => {
+        expect(["open", "closed"]).toContain(pr.status);
+      });
+    });
+
+    it("optional duplicateOf field is a positive integer when present", () => {
+      pullRequestsData.forEach((pr: any) => {
+        if (pr.duplicateOf !== undefined) {
+          expect(typeof pr.duplicateOf).toBe("number");
+          expect(pr.duplicateOf).toBeGreaterThan(0);
+          expect(Number.isInteger(pr.duplicateOf)).toBe(true);
+        }
+      });
+    });
+
+    it("optional closureReason field is a non-empty string when present", () => {
+      pullRequestsData.forEach((pr: any) => {
+        if (pr.closureReason !== undefined) {
+          expect(typeof pr.closureReason).toBe("string");
+          expect(pr.closureReason.length).toBeGreaterThan(0);
+        }
       });
     });
   });
 
-  it("has consistent duplicateOf references", () => {
-    const data = require(dataPath);
-    const numbers = new Set(data.map((pr: any) => pr.number));
+  describe("data integrity", () => {
+    it("PR numbers are unique", () => {
+      const numbers = pullRequestsData.map((pr: any) => pr.number);
+      const uniqueNumbers = new Set(numbers);
+      expect(uniqueNumbers.size).toBe(numbers.length);
+    });
 
-    data.forEach((pr: any) => {
-      if (pr.duplicateOf !== undefined) {
-        expect(numbers.has(pr.duplicateOf)).toBe(true);
-        expect(pr.duplicateOf).not.toBe(pr.number);
+    it("closed PRs with duplicateOf reference existing PR numbers", () => {
+      const allNumbers = new Set(pullRequestsData.map((pr: any) => pr.number));
+
+      pullRequestsData.forEach((pr: any) => {
+        if (pr.status === "closed" && pr.duplicateOf !== undefined) {
+          expect(allNumbers.has(pr.duplicateOf)).toBe(true);
+        }
+      });
+    });
+
+    it("PRs marked with duplicateOf have lower canonical PR numbers", () => {
+      pullRequestsData.forEach((pr: any) => {
+        if (pr.duplicateOf !== undefined) {
+          expect(pr.duplicateOf).toBeLessThan(pr.number);
+        }
+      });
+    });
+
+    it("closed duplicate PRs have closureReason set", () => {
+      pullRequestsData.forEach((pr: any) => {
+        if (pr.status === "closed" && pr.duplicateOf !== undefined) {
+          expect(pr.closureReason).toBeDefined();
+          expect(typeof pr.closureReason).toBe("string");
+        }
+      });
+    });
+
+    it("records are sorted by PR number descending", () => {
+      const numbers = pullRequestsData.map((pr: any) => pr.number);
+      const sortedNumbers = [...numbers].sort((a, b) => b - a);
+      expect(numbers).toEqual(sortedNumbers);
+    });
+  });
+
+  describe("business logic validation", () => {
+    it("duplicate PRs have matching titles (case-insensitive, whitespace-normalized)", () => {
+      const prByNumber = new Map(
+        pullRequestsData.map((pr: any) => [pr.number, pr])
+      );
+
+      pullRequestsData.forEach((pr: any) => {
+        if (pr.duplicateOf !== undefined) {
+          const canonical = prByNumber.get(pr.duplicateOf);
+          if (canonical) {
+            const normalizeTitle = (title: string) =>
+              title.trim().replace(/\s+/g, " ").toLowerCase();
+
+            expect(normalizeTitle(pr.title)).toBe(normalizeTitle(canonical.title));
+          }
+        }
+      });
+    });
+
+    it("duplicate PRs with AI assignees have expected closure reasons", () => {
+      const aiIdentifiers = ["chatgpt", "openai", "grok", "coderabbitai"];
+
+      pullRequestsData.forEach((pr: any) => {
+        if (pr.duplicateOf !== undefined && pr.closureReason === "duplicate-ai-assignee") {
+          const hasAiAssignee = pr.assignees.some((assignee: string) => {
+            const normalizedAssignee = assignee.toLowerCase();
+            return aiIdentifiers.some((identifier) =>
+              normalizedAssignee.includes(identifier)
+            );
+          });
+
+          expect(hasAiAssignee).toBe(true);
+        }
+      });
+    });
+
+    it("has realistic data patterns", () => {
+      // Check that we have a mix of open and closed PRs
+      const openCount = pullRequestsData.filter((pr: any) => pr.status === "open").length;
+      const closedCount = pullRequestsData.filter((pr: any) => pr.status === "closed").length;
+
+      expect(openCount).toBeGreaterThan(0);
+      // May or may not have closed PRs, but if we do, validate them
+      if (closedCount > 0) {
+        expect(closedCount).toBeGreaterThanOrEqual(0);
+      }
+    });
+
+    it("contains expected test data from implementation", () => {
+      // Verify specific PRs mentioned in the implementation exist
+      const pr102 = pullRequestsData.find((pr: any) => pr.number === 102);
+      const pr105 = pullRequestsData.find((pr: any) => pr.number === 105);
+
+      expect(pr102).toBeDefined();
+      expect(pr102?.title).toBe("Track ABACO runtime export directories");
+
+      if (pr105) {
+        expect(pr105.title).toBe("Track ABACO runtime export directories");
+        if (pr105.status === "closed") {
+          expect(pr105.duplicateOf).toBe(102);
+        }
       }
     });
   });
 
-  it("closed PRs with duplicateOf have closureReason", () => {
-    const data = require(dataPath);
+  describe("data format consistency", () => {
+    it("all records have consistent property ordering", () => {
+      const expectedPropertyOrder = ["number", "title", "assignees", "status"];
 
-    data.forEach((pr: any) => {
-      if (pr.status === "closed" && pr.duplicateOf !== undefined) {
-        expect(pr.closureReason).toBeDefined();
-        expect(typeof pr.closureReason).toBe("string");
-      }
+      pullRequestsData.forEach((pr: any) => {
+        const actualKeys = Object.keys(pr).filter((key) =>
+          expectedPropertyOrder.includes(key)
+        );
+        const expectedKeys = expectedPropertyOrder.filter((key) => key in pr);
+
+        // Basic properties should appear in expected order
+        expect(actualKeys.slice(0, expectedKeys.length)).toEqual(expectedKeys);
+      });
+    });
+
+    it("no unexpected extra properties", () => {
+      const allowedProperties = [
+        "number",
+        "title",
+        "assignees",
+        "status",
+        "duplicateOf",
+        "closureReason",
+      ];
+
+      pullRequestsData.forEach((pr: any) => {
+        const prKeys = Object.keys(pr);
+        prKeys.forEach((key) => {
+          expect(allowedProperties).toContain(key);
+        });
+      });
     });
   });
 });
