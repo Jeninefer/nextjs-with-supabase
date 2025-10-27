@@ -152,12 +152,10 @@ describe("pull_requests.json data validation", () => {
   describe("Specific data integrity checks", () => {
     it("should have the expected PR #105 with correct metadata", () => {
       const pr105 = pullRequestsData.find((pr) => pr.number === 105);
-      
-      if (pr105) {
-        expect(pr105.status).toBe("closed");
-        expect(pr105.duplicateOf).toBeDefined();
-        expect(pr105.closureReason).toBe("duplicate-ai-assignee");
-      }
+      expect(pr105).toBeDefined();
+      expect(pr105!.status).toBe("closed");
+      expect(pr105!.duplicateOf).toBeDefined();
+      expect(pr105!.closureReason).toBe("duplicate-ai-assignee");
     });
 
     it("should not have PRs with duplicate titles unless intentional", () => {
