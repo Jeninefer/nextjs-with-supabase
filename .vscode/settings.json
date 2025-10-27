@@ -4,6 +4,24 @@
       "javascriptreact",
       "typescript"
     ],
-    "remote.autoForwardPortsFallback": 0
+    "remote.autoForwardPortsFallback": 0,
+    "python.analysis.extraPaths": [
+      "/home/codespace/.vscode-remote/extensions/ms-security.ms-sentinel-1.0.0/python"
+    ],
+    "sonarlint.connectedMode.project": {
+      "connectionId": "jeninefer",
+      "projectKey": "Jeninefer_nextjs-with-supabase"
+    },
+    "editor.formatOnSave": true,
+    "files.autoSave": "onWindowChange",
+    "editor.defaultFormatter": "ms-dynamics-smb.al",
+    "editor.wordWrap": "on",
+    "editor.mouseWheelZoom": true,
+    "editor.formatOnPaste": true,
+    "editor.accessibilitySupport": "on",
+    "editor.aiStats.enabled": true,
+    "editor.allowVariableFontsInAccessibilityMode": true,
+    "editor.bracketPairColorization.independentColorPoolPerBracketType": true,
+    "editor.codeActions.triggerOnFocusChange": true
   }
   
