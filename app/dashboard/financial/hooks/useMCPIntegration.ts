@@ -27,7 +27,7 @@ const mockMCPClient = {
   },
   searchFinancialData: async (query: string) => ({ success: true, data: `Mock analysis for: ${query}` }),
   fetchMarketData: async (url: string) => ({ success: true, data: `Mock data from: ${url}` }),
-  storeMemory: async (key: string, value: any) => ({ success: true, data: `Stored ${key}` }),
+  storeMemory: async (key: string, value: unknown) => ({ success: true, data: `Stored ${key}` }),
   getMemory: async (key: string) => ({ success: true, data: `Retrieved ${key}` }),
   disconnect: async () => console.log('Mock: Disconnected')
 };
@@ -121,7 +121,7 @@ export function useMCPIntegration() {
     return await mockMCPClient.fetchMarketData(source);
   }, [checkServer]);
 
-  const storeAnalysisResult = useCallback(async (analysisId: string, result: any) => {
+  const storeAnalysisResult = useCallback(async (analysisId: string, result: unknown) => {
     const serverCheck = checkServer('memory');
     if (serverCheck) return serverCheck;
     return await mockMCPClient.storeMemory(`analysis_${analysisId}`, result);
@@ -130,7 +130,7 @@ export function useMCPIntegration() {
   const getStoredAnalysis = useCallback(async (analysisId: string) => {
     const serverCheck = checkServer('memory');
     if (serverCheck) return serverCheck;
-    return mockMCPClient.getMemory(`analysis_${analysisId}`);
+    return await mockMCPClient.getMemory(`analysis_${analysisId}`);
   }, [checkServer]);
 
   useEffect(() => {
