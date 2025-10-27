@@ -73,7 +73,7 @@ The file key is: `nuVKwuPuLS7VmLFvqzOX1G`
 ### OpenAI Usage Examples
 
 ```javascript
-import { openai } from './api/openai';
+import { openai } from '@/api/openai';
 
 // Simple completion
 const response = await openai.complete('Explain quantum computing');
@@ -119,7 +119,7 @@ const slideContent = await openai.generateSlideContent('AI in Healthcare', 1, 10
 ### xAI Usage Examples
 
 ```javascript
-import { xai } from './api/xai';
+import { xai } from '@/api/xai';
 
 // Simple completion
 const response = await xai.complete('What is happening in tech today?');
@@ -159,7 +159,7 @@ https://api.x.ai/v1/chat/completions
 ### Figma Usage
 
 ```javascript
-import { figma } from './api/figma';
+import { figma } from '@/api/figma';
 
 // Get entire file
 const file = await figma.getFile('nuVKwuPuLS7VmLFvqzOX1G');
@@ -194,8 +194,8 @@ https://api.figma.com/v1/
 ### Example 1: AI-Powered Design Analysis
 
 ```javascript
-import { figma } from './api/figma';
-import { openai } from './api/openai';
+import { figma } from '@/api/figma';
+import { openai } from '@/api/openai';
 
 async function analyzeDesign() {
   const file = await figma.getFile('nuVKwuPuLS7VmLFvqzOX1G');
@@ -210,8 +210,8 @@ async function analyzeDesign() {
 ### Example 2: Generate Presentation Content
 
 ```javascript
-import { openai } from './api/openai';
-import { xai } from './api/xai';
+import { openai } from '@/api/openai';
+import { xai } from '@/api/xai';
 
 async function generatePresentation(topic, slideCount = 10) {
   const slides = [];
@@ -226,7 +226,7 @@ async function generatePresentation(topic, slideCount = 10) {
 ### Example 3: Figma to PowerPoint
 
 ```javascript
-import { figma } from './api/figma';
+import { figma } from '@/api/figma';
 
 async function exportFigmaSlides(fileKey) {
   const file = await figma.getFile(fileKey);
