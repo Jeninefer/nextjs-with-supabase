@@ -3,10 +3,11 @@ import type { Config } from "tailwindcss";
 const config: Config = {
   darkMode: ["class"],
   content: [
-    "./pages/**/*.{ts,tsx}",
-    "./components/**/*.{ts,tsx}",
     "./app/**/*.{ts,tsx}",
-    "./src/**/*.{ts,tsx}",
+    "./components/**/*.{ts,tsx}",
+    "./lib/**/*.{ts,tsx}",
+    "./types/**/*.{ts,tsx}",
+    "./scripts/**/*.{ts,tsx}",
   ],
   prefix: "",
   theme: {
@@ -184,10 +185,7 @@ const config: Config = {
   },
   plugins: [
     require("tailwindcss-animate"),
-    function ({ addUtilities, theme }: { addUtilities: any; theme: any }) {
-      // Access colors directly from theme instead of using internal utilities
-      const colors = theme('colors');
-
+    function ({ addUtilities }: { addUtilities: any }) {
       // Your custom utilities here
       const newUtilities = {
         '.text-balance': {

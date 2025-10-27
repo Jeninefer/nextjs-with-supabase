@@ -5,8 +5,7 @@ import { cookies } from "next/headers";
  * Ensure cookieStoreRef is the actual cookie store object (not a Promise)
  */
 const resolveCookieStore = async (maybePromise: unknown) => {
-  // If it's a Promise, await it; otherwise return as-is
-  if (maybePromise && typeof (maybePromise as Record<string, unknown>).then === "function") {
+  if (maybePromise instanceof Promise) {
     return await maybePromise;
   }
   return maybePromise;
@@ -43,7 +42,10 @@ async function createCookiesAdapter(cookieSource: unknown) {
 
         // If cookieStore has a write method with a different name or is readonly,
         // just swallow the call (this happens when called from Server Components).
-      } catch {
+      } catch (error) {
+        if (process.env.NODE_ENV === "development") {
+          console.warn("[Supabase] Failed to set cookies (likely from Server Component):", error);
+        }
         // The `setAll` method may be called from a Server Component where writing cookies isn't allowed.
         // Ignore safely.
       }
@@ -57,12 +59,21 @@ async function createCookiesAdapter(cookieSource: unknown) {
  * it.
  */
 export async function createClient() {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+  if (!supabaseUrl || !supabaseAnonKey) {
+    throw new Error(
+      "Missing required Supabase environment variables. Please set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY.",
+    );
+  }
+
   const cookieStore = await cookies();
   const cookiesAdapter = await createCookiesAdapter(cookieStore);
 
   return createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_OR_ANON_KEY!,
+    supabaseUrl,
+    supabaseAnonKey,
     {
       cookies: cookiesAdapter,
     },

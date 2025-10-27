@@ -20,9 +20,10 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     "ignoreDeprecations": "5.0",
+    "baseUrl": ".",
     "paths": {
       "@/*": [
-        "./src/*"
+        "./*"
       ]
     },
     "allowJs": true,
@@ -35,15 +36,22 @@
     ]
   },
   "include": [
-    "src",
+    "app",
+    "components",
+    "lib",
+    "types",
+    "scripts",
+    "next-env.d.ts",
+    "middleware.ts",
+    "tailwind.config.ts",
+    "next.config.ts",
+    "postcss.config.js",
+    "postcss.config.mjs",
+    "colors.ts",
     ".next/types/**/*.ts"
   ],
-  "references": [
-    {
-      "path": "./tsconfig.node.json"
-    }
-  ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "supabase/functions"
   ]
 }
