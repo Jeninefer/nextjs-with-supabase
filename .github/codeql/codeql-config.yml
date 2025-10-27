@@ -1,0 +1,20 @@
+name: "Next.js Supabase CodeQL"
+paths:
+  - app
+  - components
+  - lib
+  - scripts
+  - types
+  - middleware.ts
+  - tailwind.config.ts
+paths-ignore:
+  - node_modules
+  - .next
+  - dist
+  - build
+  - coverage
+  - supabase
+  - abaco_runtime/exports
+  - docs
+  - "**/*.md"
+  - "**/*.mdx"
