@@ -358,5 +358,5 @@ For API-specific issues:
 
 ---
 
-**Last Updated:** YYYY-MM-DD  
+**Last Updated:** 2025-10-27  
 **⚠️ Remember to keep your API keys secure and never commit them to version control!**
