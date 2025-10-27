@@ -158,20 +158,21 @@ describe("pull_requests.json data validation", () => {
       expect(pr105!.closureReason).toBe("duplicate-ai-assignee");
     });
 
-    it("should not have PRs with duplicate titles unless intentional", () => {
-      const titleCounts = new Map<string, number>();
-      
-      pullRequestsData.forEach((pr) => {
-        const normalizedTitle = pr.title.trim().toLowerCase();
-        titleCounts.set(normalizedTitle, (titleCounts.get(normalizedTitle) || 0) + 1);
-      });
-      
-      const duplicateTitles = Array.from(titleCounts.entries())
-        .filter(([_, count]) => count > 1);
-      
-      expect(duplicateTitles).toBeDefined();
+    it("duplicate titles must have at least one closed AI-assigned duplicate (has duplicateOf)", () => {
+      const normalize = (s: string) => s.trim().replace(/\s+/g, " ").toLowerCase();
+      const groups = new Map<string, typeof pullRequestsData>();
+      for (const pr of pullRequestsData) {
+        const key = normalize(pr.title);
+        const arr = groups.get(key) ?? [];
+        arr.push(pr);
+        groups.set(key, arr);
+      }
+      for (const [, prs] of groups) {
+        if (prs.length > 1) {
+          expect(prs.some((p) => p.status === "closed" && typeof p.duplicateOf === "number")).toBe(true);
+        }
+      }
     });
-  });
 
   describe("Security and sanitization", () => {
     it("should not contain script tags in titles", () => {
