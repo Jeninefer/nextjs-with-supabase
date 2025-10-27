@@ -293,7 +293,7 @@ gcloud run deploy abaco-platform \
     --memory 2Gi \
     --cpu 2 \
     --max-instances 10 \
-    --set-env-vars "NEXT_PUBLIC_SUPABASE_URL=your-url,NEXT_PUBLIC_SUPABASE_PUBLISHABLE_OR_ANON_KEY=your-key"
+    --set-env-vars "NEXT_PUBLIC_SUPABASE_URL=your-url,NEXT_PUBLIC_SUPABASE_ANON_KEY=your-key"
 ```
 
 ### Deploy with Docker
