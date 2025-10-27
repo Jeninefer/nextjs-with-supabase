@@ -75,9 +75,10 @@ export async function GET(request: Request) {
     });
   } catch (err) {
     const totalMs = Date.now() - startTotal;
-    const errorMessage = err instanceof Error ? err.message : String(err);
+    // Log full error details server-side for debugging
+    console.error("Unexpected error in test-supabase endpoint:", err);
     const body = {
-      error: errorMessage,
+      error: "An unexpected error occurred.",
       meta: { timings: { total_request_ms: totalMs } },
     };
 
