@@ -1,0 +1,15 @@
+{
+    "$schema": "https://openapi.vercel.sh/vercel.json",
+    "rewrites": [
+        {
+            "source": "/feedback/:id",
+            "destination": "/api/feedback/:id"
+        }
+    ],
+    "functions": {
+        "pages/api/**/*.js": {
+            "maxDuration": 30,
+            "memory": 1024
+        }
+    }
+}

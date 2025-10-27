@@ -29,7 +29,7 @@ class FinancialDataGenerator:
             logger.info(f"Generating financial data for {n_customers:,} customers")
 
             # Basic customer information
-            data = {
+            customer_data = {
                 "customer_id": [f"CUST_{i:06d}" for i in range(1, n_customers + 1)],
                 "account_balance": self._generate_account_balances(n_customers),
                 "credit_limit": self._generate_credit_limits(n_customers),
@@ -53,7 +53,7 @@ class FinancialDataGenerator:
                 ),
             }
 
-            df = pd.DataFrame(data)
+            df = pd.DataFrame(customer_data)
 
             # Calculate derived financial metrics
             df = self._calculate_financial_metrics(df)
@@ -152,7 +152,7 @@ class FinancialAnalyzer:
     def calculate_portfolio_metrics(df: pd.DataFrame) -> Dict:
         """Calculate comprehensive portfolio metrics"""
         try:
-            metrics = {
+            portfolio_metrics = {
                 "total_customers": len(df),
                 "total_assets": float(df["account_balance"].sum()),
                 "average_balance": float(df["account_balance"].mean()),
@@ -164,7 +164,7 @@ class FinancialAnalyzer:
                 "average_utilization": float(df["utilization_ratio"].mean()),
                 "total_lifetime_value": float(df["lifetime_value"].sum()),
             }
-            return metrics
+            return portfolio_metrics
 
         except Exception as e:
             logger.error(f"❌ Error calculating portfolio metrics: {e}")
@@ -173,25 +173,25 @@ class FinancialAnalyzer:
     @staticmethod
     def risk_analysis(df: pd.DataFrame) -> Dict:
         """Perform comprehensive risk analysis"""
-        risk_metrics = {}
+        analysis_metrics = {}
 
         # Risk distribution
         risk_dist = df["risk_category"].value_counts(normalize=True)
-        risk_metrics["risk_distribution"] = risk_dist.to_dict()
+        analysis_metrics["risk_distribution"] = risk_dist.to_dict()
 
         # High-risk indicators
         high_utilization = len(df[df["utilization_ratio"] > 0.8])
         high_debt_income = len(df[df["debt_to_income"] > 0.4])
         low_credit_score = len(df[df["credit_score"] < 600])
 
-        risk_metrics["high_risk_indicators"] = {
+        analysis_metrics["high_risk_indicators"] = {
             "high_utilization_count": high_utilization,
             "high_debt_income_count": high_debt_income,
             "low_credit_score_count": low_credit_score,
         }
 
         # Risk score statistics
-        risk_metrics["risk_score_stats"] = {
+        analysis_metrics["risk_score_stats"] = {
             "mean": df["risk_score"].mean(),
             "median": df["risk_score"].median(),
             "std": df["risk_score"].std(),
@@ -199,12 +199,12 @@ class FinancialAnalyzer:
             "max": df["risk_score"].max(),
         }
 
-        return risk_metrics
+        return analysis_metrics
 
     @staticmethod
     def profitability_analysis(df: pd.DataFrame) -> Dict:
         """Analyze customer profitability"""
-        profit_metrics = {
+        profitability_metrics = {
             "total_profit_potential": df["profit_potential"].sum(),
             "average_profit_per_customer": df["profit_potential"].mean(),
             "top_10_percent_customers": df.nlargest(
@@ -217,10 +217,10 @@ class FinancialAnalyzer:
             .sum()
             .to_dict(),
         }
-        return profit_metrics
+        return profitability_metrics
 
 
-def export_analysis_results(df: pd.DataFrame, metrics: Dict, filename: str) -> str:
+def export_analysis_results(df: pd.DataFrame, analysis_metrics: Dict, output_filename: str) -> str:
     """Export analysis results to files"""
     try:
         from abaco_config import EXPORTS_DIR
@@ -228,15 +228,15 @@ def export_analysis_results(df: pd.DataFrame, metrics: Dict, filename: str) -> s
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
 
         # Export main dataset
-        csv_path = EXPORTS_DIR / f"{filename}_{timestamp}.csv"
+        csv_path = EXPORTS_DIR / f"{output_filename}_{timestamp}.csv"
         df.to_csv(csv_path, index=False)
 
         # Export metrics summary
-        metrics_path = EXPORTS_DIR / f"{filename}_metrics_{timestamp}.json"
+        metrics_path = EXPORTS_DIR / f"{output_filename}_metrics_{timestamp}.json"
         import json
 
-        with open(metrics_path, "w") as f:
-            json.dump(metrics, f, indent=2, default=str)
+        with open(metrics_path, "w", encoding="utf-8") as f:
+            json.dump(analysis_metrics, f, indent=2, default=str)
 
         logger.info(f"✅ Analysis results exported to {EXPORTS_DIR}")
         return str(csv_path)
@@ -250,11 +250,11 @@ if __name__ == "__main__":
     # Example usage
     try:
         generator = FinancialDataGenerator()
-        data = generator.generate_customer_data(500)
+        customer_data = generator.generate_customer_data(500)
 
         analyzer = FinancialAnalyzer()
-        portfolio_metrics = analyzer.calculate_portfolio_metrics(data)
-        risk_metrics = analyzer.risk_analysis(data)
+        portfolio_metrics = analyzer.calculate_portfolio_metrics(customer_data)
+        risk_analysis_results = analyzer.risk_analysis(customer_data)
 
         print("📊 Sample Analysis Results:")
         print(f"Total Customers: {portfolio_metrics['total_customers']:,}")
