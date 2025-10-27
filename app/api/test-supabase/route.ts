@@ -23,10 +23,12 @@ export async function GET() {
       timestamp: new Date().toISOString(),
     });
   } catch (error) {
+    console.error("Failed to complete Supabase connectivity test", error);
+
     return NextResponse.json(
       {
         status: "error",
-        message: error instanceof Error ? error.message : "Unknown error",
+        message: "Internal server error",
         timestamp: new Date().toISOString(),
       },
       { status: 500 }
