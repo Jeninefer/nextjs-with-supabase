@@ -1,120 +1,3 @@
-import {
-  closeDuplicatePullRequests,
-  PullRequestRecord,
-  DEFAULT_AI_IDENTIFIERS,
-} from "@/lib/maintenance/pullRequestMaintenance";
-
-describe("closeDuplicatePullRequests", () => {
-  const basePullRequests: PullRequestRecord[] = [
-    {
-      number: 102,
-      title: "Track ABACO runtime export directories",
-      assignees: ["Jeninefer", "coderabbitai", "vercel"],
-      status: "open",
-    },
-    {
-      number: 103,
-      title: "Validate Supabase environment variables",
-      assignees: ["Jeninefer", "coderabbitai", "vercel"],
-      status: "open",
-    },
-    {
-      number: 104,
-      title: "Clarify status of ingestion pipeline in README",
-      assignees: ["Jeninefer", "coderabbitai", "vercel"],
-      status: "open",
-    },
-  ];
-
-  it("closes duplicate pull requests that are assigned to AI assistants", () => {
-    const pullRequests: PullRequestRecord[] = [
-      ...basePullRequests,
-      {
-        number: 105,
-        title: "Track ABACO runtime export directories",
-        assignees: ["Jeninefer", "coderabbitai", "chatgpt-codex-connector"],
-        status: "open",
-      },
-    ];
-
-    const { updated, closed, summary } = closeDuplicatePullRequests(pullRequests);
-
-    expect(summary.closedCount).toBe(1);
-    expect(summary.deduplicatedTitles).toEqual([
-      "track abaco runtime export directories",
-    ]);
-    expect(closed.map((pr) => pr.number)).toEqual([105]);
-
-    const duplicate = updated.find((pr) => pr.number === 105);
-    expect(duplicate).toBeDefined();
-    expect(duplicate?.status).toBe("closed");
-    expect(duplicate?.duplicateOf).toBe(102);
-    expect(duplicate?.closureReason).toBe("duplicate-ai-assignee");
-
-    const canonical = updated.find((pr) => pr.number === 102);
-    expect(canonical?.status).toBe("open");
-  });
-
-  it("does not mutate the original pull request collection", () => {
-    const pullRequests: PullRequestRecord[] = [
-      ...basePullRequests,
-      {
-        number: 105,
-        title: "Track ABACO runtime export directories",
-        assignees: ["Jeninefer", "coderabbitai", "chatgpt-codex-connector"],
-        status: "open",
-      },
-    ];
-
-    const originalAssignees = pullRequests[3].assignees;
-
-    const { updated } = closeDuplicatePullRequests(pullRequests);
-
-    expect(pullRequests[3].status).toBe("open");
-    expect(pullRequests[3].duplicateOf).toBeUndefined();
-    expect(updated[3].assignees).not.toBe(originalAssignees);
-  });
-
-  it("leaves duplicates open when none of the assignees match the AI identifier list", () => {
-    const pullRequests: PullRequestRecord[] = [
-      ...basePullRequests,
-      {
-        number: 105,
-        title: "Track ABACO runtime export directories",
-        assignees: ["Jeninefer", "coderabbitai", "automation-bot"],
-        status: "open",
-      },
-    ];
-
-    const { updated, closed, summary } = closeDuplicatePullRequests(pullRequests, {
-      aiIdentifiers: ["chatgpt"],
-    });
-
-    expect(closed).toHaveLength(0);
-    expect(summary.closedCount).toBe(0);
-
-    const duplicate = updated.find((pr) => pr.number === 105);
-    expect(duplicate?.status).toBe("open");
-    expect(duplicate?.duplicateOf).toBeUndefined();
-  });
-
-  it("supports extending the AI identifier list", () => {
-    const pullRequests: PullRequestRecord[] = [
-      ...basePullRequests,
-      {
-        number: 105,
-        title: "Track ABACO runtime export directories",
-        assignees: ["Jeninefer", "openai-release-bot"],
-        status: "open",
-      },
-    ];
-
-    const { closed } = closeDuplicatePullRequests(pullRequests, {
-      aiIdentifiers: [...DEFAULT_AI_IDENTIFIERS, "release-bot"],
-    });
-
-    expect(closed.map((pr) => pr.number)).toEqual([105]);
-  });
 
   describe("edge cases", () => {
     it("handles empty pull request array", () => {
@@ -179,6 +62,7 @@ describe("closeDuplicatePullRequests", () => {
       expect(summary.closedCount).toBe(3);
       expect(closed.map((pr) => pr.number)).toEqual([101, 102, 103]);
 
+      // All duplicates should reference the canonical (100)
       const dup1 = updated.find((pr) => pr.number === 101);
       const dup2 = updated.find((pr) => pr.number === 102);
       const dup3 = updated.find((pr) => pr.number === 103);
@@ -187,6 +71,7 @@ describe("closeDuplicatePullRequests", () => {
       expect(dup2?.duplicateOf).toBe(100);
       expect(dup3?.duplicateOf).toBe(100);
 
+      // Canonical should remain open
       const canonical = updated.find((pr) => pr.number === 100);
       expect(canonical?.status).toBe("open");
       expect(canonical?.duplicateOf).toBeUndefined();
@@ -233,6 +118,7 @@ describe("closeDuplicatePullRequests", () => {
 
       const { closed, summary } = closeDuplicatePullRequests(pullRequests);
 
+      // No AI assignees, so nothing should be closed
       expect(closed).toHaveLength(0);
       expect(summary.closedCount).toBe(0);
     });
@@ -261,10 +147,12 @@ describe("closeDuplicatePullRequests", () => {
 
       const { updated, closed } = closeDuplicatePullRequests(pullRequests);
 
+      // PR 101 (lowest number) should be canonical
       const canonical = updated.find((pr) => pr.number === 101);
       expect(canonical?.status).toBe("open");
       expect(canonical?.duplicateOf).toBeUndefined();
 
+      // PR 103 and 105 should be closed
       expect(closed.map((pr) => pr.number).sort((a, b) => a - b)).toEqual([103, 105]);
       expect(closed.every((pr) => pr.duplicateOf === 101)).toBe(true);
     });
@@ -534,6 +422,7 @@ describe("closeDuplicatePullRequests", () => {
         aiIdentifiers: [],
       });
 
+      // No AI identifiers, so nothing should be closed
       expect(closed).toHaveLength(0);
     });
 
@@ -599,7 +488,7 @@ describe("closeDuplicatePullRequests", () => {
           title: "Same",
           assignees: ["chatgpt"],
           status: "open",
-          duplicateOf: 999,
+          duplicateOf: 999, // Pre-existing value
         },
       ];
 
@@ -717,6 +606,7 @@ describe("closeDuplicatePullRequests", () => {
 
       const { closed } = closeDuplicatePullRequests(pullRequests);
 
+      // Should be closed because it has at least one AI assignee
       expect(closed).toHaveLength(1);
       expect(closed[0].number).toBe(101);
     });
@@ -745,6 +635,7 @@ describe("closeDuplicatePullRequests", () => {
 
       const { summary } = closeDuplicatePullRequests(pullRequests);
 
+      // Multiple duplicates of same title, but only one entry in deduplicatedTitles
       expect(summary.deduplicatedTitles).toEqual(["feature x"]);
       expect(summary.closedCount).toBe(2);
     });
@@ -777,6 +668,7 @@ describe("closeDuplicatePullRequests", () => {
     it("handles large number of pull requests efficiently", () => {
       const pullRequests: PullRequestRecord[] = [];
       
+      // Create 100 PRs with 10 duplicate groups
       for (let i = 0; i < 100; i++) {
         const titleGroup = Math.floor(i / 10);
         pullRequests.push({
@@ -790,7 +682,7 @@ describe("closeDuplicatePullRequests", () => {
       const { updated, closed, summary } = closeDuplicatePullRequests(pullRequests);
 
       expect(updated).toHaveLength(100);
-      expect(closed).toHaveLength(90);
+      expect(closed).toHaveLength(90); // 90 AI-assigned duplicates
       expect(summary.closedCount).toBe(90);
       expect(summary.deduplicatedTitles).toHaveLength(10);
     });
@@ -935,7 +827,7 @@ describe("data file validation", () => {
     expect(Array.isArray(data)).toBe(true);
     expect(data.length).toBeGreaterThan(0);
 
-    data.forEach((pr: any) => {
+    data.forEach((pr: any, index: number) => {
       expect(pr).toHaveProperty("number");
       expect(pr).toHaveProperty("title");
       expect(pr).toHaveProperty("assignees");
@@ -982,7 +874,9 @@ describe("data file validation", () => {
 
     data.forEach((pr: any) => {
       if (pr.duplicateOf !== undefined) {
+        // duplicateOf should reference an existing PR number
         expect(numbers.has(pr.duplicateOf)).toBe(true);
+        // duplicateOf should not reference itself
         expect(pr.duplicateOf).not.toBe(pr.number);
       }
     });
@@ -999,3 +893,10 @@ describe("data file validation", () => {
     });
   });
 });
+NEWTESTS
+
+# Insert the new tests before the closing of the file (after line 118)
+sed -i -e '118r '"$tmp" __tests__/lib/pull-request-maintenance.test.ts
+rm -f "$tmp"
+
+echo "Successfully added comprehensive unit tests to __tests__/lib/pull-request-maintenance.test.ts"
