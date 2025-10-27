@@ -1,0 +1,35 @@
+[
+  {
+    "number": 95,
+    "title": "Track ABACO runtime export directories",
+    "assignees": ["Jeninefer", "coderabbitai"],
+    "status": "open"
+  },
+  {
+    "number": 96,
+    "title": "Validate Supabase environment variables",
+    "assignees": ["Jeninefer", "platform-team"],
+    "status": "open"
+  },
+  {
+    "number": 97,
+    "title": "Track ABACO runtime export directories",
+    "assignees": ["coderabbitai", "chatgpt-codex-connector"],
+    "status": "closed",
+    "duplicateOf": 95,
+    "closureReason": "duplicate-ai-assignee"
+  },
+  {
+    "number": 98,
+    "title": "Clarify ingestion pipeline status in README",
+    "assignees": ["Jeninefer", "vercel"],
+    "status": "open"
+  },
+  {
+    "number": 99,
+    "title": "Update CI pipeline to run CodeQL",
+    "assignees": ["Jeninefer", "security-team"],
+    "status": "closed",
+    "closureReason": "manual-review"
+  }
+]
