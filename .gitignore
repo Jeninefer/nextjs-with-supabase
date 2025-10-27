@@ -48,6 +48,7 @@ abaco_venv/
 __pycache__/
 *.pyc
 *.pyo
+*.egg-info/
 
 # Jupyter Notebook checkpoints
 .ipynb_checkpoints/
