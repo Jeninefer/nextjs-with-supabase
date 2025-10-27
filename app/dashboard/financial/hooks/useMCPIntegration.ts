@@ -16,7 +16,12 @@ type MCPConfigEntry =
 
 // Type guard para env
 function hasEnvConfig(x: unknown): x is { env: Record<string, string | undefined> } {
-  return typeof x === 'object' && x !== null && 'env' in x && typeof (x as any).env === 'object';
+  return (
+    typeof x === 'object' &&
+    x !== null &&
+    'env' in x &&
+    typeof (x as Record<string, unknown>).env === 'object'
+  );
 }
 
 // Mock MCP client para evitar dependencias externas por ahora
@@ -121,7 +126,7 @@ export function useMCPIntegration() {
     return await mockMCPClient.fetchMarketData(source);
   }, [checkServer]);
 
-  const storeAnalysisResult = useCallback(async (analysisId: string, result: any) => {
+  const storeAnalysisResult = useCallback(async (analysisId: string, result: unknown) => {
     const serverCheck = checkServer('memory');
     if (serverCheck) return serverCheck;
     return await mockMCPClient.storeMemory(`analysis_${analysisId}`, result);
