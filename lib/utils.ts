@@ -5,14 +5,16 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-const requiredEnvVars = [
+const requiredEnvVars = () => [
   process.env.NEXT_PUBLIC_SUPABASE_URL,
   process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_OR_ANON_KEY,
 ];
 
-export const hasEnvVars = requiredEnvVars.every(
-  (envVar) => typeof envVar === "string" && envVar.trim().length > 0,
-);
+export function hasEnvVars(): boolean {
+  return requiredEnvVars().every(
+    (envVar) => typeof envVar === "string" && envVar.trim().length > 0,
+  );
+}
 
 // If you have custom color utilities, update them:
 // Instead of: import flattenColorPalette from 'tailwindcss/lib/util/flattenColorPalette'

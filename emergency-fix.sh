@@ -19,7 +19,7 @@ export default function Index() {
       <Hero />
       <main className="flex-1 flex flex-col gap-6 px-4">
         <h2 className="font-medium text-xl mb-4">Next steps</h2>
-        {hasEnvVars ? <SignUpUserSteps /> : <ConnectSupabaseSteps />}
+        {hasEnvVars() ? <SignUpUserSteps /> : <ConnectSupabaseSteps />}
       </main>
     </>
   );
@@ -165,10 +165,12 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export const hasEnvVars = !!(
-  process.env.NEXT_PUBLIC_SUPABASE_URL && 
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-);
+export function hasEnvVars(): boolean {
+  return [
+    process.env.NEXT_PUBLIC_SUPABASE_URL,
+    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_OR_ANON_KEY,
+  ].every((envVar) => typeof envVar === "string" && envVar.trim().length > 0)
+}
 EOF
 echo "✅ All components created"
 
