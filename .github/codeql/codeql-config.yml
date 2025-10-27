@@ -1,7 +1,7 @@
 name: "CodeQL Config"
 
 # Disable default setup to prevent automatic language detection
-disable-default-path-filters: false
+disable-default-path-filters: true
 
 # Only scan JavaScript/TypeScript files for this Office Add-in project  
 paths:
