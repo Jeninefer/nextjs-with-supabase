@@ -1,24 +1,3 @@
-<!-- markdownlint-disable MD033 MD041 -->
-<a href="https://demo-nextjs-with-supabase.vercel.app/">
-  <img alt="Next.js and Supabase Starter Kit - the fastest way to build apps with Next.js and Supabase" src="https://demo-nextjs-with-supabase.vercel.app/opengraph-image.png">
-  <h1 align="center">Next.js and Supabase Starter Kit</h1>
-</a>
-
-<p align="center">
- The fastest way to build apps with Next.js and Supabase
-</p>
-
-<p align="center">
-  <a href="#features"><strong>Features</strong></a> ·
-  <a href="#demo"><strong>Demo</strong></a> ·
-  <a href="#deploy-to-vercel"><strong>Deploy to Vercel</strong></a> ·
-  <a href="#clone-and-run-locally"><strong>Clone and run locally</strong></a> ·
-  <a href="#feedback-and-issues"><strong>Feedback and issues</strong></a> ·
-  <a href="#more-supabase-examples"><strong>More Examples</strong></a>
-</p>
-<br/>
-<!-- markdownlint-enable MD033 MD041 -->
-
 # ABACO Financial Intelligence Platform
 
 ## Next-Generation Financial Analytics System
@@ -43,15 +22,17 @@ Before you begin, ensure you have:
 # Clone the repository
 git clone https://github.com/Jeninefer/nextjs-with-supabase.git
 cd nextjs-with-supabase
-git checkout office-addin-figma
 
 # Install dependencies
 npm install
 
-# Set up environment variables
+# Configure environment variables with production credentials
 cp .env.example .env.local
-# Edit .env.local with your Supabase credentials
+```
 
+Update `.env.local` with the Supabase project URL, anon key, and any private service credentials that map to your live analytics warehouse.
+
+```bash
 # Start development server
 npm run dev
 ```
@@ -114,34 +95,7 @@ npm run lint
 - **AI Insights**: Machine learning-powered analytics
 - **Growth Projections**: Strategic planning tools
 - **Market Intelligence**: 50+ data source monitoring
-- **Dataset Generator**: Comprehensive financial data generation with 30 customers and 53+ dimensions
-
-## 🔬 ABACO Dataset Generation
-
-Generate comprehensive financial intelligence datasets for analytics and testing:
-
-```bash
-# Quick start demo (recommended)
-bash demo_abaco_dataset.sh
-
-# Or run individually:
-
-# 1. Setup environment
-bash fix_abaco_environment.sh
-
-# 2. Generate dataset
-cd notebooks
-python3 abaco_dataset_generator.py
-```
-
-**Features:**
-
-- 30 customer records with 53 analytical dimensions
-- Realistic financial metrics and patterns
-- Comprehensive analytics reporting
-- CSV export with summary statistics
-
-For detailed documentation, see [notebooks/README_ABACO_DATASET.md](./notebooks/README_ABACO_DATASET.md)
+- **Data Integration**: Secure ingestion pipeline that synchronizes live Supabase tables with the analytics lakehouse
 
 ## 🚀 Deployment
 
