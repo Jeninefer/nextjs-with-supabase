@@ -293,3 +293,16 @@ For licensing: <legal@abaco-platform.com>
 ---
 
 **ABACO Financial Intelligence Platform** - Setting the standard for financial analytics excellence.
+
+## 🧪 SonarQube Integration
+
+This project ships with automated static analysis using SonarQube. The workflow defined in [`.github/workflows/sonar.yml`](.github/workflows/sonar.yml) runs for every pull request and for pushes to `main`, executing the scan with the configuration in [`sonar-project.properties`](./sonar-project.properties).
+
+To activate the pipeline:
+
+1. Create a project in your SonarQube or SonarCloud instance named **nextjs-with-supabase** (or update `sonar.projectKey` and `sonar.projectName` to match your naming convention).
+2. Generate a token with analysis permissions and add it to the repository secrets as `SONAR_TOKEN`.
+3. Set `SONAR_HOST_URL` (for SonarCloud this is `https://sonarcloud.io`; for self-hosted instances, provide the server URL) as a repository secret.
+4. (Optional) Provide `coverage/lcov.info` before running the workflow to publish coverage.
+
+Once the secrets are in place, each pull request will display quality gate feedback directly in the checks tab and in the conversation view, ensuring SonarQube visibility across all open PRs.
