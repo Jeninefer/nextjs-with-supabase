@@ -6,7 +6,7 @@ export async function middleware(request: NextRequest) {
 
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_OR_ANON_KEY!,
     {
       cookies: {
         getAll() { return request.cookies.getAll() },
@@ -23,9 +23,9 @@ export async function middleware(request: NextRequest) {
 
   const { data: { user } } = await supabase.auth.getUser()
 
-  if (!user && !request.nextUrl.pathname.startsWith('/sign-in') && 
-      !request.nextUrl.pathname.startsWith('/sign-up') && 
-      !request.nextUrl.pathname.startsWith('/auth') && 
+  if (!user && !request.nextUrl.pathname.startsWith('/sign-in') &&
+      !request.nextUrl.pathname.startsWith('/sign-up') &&
+      !request.nextUrl.pathname.startsWith('/auth') &&
       request.nextUrl.pathname !== '/') {
     const url = request.nextUrl.clone()
     url.pathname = '/sign-in'
