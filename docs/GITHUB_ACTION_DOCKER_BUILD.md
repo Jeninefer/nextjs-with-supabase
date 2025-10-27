@@ -21,34 +21,6 @@ Most workflows combine the Buildx action with complementary actions that set up 
 3. **`docker/setup-buildx-action@v3`** – Boots a Buildx builder (Docker container driver by default) that enables multi-platform builds, caching, and advanced BuildKit features.
 4. **`docker/build-push-action@v6`** – Builds, tests, and optionally pushes images.
 
-```yaml
-name: ci
-
-on:
-  push:
-
-jobs:
-  docker:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Login to Docker Hub
-        uses: docker/login-action@v3
-        with:
-          username: ${{ vars.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Build and push
-        uses: docker/build-push-action@v6
-        with:
-          push: true
-          tags: user/app:latest
-```
 
 ---
 
