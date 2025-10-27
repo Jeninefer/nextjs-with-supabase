@@ -1,0 +1,84 @@
+name: "Assign PRs to codex and SONARQUBE"
+
+on:
+  pull_request:
+    types: [opened, reopened, ready_for_review]
+  schedule:
+    - cron: "0 6 * * 1"
+  workflow_dispatch:
+
+permissions:
+  pull-requests: write
+  contents: read
+
+jobs:
+  assign-new:
+    if: github.event_name == 'pull_request'
+    name: "Assign current PR"
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Assign codex and SONARQUBE"
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const desiredAssignees = ["codex", "SONARQUBE"];
+            const current = context.payload.pull_request.assignees?.map(assignee => assignee.login.toLowerCase()) ?? [];
+            const toAdd = desiredAssignees.filter(login => !current.includes(login.toLowerCase()));
+            if (toAdd.length === 0) {
+              core.info('Pull request already assigned to all desired users.');
+              return;
+            }
+            await github.rest.issues.addAssignees({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.payload.pull_request.number,
+              assignees: toAdd,
+            });
+            core.info(`Assigned pull request #${context.payload.pull_request.number} to ${toAdd.join(', ')}.`);
+
+  assign-open:
+    if: github.event_name != 'pull_request'
+    name: "Ensure all open PRs are assigned"
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Assign codex and SONARQUBE to open PRs"
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const desiredAssignees = ["codex", "SONARQUBE"];
+            let page = 1;
+            const perPage = 50;
+            let processed = 0;
+            while (true) {
+              const { data } = await github.rest.pulls.list({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                state: 'open',
+                per_page: perPage,
+                page,
+              });
+              if (data.length === 0) break;
+              for (const pr of data) {
+                processed += 1;
+                const current = pr.assignees?.map(assignee => assignee.login.toLowerCase()) ?? [];
+                const additions = desiredAssignees.filter(login => !current.includes(login.toLowerCase()));
+                if (additions.length > 0) {
+                  await github.rest.issues.addAssignees({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    issue_number: pr.number,
+                    assignees: additions,
+                  });
+                  core.info(`Assigned pull request #${pr.number} to ${additions.join(', ')}.`);
+                } else {
+                  core.info(`Pull request #${pr.number} already assigned to all desired users.`);
+                }
+              }
+              if (data.length < perPage) break;
+              page += 1;
+            }
+            if (processed === 0) {
+              core.info('No open pull requests needed updates.');
+            } else {
+              core.info(`Processed ${processed} open pull request${processed === 1 ? '' : 's'}.`);
+            }
