@@ -8,9 +8,7 @@
       "DOM.Iterable"
     ],
     "types": [
-      "jest",
-      "node",
-      "@testing-library/jest-dom"
+      "node"
     ],
     "module": "ESNext",
     "skipLibCheck": true,
@@ -31,13 +29,8 @@
       ]
     },
     "allowJs": true,
-    "incremental": true,
     "esModuleInterop": true,
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ]
+    "plugins": []
   },
   "include": [
     "app",
@@ -46,13 +39,7 @@
     "types",
     ".next/types/**/*.ts",
     "middleware.ts",
-    "__tests__/**/*",
-    "__tests__/jest.d.ts"
-  ],
-  "references": [
-    {
-      "path": "./tsconfig.node.json"
-    }
+    "tests"
   ],
   "exclude": [
     "node_modules"
