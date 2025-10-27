@@ -1,0 +1,72 @@
+[
+  {
+    "number": 101,
+    "title": "Improve search accuracy",
+    "state": "open",
+    "author": "alicia",
+    "assignees": ["alicia"]
+  },
+  {
+    "number": 102,
+    "title": "  Improve   search accuracy  ",
+    "state": "open",
+    "author": "openai-release-bot",
+    "assignees": ["openai-release-bot"]
+  },
+  {
+    "number": 103,
+    "title": "Improve search accuracy",
+    "state": "closed",
+    "author": "mike",
+    "assignees": ["grokowski"]
+  },
+  {
+    "number": 201,
+    "title": "Añadir informe de costos",
+    "state": "open",
+    "author": "chatgpt-codex",
+    "assignees": ["chatgpt-codex"]
+  },
+  {
+    "number": 202,
+    "title": "Anadir informe de costos",
+    "state": "open",
+    "author": "ines",
+    "assignees": ["ines"]
+  },
+  {
+    "number": 301,
+    "title": "Bump dependencies",
+    "state": "closed",
+    "author": "cursor-release-bot",
+    "assignees": ["cursor bot"]
+  },
+  {
+    "number": 302,
+    "title": "Bump dependencies",
+    "state": "open",
+    "author": "qa-automation",
+    "assignees": ["qa-automation"]
+  },
+  {
+    "number": 401,
+    "title": "Fix nightly deployment",
+    "state": "closed",
+    "author": "tabnine",
+    "assignees": ["tabnine"]
+  },
+  {
+    "number": 402,
+    "title": "Fix nightly deployment",
+    "state": "open",
+    "author": "jordan",
+    "assignees": ["jordan"]
+  },
+  {
+    "number": 403,
+    "title": "Fix nightly deployment",
+    "state": "open",
+    "author": "openai-labs",
+    "assignees": ["openai-labs"]
+  }
+]
