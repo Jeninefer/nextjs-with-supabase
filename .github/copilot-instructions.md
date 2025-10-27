@@ -145,8 +145,8 @@ This repository is a Next.js starter template with Supabase integration. Follow 
 
 - Currently, no testing framework is configured.
 - When adding tests, consider the following:
-  - **Unit and integration tests**: Recommended frameworks are [Jest](https://jestjs.io/) or [Vitest](https://vitest.dev/) with [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/) for React components.
-  - **End-to-end (E2E) tests**: Consider using [Playwright](https://playwright.dev/) or [Cypress](https://www.cypress.io/).
+  - **Unit and integration tests**: Recommended frameworks are Jest (https://jestjs.io/) or Vitest (https://vitest.dev/) with React Testing Library (https://testing-library.com/docs/react-testing-library/intro/) for React components.
+  - **End-to-end (E2E) tests**: Consider using Playwright (https://playwright.dev/) or Cypress (https://www.cypress.io/).
   - Use TypeScript for all test files.
   - Place test files alongside the code under test or in a `/tests` directory, following repository conventions.
   - Update these instructions and document any new testing setup or patterns you introduce.

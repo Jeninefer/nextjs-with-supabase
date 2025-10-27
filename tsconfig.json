@@ -7,6 +7,11 @@
       "DOM",
       "DOM.Iterable"
     ],
+    "types": [
+      "jest",
+      "node",
+      "@testing-library/jest-dom"
+    ],
     "module": "ESNext",
     "skipLibCheck": true,
     "moduleResolution": "bundler",
@@ -22,7 +27,7 @@
     "ignoreDeprecations": "5.0",
     "paths": {
       "@/*": [
-        "./src/*"
+        "./*"
       ]
     },
     "allowJs": true,
@@ -35,8 +40,14 @@
     ]
   },
   "include": [
-    "src",
-    ".next/types/**/*.ts"
+    "app",
+    "components",
+    "lib",
+    "types",
+    ".next/types/**/*.ts",
+    "middleware.ts",
+    "__tests__/**/*",
+    "__tests__/jest.d.ts"
   ],
   "references": [
     {

@@ -41,8 +41,9 @@ Before you begin, ensure you have:
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-org/nextjs-with-supabase
+git clone https://github.com/Jeninefer/nextjs-with-supabase.git
 cd nextjs-with-supabase
+git checkout office-addin-figma
 
 # Install dependencies
 npm install
@@ -134,6 +135,7 @@ python3 abaco_dataset_generator.py
 ```
 
 **Features:**
+
 - 30 customer records with 53 analytical dimensions
 - Realistic financial metrics and patterns
 - Comprehensive analytics reporting
@@ -146,6 +148,7 @@ For detailed documentation, see [notebooks/README_ABACO_DATASET.md](./notebooks/
 ### Prerequisites
 
 Before deploying, ensure:
+
 - [ ] Supabase project is configured
 - [ ] Environment variables are set
 - [ ] Application builds successfully (`npm run build`)
@@ -165,6 +168,7 @@ vercel --prod
 ```
 
 **Environment Variables on Vercel**:
+
 1. Go to Project Settings → Environment Variables
 2. Add all variables from `.env.local`
 3. Redeploy after adding variables
@@ -202,6 +206,7 @@ gcloud run deploy abaco-platform --source .
 **Troubleshooting Deployment**:
 
 If you encounter permission errors:
+
 ```bash
 # Check your access
 gcloud projects list
@@ -214,6 +219,7 @@ gcloud services enable run.googleapis.com
 ```
 
 For complete Google Cloud setup instructions, see:
+
 - [Google Cloud Setup Guide](./docs/GOOGLE_CLOUD_SETUP.md)
 - [Troubleshooting Guide](./docs/TROUBLESHOOTING.md)
 
@@ -274,6 +280,7 @@ python3 notebooks/abaco_financial_intelligence.py
 ```
 
 For comprehensive troubleshooting, see:
+
 - [Google Cloud Troubleshooting](./docs/TROUBLESHOOTING.md)
 - [Google Cloud Setup](./docs/GOOGLE_CLOUD_SETUP.md)
 
@@ -293,3 +300,5 @@ For licensing: <legal@abaco-platform.com>
 ---
 
 **ABACO Financial Intelligence Platform** - Setting the standard for financial analytics excellence.
+
+> **Note:** This is the canonical repository for the Office Add-in with Figma and AI API integration.
