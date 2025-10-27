@@ -1,35 +1,42 @@
 {
-    "extends": "./tsconfig.json",
-    "compilerOptions": {
-        "module": "commonjs",
-        "target": "es2017",
-        "lib": [
-            "dom",
-            "dom.iterable",
-            "es6"
-        ],
-        "allowJs": true,
-        "skipLibCheck": true,
-        "esModuleInterop": true,
-        "allowSyntheticDefaultImports": true,
-        "strict": true,
-        "forceConsistentCasingInFileNames": true,
-        "moduleResolution": "node",
-        "resolveJsonModule": true,
-        "isolatedModules": true,
-        "noEmit": true,
-        "jsx": "react-jsx",
-        "types": [
-            "jest",
-            "node",
-            "@testing-library/jest-dom"
-        ]
-    },
-    "include": [
-        "__tests__/**/*",
-        "**/*.test.ts",
-        "**/*.test.tsx",
-        "**/*.spec.ts",
-        "**/*.spec.tsx"
-    ]
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "module": "node16",
+    "target": "ES2020",
+    "outDir": ".test-dist",
+    "noEmit": false,
+    "moduleResolution": "node16",
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "isolatedModules": false,
+    "jsx": "react-jsx",
+    "allowImportingTsExtensions": false,
+    "types": ["node"],
+    "rootDir": ".",
+    "paths": {
+      "@/*": ["./*"],
+      "next/navigation": ["./tests/__mocks__/next-navigation"],
+      "next/link": ["./tests/__mocks__/next-link"],
+      "@/lib/supabase/client": ["./tests/__mocks__/supabase-client"],
+      "@/components/ui/button": ["./tests/__mocks__/ui-button"],
+      "@/components/ui/card": ["./tests/__mocks__/ui-card"],
+      "@/components/ui/input": ["./tests/__mocks__/ui-input"],
+      "@/components/ui/label": ["./tests/__mocks__/ui-label"],
+      "tailwind-merge": ["./tests/__mocks__/tailwind-merge"],
+      "@supabase/ssr": ["./tests/__mocks__/supabase-ssr"]
+    }
+  },
+  "include": [
+    "components/**/*.ts",
+    "components/**/*.tsx",
+    "lib/**/*.ts",
+    "tests/**/*.ts",
+    "tests/**/*.tsx",
+    "types/**/*.d.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    ".next",
+    ".test-dist"
+  ]
 }
