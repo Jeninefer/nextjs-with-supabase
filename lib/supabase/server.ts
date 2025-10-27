@@ -1,6 +1,8 @@
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 
+import { supabasePublicEnv } from "../env";
+
 /**
  * Ensure cookieStoreRef is the actual cookie store object (not a Promise)
  */
@@ -60,11 +62,7 @@ export async function createClient() {
   const cookieStore = await cookies();
   const cookiesAdapter = await createCookiesAdapter(cookieStore);
 
-  return createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_OR_ANON_KEY!,
-    {
-      cookies: cookiesAdapter,
-    },
-  );
+  return createServerClient(supabasePublicEnv.url, supabasePublicEnv.anonKey, {
+    cookies: cookiesAdapter,
+  });
 }
