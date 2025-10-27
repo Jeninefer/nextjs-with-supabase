@@ -60,3 +60,9 @@ __pycache__/
 
 # TypeScript
 tsconfig.node.json
+
+# ABACO runtime exports (keep structure only)
+abaco_runtime/exports/*
+abaco_runtime/exports/**/*
+!abaco_runtime/exports/**/
+!abaco_runtime/exports/**/.gitkeep
