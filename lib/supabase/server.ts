@@ -35,10 +35,10 @@ async function createCookiesAdapter(cookieSource: unknown) {
     setAll(cookiesToSet: Array<{ name: string; value: string; options?: Record<string, unknown> }>) {
       try {
         if (cookieStore && typeof (cookieStore as Record<string, unknown>).set === "function") {
-          cookiesToSet.forEach(cookie => {
+          cookiesToSet.forEach(({ name, value, options }) => {
             (cookieStore as {
-              set: (..._args: [string, string, Record<string, unknown>?]) => void;
-            }).set(cookie.name, cookie.value, cookie.options);
+              set: (name: string, value: string, options?: Record<string, unknown>) => void;
+            }).set(name, value, options);
           });
           return;
         }
