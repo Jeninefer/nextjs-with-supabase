@@ -87,5 +87,13 @@
         "latex",
         "plaintext",
         "shellscript"
-    ]
+    ],
+    "python.analysis.extraPaths": [
+        "/Users/jenineferderas/.vscode/extensions/ms-security.ms-sentinel-1.0.0/python"
+    ],
+    "sonarlint.connectedMode.project": {
+        "connectionId": "jeninefer",
+        "projectKey": "Jeninefer_nextjs-with-supabase"
+    },
+    "editor.codeActions.triggerOnFocusChange": true
 }
