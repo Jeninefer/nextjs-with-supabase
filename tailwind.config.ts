@@ -184,11 +184,7 @@ const config: Config = {
   },
   plugins: [
     require("tailwindcss-animate"),
-    function ({ addUtilities, theme }: { addUtilities: any; theme: any }) {
-      // Access colors directly from theme instead of using internal utilities
-      const colors = theme('colors');
-
-      // Your custom utilities here
+    function ({ addUtilities }: { addUtilities: (utilities: Record<string, unknown>) => void }) {
       const newUtilities = {
         '.text-balance': {
           'text-wrap': 'balance',
