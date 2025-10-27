@@ -1,11 +1,13 @@
 import { createClient } from "@supabase/supabase-js";
 import { NextResponse } from "next/server";
 
+import { getSupabaseServiceRoleKey, supabasePublicEnv } from "../../../lib/env";
+
 export async function GET() {
   try {
     const supabase = createClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.SUPABASE_SERVICE_ROLE_KEY!
+      supabasePublicEnv.url,
+      getSupabaseServiceRoleKey()
     );
 
     // Test connection with your existing kv_store table
@@ -16,7 +18,7 @@ export async function GET() {
 
     return NextResponse.json({
       status: "connected",
-      supabaseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL,
+      supabaseUrl: supabasePublicEnv.url,
       hasData: !!data,
       dataCount: data?.length || 0,
       error: error?.message || null,
