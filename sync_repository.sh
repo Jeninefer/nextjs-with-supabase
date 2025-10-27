@@ -1,91 +1,71 @@
+#!/bin/bash
+# ABACO Financial Intelligence Platform - Git Synchronization Helper
+# This script keeps your local repository in sync with the remote origin
+# and provides gentle guidance for managing Supabase-first development.
 
+set -euo pipefail
 
-// Add your instrumentation key or use the APPLICATIONINSIGHTSKEY environment variable on your production machine to start collecting data.
-var ai = require('applicationinsights');
-ai.setup(process.env.APPLICATIONINSIGHTSKEY || 'your_instrumentation_key').start();#!/bin/bash
+# Resolve the repository root based on the script location
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="${SCRIPT_DIR}"
 
-echo "🔄 ABACO Repository Synchronization Script"
-echo "=========================================="
+cd "${REPO_ROOT}"
 
-# Navigate to project directory
-cd /Users/jenineferderas/Documents/GitHub/nextjs-with-supabase
-
-# Check if we're in a git repository
-if [ ! -d ".git" ]; then
-    echo "❌ Error: Not in a git repository"
-    exit 1
+if [[ ! -d .git ]]; then
+  echo "❌ Error: ${REPO_ROOT} is not a Git repository"
+  exit 1
 fi
 
-# Show current branch and status
-echo "📍 Current branch: $(git branch --show-current)"
-echo "📊 Repository status:"
-git status --porcelain
+CURRENT_BRANCH="$(git rev-parse --abbrev-ref HEAD)"
 
-# Pull latest changes from remote
-echo ""
-echo "⬇️ Pulling latest changes from remote..."
-if git pull origin $(git branch --show-current); then
-    echo "✅ Successfully pulled latest changes"
+echo "🔄 ABACO Repository Synchronization"
+echo "=================================="
+echo "📍 Repository: ${REPO_ROOT}"
+echo "🌿 Active branch: ${CURRENT_BRANCH}"
+
+# Show a concise status snapshot before pulling
+if git status --short | grep -q "."; then
+  echo "\n📊 Working tree changes detected:"
+  git status --short
 else
-    echo "⚠️ Pull completed with conflicts - please resolve manually"
-    echo "Run 'git status' to see conflicted files"
-    exit 1
+  echo "\n✅ Working tree is currently clean"
 fi
 
-# Stage all changes
-echo ""
-echo "📋 Staging all changes..."
-git add .
-
-# Check if there are staged changes
-if git diff --cached --quiet; then
-    echo "ℹ️ No changes to commit"
+# Ensure we are up to date with origin
+echo "\n⬇️ Fetching latest changes from origin/${CURRENT_BRANCH}..."
+if git pull --rebase origin "${CURRENT_BRANCH}"; then
+  echo "✅ Repository successfully updated"
 else
-    # Show what will be committed
-    echo "📝 Changes to be committed:"
-    git diff --cached --name-only
-
-    # Commit with comprehensive message
-    echo ""
-    echo "💾 Creating commit..."
-    git commit -m "fix: comprehensive development environment updates
-
-🔧 Environment Fixes:
-- Resolve CS-Script tool detection issues
-- Fix Tailwind CSS configuration loading errors
-- Configure TypeScript default formatter settings
-- Add comprehensive troubleshooting documentation
-
-🚀 Improvements:
-- Enhanced error handling and diagnostics
-- Updated installation and configuration steps
-- Added automated sync workflows
-- Improved development experience
-
-📚 Documentation:
-- Complete troubleshooting guide
-- Step-by-step resolution instructions
-- Git workflow integration
-- Environment reset procedures"
-
-    echo "✅ Commit created successfully"
+  echo "⚠️ Pull completed with conflicts. Resolve them and re-run the script."
+  exit 1
 fi
 
-# Push changes to remote
-echo ""
-echo "⬆️ Pushing changes to remote repository..."
-if git push origin $(git branch --show-current); then
-    echo "✅ Successfully pushed to remote repository"
+# Re-check the status to guide the developer on next steps
+if git status --short | grep -q "."; then
+  echo "\n📝 Pending changes remain in your working tree."
+  echo "   Use 'git add <file>' to stage them and 'git commit' to capture your work."
 else
-    echo "❌ Failed to push to remote repository"
-    echo "Please check your network connection and repository permissions"
-    exit 1
+  echo "\n✨ Working tree remains clean after synchronization."
 fi
 
-# Final status check
-echo ""
-echo "🏁 Synchronization Complete!"
-echo "📊 Final repository status:"
-git log --oneline -3
-echo ""
-echo "🌟 Repository is now synchronized with GitHub!"
+# Provide a quick Supabase environment reminder
+REQUIRED_ENV=("NEXT_PUBLIC_SUPABASE_URL" "NEXT_PUBLIC_SUPABASE_PUBLISHABLE_OR_ANON_KEY")
+if [[ ! -f .env.local ]]; then
+  echo "\n💡 Tip: create a .env.local file with your Supabase project credentials."
+  echo "   You can copy .env.example as a starting point: cp .env.example .env.local"
+else
+  MISSING_VARS=()
+  for VAR in "${REQUIRED_ENV[@]}"; do
+    if ! grep -q "^${VAR}=" .env.local; then
+      MISSING_VARS+=("${VAR}")
+    fi
+  done
+  if [[ ${#MISSING_VARS[@]} -gt 0 ]]; then
+    echo "\n⚠️ Supabase environment variables missing from .env.local: ${MISSING_VARS[*]}"
+    echo "   Update the file with the values from your Supabase dashboard."
+  else
+    echo "\n🔐 Supabase environment variables detected in .env.local"
+  fi
+fi
+
+echo "\n🏁 Synchronization complete. Happy building!"
