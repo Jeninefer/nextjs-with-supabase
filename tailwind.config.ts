@@ -186,7 +186,8 @@ const config: Config = {
     require("tailwindcss-animate"),
     function ({ addUtilities, theme }: { addUtilities: any; theme: any }) {
       // Access colors directly from theme instead of using internal utilities
-      const colors = theme('colors');
+      const palette = theme('colors');
+      void palette;
 
       // Your custom utilities here
       const newUtilities = {
