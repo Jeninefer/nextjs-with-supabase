@@ -61,7 +61,10 @@ export interface CloseDuplicateResult {
 
 /**
  * Baseline set of identifiers commonly used by AI assistants when raising pull
- * requests. Teams can extend this list through {@link CloseDuplicateOptions.aiIdentifiers}.
+ * requests, for example "chatgpt-codex", "openai-release-bot", or "tabnine".
+ * Teams should extend this list through {@link CloseDuplicateOptions.aiIdentifiers}
+ * to capture organisation-specific automation accounts without over-matching
+ * legitimate contributors.
  */
 export const DEFAULT_AI_IDENTIFIERS: string[] = [
   "chatgpt",
