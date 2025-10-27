@@ -42,7 +42,7 @@ describe('AuthButton Component', () => {
                 getClaims: jest.fn().mockResolvedValue({
                     data: {
                         claims: {
-                            email: 'test@example.com',
+                            email: 'analyst@abaco.finance',
                             sub: '123',
                         },
                     },
@@ -53,7 +53,7 @@ describe('AuthButton Component', () => {
 
         render(await AuthButton())
 
-        expect(screen.getByText('Hey, test@example.com!')).toBeInTheDocument()
+        expect(screen.getByText('Hey, analyst@abaco.finance!')).toBeInTheDocument()
         expect(screen.getByText('Sign out')).toBeInTheDocument()
 
         // Should not show sign in/up buttons
@@ -145,7 +145,7 @@ describe('AuthButton Component', () => {
                 getClaims: jest.fn().mockResolvedValue({
                     data: {
                         claims: {
-                            email: 'test@example.com',
+                            email: 'analyst@abaco.finance',
                             sub: '123',
                         },
                     },

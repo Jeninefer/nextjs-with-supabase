@@ -86,10 +86,10 @@ describe('LoginForm Component', () => {
         const emailInput = screen.getByLabelText('Email') as HTMLInputElement
         const passwordInput = screen.getByLabelText('Password') as HTMLInputElement
 
-        await user.type(emailInput, 'test@example.com')
+        await user.type(emailInput, 'analyst@abaco.finance')
         await user.type(passwordInput, 'password123')
 
-        expect(emailInput.value).toBe('test@example.com')
+        expect(emailInput.value).toBe('analyst@abaco.finance')
         expect(passwordInput.value).toBe('password123')
     })
 
@@ -103,12 +103,12 @@ describe('LoginForm Component', () => {
         const passwordInput = screen.getByLabelText('Password')
         const submitButton = screen.getByRole('button', { name: 'Login' })
 
-        await user.type(emailInput, 'test@example.com')
+        await user.type(emailInput, 'analyst@abaco.finance')
         await user.type(passwordInput, 'password123')
         await user.click(submitButton)
 
         expect(mockSignInWithPassword).toHaveBeenCalledWith({
-            email: 'test@example.com',
+            email: 'analyst@abaco.finance',
             password: 'password123',
         })
 
@@ -128,7 +128,7 @@ describe('LoginForm Component', () => {
         const passwordInput = screen.getByLabelText('Password')
         const submitButton = screen.getByRole('button', { name: 'Login' })
 
-        await user.type(emailInput, 'test@example.com')
+        await user.type(emailInput, 'analyst@abaco.finance')
         await user.type(passwordInput, 'wrongpassword')
         await user.click(submitButton)
 
@@ -151,7 +151,7 @@ describe('LoginForm Component', () => {
         const passwordInput = screen.getByLabelText('Password')
         const submitButton = screen.getByRole('button', { name: 'Login' })
 
-        await user.type(emailInput, 'test@example.com')
+        await user.type(emailInput, 'analyst@abaco.finance')
         await user.type(passwordInput, 'password123')
         await user.click(submitButton)
 
@@ -206,7 +206,7 @@ describe('LoginForm Component', () => {
         const passwordInput = screen.getByLabelText('Password')
         const submitButton = screen.getByRole('button', { name: 'Login' })
 
-        await user.type(emailInput, 'test@example.com')
+        await user.type(emailInput, 'analyst@abaco.finance')
         await user.type(passwordInput, 'password123')
         await user.click(submitButton)
 
@@ -227,7 +227,7 @@ describe('LoginForm Component', () => {
         const passwordInput = screen.getByLabelText('Password')
         const submitButton = screen.getByRole('button', { name: 'Login' })
 
-        await user.type(emailInput, 'test@example.com')
+        await user.type(emailInput, 'analyst@abaco.finance')
         await user.type(passwordInput, 'wrongpassword')
         await user.click(submitButton)
 

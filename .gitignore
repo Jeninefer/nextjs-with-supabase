@@ -65,4 +65,4 @@ tsconfig.node.json
 abaco_runtime/exports/*
 abaco_runtime/exports/**/*
 !abaco_runtime/exports/**/
-!abaco_runtime/exports/**/.gitkeep
+!abaco_runtime/exports/**/README.md
