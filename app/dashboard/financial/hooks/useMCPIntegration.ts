@@ -42,6 +42,23 @@ const mockMCPClient = {
   disconnect: async () => console.log('Mock: Disconnected')
 };
 
+/**
+ * React hook that manages Model Context Protocol (MCP) server lifecycle and provides helpers for MCP-driven operations.
+ *
+ * Initializes configured MCP servers on mount, exposes initialization state and any error, and provides functions to
+ * (re)initialize servers, query financial insights, fetch market data, and store/retrieve analysis results.
+ *
+ * @returns An object containing:
+ * - `isInitialized`: `true` when at least one MCP server was successfully initialized, `false` otherwise.
+ * - `isLoading`: `true` while server initialization is in progress, `false` otherwise.
+ * - `error`: An error message string when initialization failed, or `null`.
+ * - `servers`: A `Set<string>` with the names of successfully initialized servers.
+ * - `initializeMCPServers`: Function to (re)run MCP server initialization.
+ * - `searchFinancialInsights`: Function that accepts a query string and returns the MCP client's financial search result.
+ * - `fetchMarketData`: Function that accepts a source string (URL or identifier) and returns fetched market data.
+ * - `storeAnalysisResult`: Function that accepts an `analysisId` and a result value and stores it in MCP memory.
+ * - `getStoredAnalysis`: Function that accepts an `analysisId` and retrieves the stored analysis from MCP memory.
+ */
 export function useMCPIntegration() {
   const [state, setState] = useState<MCPIntegrationState>({
     isInitialized: false,
