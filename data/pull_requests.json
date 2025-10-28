@@ -1,0 +1,48 @@
+[
+  {
+    "number": 245,
+    "title": "Refine analytics dashboard",
+    "status": "open",
+    "author": "amelia.clarke",
+    "assignees": ["noah.wilson"]
+  },
+  {
+    "number": 244,
+    "title": "Improve onboarding tour",
+    "status": "open",
+    "author": "luis.hernandez",
+    "assignees": ["mia.davis", "ethan.taylor"]
+  },
+  {
+    "number": 243,
+    "title": "Add offline caching support",
+    "status": "open",
+    "author": "sarah.lee",
+    "assignees": []
+  },
+  {
+    "number": 242,
+    "title": "Fix login redirect loop",
+    "status": "open",
+    "author": "danielle.chen",
+    "assignees": ["jordan.morgan"]
+  },
+  {
+    "number": 241,
+    "title": "Fix login redirect loop",
+    "status": "closed",
+    "author": "automator-bot",
+    "assignees": ["copilot"],
+    "duplicateOf": 242,
+    "closureReason": "duplicate-ai-assignee"
+  },
+  {
+    "number": 240,
+    "title": "  Fix   login redirect loop  ",
+    "status": "closed",
+    "author": "openai-actions",
+    "assignees": ["chatgpt"],
+    "duplicateOf": 242,
+    "closureReason": "duplicate-ai-assignee"
+  }
+]
