@@ -120,8 +120,7 @@ describe('LoginForm Component', () => {
     test('displays error message when login fails', async () => {
         const userEventInstance = userEvent.setup()
         const errorMessage = 'Invalid email or password'
-        mockSignInWithPassword.mockResolvedValue({ error: { message: errorMessage } })
-
+        mockSignInWithPassword.mockResolvedValue({ error: new Error(errorMessage) })
         render(<LoginForm />)
 
         const emailInput = screen.getByLabelText('Email')
