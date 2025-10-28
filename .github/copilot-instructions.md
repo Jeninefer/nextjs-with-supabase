@@ -157,3 +157,31 @@ This repository is a Next.js starter template with Supabase integration. Follow 
 - The app supports both light and dark themes
 - Environment variables need to be configured in `.env.local` (see `.env.example`)
 - Supabase URL and anon key are required for the app to function
+
+## Runtime & CI (updated)
+- Preferred Node.js runtime for local development and CI: Node 20.x (update docker/devcontainer images and CI runner to Node 20).
+- Use npm as the canonical package manager in CI (Vercel and our pipelines expect npm lockfile handling).
+- Vercel: free-tier rate limits apply. If you see "api-deployments-free-per-day" errors, either retry later or consider upgrading the plan / throttling CI deployments.
+
+## Security / System files (important)
+- Do NOT edit system-level files under /usr/lib, /usr/local, or other OS-level directories from the workspace.
+- If you need to patch a dependency installed globally or in node_modules system-wide, use approved strategies:
+  - Fork the package and reference it in package.json
+  - Use npm patch-package or a supported patch workflow
+  - Open a proper repo PR to the dependency
+- Attempts to modify system files will fail due to permissions and may break the development container.
+
+## Troubleshooting tips
+- If devcontainer fails with 'unable to find user codespace' or similar, confirm your devcontainer config and base image support the current user mapping.
+- If Next.js fails on startup with EADDRINUSE, either stop the process on that port or run on a different port:
+  - PORT=3001 npm run dev
+  - On Alpine Linux: lsof -nP -iTCP:3000 -sTCP:LISTEN && kill -9 <PID>
+- If tests fail due to missing `ts-node` or jest binary, run:
+  - npm ci
+  - npm install --save-dev ts-node
+  - Ensure your test runner is present in dev and CI images.
+
+## Alpine Linux notes
+- This workspace is running in a dev container on Alpine Linux v3.22.
+- Some common commands available: `apk`, `git`, `curl`, `lsof`, `netstat`, `ps`, etc.
+- Use `"$BROWSER" <url>` to open a webpage in the host's default browser.

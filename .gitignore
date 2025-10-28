@@ -63,3 +63,9 @@ tsconfig.node.json
 
 # Egg information
 *.egg-info/
+
+# ABACO runtime exports (keep structure with .gitkeep files)
+abaco_runtime/exports/*
+abaco_runtime/exports/**/*
+!abaco_runtime/exports/**/
+!abaco_runtime/exports/**/.gitkeep
