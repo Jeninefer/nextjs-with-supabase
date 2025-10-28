@@ -242,63 +242,82 @@ For detailed setup instructions, error resolution, and platform status, see:
 
 ### Common Issues
 
-**Port already in use:**
+**Supabase URL is invalid or missing**
+
+If you see an error like:
 
 ```bash
-lsof -i :3000
-kill -9 <PID>
-npm run dev
+Error: Invalid supabaseUrl: Must be a valid HTTP or HTTPS URL.
 ```
 
-**Git sync issues:**
+it means your Supabase URL environment variable is empty, malformed, or missing the `https://` prefix.
+
+**How to fix:**
+
+1. **Open your `.env.local` file** in the project root.
+
+2. **Add or correct these lines** (replace with your actual values from Supabase → Project Settings → API):
+
+   ```
+   NEXT_PUBLIC_SUPABASE_URL=https://your-project-ref.supabase.co
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+   ```
+
+   - The URL **must** start with `https://`.
+   - Do **not** use quotes around the values.
+
+3. **Restart your dev server** after saving changes:
+
+   ```bash
+   npm run dev
+   ```
+
+4. **If you still see the error:**
+   - Double-check for typos in variable names.
+   - Make sure `.env.local` is in the project root.
+   - Reload your IDE or terminal to ensure environment variables are loaded.
+
+---
+
+**Port 3000 is already in use**
+
+If you see an error like:
 
 ```bash
-# Set upstream branch
-git push -u origin main
-
-# Pull and push
-git pull origin main
-git push origin main
+Error: listen EADDRINUSE: address already in use :::3000
 ```
 
-**Google Cloud access issues:**
+it means another process is already using port 3000.
 
-```bash
-# Check project access
-gcloud projects list
+**How to fix:**
 
-# Enable required APIs
-gcloud services enable run.googleapis.com
+1. **Check for any process using port 3000 (both IPv4 & IPv6):**
 
-# See full guide: docs/TROUBLESHOOTING.md
-```
+   ```bash
+   lsof -nP -iTCP:3000 -sTCP:LISTEN
+   netstat -anv | grep 3000
+   ```
 
-**Python analysis not running:**
+   Then kill the process by its PID:
 
-```bash
-python3 notebooks/abaco_financial_intelligence.py
-```
+   ```bash
+   kill -9 <PID>
+   ```
 
-For comprehensive troubleshooting, see:
+2. **Or, start Next.js on a different port:**
 
-- [Google Cloud Troubleshooting](./docs/TROUBLESHOOTING.md)
-- [Google Cloud Setup](./docs/GOOGLE_CLOUD_SETUP.md)
+   ```bash
+   PORT=3001 npm run dev
+   # or
+   npx next dev -p 3001
+   ```
 
-## 📄 License
-
-Proprietary software. See [LICENSE](./LICENSE) for details.
-
-## 🤝 Contributing
-
-This is a proprietary platform. For authorized contributions, please contact the development team.
-
-## 📞 Support
-
-For technical support: <tech@abaco-platform.com>
-For licensing: <legal@abaco-platform.com>
+3. **If running in Codespaces or a dev container, you may need to restart the workspace.**
 
 ---
 
 **ABACO Financial Intelligence Platform** - Setting the standard for financial analytics excellence.
 
-> **Note:** This is the canonical repository for the Office Add-in with Figma and AI API integration.
+## Support
+- Create an issue in GitHub for bugs or enhancement requests.
+- For confidential matters, email the ABACO engineering office at engineering@abaco.finance.
