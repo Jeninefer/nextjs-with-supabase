@@ -242,13 +242,43 @@ For detailed setup instructions, error resolution, and platform status, see:
 
 ### Common Issues
 
-**Port already in use:**
+**Port 3000 is already in use**
+
+If you see an error like:
 
 ```bash
-lsof -i :3000
-kill -9 <PID>
-npm run dev
+Error: listen EADDRINUSE: address already in use :::3000
 ```
+
+it means another process is already using port 3000.
+
+**How to fix:**
+
+1. **Find and stop the process using port 3000:**
+
+   ```bash
+   lsof -i :3000 -sTCP:LISTEN
+   # or, for Alpine Linux:
+   netstat -tulpn | grep :3000
+   ```
+
+   Then kill the process by its PID:
+
+   ```bash
+   kill -9 <PID>
+   ```
+
+2. **Or, start Next.js on a different port:**
+
+   ```bash
+   PORT=3001 npm run dev
+   # or
+   npx next dev -p 3001
+   ```
+
+3. **If running in Codespaces or a dev container, you may need to restart the workspace.**
+
+---
 
 **Git sync issues:**
 
