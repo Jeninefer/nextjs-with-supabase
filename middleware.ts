@@ -1,15 +1,6 @@
 import { createServerClient, type CookieOptions } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
-type ResponseCookies = ReturnType<typeof NextResponse.next>["cookies"];
-type ResponseCookieOptions = Parameters<ResponseCookies["set"]>[2];
-
-type SupabaseCookieDescriptor = {
-  name: string;
-  value: string;
-  options: CookieOptions;
-};
-
 type NormalizedCookieOptions = {
   domain?: string;
   path?: string;
@@ -48,9 +39,22 @@ const applyCookie = (
 ) => {
   const normalized = normalizeCookieOptions(options);
   if (normalized) {
-    response.cookies.set(name, value, normalized as ResponseCookieOptions);
+    response.cookies.set({ name, value, ...normalized });
   } else {
     response.cookies.set(name, value);
+  }
+};
+
+const removeCookie = (
+  response: NextResponse,
+  name: string,
+  options?: CookieOptions,
+) => {
+  const normalized = normalizeCookieOptions(options);
+  if (normalized) {
+    response.cookies.delete({ name, ...normalized });
+  } else {
+    response.cookies.delete(name);
   }
 };
 
@@ -79,14 +83,12 @@ export async function middleware(request: NextRequest) {
   try {
     const supabase = createServerClient(supabaseUrl, supabaseKey, {
       cookies: {
-        getAll: () =>
-          request.cookies
-            .getAll()
-            .map((cookie) => ({ name: cookie.name, value: cookie.value })),
-        setAll: (cookies: SupabaseCookieDescriptor[]) => {
-          cookies.forEach((cookie) => {
-            applyCookie(response, cookie.name, cookie.value, cookie.options);
-          });
+        get: (name: string) => request.cookies.get(name)?.value,
+        set: (name: string, value: string, options?: CookieOptions) => {
+          applyCookie(response, name, value, options);
+        },
+        remove: (name: string, options?: CookieOptions) => {
+          removeCookie(response, name, options);
         },
       },
     });
