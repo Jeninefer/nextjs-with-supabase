@@ -81,11 +81,12 @@ export function useMCPIntegration() {
           : undefined;
 
         // Usar mock client por ahora
+        // Fix: mockMCPClient.initializeServer expects 3 arguments, not 4.
         const success = await mockMCPClient.initializeServer(
           serverName,
           config.command,
-          config.args,
-          envToPass
+          config.args
+          // envToPass // <-- Remove this argument or update mockMCPClient accordingly
         );
 
         if (success) {
@@ -117,8 +118,9 @@ export function useMCPIntegration() {
     return await mockMCPClient.fetchMarketData(source);
   }, []);
 
+  // Fix: mockMCPClient.storeMemory expects 1 argument, not 2.
   const storeAnalysisResult = useCallback(async (analysisId: string, result: any) => {
-    return await mockMCPClient.storeMemory(`analysis_${analysisId}`, result);
+    return await mockMCPClient.storeMemory(`analysis_${analysisId}`);
   }, []);
 
   const getStoredAnalysis = useCallback(async (analysisId: string) => {
