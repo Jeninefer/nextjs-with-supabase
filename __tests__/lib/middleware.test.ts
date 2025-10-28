@@ -174,7 +174,7 @@ describe('middleware', () => {
       expect(response).toHaveProperty('cookies')
     })
 
-    it('should return response even if session retrieval fails', async () => {
+    it('should throw if session retrieval fails', async () => {
       mockGetSession.mockRejectedValue(new Error('Session error'))
 
       // Should not throw
