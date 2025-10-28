@@ -7,11 +7,6 @@
       "DOM",
       "DOM.Iterable"
     ],
-    "types": [
-      "jest",
-      "node",
-      "@testing-library/jest-dom"
-    ],
     "module": "ESNext",
     "skipLibCheck": true,
     "moduleResolution": "bundler",
