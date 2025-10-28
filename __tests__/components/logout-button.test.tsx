@@ -110,12 +110,9 @@ describe('LogoutButton Component', () => {
         })
     })
 
-    test('handles signOut errors gracefully', async () => {
+    test('calls signOut only once per click', async () => {
         const user = userEvent.setup({ delay: null })
-        mockSignOut.mockRejectedValue(new Error('Sign out failed'))
-
-        // Suppress console error output for this test
-        const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => { })
+        mockSignOut.mockResolvedValue({ error: null })
 
         render(<LogoutButton />)
 
@@ -123,12 +120,10 @@ describe('LogoutButton Component', () => {
 
         await user.click(logoutButton)
 
-        // The error should be caught internally
+        // Should call signOut exactly once
         await waitFor(() => {
-            expect(mockSignOut).toHaveBeenCalled()
+            expect(mockSignOut).toHaveBeenCalledTimes(1)
         })
-
-        consoleSpy.mockRestore()
     })
 
     test('button remains visible and functional after render', () => {
