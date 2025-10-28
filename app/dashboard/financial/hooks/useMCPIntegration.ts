@@ -1,179 +1,322 @@
-"use client";
+'use client';
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type {
-    FinancialDashboardDataset,
-    FinancialMetric,
-    GrowthPoint,
-    Insight,
-    ProviderStatus,
-    RiskOverview,
-} from "@/lib/data/financial-intelligence";
+  FinancialDashboardPayload,
+  FinancialMetric,
+  Insight,
+  ProviderStatus,
+  RiskOverview,
+} from '@/lib/data/financial-intelligence';
+import type { FinancialIntelligenceResponse } from '@/app/api/financial-intelligence/route';
 
-const REFRESH_INTERVAL_MS = 5 * 60 * 1000;
+interface IntegrationSummary {
+  updatedAt: string | null;
+  refreshIntervalMinutes: number;
+  metadata?: FinancialIntelligenceResponse['metadata'];
+}
 
-type FinancialIntelligenceApiResponse = FinancialDashboardDataset & {
-    metadata?: {
-        queryTimeMs?: number;
-        totalTimeMs?: number;
-    };
+interface MCPIntegrationState {
+  isInitialized: boolean;
+  isLoading: boolean;
+  error: string | null;
+  dataset: FinancialDashboardPayload | null;
+  summary: IntegrationSummary;
+  servers: Set<string>;
+}
+
+interface MCPServerConfig {
+  command: string;
+  args: string[];
+  env?: Record<string, string | undefined>;
+}
+
+type StoredAnalysis<T = unknown> = {
+  savedAt: string;
+  value: T;
 };
 
-interface DashboardState {
-    dataset: FinancialDashboardDataset | null;
-    metadata: FinancialIntelligenceApiResponse["metadata"] | null;
-    isLoading: boolean;
-    error: string | null;
-}
+type InsightSearchResult = {
+  success: boolean;
+  matches: Insight[];
+  total: number;
+};
 
-interface DashboardSummary {
-    updatedAt: string | null;
-    refreshIntervalMinutes: number | null;
-    metadata: DashboardState["metadata"];
-}
+type MarketDataResult = {
+  success: boolean;
+  metric: FinancialMetric | null;
+  growth: FinancialDashboardPayload['growth'];
+};
 
-/**
- * Derives a strongly typed dashboard response from the public API.
- * Throws an error when the response status is outside the 2xx range or when parsing fails.
- */
-async function requestFinancialDataset(signal?: AbortSignal): Promise<FinancialIntelligenceApiResponse> {
-    const response = await fetch("/api/financial-intelligence", {
-        method: "GET",
-        headers: { Accept: "application/json" },
-        signal,
-    });
+const MCP_CONFIG: Record<string, MCPServerConfig> = {
+  'perplexity-ask': {
+    command: 'npx',
+    args: ['-y', 'server-perplexity-ask'],
+    env: {
+      PERPLEXITY_API_KEY: process.env.NEXT_PUBLIC_PERPLEXITY_API_KEY,
+    },
+  },
+  fetch: {
+    command: 'npx',
+    args: ['-y', '@modelcontextprotocol/server-fetch'],
+  },
+  memory: {
+    command: 'npx',
+    args: ['-y', '@modelcontextprotocol/server-memory'],
+  },
+};
 
-    if (!response.ok) {
-        throw new Error(`Financial dataset request failed with status ${response.status}`);
+const STORAGE_PREFIX = 'abaco-financial-analysis:';
+const DATA_ENDPOINT = '/api/financial-intelligence';
+
+const mockMCPClient = {
+  async initializeServer(
+    name: string,
+    command: string,
+    args: string[],
+    env?: Record<string, string>,
+  ): Promise<boolean> {
+    console.info('[MCP] Initialising', name, command, args.join(' '), env ?? {});
+    await new Promise((resolve) => setTimeout(resolve, 25));
+    return true;
+  },
+  async searchFinancialData(
+    dataset: FinancialDashboardPayload,
+    query: string,
+  ): Promise<InsightSearchResult> {
+    const normalized = query.trim().toLowerCase();
+    if (!normalized) {
+      return { success: true, matches: dataset.insights, total: dataset.insights.length };
     }
 
-    const payload = (await response.json()) as FinancialIntelligenceApiResponse;
-    return payload;
-}
-
-/**
- * Normalises a metric's change percentage into a consistent signed number for downstream formatting helpers.
- */
-function withSignedChange(change: FinancialMetric["change"]): FinancialMetric["change"] {
-    const sign = change.direction === "down" ? -1 : 1;
-    return {
-        ...change,
-        percentage: Math.abs(change.percentage) * sign,
-        absolute: change.absolute != null ? Math.abs(change.absolute) * sign : change.absolute,
-    };
-}
-
-/**
- * Provides the financial intelligence dataset, derived dashboard slices, and refresh helpers for the ABACO dashboard.
- *
- * - Automatically loads the dataset on mount and refreshes it every five minutes.
- * - Exposes manual refresh and accessor hooks for metrics, growth series, risk profile, provider status, and insights.
- * - Surfaces API timing metadata to aid in troubleshooting slow responses.
- */
-export function useMCPIntegration() {
-    const [state, setState] = useState<DashboardState>({
-        dataset: null,
-        metadata: null,
-        isLoading: true,
-        error: null,
+    const matches = dataset.insights.filter((insight) => {
+      const haystack = [
+        insight.title,
+        insight.summary,
+        insight.impact,
+        insight.action,
+        ...insight.tags,
+      ]
+        .join(' ')
+        .toLowerCase();
+      return haystack.includes(normalized);
     });
 
-    const abortRef = useRef<AbortController | null>(null);
-    const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
-
-    const loadDataset = useCallback(async () => {
-        abortRef.current?.abort();
-        const controller = new AbortController();
-        abortRef.current = controller;
-
-        setState((previous) => ({
-            ...previous,
-            isLoading: true,
-            error: null,
-        }));
-
-        try {
-            const { metadata, ...datasetPayload } = await requestFinancialDataset(controller.signal);
-            const dataset: FinancialDashboardDataset = {
-                ...datasetPayload,
-                generatedAt: datasetPayload.generatedAt,
-                refreshIntervalMinutes: datasetPayload.refreshIntervalMinutes,
-            };
-
-            setState({
-                dataset,
-                metadata: metadata ?? null,
-                isLoading: false,
-                error: null,
-            });
-        } catch (error) {
-            if ((error as Error).name === "AbortError") {
-                return;
-            }
-
-            setState((previous) => ({
-                ...previous,
-                isLoading: false,
-                error: error instanceof Error ? error.message : "Unable to load financial dataset",
-            }));
-        }
-    }, []);
-
-    const refresh = useCallback(async () => {
-        await loadDataset();
-    }, [loadDataset]);
-
-    useEffect(() => {
-        loadDataset();
-
-        intervalRef.current = setInterval(() => {
-            void loadDataset();
-        }, REFRESH_INTERVAL_MS);
-
-        return () => {
-            abortRef.current?.abort();
-            if (intervalRef.current) {
-                clearInterval(intervalRef.current);
-            }
-        };
-    }, [loadDataset]);
-
-    const metrics = useMemo<FinancialMetric[]>(() => {
-        if (!state.dataset) {
-            return [];
-        }
-
-        return state.dataset.metrics.map((metric) => ({
-            ...metric,
-            change: withSignedChange(metric.change),
-        }));
-    }, [state.dataset]);
-
-    const growthSeries = useMemo<GrowthPoint[]>(() => state.dataset?.growthSeries ?? [], [state.dataset]);
-
-    const riskProfile = useMemo<RiskOverview | null>(() => state.dataset?.risk ?? null, [state.dataset]);
-
-    const providers = useMemo<ProviderStatus[]>(() => state.dataset?.providers ?? [], [state.dataset]);
-
-    const insights = useMemo<Insight[]>(() => state.dataset?.insights ?? [], [state.dataset]);
-
-    const summary = useMemo<DashboardSummary>((): DashboardSummary => ({
-        updatedAt: state.dataset?.generatedAt ?? null,
-        refreshIntervalMinutes: state.dataset?.refreshIntervalMinutes ?? null,
-        metadata: state.metadata,
-    }), [state.dataset, state.metadata]);
+    return { success: true, matches, total: dataset.insights.length };
+  },
+  async fetchMarketData(
+    dataset: FinancialDashboardPayload,
+    identifier: string,
+  ): Promise<MarketDataResult> {
+    const metric = dataset.metrics.find(
+      (item) => item.id === identifier || item.label.toLowerCase() === identifier.toLowerCase(),
+    );
 
     return {
-        isInitialized: Boolean(state.dataset),
-        isLoading: state.isLoading,
-        error: state.error,
-        metrics,
-        growthSeries,
-        riskProfile,
-        providers,
-        insights,
-        refresh,
-        summary,
+      success: Boolean(metric),
+      metric: metric ?? null,
+      growth: dataset.growth,
     };
+  },
+  async storeMemory<T>(key: string, value: T): Promise<StoredAnalysis<T>> {
+    const payload: StoredAnalysis<T> = {
+      savedAt: new Date().toISOString(),
+      value,
+    };
+
+    if (typeof window !== 'undefined') {
+      window.localStorage.setItem(key, JSON.stringify(payload));
+    }
+
+    return payload;
+  },
+  async getMemory<T>(key: string): Promise<StoredAnalysis<T> | null> {
+    if (typeof window === 'undefined') {
+      return null;
+    }
+
+    const raw = window.localStorage.getItem(key);
+    if (!raw) {
+      return null;
+    }
+
+    try {
+      return JSON.parse(raw) as StoredAnalysis<T>;
+    } catch (error) {
+      console.warn('[MCP] Failed to parse stored analysis', error);
+      return null;
+    }
+  },
+  async disconnect(): Promise<void> {
+    console.info('[MCP] Disconnected');
+  },
+};
+
+interface ApiPayload extends FinancialDashboardPayload, FinancialIntelligenceResponse {}
+
+async function fetchDataset(signal?: AbortSignal): Promise<ApiPayload> {
+  const response = await fetch(DATA_ENDPOINT, {
+    method: 'GET',
+    headers: {
+      Accept: 'application/json',
+    },
+    cache: 'no-store',
+    signal,
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to load financial intelligence dataset (status ${response.status})`);
+  }
+
+  const payload = (await response.json()) as ApiPayload;
+  return payload;
+}
+
+function sanitizeEnv(env?: Record<string, string | undefined>): Record<string, string> | undefined {
+  if (!env) {
+    return undefined;
+  }
+
+  const entries = Object.entries(env)
+    .map(([key, value]) => [key, value?.trim()] as const)
+    .filter(([, value]) => Boolean(value)) as Array<[string, string]>;
+
+  if (!entries.length) {
+    return undefined;
+  }
+
+  return Object.fromEntries(entries);
+}
+
+const EMPTY_SUMMARY: IntegrationSummary = {
+  updatedAt: null,
+  refreshIntervalMinutes: 5,
+};
+
+export function useMCPIntegration() {
+  const [state, setState] = useState<MCPIntegrationState>({
+    isInitialized: false,
+    isLoading: false,
+    error: null,
+    dataset: null,
+    summary: EMPTY_SUMMARY,
+    servers: new Set(),
+  });
+  const datasetRef = useRef<FinancialDashboardPayload | null>(null);
+
+  const initialise = useCallback(async () => {
+    setState((previous) => ({ ...previous, isLoading: true, error: null }));
+
+    try {
+      const datasetWithMetadata = await fetchDataset();
+      const dataset: FinancialDashboardPayload = {
+        metrics: datasetWithMetadata.metrics,
+        growth: datasetWithMetadata.growth,
+        risk: datasetWithMetadata.risk,
+        insights: datasetWithMetadata.insights,
+        providers: datasetWithMetadata.providers,
+        generatedAt: datasetWithMetadata.generatedAt,
+      };
+
+      datasetRef.current = dataset;
+
+      const servers = new Set<string>();
+
+      for (const [name, config] of Object.entries(MCP_CONFIG)) {
+        const env = sanitizeEnv(config.env);
+        if (config.env && !env) {
+          console.warn(`[MCP] Skipping ${name} initialisation - missing environment variables.`);
+          continue;
+        }
+
+        const initialised = await mockMCPClient.initializeServer(name, config.command, config.args, env);
+        if (initialised) {
+          servers.add(name);
+        }
+      }
+
+      setState({
+        isInitialized: true,
+        isLoading: false,
+        error: null,
+        dataset,
+        summary: {
+          updatedAt: datasetWithMetadata.generatedAt ?? null,
+          refreshIntervalMinutes: EMPTY_SUMMARY.refreshIntervalMinutes,
+          metadata: datasetWithMetadata.metadata,
+        },
+        servers,
+      });
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Failed to initialise MCP integration';
+      setState((previous) => ({ ...previous, isLoading: false, error: message }));
+    }
+  }, []);
+
+  useEffect(() => {
+    initialise();
+    return () => {
+      void mockMCPClient.disconnect();
+    };
+  }, [initialise]);
+
+  const searchFinancialInsights = useCallback(
+    async (query: string) => {
+      const dataset = datasetRef.current;
+      if (!dataset) {
+        return { success: false, matches: [], total: 0 } satisfies InsightSearchResult;
+      }
+
+      return mockMCPClient.searchFinancialData(dataset, query);
+    },
+    [],
+  );
+
+  const fetchMarketData = useCallback(
+    async (identifier: string) => {
+      const dataset = datasetRef.current;
+      if (!dataset) {
+        return { success: false, metric: null, growth: [] } satisfies MarketDataResult;
+      }
+
+      return mockMCPClient.fetchMarketData(dataset, identifier);
+    },
+    [],
+  );
+
+  const storeAnalysisResult = useCallback(async (analysisId: string, value: unknown) => {
+    const key = `${STORAGE_PREFIX}${analysisId}`;
+    return mockMCPClient.storeMemory(key, value);
+  }, []);
+
+  const getStoredAnalysis = useCallback(async (analysisId: string) => {
+    const key = `${STORAGE_PREFIX}${analysisId}`;
+    return mockMCPClient.getMemory(key);
+  }, []);
+
+  const metrics = useMemo(() => state.dataset?.metrics ?? [], [state.dataset]);
+  const insights = useMemo(() => state.dataset?.insights ?? [], [state.dataset]);
+  const growthSeries = useMemo(() => state.dataset?.growth ?? [], [state.dataset]);
+  const riskProfile = useMemo<RiskOverview | null>(
+    () => state.dataset?.risk ?? null,
+    [state.dataset],
+  );
+  const providers = useMemo<ProviderStatus[]>(
+    () => state.dataset?.providers ?? [],
+    [state.dataset],
+  );
+
+  return {
+    ...state,
+    metrics,
+    insights,
+    growthSeries,
+    riskProfile,
+    providers,
+    refresh: initialise,
+    searchFinancialInsights,
+    fetchMarketData,
+    storeAnalysisResult,
+    getStoredAnalysis,
+  };
 }

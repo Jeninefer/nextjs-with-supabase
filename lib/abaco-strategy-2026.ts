@@ -35,7 +35,6 @@ export interface QualityAuditResult {
     action?: string
     normalizedColumns?: string[]
     nullsByColumn?: Record<string, number>
-    numericSamples?: number[]
 }
 
 export interface KPIValidationResult {
@@ -147,20 +146,6 @@ function normalizeColumn(header: string): string {
 }
 
 /**
- * Numeric conversion: Handle $, €, ₡, %, commas
- */
-function parseNumericValue(value: string): number | null {
-    if (!value || typeof value !== 'string') return null
-
-    const cleaned = value
-        .replace(/[$€₡,% ]/g, '')
-        .trim()
-
-    const parsed = parseFloat(cleaned)
-    return isNaN(parsed) ? null : parsed
-}
-
-/**
  * Tier 1: Validate data quality - normalization, nulls, accuracy, consistency
  * Checkpoints: All columns in whitelist, no nulls >10%, numeric conversions successful
  */
@@ -172,7 +157,6 @@ export function validateDataQuality(data: any): QualityAuditResult {
 
     const normalizedColumns: string[] = []
     const nullsByColumn: Record<string, number> = {}
-    const numericSamples: number[] = []
 
     if (data.columnHeaders) {
         normalizedColumns.push(
@@ -183,19 +167,10 @@ export function validateDataQuality(data: any): QualityAuditResult {
     if (data.rows) {
         const totalRows = data.rows.length
         let nullCount = 0
-
         data.rows.forEach((row: any) => {
             const criticalColumns = ['kam', 'nit', 'nrc', 'aum', 'dpd']
             criticalColumns.forEach((col) => {
-                const value = row[col]
-                if (typeof value === 'string') {
-                    const parsedValue = parseNumericValue(value)
-                    if (parsedValue !== null) {
-                        numericSamples.push(parsedValue)
-                    }
-                }
-
-                if (value === null || value === undefined || value === '') {
+                if (!row[col]) {
                     nullCount++
                     if (!nullsByColumn[col]) nullsByColumn[col] = 0
                     nullsByColumn[col]++
@@ -203,15 +178,10 @@ export function validateDataQuality(data: any): QualityAuditResult {
             })
         })
 
-        const nullRows = data.nullRows ?? nullCount
-        const duplicateRows = data.duplicateRows ?? 0
-        const outOfRangeRows = data.outOfRangeRows ?? 0
-        const staleRows = data.staleDateRows ?? 0
-
-        completeness = (totalRows - nullRows) / totalRows
-        uniqueness = (totalRows - duplicateRows) / totalRows
-        accuracy = (totalRows - outOfRangeRows) / totalRows
-        timeliness = (totalRows - staleRows) / totalRows
+        completeness = (totalRows - (data.nullRows || 0)) / totalRows
+        uniqueness = (totalRows - (data.duplicateRows || 0)) / totalRows
+        accuracy = (totalRows - (data.outOfRangeRows || 0)) / totalRows
+        timeliness = (totalRows - (data.staleDateRows || 0)) / totalRows
     }
 
     const qualityScore =
@@ -229,7 +199,6 @@ export function validateDataQuality(data: any): QualityAuditResult {
         timeliness: timeliness * 100,
         normalizedColumns,
         nullsByColumn,
-        numericSamples: numericSamples.length > 0 ? numericSamples : undefined,
         alertTriggered: qualityScore < 95,
         action: qualityScore < 95 ? 'Escalate to Data Engineering' : undefined,
     }

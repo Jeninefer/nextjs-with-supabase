@@ -1,4 +1,4 @@
-export type PullRequestStatus = "open" | "closed";
+export type PullRequestStatus = 'open' | 'closed';
 
 export interface PullRequestRecord {
   number: number;
@@ -10,15 +10,16 @@ export interface PullRequestRecord {
   closureReason?: string;
 }
 
-export interface CloseDuplicateOptions {
-  aiIdentifiers?: readonly string[];
-  closureReason?: string;
-  onClose?: (duplicate: PullRequestRecord, canonical: PullRequestRecord) => void;
-}
-
 export interface CloseDuplicateSummary {
   closedCount: number;
   deduplicatedTitles: string[];
+}
+
+export interface CloseDuplicateOptions {
+  aiIdentifiers?: readonly string[];
+  canonicalStrategy?: 'earliest' | 'latest';
+  closureReason?: string;
+  onClose?: (duplicate: PullRequestRecord, canonical: PullRequestRecord) => void | Promise<void>;
 }
 
 export interface CloseDuplicateResult {
@@ -27,100 +28,69 @@ export interface CloseDuplicateResult {
   summary: CloseDuplicateSummary;
 }
 
-export const DEFAULT_AI_IDENTIFIERS = Object.freeze([
-  "chatgpt",
-  "openai",
-  "grok",
+export const DEFAULT_AI_IDENTIFIERS: readonly string[] = Object.freeze([
+  'chatgpt',
+  'openai',
+  'copilot',
+  'gpt',
+  'cursor',
+  'claude',
+  'grok',
 ]);
 
-const beforeBoundary = String.raw`(^|[^\p{L}\p{N}])`;
-const afterBoundary = String.raw`([^\p{L}\p{N}]|$)`;
+const TITLE_NORMALIZER = /\s+/g;
 
-const escapeRegExp = (value: string): string =>
-  value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+const escapeRegExp = (value: string): string => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
 const buildIdentifierPatterns = (identifiers: readonly string[]): RegExp[] =>
-  identifiers.map(
-    (identifier) =>
-      new RegExp(
-        `${beforeBoundary}${escapeRegExp(identifier)}${afterBoundary}`,
-        "iu",
-      ),
-  );
-
-const normalizeIdentifierList = (
-  identifiers: readonly string[] | undefined,
-): readonly string[] => {
-  const cleaned = (identifiers ?? DEFAULT_AI_IDENTIFIERS)
-    .map((identifier) => identifier.trim().toLowerCase())
-    .filter((identifier) => identifier.length > 0);
-
-  return Array.from(new Set(cleaned));
-};
-
-const normalizeTitle = (title: string): string =>
-  title.trim().replace(/\s+/g, " ").toLowerCase();
-
-const isAiOwned = (
-  record: PullRequestRecord,
-  patterns: readonly RegExp[],
-): boolean => {
-  const valuesToCheck = [record.author, ...record.assignees];
-  return valuesToCheck.some((value) => {
-    if (!value) return false;
-    const normalized = value.trim().toLowerCase();
-    return patterns.some((pattern) => pattern.test(normalized));
+  identifiers.map((identifier) => {
+    const trimmed = identifier.trim().toLowerCase();
+    return new RegExp(`(^|[^\\p{L}\\p{N}])${escapeRegExp(trimmed)}([^\\p{L}\\p{N}]|$)`, 'iu');
   });
-};
 
-const clonePullRequest = (record: PullRequestRecord): PullRequestRecord => ({
+const normalizeTitle = (title: string): string => title.trim().replace(TITLE_NORMALIZER, ' ').toLowerCase();
+
+const cloneRecord = (record: PullRequestRecord): PullRequestRecord => ({
   ...record,
   assignees: [...record.assignees],
 });
 
-const chooseCanonicalPullRequest = (
-  records: PullRequestRecord[],
-  patterns: readonly RegExp[],
-): PullRequestRecord => {
-  const sorted = [...records].sort((a, b) => a.number - b.number);
-
-  const openHuman = sorted.find(
-    (record) => record.status === "open" && !isAiOwned(record, patterns),
-  );
-  if (openHuman) return openHuman;
-
-  const anyHuman = sorted.find((record) => !isAiOwned(record, patterns));
-  if (anyHuman) return anyHuman;
-
-  const openAi = sorted.find((record) => record.status === "open");
-  if (openAi) return openAi;
-
-  return sorted[0];
+const isAiOwned = (record: PullRequestRecord, patterns: RegExp[]): boolean => {
+  const fields = [record.author ?? '', ...record.assignees];
+  return fields.some((value) => patterns.some((pattern) => pattern.test(value.toLowerCase())));
 };
 
-const assertValidRecord = (record: PullRequestRecord): void => {
-  if (!Number.isInteger(record.number) || record.number <= 0) {
-    throw new Error(`Invalid pull request number: ${record.number}`);
+const selectCanonical = (
+  records: PullRequestRecord[],
+  strategy: 'earliest' | 'latest',
+  patterns: RegExp[],
+): PullRequestRecord => {
+  const humanOwned = records.filter((record) => !isAiOwned(record, patterns));
+  const candidates = humanOwned.length > 0 ? humanOwned : records;
+
+  if (strategy === 'latest') {
+    return candidates.reduce((latest, record) => (record.number > latest.number ? record : latest));
   }
-  if (typeof record.title !== "string" || record.title.trim().length === 0) {
-    throw new Error(`Invalid pull request title for #${record.number}`);
+
+  return candidates.reduce((earliest, record) => (record.number < earliest.number ? record : earliest));
+};
+
+const invokeOnClose = (
+  callback: CloseDuplicateOptions['onClose'],
+  duplicate: PullRequestRecord,
+  canonical: PullRequestRecord,
+): void => {
+  if (!callback) {
+    return;
   }
-  if (!Array.isArray(record.assignees)) {
-    throw new Error(`Assignees must be an array for pull request #${record.number}`);
-  }
-  record.assignees.forEach((assignee) => {
-    if (typeof assignee !== "string") {
-      throw new Error(`Invalid assignee entry for pull request #${record.number}`);
+
+  try {
+    const result = callback(duplicate, canonical);
+    if (result && typeof (result as Promise<unknown>).then === 'function') {
+      (result as Promise<unknown>).catch(() => undefined);
     }
-  });
-  if (record.status !== "open" && record.status !== "closed") {
-    throw new Error(`Invalid status for pull request #${record.number}`);
-  }
-  if (
-    record.duplicateOf !== undefined &&
-    (!Number.isInteger(record.duplicateOf) || record.duplicateOf <= 0)
-  ) {
-    throw new Error(`Invalid duplicateOf value for pull request #${record.number}`);
+  } catch (error) {
+    console.warn('[PR Maintenance] onClose callback failed', error);
   }
 };
 
@@ -128,62 +98,71 @@ export function closeDuplicatePullRequests(
   pullRequests: PullRequestRecord[],
   options: CloseDuplicateOptions = {},
 ): CloseDuplicateResult {
-  pullRequests.forEach(assertValidRecord);
+  const {
+    aiIdentifiers = DEFAULT_AI_IDENTIFIERS,
+    canonicalStrategy = 'earliest',
+    closureReason = 'duplicate-ai-assignee',
+    onClose,
+  } = options;
 
-  const identifiers = normalizeIdentifierList(options.aiIdentifiers);
-  const patterns = buildIdentifierPatterns(identifiers);
-  const closureReason = options.closureReason ?? "duplicate-ai-assignee";
+  const sanitizedIdentifiers = aiIdentifiers
+    .map((identifier) => identifier.trim().toLowerCase())
+    .filter(Boolean);
+  const identifierPatterns = buildIdentifierPatterns(sanitizedIdentifiers);
 
-  const updatedRecords = pullRequests.map(clonePullRequest);
-
-  const groupedByTitle = new Map<string, PullRequestRecord[]>();
-  updatedRecords.forEach((record) => {
-    const normalizedTitle = normalizeTitle(record.title);
-    const existing = groupedByTitle.get(normalizedTitle);
-    if (existing) {
-      existing.push(record);
-    } else {
-      groupedByTitle.set(normalizedTitle, [record]);
+  const grouped = new Map<string, PullRequestRecord[]>();
+  const updated = pullRequests.map((record) => {
+    const clone = cloneRecord(record);
+    const key = normalizeTitle(clone.title);
+    if (!grouped.has(key)) {
+      grouped.set(key, []);
     }
+    grouped.get(key)!.push(clone);
+    return clone;
   });
 
-  const closedRecords: PullRequestRecord[] = [];
+  const closed: PullRequestRecord[] = [];
   const deduplicatedTitles = new Set<string>();
 
-  groupedByTitle.forEach((records, normalizedTitle) => {
-    if (records.length < 2) return;
+  for (const [titleKey, records] of grouped.entries()) {
+    if (records.length < 2) {
+      continue;
+    }
 
-    const canonical = chooseCanonicalPullRequest(records, patterns);
+    const canonical = selectCanonical(records, canonicalStrategy, identifierPatterns);
 
-    records.forEach((record) => {
-      if (record.number === canonical.number) return;
-      if (!isAiOwned(record, patterns)) return;
+    for (const record of records) {
+      if (record.number === canonical.number) {
+        continue;
+      }
 
-      deduplicatedTitles.add(normalizedTitle);
+      if (!isAiOwned(record, identifierPatterns)) {
+        continue;
+      }
 
-      record.status = "closed";
-      record.duplicateOf = canonical.number;
-      if (!record.closureReason) {
+      const hasStatusChanged = record.status !== 'closed';
+      record.status = 'closed';
+      if (canonical.number && record.duplicateOf === undefined) {
+        record.duplicateOf = canonical.number;
+      }
+      if (closureReason && !record.closureReason) {
         record.closureReason = closureReason;
       }
 
-      closedRecords.push(record);
+      closed.push(record);
+      deduplicatedTitles.add(titleKey);
 
-      if (options.onClose) {
-        try {
-          options.onClose(record, canonical);
-        } catch {
-          // ignore callback failures
-        }
+      if (hasStatusChanged || record.duplicateOf === canonical.number) {
+        invokeOnClose(onClose, record, canonical);
       }
-    });
-  });
+    }
+  }
 
   return {
-    updated: updatedRecords,
-    closed: closedRecords,
+    updated,
+    closed,
     summary: {
-      closedCount: closedRecords.length,
+      closedCount: closed.length,
       deduplicatedTitles: Array.from(deduplicatedTitles),
     },
   };

@@ -1,292 +1,266 @@
-export type MetricUnit = "currency" | "percentage" | "count" | "ratio";
+export type MetricUnit = 'currency' | 'percentage' | 'count' | 'ratio';
+
+export type MetricTrend = 'up' | 'down' | 'flat';
 
 export interface MetricChange {
-    direction: "up" | "down";
-    percentage: number;
-    absolute?: number;
-    period: "MoM" | "QoQ" | "YoY";
+  absolute?: number;
+  percentage?: number;
+  period?: string;
+  trend?: MetricTrend;
 }
 
 export interface FinancialMetric {
-    id: string;
-    label: string;
-    description: string;
-    value: number;
-    unit: MetricUnit;
-    currency?: string;
-    change: MetricChange;
-    target?: number;
+  id: string;
+  label: string;
+  description: string;
+  value: number;
+  unit: MetricUnit;
+  currency?: string;
+  change?: MetricChange;
+  target?: number;
 }
 
 export interface GrowthPoint {
-    month: string;
-    netAssetValue: number;
-    newAssets: number;
-    retentionRate: number;
+  month: string;
+  assetsUnderManagement: number;
+  newInvestments: number;
+  redemptions: number;
 }
 
 export interface SectorExposure {
-    sector: string;
-    allocation: number;
-    changeBps: number;
-}
-
-export interface StressScenario {
-    scenario: string;
-    lossImpact: number;
-    probability: number;
-}
-
-export interface EarlyWarning {
-    id: string;
-    label: string;
-    severity: "low" | "moderate" | "high";
-    detail: string;
+  sector: string;
+  allocation: number;
+  change: number;
+  riskLevel: 'low' | 'moderate' | 'elevated';
+  commentary: string;
 }
 
 export interface RiskOverview {
-    summary: string;
-    score: number;
-    status: "low" | "moderate" | "high";
-    valueAtRisk: {
-        amount: number;
-        horizon: string;
-        confidence: number;
-    };
-    expectedShortfall: number;
-    defaultRate: number;
-    exposures: SectorExposure[];
-    stressScenarios: StressScenario[];
-    earlyWarnings: EarlyWarning[];
-}
-
-export interface ProviderStatus {
-    name: string;
-    status: "operational" | "degraded" | "offline";
-    responseTimeMs: number;
-    lastSync: string;
-    coverage: string[];
+  valueAtRisk95: number;
+  expectedShortfall95: number;
+  stressLoss: number;
+  diversificationIndex: number;
+  exposures: SectorExposure[];
 }
 
 export interface Insight {
-    id: string;
-    title: string;
-    summary: string;
-    confidence: number;
-    impact: "high" | "medium" | "low";
-    recommendedAction: string;
-    tags: string[];
+  id: string;
+  title: string;
+  summary: string;
+  impact: string;
+  confidence: number;
+  action: string;
+  tags: string[];
+  lastUpdated: string;
 }
 
-export interface FinancialDashboardDataset {
-    metrics: FinancialMetric[];
-    growthSeries: GrowthPoint[];
-    risk: RiskOverview;
-    providers: ProviderStatus[];
-    insights: Insight[];
-    generatedAt: string;
-    refreshIntervalMinutes: number;
+export interface ProviderStatus {
+  id: string;
+  name: string;
+  status: 'healthy' | 'degraded' | 'down';
+  latencyMs: number;
+  lastSync: string;
+  message?: string;
 }
 
-const now = new Date();
-
-function formatShortMonth(date: Date): string {
-    return date.toLocaleString("en-US", { month: "short", year: "2-digit" });
+export interface FinancialDashboardPayload {
+  generatedAt: string;
+  metrics: FinancialMetric[];
+  growth: GrowthPoint[];
+  risk: RiskOverview;
+  insights: Insight[];
+  providers: ProviderStatus[];
 }
 
-function addMonths(date: Date, months: number): Date {
-    const clone = new Date(date.getTime());
-    clone.setMonth(clone.getMonth() + months);
-    return clone;
-}
-
-function toIsoString(date: Date): string {
-    return date.toISOString();
-}
-
-const growthSeries: GrowthPoint[] = Array.from({ length: 12 }).map((_, index) => {
-    const date = addMonths(now, index - 11);
-    const nav = 18_000_000 + index * 650_000;
-    const inflows = 380_000 + index * 15_000;
-    const retention = Math.min(0.985, 0.9 + index * 0.003);
-
-    return {
-        month: formatShortMonth(date),
-        netAssetValue: nav,
-        newAssets: inflows,
-        retentionRate: Number(retention.toFixed(3)),
-    } satisfies GrowthPoint;
-});
-
-export const financialDashboardDataset: FinancialDashboardDataset = {
-    metrics: [
-        {
-            id: "aum",
-            label: "Assets Under Management",
-            description: "Total assets actively managed across lending programs.",
-            value: 25_400_000,
-            unit: "currency",
-            currency: "USD",
-            change: {
-                direction: "up",
-                percentage: 4.2,
-                absolute: 1_020_000,
-                period: "MoM",
-            },
-            target: 26_000_000,
-        },
-        {
-            id: "activeClients",
-            label: "Active Institutional Clients",
-            description: "Institutions with funds deployed in the last 30 days.",
-            value: 1_247,
-            unit: "count",
-            change: {
-                direction: "up",
-                percentage: 2.6,
-                absolute: 32,
-                period: "MoM",
-            },
-            target: 1_300,
-        },
-        {
-            id: "defaultRate",
-            label: "Portfolio Default Rate",
-            description: "Trailing 90-day default rate across originations.",
-            value: 3.2,
-            unit: "percentage",
-            change: {
-                direction: "down",
-                percentage: 0.4,
-                absolute: 0.1,
-                period: "QoQ",
-            },
-            target: 2.9,
-        },
-        {
-            id: "apr",
-            label: "Weighted APR",
-            description: "Blended annualised yield across all active facilities.",
-            value: 18.5,
-            unit: "percentage",
-            change: {
-                direction: "up",
-                percentage: 0.7,
-                absolute: 0.3,
-                period: "MoM",
-            },
-            target: 19.0,
-        },
-        {
-            id: "turnaround",
-            label: "Credit Decision Turnaround",
-            description: "Median decisioning time across intake pipeline (minutes).",
-            value: 42,
-            unit: "count",
-            change: {
-                direction: "down",
-                percentage: 6.1,
-                absolute: 3,
-                period: "MoM",
-            },
-            target: 36,
-        },
-    ],
-    growthSeries,
-    risk: {
-        summary: "Portfolio risk remains comfortably within operating guardrails with improved collateral coverage and lower defaults in growth sectors.",
-        score: 27,
-        status: "low",
-        valueAtRisk: {
-            amount: 1_240_000,
-            horizon: "10-day",
-            confidence: 0.95,
-        },
-        expectedShortfall: 1_780_000,
-        defaultRate: 0.032,
-        exposures: [
-            { sector: "SaaS Lending", allocation: 0.28, changeBps: -18 },
-            { sector: "SMB Working Capital", allocation: 0.22, changeBps: 9 },
-            { sector: "Healthcare", allocation: 0.19, changeBps: 4 },
-            { sector: "Climate & ESG", allocation: 0.16, changeBps: -6 },
-            { sector: "Fintech Partnerships", allocation: 0.15, changeBps: 2 },
-        ],
-        stressScenarios: [
-            { scenario: "Recessionary Shock", lossImpact: 0.072, probability: 0.12 },
-            { scenario: "Credit Tightening", lossImpact: 0.054, probability: 0.18 },
-            { scenario: "FX Dislocation", lossImpact: 0.031, probability: 0.08 },
-        ],
-        earlyWarnings: [
-            {
-                id: "ew-1",
-                label: "North America SMB",
-                severity: "moderate",
-                detail: "Delinquency creeping above 4.5% threshold in Q4 cohorts.",
-            },
-            {
-                id: "ew-2",
-                label: "FX Hedging Buffer",
-                severity: "low",
-                detail: "Coverage ratio at 1.08× versus 1.1× policy floor.",
-            },
-        ],
+export const financialIntelligence: FinancialDashboardPayload = {
+  generatedAt: '2025-10-27T16:00:00.000Z',
+  metrics: [
+    {
+      id: 'aum',
+      label: 'Assets under management',
+      description: 'Total managed assets across discretionary portfolios.',
+      value: 25400000,
+      unit: 'currency',
+      currency: 'USD',
+      change: {
+        absolute: 865000,
+        percentage: 0.036,
+        period: 'm/m',
+        trend: 'up',
+      },
+      target: 26000000,
     },
-    providers: [
-        {
-            name: "Supabase Analytics Lake",
-            status: "operational",
-            responseTimeMs: 183,
-            lastSync: toIsoString(now),
-            coverage: ["portfolio_metrics", "risk_events"],
-        },
-        {
-            name: "Global Market Data Feed",
-            status: "degraded",
-            responseTimeMs: 412,
-            lastSync: toIsoString(addMonths(now, -1 / 3)),
-            coverage: ["fx_rates", "volatility_index"],
-        },
-        {
-            name: "Credit Bureau Bridge",
-            status: "operational",
-            responseTimeMs: 205,
-            lastSync: toIsoString(now),
-            coverage: ["bureau_scores", "early_warnings"],
-        },
+    {
+      id: 'active-clients',
+      label: 'Active clients',
+      description: 'Clients with assets or payments in the last 30 days.',
+      value: 1247,
+      unit: 'count',
+      change: {
+        absolute: 56,
+        percentage: 0.047,
+        period: 'm/m',
+        trend: 'up',
+      },
+      target: 1300,
+    },
+    {
+      id: 'default-rate',
+      label: 'Default rate',
+      description: 'Share of loans with payments over 60 days past due.',
+      value: 0.032,
+      unit: 'percentage',
+      change: {
+        absolute: -0.004,
+        percentage: -0.111,
+        period: 'q/q',
+        trend: 'down',
+      },
+      target: 0.028,
+    },
+    {
+      id: 'weighted-apr',
+      label: 'Weighted APR',
+      description: 'Portfolio-weighted annualised percentage rate.',
+      value: 0.185,
+      unit: 'percentage',
+      change: {
+        absolute: 0.003,
+        percentage: 0.017,
+        period: 'm/m',
+        trend: 'up',
+      },
+      target: 0.19,
+    },
+    {
+      id: 'net-promoter-score',
+      label: 'Net promoter score',
+      description: 'Trailing 90-day NPS from active enterprise clients.',
+      value: 63,
+      unit: 'count',
+      change: {
+        absolute: 5,
+        percentage: 0.086,
+        period: 'q/q',
+        trend: 'up',
+      },
+      target: 65,
+    },
+  ],
+  growth: [
+    { month: 'May', assetsUnderManagement: 21500000, newInvestments: 1650000, redemptions: 820000 },
+    { month: 'Jun', assetsUnderManagement: 22300000, newInvestments: 1780000, redemptions: 760000 },
+    { month: 'Jul', assetsUnderManagement: 22900000, newInvestments: 1820000, redemptions: 690000 },
+    { month: 'Aug', assetsUnderManagement: 23650000, newInvestments: 1940000, redemptions: 710000 },
+    { month: 'Sep', assetsUnderManagement: 24500000, newInvestments: 2050000, redemptions: 690000 },
+    { month: 'Oct', assetsUnderManagement: 25400000, newInvestments: 2185000, redemptions: 720000 },
+  ],
+  risk: {
+    valueAtRisk95: 0.071,
+    expectedShortfall95: 0.106,
+    stressLoss: 0.148,
+    diversificationIndex: 0.63,
+    exposures: [
+      {
+        sector: 'Alternative lending',
+        allocation: 0.29,
+        change: -0.01,
+        riskLevel: 'moderate',
+        commentary: 'Performance stabilised after tightening credit filters in July.',
+      },
+      {
+        sector: 'SMB credit',
+        allocation: 0.24,
+        change: 0.02,
+        riskLevel: 'elevated',
+        commentary: 'Delinquency improving, but midwest logistics cohort still above limits.',
+      },
+      {
+        sector: 'Invoice factoring',
+        allocation: 0.19,
+        change: 0.00,
+        riskLevel: 'low',
+        commentary: 'Healthy collateralisation and recovery ratios holding at 98%.',
+      },
+      {
+        sector: 'Embedded finance',
+        allocation: 0.17,
+        change: -0.01,
+        riskLevel: 'moderate',
+        commentary: 'Growth channel performing above plan following new e-commerce partnerships.',
+      },
+      {
+        sector: 'Consumer BNPL',
+        allocation: 0.11,
+        change: 0.01,
+        riskLevel: 'elevated',
+        commentary: 'Loss mitigation programme reduced severity but volumes remain high.',
+      },
     ],
-    insights: [
-        {
-            id: "insight-aum",
-            title: "Growth concentration in SaaS lending",
-            summary: "SaaS facilities delivered 46% of net new assets this quarter while maintaining sub-3% defaults.",
-            confidence: 0.92,
-            impact: "high",
-            recommendedAction: "Expand underwriting capacity for recurring revenue facilities and uplift marketing budget by 12%.",
-            tags: ["growth", "saas", "portfolio"],
-        },
-        {
-            id: "insight-risk",
-            title: "Stress resilience improving",
-            summary: "Updated collateral waterfall reduces expected losses by 180 bps under the recessionary scenario.",
-            confidence: 0.84,
-            impact: "medium",
-            recommendedAction: "Publish revised stress test deck for risk committee and reduce reserve buffer guidance by 0.5%.",
-            tags: ["risk", "stress-testing"],
-        },
-        {
-            id: "insight-ops",
-            title: "Decision turnaround opportunity",
-            summary: "Workflow automation trimmed median decisioning time by 6% but queue backlog spikes on Mondays.",
-            confidence: 0.78,
-            impact: "medium",
-            recommendedAction: "Introduce staggered underwriting shifts early in the week and extend task automation to KYC reviews.",
-            tags: ["operations", "automation"],
-        },
-    ],
-    generatedAt: toIsoString(now),
-    refreshIntervalMinutes: 5,
+  },
+  insights: [
+    {
+      id: 'fx-hedge',
+      title: 'FX hedge coverage is below mandate for EUR receivables',
+      summary: 'Hedge ratio fell to 68% after EUR exposure grew 14% during Q3 expansion.',
+      impact: 'Increasing hedge coverage to 85% would reduce projected VaR by 120 bps.',
+      confidence: 0.87,
+      action: 'Extend existing EUR forwards and add three-month collars for new receivables.',
+      tags: ['risk', 'treasury', 'fx'],
+      lastUpdated: '2025-10-26T22:30:00.000Z',
+    },
+    {
+      id: 'portfolio-optimization',
+      title: 'SMB logistics cohort exceeding risk appetite',
+      summary: '30-day delinquency plateaued at 5.8% against 4.5% limit after summer fuel spike.',
+      impact: 'Reducing exposure by 6% reallocates $1.3M to higher margin invoice factoring.',
+      confidence: 0.79,
+      action: 'Pause new originations in the flagged cohort and rebalance toward factoring programmes.',
+      tags: ['credit', 'allocation', 'operations'],
+      lastUpdated: '2025-10-27T09:05:00.000Z',
+    },
+    {
+      id: 'customer-growth',
+      title: 'Cross-sell opportunity in enterprise SaaS clients',
+      summary: 'ARPA for top quartile SaaS customers is 22% above median with lower churn risk.',
+      impact: 'Launching the treasury automation add-on could increase ARR by $1.1M annually.',
+      confidence: 0.92,
+      action: 'Bundle treasury automation into Q4 renewals for the top 40 SaaS accounts.',
+      tags: ['growth', 'pricing', 'product'],
+      lastUpdated: '2025-10-25T14:45:00.000Z',
+    },
+  ],
+  providers: [
+    {
+      id: 'supabase',
+      name: 'Supabase',
+      status: 'healthy',
+      latencyMs: 143,
+      lastSync: '2025-10-27T15:55:00.000Z',
+    },
+    {
+      id: 'figma',
+      name: 'Figma',
+      status: 'healthy',
+      latencyMs: 212,
+      lastSync: '2025-10-27T15:50:00.000Z',
+    },
+    {
+      id: 'perplexity',
+      name: 'Perplexity AI',
+      status: 'degraded',
+      latencyMs: 394,
+      lastSync: '2025-10-27T15:40:00.000Z',
+      message: 'Latency elevated during model fine-tuning window.',
+    },
+    {
+      id: 'openai',
+      name: 'OpenAI',
+      status: 'healthy',
+      latencyMs: 178,
+      lastSync: '2025-10-27T15:48:00.000Z',
+    },
+  ],
 };
 
-export const financialIntelligence = financialDashboardDataset;
-
-export default financialDashboardDataset;
+export default financialIntelligence;

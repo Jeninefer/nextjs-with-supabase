@@ -12,14 +12,15 @@ function buildPath(series: GrowthPoint[]): string {
         return "";
     }
 
-    const minValue = Math.min(...series.map((point) => point.netAssetValue));
-    const maxValue = Math.max(...series.map((point) => point.netAssetValue));
-    const range = Math.max(maxValue - minValue, 1);
+    const values = series.map((point) => point.assetsUnderManagement);
+    const minValue = Math.min(...values);
+    const maxValue = Math.max(...values);
+    const range = Math.max(maxValue - minValue, Math.max(maxValue, 1));
 
     return series
         .map((point, index) => {
-            const x = (index / (series.length - 1)) * 100;
-            const normalised = (point.netAssetValue - minValue) / range;
+            const x = series.length === 1 ? 0 : (index / (series.length - 1)) * 100;
+            const normalised = (point.assetsUnderManagement - minValue) / range;
             const y = 100 - normalised * 100;
             return `${index === 0 ? "M" : "L"}${x.toFixed(2)},${y.toFixed(2)}`;
         })
@@ -50,18 +51,31 @@ function formatPercentage(value: number): string {
     return `${(value * 100).toFixed(1)}%`;
 }
 
+function average(series: GrowthPoint[], key: keyof GrowthPoint): number {
+    if (series.length === 0) {
+        return 0;
+    }
+
+    return series.reduce((total, point) => total + (point[key] as number), 0) / series.length;
+}
+
 export default function GrowthChart({ series, isLoading }: GrowthChartProps) {
     const path = buildPath(series);
     const latest = series.at(-1);
     const penultimate = series.length > 1 ? series.at(-2) : undefined;
-    const navDelta = latest && penultimate ? latest.netAssetValue - penultimate.netAssetValue : 0;
-    const navDeltaSymbol = navDelta >= 0 ? "+" : "";
+    const latestAum = latest?.assetsUnderManagement ?? 0;
+    const previousAum = penultimate?.assetsUnderManagement ?? latestAum;
+    const aumDelta = latestAum - previousAum;
+    const latestInflows = latest?.newInvestments ?? 0;
+    const inflowAverage = average(series, "newInvestments");
+    const latestRedemptions = latest?.redemptions ?? 0;
+    const redemptionRate = latestAum > 0 ? latestRedemptions / latestAum : 0;
 
     return (
         <section className="rounded-xl border border-purple-500/10 bg-gradient-to-br from-slate-900/60 via-slate-900/30 to-purple-950/40 p-6 shadow-lg">
             <header className="mb-6">
-                <h3 className="text-xl font-semibold text-white">Growth &amp; Retention</h3>
-                <p className="text-sm text-purple-200/80">Twelve-month net asset value, inflow velocity, and retention trend.</p>
+                <h3 className="text-xl font-semibold text-white">Growth Momentum</h3>
+                <p className="text-sm text-purple-200/80">Six-month assets under management, inflow velocity, and redemption pressure.</p>
             </header>
 
             {isLoading ? (
@@ -92,22 +106,22 @@ export default function GrowthChart({ series, isLoading }: GrowthChartProps) {
 
                     <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
                         <div className="rounded-lg border border-purple-400/20 bg-slate-900/30 p-4">
-                            <div className="text-xs uppercase tracking-wide text-purple-300/80">Net Asset Value</div>
-                            <div className="mt-1 text-2xl font-semibold text-white">{formatCurrency(latest?.netAssetValue ?? 0)}</div>
+                            <div className="text-xs uppercase tracking-wide text-purple-300/80">Assets under management</div>
+                            <div className="mt-1 text-2xl font-semibold text-white">{formatCurrency(latestAum)}</div>
                             <div className="mt-1 text-xs text-emerald-400/90">
-                                {navDeltaSymbol}
-                                {formatCurrency(Math.abs(navDelta))} month change
+                                {aumDelta >= 0 ? "+" : "-"}
+                                {formatCurrency(Math.abs(aumDelta))} month change
                             </div>
                         </div>
                         <div className="rounded-lg border border-purple-400/20 bg-slate-900/30 p-4">
-                            <div className="text-xs uppercase tracking-wide text-purple-300/80">Monthly Inflows</div>
-                            <div className="mt-1 text-2xl font-semibold text-white">{formatCurrency(latest?.newAssets ?? 0)}</div>
-                            <div className="mt-1 text-xs text-purple-200/70">Avg growth {formatCurrency(series.reduce((acc, point) => acc + point.newAssets, 0) / series.length)}</div>
+                            <div className="text-xs uppercase tracking-wide text-purple-300/80">Monthly inflows</div>
+                            <div className="mt-1 text-2xl font-semibold text-white">{formatCurrency(latestInflows)}</div>
+                            <div className="mt-1 text-xs text-purple-200/70">Avg {formatCurrency(inflowAverage)} over period</div>
                         </div>
                         <div className="rounded-lg border border-purple-400/20 bg-slate-900/30 p-4">
-                            <div className="text-xs uppercase tracking-wide text-purple-300/80">Retention</div>
-                            <div className="mt-1 text-2xl font-semibold text-white">{formatPercentage(latest?.retentionRate ?? 0)}</div>
-                            <div className="mt-1 text-xs text-purple-200/70">{formatPercentage(series[0]?.retentionRate ?? 0)} → {formatPercentage(latest?.retentionRate ?? 0)}</div>
+                            <div className="text-xs uppercase tracking-wide text-purple-300/80">Redemptions</div>
+                            <div className="mt-1 text-2xl font-semibold text-white">{formatCurrency(latestRedemptions)}</div>
+                            <div className="mt-1 text-xs text-purple-200/70">{formatPercentage(redemptionRate)} of AUM</div>
                         </div>
                     </div>
                 </div>

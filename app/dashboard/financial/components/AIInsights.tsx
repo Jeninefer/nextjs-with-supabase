@@ -1,50 +1,61 @@
-"use client";
+'use client';
 
-import type { Insight, ProviderStatus } from "@/lib/data/financial-intelligence";
+import type {
+    Insight,
+    ProviderStatus,
+} from "@/lib/data/financial-intelligence";
+import type { FinancialIntelligenceResponse } from "@/app/api/financial-intelligence/route";
 
 interface AIInsightsProps {
     insights: Insight[];
     providers: ProviderStatus[];
     isLoading: boolean;
-    updatedAt: string | null;
-    metadata?: {
-        queryTimeMs?: number;
-        totalTimeMs?: number;
-    } | null;
+    updatedAt?: string | null;
+    metadata?: FinancialIntelligenceResponse["metadata"];
 }
 
-const confidencePalette = [
-    { threshold: 0.9, className: "bg-emerald-500/20 text-emerald-200 border border-emerald-400/40" },
-    { threshold: 0.75, className: "bg-amber-500/20 text-amber-100 border border-amber-400/40" },
-    { threshold: 0, className: "bg-slate-500/20 text-slate-200 border border-slate-400/30" },
+const confidenceColors = [
+    { threshold: 0.9, classes: "bg-emerald-500/20 text-emerald-200 border border-emerald-400/40" },
+    { threshold: 0.75, classes: "bg-amber-500/20 text-amber-200 border border-amber-300/40" },
+    { threshold: 0.6, classes: "bg-sky-500/20 text-sky-200 border border-sky-300/40" },
 ];
 
-function badgeForConfidence(confidence: number): string {
-    const palette = confidencePalette.find((entry) => confidence >= entry.threshold);
-    return palette?.className ?? confidencePalette[confidencePalette.length - 1].className;
+const providerStatusStyles: Record<ProviderStatus["status"], string> = {
+    healthy: "bg-emerald-500/15 text-emerald-200 border border-emerald-400/40",
+    degraded: "bg-amber-500/15 text-amber-200 border border-amber-400/40",
+    down: "bg-rose-500/15 text-rose-200 border border-rose-400/40",
+};
+
+function getConfidenceClass(confidence: number) {
+    const match = confidenceColors.find((item) => confidence >= item.threshold);
+    return match?.classes ?? "bg-slate-600/20 text-slate-200 border border-slate-400/30";
 }
 
-function providerBadge(status: ProviderStatus["status"]): string {
-    switch (status) {
-        case "operational":
-            return "bg-emerald-500/10 text-emerald-200";
-        case "degraded":
-            return "bg-amber-500/10 text-amber-200";
-        case "offline":
-            return "bg-rose-500/10 text-rose-200";
-        default:
-            return "bg-slate-600/20 text-slate-200";
+function formatConfidence(confidence: number) {
+    return `${Math.round(confidence * 100)}% confidence`;
+}
+
+function formatTimestamp(timestamp?: string | null) {
+    if (!timestamp) {
+        return "—";
     }
+
+    return new Date(timestamp).toLocaleString("en-US", {
+        month: "short",
+        day: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+    });
 }
 
 function renderSkeleton() {
     return (
-        <div className="space-y-4">
+        <div className="space-y-3">
             {Array.from({ length: 3 }).map((_, index) => (
-                <div key={index} className="rounded-lg border border-purple-400/10 bg-slate-900/30 p-4">
-                    <div className="h-4 w-32 animate-pulse rounded bg-purple-500/20" />
-                    <div className="mt-3 h-3 w-full animate-pulse rounded bg-slate-700/40" />
-                    <div className="mt-3 h-3 w-2/3 animate-pulse rounded bg-slate-700/40" />
+                <div key={index} className="rounded-lg border border-purple-400/20 bg-slate-800/60 p-4">
+                    <div className="h-4 w-48 animate-pulse rounded bg-purple-500/20" />
+                    <div className="mt-2 h-3 w-full animate-pulse rounded bg-slate-700/40" />
+                    <div className="mt-2 h-3 w-3/4 animate-pulse rounded bg-slate-700/40" />
                 </div>
             ))}
         </div>
@@ -52,82 +63,106 @@ function renderSkeleton() {
 }
 
 export default function AIInsights({ insights, providers, isLoading, updatedAt, metadata }: AIInsightsProps) {
+    const dataAvailable = insights.length > 0;
+
     return (
-        <section className="rounded-xl border border-purple-500/10 bg-gradient-to-br from-slate-900/60 via-slate-900/30 to-purple-950/40 p-6 shadow-lg">
-            <header className="mb-6 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+        <section className="rounded-lg border border-purple-500/20 bg-gradient-to-br from-purple-900/20 to-slate-900/40 p-6 shadow-lg">
+            <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
                 <div>
                     <h3 className="text-xl font-semibold text-white">AI Insights</h3>
-                    <p className="text-sm text-purple-200/80">Production-grade recommendations generated from Supabase telemetry and market feeds.</p>
+                    <p className="text-xs text-purple-200/70">Updated {formatTimestamp(updatedAt)}</p>
                 </div>
                 <div className="flex flex-wrap items-center gap-2 text-xs text-purple-200/70">
-                    <span className="flex items-center gap-1 rounded-full bg-emerald-500/10 px-2 py-1 text-emerald-200">
-                        <span className="h-2 w-2 animate-ping rounded-full bg-emerald-400" />
-                        Live feed
+                    <span className="flex items-center gap-2">
+                        <span className="h-2 w-2 animate-pulse rounded-full bg-emerald-400" aria-hidden />
+                        Live analysis
                     </span>
-                    {updatedAt && <span>Generated {new Date(updatedAt).toLocaleTimeString()}</span>}
-                    {metadata && metadata.totalTimeMs != null && (
-                        <span>API {metadata.totalTimeMs.toFixed(1)} ms</span>
-                    )}
+                    {metadata ? (
+                        <span className="rounded-full bg-purple-500/10 px-3 py-1">
+                            API {metadata.queryTimeMs.toFixed(1)}ms · Total {metadata.totalTimeMs.toFixed(1)}ms
+                        </span>
+                    ) : null}
                 </div>
-            </header>
-
-            <div className="mb-6 grid grid-cols-1 gap-3 md:grid-cols-3">
-                {providers.map((provider) => (
-                    <div key={provider.name} className="rounded-lg border border-purple-400/10 bg-slate-900/30 p-4">
-                        <div className="flex items-center justify-between">
-                            <span className="text-sm font-semibold text-white">{provider.name}</span>
-                            <span className={`rounded-full px-2 py-1 text-[10px] font-medium ${providerBadge(provider.status)}`}>
-                                {provider.status.toUpperCase()}
-                            </span>
-                        </div>
-                        <div className="mt-2 text-xs text-purple-200/70">
-                            Latency {provider.responseTimeMs} ms • Sync {new Date(provider.lastSync).toLocaleTimeString()}
-                        </div>
-                        <div className="mt-3 flex flex-wrap gap-2 text-[10px] text-purple-200/60">
-                            {provider.coverage.map((item) => (
-                                <span key={item} className="rounded-full bg-purple-500/10 px-2 py-1">
-                                    {item}
-                                </span>
-                            ))}
-                        </div>
-                    </div>
-                ))}
             </div>
 
-            {isLoading ? (
+            {isLoading && !dataAvailable ? (
                 renderSkeleton()
-            ) : insights.length === 0 ? (
+            ) : !dataAvailable ? (
                 <div className="rounded-lg border border-dashed border-purple-400/20 p-6 text-center text-sm text-purple-200/70">
-                    No AI insights available. Trigger a new inference job or review MCP integration logs.
+                    Insight feed unavailable. Confirm the MCP integration is initialised and the dataset is hydrated.
                 </div>
             ) : (
                 <div className="space-y-4">
                     {insights.map((insight) => (
-                        <article key={insight.id} className="rounded-lg border border-purple-400/20 bg-slate-900/40 p-5">
-                            <div className="flex flex-col gap-2 md:flex-row md:items-start md:justify-between">
+                        <article
+                            key={insight.id}
+                            className="rounded-lg border border-purple-400/20 bg-slate-800/60 p-4 shadow-inner"
+                        >
+                            <header className="flex items-start justify-between gap-3">
                                 <div>
-                                    <h4 className="text-lg font-semibold text-white">{insight.title}</h4>
-                                    <p className="mt-2 text-sm text-slate-300/80">{insight.summary}</p>
+                                    <h4 className="font-semibold text-white">{insight.title}</h4>
+                                    <p className="text-sm leading-relaxed text-slate-200/80">{insight.summary}</p>
                                 </div>
-                                <span className={`self-start rounded-full px-3 py-1 text-xs font-semibold ${badgeForConfidence(insight.confidence)}`}>
-                                    {(insight.confidence * 100).toFixed(0)}% confidence
+                                <span className={`px-3 py-1 text-xs font-medium ${getConfidenceClass(insight.confidence)}`}>
+                                    {formatConfidence(insight.confidence)}
                                 </span>
-                            </div>
-                            <div className="mt-4 text-sm text-purple-200/80">
-                                <span className="font-semibold text-white">Recommended action:</span> {insight.recommendedAction}
-                            </div>
-                            <div className="mt-4 flex flex-wrap gap-2 text-[10px] uppercase tracking-wide text-purple-200/70">
-                                <span className="rounded-full bg-purple-500/10 px-2 py-1">Impact: {insight.impact}</span>
+                            </header>
+
+                            <dl className="mt-3 space-y-2 text-sm">
+                                <div>
+                                    <dt className="text-[11px] uppercase tracking-wide text-purple-200/70">Impact</dt>
+                                    <dd className="text-slate-100">{insight.impact}</dd>
+                                </div>
+                                <div>
+                                    <dt className="text-[11px] uppercase tracking-wide text-purple-200/70">Recommended action</dt>
+                                    <dd className="text-slate-100">{insight.action}</dd>
+                                </div>
+                            </dl>
+
+                            <footer className="mt-4 flex flex-wrap items-center gap-2">
                                 {insight.tags.map((tag) => (
-                                    <span key={tag} className="rounded-full bg-slate-800/70 px-2 py-1">
+                                    <span
+                                        key={tag}
+                                        className="rounded-full border border-purple-500/30 bg-purple-500/15 px-3 py-1 text-xs uppercase tracking-wide text-purple-100"
+                                    >
                                         {tag}
                                     </span>
                                 ))}
-                            </div>
+                                <span className="ml-auto text-[11px] text-slate-400">
+                                    Refreshed {formatTimestamp(insight.lastUpdated)}
+                                </span>
+                            </footer>
                         </article>
                     ))}
                 </div>
             )}
+
+            <div className="mt-6">
+                <h4 className="text-xs font-semibold uppercase tracking-wide text-purple-200/70">Provider status</h4>
+                {providers.length === 0 ? (
+                    <p className="mt-3 text-xs text-purple-200/60">No providers registered.</p>
+                ) : (
+                    <ul className="mt-3 grid grid-cols-1 gap-3 text-sm md:grid-cols-2">
+                        {providers.map((provider) => (
+                            <li
+                                key={provider.id}
+                                className={`flex flex-col gap-1 rounded-lg border border-purple-400/20 bg-slate-900/40 p-3 ${providerStatusStyles[provider.status]}`}
+                            >
+                                <div className="flex items-center justify-between text-xs font-semibold uppercase tracking-wide">
+                                    <span>{provider.name}</span>
+                                    <span>{provider.status}</span>
+                                </div>
+                                <div className="text-xs text-purple-100/80">
+                                    Latency {provider.latencyMs}ms · Last sync {formatTimestamp(provider.lastSync)}
+                                </div>
+                                {provider.message ? (
+                                    <p className="text-[11px] text-purple-100/80">{provider.message}</p>
+                                ) : null}
+                            </li>
+                        ))}
+                    </ul>
+                )}
+            </div>
         </section>
     );
 }
