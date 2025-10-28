@@ -2,14 +2,18 @@ import { Hero } from "@/components/hero";
 import { ConnectSupabaseSteps } from "@/components/tutorial/connect-supabase-steps";
 import { SignUpUserSteps } from "@/components/tutorial/sign-up-user-steps";
 
+const hasSupabaseConfiguration = Boolean(
+    process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+);
+
 export default function Index() {
-  return (
-    <>
-      <Hero />
-      <main className="flex-1 flex flex-col gap-6 px-4">
-        <h2 className="font-medium text-xl mb-4">Next steps</h2>
-        {true ? <SignUpUserSteps /> : <ConnectSupabaseSteps />}
-      </main>
-    </>
-  );
+    return (
+        <>
+            <Hero />
+            <main className="flex-1 px-4">
+                <h2 className="mb-4 text-xl font-medium">Next steps</h2>
+                {hasSupabaseConfiguration ? <SignUpUserSteps /> : <ConnectSupabaseSteps />}
+            </main>
+        </>
+    );
 }
