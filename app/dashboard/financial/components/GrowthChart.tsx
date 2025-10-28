@@ -15,14 +15,14 @@ export default function GrowthChart() {
     const minValue = Math.min(...navValues);
     const yRange = maxValue - minValue || 1;
 
+    const denom = Math.max(series.length - 1, 1);
     const points = series.map((point, index) => {
-      const x = (index / (series.length - 1)) * 100;
+      const x = (index / denom) * 100;
       const y = 100 - ((point.nav - minValue) / yRange) * 100;
       return `${x.toFixed(2)},${y.toFixed(2)}`;
     });
 
     const areaPath = [`0,100`, ...points, `100,100`].join(" ");
-
     const stops = [
       { offset: "0%", color: "rgba(168, 85, 247, 0.35)" },
       { offset: "70%", color: "rgba(79, 70, 229, 0.18)" },
