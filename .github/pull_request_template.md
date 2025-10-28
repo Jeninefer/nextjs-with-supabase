@@ -1,13 +1,15 @@
 ## Summary
-<!-- Provide a concise, outcome-focused summary. List each major change as a bullet, highlighting user impact, fixes, or follow-up work. -->
-- [ ] <!-- e.g., Added X feature to improve Y -->
-- [ ] <!-- e.g., Fixed bug #123 affecting Z -->
+<!-- Replace each line item below with the concrete change that shipped. Tick the box once the description is accurate. -->
+- [ ] **Change 1:** _High-impact change and the reason it matters._
+- [ ] **Change 2:** _Bug fix, refactor, or follow-up work._
+- [ ] **Change 3:** _Any additional user-facing or infrastructure updates._
 
 ## Testing
-<!-- Record every test or check you performed. Replace placeholders with actual commands or tools. -->
+<!-- Check off every validation you actually performed. Add more lines for bespoke or manual checks. -->
 - [ ] `npm run lint`
 - [ ] `npm run test`
-- [ ] <!-- Additional commands, manual validation steps, etc. -->
+- [ ] `npm run build`
+- [ ] <!-- Manual QA, screenshots, or other verification steps. -->
 
 ---
 
