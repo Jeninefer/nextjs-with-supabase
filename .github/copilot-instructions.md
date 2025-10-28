@@ -175,8 +175,13 @@ This repository is a Next.js starter template with Supabase integration. Follow 
 - If devcontainer fails with 'unable to find user codespace' or similar, confirm your devcontainer config and base image support the current user mapping.
 - If Next.js fails on startup with EADDRINUSE, either stop the process on that port or run on a different port:
   - PORT=3001 npm run dev
-  - On Linux: lsof -nP -iTCP:3000 -sTCP:LISTEN && kill -9 <PID>
+  - On Alpine Linux: lsof -nP -iTCP:3000 -sTCP:LISTEN && kill -9 <PID>
 - If tests fail due to missing `ts-node` or jest binary, run:
   - npm ci
   - npm install --save-dev ts-node
   - Ensure your test runner is present in dev and CI images.
+
+## Alpine Linux notes
+- This workspace is running in a dev container on Alpine Linux v3.22.
+- Some common commands available: `apk`, `git`, `curl`, `lsof`, `netstat`, `ps`, etc.
+- Use `"$BROWSER" <url>` to open a webpage in the host's default browser.
