@@ -158,18 +158,30 @@ This repository is a Next.js starter template with Supabase integration. Follow 
 - Environment variables need to be configured in `.env.local` (see `.env.example`)
 - Supabase URL and anon key are required for the app to function
 
-# ⚠️ Permission Error: System File
+## Runtime & CI (updated)
+- Preferred Node.js runtime for local development and CI: Node 20.x (update docker/devcontainer images and CI runner to Node 20).
+- Use npm as the canonical package manager in CI (Vercel and our pipelines expect npm lockfile handling).
+- Vercel: free-tier rate limits apply. If you see "api-deployments-free-per-day" errors, either retry later or consider upgrading the plan / throttling CI deployments.
 
-You attempted to save or modify a system-level file (`/usr/lib/node_modules/npm/node_modules/semver/classes/semver.js`) but do not have the required permissions.
+## Security / System files (important)
+- Do NOT edit system-level files under /usr/lib, /usr/local, or other OS-level directories from the workspace.
+- If you need to patch a dependency installed globally or in node_modules system-wide, use approved strategies:
+  - Fork the package and reference it in package.json
+  - Use npm patch-package or a supported patch workflow
+  - Open a proper repo PR to the dependency
+- Attempts to modify system files will fail due to permissions and may break the development container.
 
-**What this means:**
-- System files in `/usr/lib/node_modules` are owned by the OS or package manager and are not writable by regular users or Codespaces.
-- This is not a project code issue. Your project files in `/workspaces/nextjs-with-supabase` are unaffected.
+## Troubleshooting tips
+- If devcontainer fails with 'unable to find user codespace' or similar, confirm your devcontainer config and base image support the current user mapping.
+- If Next.js fails on startup with EADDRINUSE, either stop the process on that port or run on a different port:
+  - PORT=3001 npm run dev
+  - On Alpine Linux: lsof -nP -iTCP:3000 -sTCP:LISTEN && kill -9 <PID>
+- If tests fail due to missing `ts-node` or jest binary, run:
+  - npm ci
+  - npm install --save-dev ts-node
+  - Ensure your test runner is present in dev and CI images.
 
-**How to resolve:**
-- Do not attempt to edit or save files in `/usr/lib/node_modules` or other system directories.
-- If you need to patch a dependency, use npm/yarn patching tools or fork the package.
-- For project code changes, edit files within your workspace directory only.
-
-**Reference:**  
-See [GitHub Copilot Instructions](./copilot-instructions.md) for project contribution guidelines.
+## Alpine Linux notes
+- This workspace is running in a dev container on Alpine Linux v3.22.
+- Some common commands available: `apk`, `git`, `curl`, `lsof`, `netstat`, `ps`, etc.
+- Use `"$BROWSER" <url>` to open a webpage in the host's default browser.

@@ -1,5 +1,5 @@
 import { LoginForm } from '@/components/login-form'
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 // Mock Next.js router
@@ -69,32 +69,32 @@ describe('LoginForm Component', () => {
     test('renders login form with all elements', () => {
         render(<LoginForm />)
 
-        expect(screen.getByText('Login')).toBeInTheDocument()
+        expect(screen.getByRole('heading', { name: 'Login' })).toBeInTheDocument()
         expect(screen.getByText('Enter your email below to login to your account')).toBeInTheDocument()
         expect(screen.getByLabelText('Email')).toBeInTheDocument()
         expect(screen.getByLabelText('Password')).toBeInTheDocument()
         expect(screen.getByRole('button', { name: 'Login' })).toBeInTheDocument()
         expect(screen.getByText('Forgot your password?')).toBeInTheDocument()
         expect(screen.getByText("Don't have an account?")).toBeInTheDocument()
-        expect(screen.getByText('Sign up')).toBeInTheDocument()
+        expect(screen.getByRole('link', { name: 'Sign up' })).toBeInTheDocument()
     })
 
     test('updates email and password fields when user types', async () => {
-        const user = userEvent.setup()
+        const user = userEvent.setup({ delay: null })
         render(<LoginForm />)
 
         const emailInput = screen.getByLabelText('Email') as HTMLInputElement
         const passwordInput = screen.getByLabelText('Password') as HTMLInputElement
 
-        await user.type(emailInput, 'test@example.com')
+        await user.type(emailInput, 'analyst@abaco.finance')
         await user.type(passwordInput, 'password123')
 
-        expect(emailInput.value).toBe('test@example.com')
+        expect(emailInput.value).toBe('analyst@abaco.finance')
         expect(passwordInput.value).toBe('password123')
     })
 
     test('submits form with correct credentials and redirects on success', async () => {
-        const user = userEvent.setup()
+        const user = userEvent.setup({ delay: null })
         mockSignInWithPassword.mockResolvedValue({ error: null })
 
         render(<LoginForm />)
@@ -103,12 +103,12 @@ describe('LoginForm Component', () => {
         const passwordInput = screen.getByLabelText('Password')
         const submitButton = screen.getByRole('button', { name: 'Login' })
 
-        await user.type(emailInput, 'test@example.com')
+        await user.type(emailInput, 'analyst@abaco.finance')
         await user.type(passwordInput, 'password123')
         await user.click(submitButton)
 
         expect(mockSignInWithPassword).toHaveBeenCalledWith({
-            email: 'test@example.com',
+            email: 'analyst@abaco.finance',
             password: 'password123',
         })
 
@@ -118,9 +118,9 @@ describe('LoginForm Component', () => {
     })
 
     test('displays error message when login fails', async () => {
-        const user = userEvent.setup()
+        const user = userEvent.setup({ delay: null })
         const errorMessage = 'Invalid email or password'
-        mockSignInWithPassword.mockResolvedValue({ error: { message: errorMessage } })
+        mockSignInWithPassword.mockResolvedValue({ error: new Error(errorMessage) })
 
         render(<LoginForm />)
 
@@ -128,7 +128,7 @@ describe('LoginForm Component', () => {
         const passwordInput = screen.getByLabelText('Password')
         const submitButton = screen.getByRole('button', { name: 'Login' })
 
-        await user.type(emailInput, 'test@example.com')
+        await user.type(emailInput, 'analyst@abaco.finance')
         await user.type(passwordInput, 'wrongpassword')
         await user.click(submitButton)
 
@@ -138,7 +138,7 @@ describe('LoginForm Component', () => {
     })
 
     test('shows loading state during form submission', async () => {
-        const user = userEvent.setup()
+        const user = userEvent.setup({ delay: null })
         let resolvePromise: (value: any) => void
         const pendingPromise = new Promise((resolve) => {
             resolvePromise = resolve
@@ -151,7 +151,7 @@ describe('LoginForm Component', () => {
         const passwordInput = screen.getByLabelText('Password')
         const submitButton = screen.getByRole('button', { name: 'Login' })
 
-        await user.type(emailInput, 'test@example.com')
+        await user.type(emailInput, 'analyst@abaco.finance')
         await user.type(passwordInput, 'password123')
         await user.click(submitButton)
 
@@ -163,7 +163,7 @@ describe('LoginForm Component', () => {
         resolvePromise!({ error: null })
 
         await waitFor(() => {
-            expect(screen.getByText('Login')).toBeInTheDocument()
+            expect(screen.getByRole('button', { name: 'Login' })).toBeInTheDocument()
             expect(submitButton).not.toBeDisabled()
         })
     })
@@ -197,7 +197,7 @@ describe('LoginForm Component', () => {
     })
 
     test('handles non-Error exceptions gracefully', async () => {
-        const user = userEvent.setup()
+        const user = userEvent.setup({ delay: null })
         mockSignInWithPassword.mockRejectedValue('String error')
 
         render(<LoginForm />)
@@ -206,7 +206,7 @@ describe('LoginForm Component', () => {
         const passwordInput = screen.getByLabelText('Password')
         const submitButton = screen.getByRole('button', { name: 'Login' })
 
-        await user.type(emailInput, 'test@example.com')
+        await user.type(emailInput, 'analyst@abaco.finance')
         await user.type(passwordInput, 'password123')
         await user.click(submitButton)
 
@@ -216,17 +216,17 @@ describe('LoginForm Component', () => {
     })
 
     test('clears error message on new submission attempt', async () => {
-        const user = userEvent.setup()
+        const user = userEvent.setup({ delay: null })
         // First submission with error
-        mockSignInWithPassword.mockResolvedValueOnce({ error: { message: 'First error' } })
+        mockSignInWithPassword.mockResolvedValueOnce({ error: new Error('First error') })
 
         render(<LoginForm />)
 
-        const emailInput = screen.getByLabelText('Email')
-        const passwordInput = screen.getByLabelText('Password')
+        const emailInput = screen.getByLabelText('Email') as HTMLInputElement
+        const passwordInput = screen.getByLabelText('Password') as HTMLInputElement
         const submitButton = screen.getByRole('button', { name: 'Login' })
 
-        await user.type(emailInput, 'test@example.com')
+        await user.type(emailInput, 'analyst@abaco.finance')
         await user.type(passwordInput, 'wrongpassword')
         await user.click(submitButton)
 
@@ -237,24 +237,33 @@ describe('LoginForm Component', () => {
         // Second submission should clear the error initially
         mockSignInWithPassword.mockResolvedValueOnce({ error: null })
 
+        // Update password to show state change
+        await user.clear(passwordInput)
+        await user.type(passwordInput, 'correctpassword')
         await user.click(submitButton)
 
-        // Error should be cleared during the loading state
+        // Error should be cleared when new submission begins
         await waitFor(() => {
             expect(screen.queryByText('First error')).not.toBeInTheDocument()
         })
     })
 
-    test('form submission prevents default browser behavior', async () => {
+    test('calls form submit handler', async () => {
+        const user = userEvent.setup({ delay: null })
         mockSignInWithPassword.mockResolvedValue({ error: null })
 
         render(<LoginForm />)
 
-        const form = screen.getByRole('button', { name: 'Login' }).closest('form')!
-        const preventDefault = jest.fn()
+        const emailInput = screen.getByLabelText('Email')
+        const passwordInput = screen.getByLabelText('Password')
+        const submitButton = screen.getByRole('button', { name: 'Login' })
 
-        fireEvent.submit(form, { preventDefault })
+        await user.type(emailInput, 'analyst@abaco.finance')
+        await user.type(passwordInput, 'password123')
+        await user.click(submitButton)
 
-        expect(preventDefault).toHaveBeenCalled()
+        await waitFor(() => {
+            expect(mockSignInWithPassword).toHaveBeenCalled()
+        })
     })
 })

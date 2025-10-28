@@ -1,0 +1,44 @@
+[
+  {
+    "number": 110,
+    "title": "Improve Supabase connectivity diagnostics",
+    "assignees": ["Jeninefer"],
+    "status": "open"
+  },
+  {
+    "number": 109,
+    "title": "Improve Supabase connectivity diagnostics",
+    "assignees": ["chatgpt-codex-connector[bot]"],
+    "status": "closed",
+    "duplicateOf": 110,
+    "closureReason": "duplicate-ai-assignee"
+  },
+  {
+    "number": 108,
+    "title": "Document planned ingestion pipeline",
+    "assignees": ["JenineferDeras"],
+    "status": "open"
+  },
+  {
+    "number": 107,
+    "title": "Document planned ingestion pipeline",
+    "assignees": ["openai-maintainer"],
+    "status": "closed",
+    "duplicateOf": 108,
+    "closureReason": "duplicate-ai-assignee"
+  },
+  {
+    "number": 106,
+    "title": "Add pull request deduplication utilities",
+    "assignees": ["grok-release-bot"],
+    "status": "closed",
+    "duplicateOf": 105,
+    "closureReason": "duplicate-ai-assignee"
+  },
+  {
+    "number": 105,
+    "title": "Add pull request deduplication utilities",
+    "assignees": ["Jeninefer"],
+    "status": "open"
+  }
+]
