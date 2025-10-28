@@ -229,7 +229,7 @@ describe('SignUpForm Component', () => {
     })
 
     test('handles non-Error exceptions gracefully', async () => {
-        const user = userEvent.setup()
+        const user = userEvent.setup({ delay: null })
         mockSignUp.mockRejectedValue('String error')
 
         render(<SignUpForm />)
@@ -250,7 +250,7 @@ describe('SignUpForm Component', () => {
     })
 
     test('clears error message on new submission attempt', async () => {
-        const user = userEvent.setup()
+        const user = userEvent.setup({ delay: null })
         // First submission with error
         mockSignUp.mockResolvedValueOnce({ error: { message: 'First error' } })
 

@@ -69,7 +69,7 @@ describe('UpdatePasswordForm Component', () => {
     })
 
     test('updates password field when user types', async () => {
-        const user = userEvent.setup()
+        const user = userEvent.setup({ delay: null })
         render(<UpdatePasswordForm />)
 
         const passwordInput = screen.getByLabelText('New password') as HTMLInputElement
@@ -80,7 +80,7 @@ describe('UpdatePasswordForm Component', () => {
     })
 
     test('submits form with new password and redirects on success', async () => {
-        const user = userEvent.setup()
+        const user = userEvent.setup({ delay: null })
         mockUpdateUser.mockResolvedValue({ error: null })
 
         render(<UpdatePasswordForm />)
@@ -99,7 +99,7 @@ describe('UpdatePasswordForm Component', () => {
     })
 
     test('displays error message when password update fails', async () => {
-        const user = userEvent.setup()
+        const user = userEvent.setup({ delay: null })
         const errorMessage = 'Password update failed'
         mockUpdateUser.mockResolvedValue({ error: { message: errorMessage } })
 
@@ -117,7 +117,7 @@ describe('UpdatePasswordForm Component', () => {
     })
 
     test('shows loading state during form submission', async () => {
-        const user = userEvent.setup()
+        const user = userEvent.setup({ delay: null })
         let resolvePromise: (value: any) => void
         const pendingPromise = new Promise((resolve) => {
             resolvePromise = resolve
@@ -162,7 +162,7 @@ describe('UpdatePasswordForm Component', () => {
     })
 
     test('handles non-Error exceptions gracefully', async () => {
-        const user = userEvent.setup()
+        const user = userEvent.setup({ delay: null })
         mockUpdateUser.mockRejectedValue('String error')
 
         render(<UpdatePasswordForm />)
@@ -179,7 +179,7 @@ describe('UpdatePasswordForm Component', () => {
     })
 
     test('clears error message on new submission attempt', async () => {
-        const user = userEvent.setup()
+        const user = userEvent.setup({ delay: null })
         // First submission with error
         mockUpdateUser.mockResolvedValueOnce({ error: { message: 'First error' } })
 

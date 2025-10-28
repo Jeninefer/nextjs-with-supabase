@@ -50,7 +50,7 @@ describe('LogoutButton Component', () => {
     })
 
     test('signs out user and redirects to login on button click', async () => {
-        const user = userEvent.setup()
+        const user = userEvent.setup({ delay: null })
         mockSignOut.mockResolvedValue({ error: null })
 
         render(<LogoutButton />)
@@ -67,7 +67,7 @@ describe('LogoutButton Component', () => {
     })
 
     test('calls signOut method on Supabase client', async () => {
-        const user = userEvent.setup()
+        const user = userEvent.setup({ delay: null })
         mockSignOut.mockResolvedValue({ error: null })
 
         render(<LogoutButton />)
@@ -96,7 +96,7 @@ describe('LogoutButton Component', () => {
     })
 
     test('handles signOut successfully', async () => {
-        const user = userEvent.setup()
+        const user = userEvent.setup({ delay: null })
         mockSignOut.mockResolvedValue({ error: null })
 
         render(<LogoutButton />)
@@ -111,7 +111,7 @@ describe('LogoutButton Component', () => {
     })
 
     test('handles signOut errors gracefully', async () => {
-        const user = userEvent.setup()
+        const user = userEvent.setup({ delay: null })
         const logError = jest.spyOn(console, 'error').mockImplementation(() => { })
         mockSignOut.mockRejectedValue(new Error('Sign out failed'))
 
@@ -141,7 +141,7 @@ describe('LogoutButton Component', () => {
     })
 
     test('multiple clicks are handled correctly', async () => {
-        const user = userEvent.setup()
+        const user = userEvent.setup({ delay: null })
         mockSignOut.mockResolvedValue({ error: null })
 
         render(<LogoutButton />)
