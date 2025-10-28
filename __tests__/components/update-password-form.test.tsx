@@ -178,35 +178,36 @@ describe('UpdatePasswordForm Component', () => {
         })
     })
 
-    test('clears error message on new submission attempt', async () => {
+    test('displays and clears errors on different submissions', async () => {
         const user = userEvent.setup({ delay: null })
-        // First submission with error
-        mockUpdateUser.mockResolvedValueOnce({ error: { message: 'First error' } })
+
+        // First submission - returns error
+        mockUpdateUser.mockResolvedValueOnce({ error: { message: 'Password too weak' } })
 
         render(<UpdatePasswordForm />)
 
         const passwordInput = screen.getByLabelText('New password') as HTMLInputElement
         const submitButton = screen.getByRole('button', { name: 'Save new password' })
 
-        await user.type(passwordInput, 'NewSecurePassword123!')
+        await user.type(passwordInput, 'weak')
         await user.click(submitButton)
 
+        // Error should be displayed
         await waitFor(() => {
-            expect(screen.getByText('First error')).toBeInTheDocument()
-        }, { timeout: 3000 })
+            expect(screen.getByText('Password too weak')).toBeInTheDocument()
+        }, { timeout: 2000 })
 
-        // Second submission should clear the error initially
+        // Second submission - no error
         mockUpdateUser.mockResolvedValueOnce({ error: null })
 
-        // Clear the input first to trigger new state
         await user.clear(passwordInput)
-        await user.type(passwordInput, 'DifferentPassword123!')
+        await user.type(passwordInput, 'StrongPassword123!')
         await user.click(submitButton)
 
-        // Error should be cleared during the loading state
+        // Previous error should be cleared
         await waitFor(() => {
-            expect(screen.queryByText('First error')).not.toBeInTheDocument()
-        }, { timeout: 3000 })
+            expect(screen.queryByText('Password too weak')).not.toBeInTheDocument()
+        }, { timeout: 2000 })
     })
 
     test('calls form submit handler', async () => {
