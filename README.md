@@ -314,6 +314,10 @@ it means another process is already using port 3000.
 
 3. **If running in Codespaces or a dev container, you may need to restart the workspace.**
 
+---
+
 **ABACO Financial Intelligence Platform** - Setting the standard for financial analytics excellence.
 
-> **Note:** This is the canonical repository for the Office Add-in with Figma and AI API integration.
+## Support
+- Create an issue in GitHub for bugs or enhancement requests.
+- For confidential matters, email the ABACO engineering office at engineering@abaco.finance.
