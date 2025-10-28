@@ -177,7 +177,6 @@ describe('middleware', () => {
     it('should throw if session retrieval fails', async () => {
       mockGetSession.mockRejectedValue(new Error('Session error'))
 
-      // Should not throw
       await expect(middleware(mockRequest)).rejects.toThrow('Session error')
     })
 
