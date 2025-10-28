@@ -14,7 +14,7 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "preserve",
+    "jsx": "react-jsx",
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
@@ -45,7 +45,8 @@
     ".next/types/**/*.ts",
     "middleware.ts",
     "__tests__/**/*",
-    "__tests__/jest.d.ts"
+    "__tests__/jest.d.ts",
+    ".next/dev/types/**/*.ts"
   ],
   "exclude": [
     "node_modules"
