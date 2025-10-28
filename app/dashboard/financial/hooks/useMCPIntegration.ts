@@ -20,6 +20,7 @@ function hasEnvConfig(x: unknown): x is { env: Record<string, string | undefined
 }
 
 // Mock MCP client para evitar dependencias externas por ahora
+const memoryStore = new Map<string, unknown>();
 const mockMCPClient = {
   initializeServer: async (name: string, command: string, args: string[]) => {
     console.log(`Mock: Initializing ${name} with ${command} ${args.join(' ')}`);
@@ -27,9 +28,15 @@ const mockMCPClient = {
   },
   searchFinancialData: async (query: string) => ({ success: true, data: `Mock analysis for: ${query}` }),
   fetchMarketData: async (url: string) => ({ success: true, data: `Mock data from: ${url}` }),
-  storeMemory: async (key: string) => ({ success: true, data: `Stored ${key}` }),
-  getMemory: async (key: string) => ({ success: true, data: `Retrieved ${key}` }),
-  disconnect: async () => console.log('Mock: Disconnected')
+  storeMemory: async (key: string, value: unknown) => {
+    memoryStore.set(key, value);
+    return { success: true, data: `Stored ${key}` };
+  },
+  getMemory: async (key: string) => ({ success: true, data: memoryStore.get(key) }),
+  disconnect: async () => {
+    memoryStore.clear();
+    console.log('Mock: Disconnected');
+  }
 };
 
 export function useMCPIntegration() {
@@ -75,18 +82,12 @@ export function useMCPIntegration() {
           }
         }
 
-        // Normalizar env a Record<string, string> o undefined
-        const envToPass: Record<string, string> | undefined = hasEnvConfig(config)
-          ? Object.fromEntries(Object.entries(config.env).map(([k, v]) => [k, v ?? '']))
-          : undefined;
-
         // Usar mock client por ahora
         // Fix: mockMCPClient.initializeServer expects 3 arguments, not 4.
         const success = await mockMCPClient.initializeServer(
           serverName,
           config.command,
           config.args
-          // envToPass // <-- Remove this argument or update mockMCPClient accordingly
         );
 
         if (success) {
@@ -110,27 +111,26 @@ export function useMCPIntegration() {
     }
   }, []);
 
-  const searchFinancialInsights = useCallback(async (query: string) => {
-    return await mockMCPClient.searchFinancialData(query);
+  const searchFinancialInsights = useCallback((query: string) => {
+    return mockMCPClient.searchFinancialData(query);
   }, []);
 
-  const fetchMarketData = useCallback(async (source: string) => {
-    return await mockMCPClient.fetchMarketData(source);
+  const fetchMarketData = useCallback((source: string) => {
+    return mockMCPClient.fetchMarketData(source);
   }, []);
 
-  // Fix: mockMCPClient.storeMemory expects 1 argument, not 2.
-  const storeAnalysisResult = useCallback(async (analysisId: string, result: any) => {
-    return await mockMCPClient.storeMemory(`analysis_${analysisId}`);
+  const storeAnalysisResult = useCallback((analysisId: string, result: unknown) => {
+    return mockMCPClient.storeMemory(`analysis_${analysisId}`, result);
   }, []);
 
-  const getStoredAnalysis = useCallback(async (analysisId: string) => {
+  const getStoredAnalysis = useCallback((analysisId: string) => {
     return mockMCPClient.getMemory(`analysis_${analysisId}`);
   }, []);
 
   useEffect(() => {
     initializeMCPServers();
     return () => {
-      mockMCPClient.disconnect();
+      void mockMCPClient.disconnect();
     };
   }, [initializeMCPServers]);
 
