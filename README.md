@@ -247,53 +247,37 @@ For detailed setup instructions, error resolution, and platform status, see:
 If you see an error like:
 
 ```bash
-Error: Invalid Supabase URL
+Error: Invalid supabaseUrl: Must be a valid HTTP or HTTPS URL.
 ```
 
-it means the Supabase URL is not set or incorrect in your environment variables.
+it means your Supabase URL environment variable is empty, malformed, or missing the `https://` prefix.
 
 **How to fix:**
 
-1. **Check your `.env.local` file** and ensure `NEXT_PUBLIC_SUPABASE_URL` is set to your Supabase project URL.
+1. **Open your `.env.local` file** in the project root.
 
-2. **Verify your Supabase project** is active and the URL is correct.
+2. **Add or correct these lines** (replace with your actual values from Supabase → Project Settings → API):
 
-3. **Restart the development server** after making changes to the environment variables:
+   ```
+   NEXT_PUBLIC_SUPABASE_URL=https://your-project-ref.supabase.co
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+   ```
+
+   - The URL **must** start with `https://`.
+   - Do **not** use quotes around the values.
+
+3. **Restart your dev server** after saving changes:
 
    ```bash
    npm run dev
    ```
 
+4. **If you still see the error:**
+   - Double-check for typos in variable names.
+   - Make sure `.env.local` is in the project root.
+   - Reload your IDE or terminal to ensure environment variables are loaded.
+
 ---
-
-**Git sync issues:**
-
-```bash
-# Set upstream branch
-git push -u origin main
-
-# Pull and push
-git pull origin main
-git push origin main
-```
-
-**Google Cloud access issues:**
-
-```bash
-# Check project access
-gcloud projects list
-
-# Enable required APIs
-gcloud services enable run.googleapis.com
-
-# See full guide: docs/TROUBLESHOOTING.md
-```
-
-**Python analysis not running:**
-
-```bash
-python3 notebooks/abaco_financial_intelligence.py
-```
 
 **Port 3000 is already in use**
 
@@ -314,6 +298,21 @@ it means another process is already using port 3000.
    netstat -anv | grep 3000
    ```
 
+   Then kill the process by its PID:
+
+   ```bash
+   kill -9 <PID>
+   ```
+
+2. **Or, start Next.js on a different port:**
+
+   ```bash
+   PORT=3001 npm run dev
+   # or
+   npx next dev -p 3001
+   ```
+
+3. **If running in Codespaces or a dev container, you may need to restart the workspace.**
 
 **ABACO Financial Intelligence Platform** - Setting the standard for financial analytics excellence.
 
