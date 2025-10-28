@@ -69,14 +69,14 @@ describe('LoginForm Component', () => {
     test('renders login form with all elements', () => {
         render(<LoginForm />)
 
-        expect(screen.getByText('Login')).toBeInTheDocument()
+        expect(screen.getByRole('heading', { name: 'Login' })).toBeInTheDocument()
         expect(screen.getByText('Enter your email below to login to your account')).toBeInTheDocument()
         expect(screen.getByLabelText('Email')).toBeInTheDocument()
         expect(screen.getByLabelText('Password')).toBeInTheDocument()
         expect(screen.getByRole('button', { name: 'Login' })).toBeInTheDocument()
         expect(screen.getByText('Forgot your password?')).toBeInTheDocument()
         expect(screen.getByText("Don't have an account?")).toBeInTheDocument()
-        expect(screen.getByText('Sign up')).toBeInTheDocument()
+        expect(screen.getByRole('link', { name: 'Sign up' })).toBeInTheDocument()
     })
 
     test('updates email and password fields when user types', async () => {
@@ -120,7 +120,7 @@ describe('LoginForm Component', () => {
     test('displays error message when login fails', async () => {
         const user = userEvent.setup({ delay: null })
         const errorMessage = 'Invalid email or password'
-        mockSignInWithPassword.mockResolvedValue({ error: { message: errorMessage } })
+        mockSignInWithPassword.mockResolvedValue({ error: new Error(errorMessage) })
 
         render(<LoginForm />)
 
@@ -163,7 +163,7 @@ describe('LoginForm Component', () => {
         resolvePromise!({ error: null })
 
         await waitFor(() => {
-            expect(screen.getByText('Login')).toBeInTheDocument()
+            expect(screen.getByRole('button', { name: 'Login' })).toBeInTheDocument()
             expect(submitButton).not.toBeDisabled()
         })
     })
@@ -218,7 +218,7 @@ describe('LoginForm Component', () => {
     test('clears error message on new submission attempt', async () => {
         const user = userEvent.setup({ delay: null })
         // First submission with error
-        mockSignInWithPassword.mockResolvedValueOnce({ error: { message: 'First error' } })
+        mockSignInWithPassword.mockResolvedValueOnce({ error: new Error('First error') })
 
         render(<LoginForm />)
 
@@ -232,7 +232,7 @@ describe('LoginForm Component', () => {
 
         await waitFor(() => {
             expect(screen.getByText('First error')).toBeInTheDocument()
-        }, { timeout: 3000 })
+        })
 
         // Second submission should clear the error initially
         mockSignInWithPassword.mockResolvedValueOnce({ error: null })
@@ -242,10 +242,10 @@ describe('LoginForm Component', () => {
         await user.type(passwordInput, 'correctpassword')
         await user.click(submitButton)
 
-        // Error should be cleared during the loading state
+        // Error should be cleared when new submission begins
         await waitFor(() => {
             expect(screen.queryByText('First error')).not.toBeInTheDocument()
-        }, { timeout: 3000 })
+        })
     })
 
     test('calls form submit handler', async () => {
