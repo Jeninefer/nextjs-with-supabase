@@ -47,11 +47,6 @@
     "__tests__/**/*",
     "__tests__/jest.d.ts"
   ],
-  "references": [
-    {
-      "path": "./tsconfig.node.json"
-    }
-  ],
   "exclude": [
     "node_modules"
   ]
