@@ -157,3 +157,19 @@ This repository is a Next.js starter template with Supabase integration. Follow 
 - The app supports both light and dark themes
 - Environment variables need to be configured in `.env.local` (see `.env.example`)
 - Supabase URL and anon key are required for the app to function
+
+# ⚠️ Permission Error: System File
+
+You attempted to save or modify a system-level file (`/usr/lib/node_modules/npm/node_modules/semver/classes/semver.js`) but do not have the required permissions.
+
+**What this means:**
+- System files in `/usr/lib/node_modules` are owned by the OS or package manager and are not writable by regular users or Codespaces.
+- This is not a project code issue. Your project files in `/workspaces/nextjs-with-supabase` are unaffected.
+
+**How to resolve:**
+- Do not attempt to edit or save files in `/usr/lib/node_modules` or other system directories.
+- If you need to patch a dependency, use npm/yarn patching tools or fork the package.
+- For project code changes, edit files within your workspace directory only.
+
+**Reference:**  
+See [GitHub Copilot Instructions](./copilot-instructions.md) for project contribution guidelines.
