@@ -1,25 +1,15 @@
-<!-- markdownlint-disable MD033 MD041 -->
-<a href="https://demo-nextjs-with-supabase.vercel.app/">
-  <img alt="Next.js and Supabase Starter Kit - the fastest way to build apps with Next.js and Supabase" src="https://demo-nextjs-with-supabase.vercel.app/opengraph-image.png">
-  <h1 align="center">Next.js and Supabase Starter Kit</h1>
-</a>
+# ABACO Financial Intelligence Platform
 
-<p align="center">
- The fastest way to build apps with Next.js and Supabase
-</p>
+**Production-grade analytics platform for institutional lenders**
+
+This repository contains the ABACO Financial Intelligence Platform—an enterprise solution that unifies portfolio performance, risk analytics, and AI-assisted recommendations on top of Supabase and Next.js.
 
 <p align="center">
   <a href="#features"><strong>Features</strong></a> ·
-  <a href="#demo"><strong>Demo</strong></a> ·
-  <a href="#deploy-to-vercel"><strong>Deploy to Vercel</strong></a> ·
-  <a href="#clone-and-run-locally"><strong>Clone and run locally</strong></a> ·
-  <a href="#feedback-and-issues"><strong>Feedback and issues</strong></a> ·
-  <a href="#more-supabase-examples"><strong>More Examples</strong></a>
+  <a href="#quick-start"><strong>Quick Start</strong></a> ·
+  <a href="#deployment"><strong>Deployment</strong></a> ·
+  <a href="#abaco-dataset-generation"><strong>Dataset Generation</strong></a>
 </p>
-<br/>
-<!-- markdownlint-enable MD033 MD041 -->
-
-# ABACO Financial Intelligence Platform
 
 ## Next-Generation Financial Analytics System
 
@@ -121,7 +111,7 @@ npm run lint
 Generate comprehensive financial intelligence datasets for analytics and testing:
 
 ```bash
-# Quick start demo (recommended)
+# Dataset quick start (recommended)
 bash demo_abaco_dataset.sh
 
 # Or run individually:
