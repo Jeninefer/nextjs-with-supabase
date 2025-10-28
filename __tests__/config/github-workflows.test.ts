@@ -83,11 +83,11 @@ describe('GitHub Workflows', () => {
           expect(checkoutStep.uses).toContain('actions/checkout@')
         })
 
-        it('should use Node.js 20.9.0', () => {
-          const nodeStep = steps.find(s => s.name === 'Use Node.js 20.9.0')
+        it('should use Node.js 20.19.0', () => {
+          const nodeStep = steps.find(s => s.name === 'Use Node.js 20.19.0')
           expect(nodeStep).toBeDefined()
           expect(nodeStep.uses).toContain('actions/setup-node@')
-          expect(nodeStep.with['node-version']).toBe('20.9.0')
+          expect(nodeStep.with['node-version']).toBe('20.19.0')
         })
 
         it('should initialize CodeQL', () => {
