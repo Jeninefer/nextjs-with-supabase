@@ -2,6 +2,9 @@
 
 import { useCallback, useEffect, useState } from 'react';
 
+/**
+ * Aggregated state values exposed by the MCP integration hook.
+ */
 interface MCPIntegrationState {
   isInitialized: boolean;
   isLoading: boolean;
@@ -15,11 +18,21 @@ type MCPConfigEntry =
   | { command: string; args: string[] };
 
 // Type guard para env
+/**
+ * Determines whether the provided value includes an MCP environment configuration.
+ *
+ * @param x - Value that potentially contains an `env` configuration property.
+ * @returns A type predicate that narrows `x` to objects with an environment map.
+ */
 function hasEnvConfig(x: unknown): x is { env: Record<string, string | undefined> } {
   return typeof x === 'object' && x !== null && 'env' in x && typeof (x as any).env === 'object';
 }
 
 // Mock MCP client para evitar dependencias externas por ahora
+/**
+ * Minimal mock implementation of the MCP client leveraged by the hook for local testing.
+ * Each method mirrors the shape of the anticipated production MCP SDK behavior.
+ */
 const mockMCPClient = {
   initializeServer: async (name: string, command: string, args: string[]) => {
     console.log(`Mock: Initializing ${name} with ${command} ${args.join(' ')}`);
@@ -32,6 +45,12 @@ const mockMCPClient = {
   disconnect: async () => console.log('Mock: Disconnected')
 };
 
+/**
+ * React hook that orchestrates communication with MCP servers for the financial dashboard.
+ * It handles server initialization, data retrieval helpers, and shared lifecycle state.
+ *
+ * @returns The hook state and callable helpers that surface MCP capabilities to components.
+ */
 export function useMCPIntegration() {
   const [state, setState] = useState<MCPIntegrationState>({
     isInitialized: false,
@@ -40,6 +59,10 @@ export function useMCPIntegration() {
     servers: new Set()
   });
 
+  /**
+   * Initializes every configured MCP server, handling environment validation and
+   * state hydration in a resilient manner for the dashboard experience.
+   */
   const initializeMCPServers = useCallback(async () => {
     setState(prev => ({ ...prev, isLoading: true, error: null }));
 
@@ -110,19 +133,44 @@ export function useMCPIntegration() {
     }
   }, []);
 
+  /**
+   * Issues an MCP-backed financial search request using the mock client implementation.
+   *
+   * @param query - Free-form text describing the analytical question to process.
+   * @returns The mock MCP response payload to mimic financial insights.
+   */
   const searchFinancialInsights = useCallback(async (query: string) => {
     return await mockMCPClient.searchFinancialData(query);
   }, []);
 
+  /**
+   * Retrieves market information from the MCP mock client.
+   *
+   * @param source - Identifier or URL describing the desired market data source.
+   * @returns A mocked market data payload with the provided source metadata.
+   */
   const fetchMarketData = useCallback(async (source: string) => {
     return await mockMCPClient.fetchMarketData(source);
   }, []);
 
   // Fix: mockMCPClient.storeMemory expects 1 argument, not 2.
+  /**
+   * Persists the provided analysis result in the mock MCP memory layer.
+   *
+   * @param analysisId - Identifier used to build the memory cache key.
+   * @param result - Serialized analysis output to be stored for later retrieval.
+   * @returns The storage confirmation emitted by the mock client.
+   */
   const storeAnalysisResult = useCallback(async (analysisId: string, result: any) => {
     return await mockMCPClient.storeMemory(`analysis_${analysisId}`);
   }, []);
 
+  /**
+   * Fetches a previously stored analysis result from the mock MCP memory facility.
+   *
+   * @param analysisId - Identifier used when persisting the analysis payload.
+   * @returns The stored mock MCP memory content associated with the supplied ID.
+   */
   const getStoredAnalysis = useCallback(async (analysisId: string) => {
     return mockMCPClient.getMemory(`analysis_${analysisId}`);
   }, []);
@@ -134,6 +182,9 @@ export function useMCPIntegration() {
     };
   }, [initializeMCPServers]);
 
+  /**
+   * Exposes hook state and MCP lifecycle helpers for integration inside dashboard components.
+   */
   return {
     ...state,
     initializeMCPServers,
