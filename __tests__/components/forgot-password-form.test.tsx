@@ -63,7 +63,7 @@ describe('ForgotPasswordForm Component', () => {
     })
 
     test('updates email field when user types', async () => {
-        const user = userEvent.setup()
+        const user = userEvent.setup({ delay: null })
         render(<ForgotPasswordForm />)
 
         const emailInput = screen.getByLabelText('Email') as HTMLInputElement
@@ -74,7 +74,7 @@ describe('ForgotPasswordForm Component', () => {
     })
 
     test('sends reset password email on successful submission', async () => {
-        const user = userEvent.setup()
+        const user = userEvent.setup({ delay: null })
         mockResetPasswordForEmail.mockResolvedValue({ error: null })
 
         render(<ForgotPasswordForm />)
@@ -85,12 +85,14 @@ describe('ForgotPasswordForm Component', () => {
         await user.type(emailInput, 'user@abaco.finance')
         await user.click(submitButton)
 
-        expect(mockResetPasswordForEmail).toHaveBeenCalledWith(
-            'user@abaco.finance',
-            {
-                redirectTo: expect.stringContaining('/auth/update-password'),
-            }
-        )
+        await waitFor(() => {
+            expect(mockResetPasswordForEmail).toHaveBeenCalledWith(
+                'user@abaco.finance',
+                {
+                    redirectTo: expect.stringContaining('/auth/update-password'),
+                }
+            )
+        })
 
         await waitFor(() => {
             expect(screen.getByText('Check Your Email')).toBeInTheDocument()
@@ -99,7 +101,7 @@ describe('ForgotPasswordForm Component', () => {
     })
 
     test('displays success message after sending reset email', async () => {
-        const user = userEvent.setup()
+        const user = userEvent.setup({ delay: null })
         mockResetPasswordForEmail.mockResolvedValue({ error: null })
 
         render(<ForgotPasswordForm />)
@@ -117,7 +119,7 @@ describe('ForgotPasswordForm Component', () => {
     })
 
     test('displays error message when reset password fails', async () => {
-        const user = userEvent.setup()
+        const user = userEvent.setup({ delay: null })
         const errorMessage = 'User not found'
         mockResetPasswordForEmail.mockResolvedValue({ error: { message: errorMessage } })
 
@@ -135,7 +137,7 @@ describe('ForgotPasswordForm Component', () => {
     })
 
     test('shows loading state during form submission', async () => {
-        const user = userEvent.setup()
+        const user = userEvent.setup({ delay: null })
         let resolvePromise: (value: any) => void
         const pendingPromise = new Promise((resolve) => {
             resolvePromise = resolve
@@ -186,7 +188,7 @@ describe('ForgotPasswordForm Component', () => {
     })
 
     test('handles non-Error exceptions gracefully', async () => {
-        const user = userEvent.setup()
+        const user = userEvent.setup({ delay: null })
         mockResetPasswordForEmail.mockRejectedValue('String error')
 
         render(<ForgotPasswordForm />)

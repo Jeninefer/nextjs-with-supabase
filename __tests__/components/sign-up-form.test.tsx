@@ -80,7 +80,7 @@ describe('SignUpForm Component', () => {
     })
 
     test('updates email, password, and repeat password fields when user types', async () => {
-        const user = userEvent.setup()
+        const user = userEvent.setup({ delay: null })
         render(<SignUpForm />)
 
         const emailInput = screen.getByLabelText('Email') as HTMLInputElement
@@ -97,7 +97,7 @@ describe('SignUpForm Component', () => {
     })
 
     test('submits form with correct credentials and redirects on success', async () => {
-        const user = userEvent.setup()
+        const user = userEvent.setup({ delay: null })
         mockSignUp.mockResolvedValue({ error: null })
 
         render(<SignUpForm />)
@@ -126,7 +126,7 @@ describe('SignUpForm Component', () => {
     })
 
     test('displays error when passwords do not match', async () => {
-        const user = userEvent.setup()
+        const user = userEvent.setup({ delay: null })
         render(<SignUpForm />)
 
         const emailInput = screen.getByLabelText('Email')
@@ -147,7 +147,7 @@ describe('SignUpForm Component', () => {
     })
 
     test('displays error message when sign up fails', async () => {
-        const user = userEvent.setup()
+        const user = userEvent.setup({ delay: null })
         const errorMessage = 'User already exists'
         mockSignUp.mockResolvedValue({ error: { message: errorMessage } })
 
@@ -169,7 +169,7 @@ describe('SignUpForm Component', () => {
     })
 
     test('shows loading state during form submission', async () => {
-        const user = userEvent.setup()
+        const user = userEvent.setup({ delay: null })
         let resolvePromise: (value: any) => void
         const pendingPromise = new Promise((resolve) => {
             resolvePromise = resolve
