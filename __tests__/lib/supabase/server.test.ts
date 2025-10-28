@@ -80,11 +80,16 @@ describe('Supabase Server Client', () => {
         }
 
         const { cookies } = require('next/headers')
+        const { createServerClient } = require('@supabase/ssr')
         cookies.mockResolvedValue(mockCookies)
 
         await createClient()
 
-        // Verify that getAll was accessible through the adapter
+        const adapter = createServerClient.mock.calls[0][2].cookies
+        expect(adapter.getAll()).toEqual([
+            { name: 'cookie1', value: 'value1' },
+            { name: 'cookie2', value: 'value2' },
+        ])
         expect(mockCookies.getAll).toHaveBeenCalled()
     })
 
