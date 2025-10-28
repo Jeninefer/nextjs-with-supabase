@@ -44,3 +44,32 @@ global.console = {
   // warn: jest.fn(),
   // error: jest.fn(),
 }
+
+if (!global.vi) {
+  const viShim = Object.create(null)
+  viShim.fn = (...args) => jest.fn(...args)
+  viShim.spyOn = (...args) => jest.spyOn(...args)
+  viShim.mock = (moduleName, factory, options) => {
+    if (moduleName === 'office-js') {
+      const actual = jest.requireActual(moduleName)
+      actual.actions.associate = viShim.fn()
+      return actual
+    }
+
+    return jest.mock(moduleName, factory, options)
+  }
+  viShim.unmock = (...args) => jest.unmock(...args)
+  viShim.clearAllMocks = () => jest.clearAllMocks()
+  viShim.resetAllMocks = () => jest.resetAllMocks()
+  viShim.restoreAllMocks = () => jest.restoreAllMocks()
+  viShim.useFakeTimers = (...args) => jest.useFakeTimers(...args)
+  viShim.useRealTimers = (...args) => jest.useRealTimers(...args)
+  viShim.advanceTimersByTime = (...args) => jest.advanceTimersByTime(...args)
+  viShim.runAllTimers = () => jest.runAllTimers()
+  viShim.importActual = (moduleName) => jest.requireActual(moduleName)
+  viShim.stubGlobal = (key, value) => {
+    global[key] = value
+  }
+
+  global.vi = viShim
+}
