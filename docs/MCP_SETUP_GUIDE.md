@@ -58,6 +58,8 @@ npx -y server-perplexity-ask --help
 npx -y @modelcontextprotocol/server-fetch --help
 ```
 
+> **Note:** The ABACO dashboard automatically falls back to the curated dataset in [`lib/data/financial-intelligence.ts`](../lib/data/financial-intelligence.ts) whenever an MCP server is unavailable. Search and market data calls will continue to return structured portfolio intelligence even when external APIs are offline.
+
 ### 4. Initialize in Your Application
 
 ```typescript
@@ -141,9 +143,9 @@ npx -y server-perplexity-ask --version
 ### Fallback Mode
 
 If MCP servers fail to initialize, the ABACO platform will automatically fall back to:
-- Rule-based analysis instead of AI insights
-- Direct HTTP requests instead of MCP fetch
-- Local storage instead of MCP memory
+- Insights generated from the curated monthly portfolio dataset
+- Direct HTTP fetch against Supabase or cached exports
+- In-memory storage for historical analysis results
 
 ## Best Practices
 
