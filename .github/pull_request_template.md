@@ -1,8 +1,13 @@
 ## Summary
-<!-- Provide a concise, user-focused summary of the changes. Highlight user impact or critical fixes. -->
+<!-- Provide a concise, outcome-focused summary. List each major change as a bullet, highlighting user impact, fixes, or follow-up work. -->
+- [ ] <!-- e.g., Added X feature to improve Y -->
+- [ ] <!-- e.g., Fixed bug #123 affecting Z -->
 
 ## Testing
-<!-- List the tests or checks you executed. Include exact commands when applicable. -->
+<!-- Record every test or check you performed. Replace placeholders with actual commands or tools. -->
+- [ ] `npm run lint`
+- [ ] `npm run test`
+- [ ] <!-- Additional commands, manual validation steps, etc. -->
 
 ---
 
