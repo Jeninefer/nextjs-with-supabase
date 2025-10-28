@@ -32,63 +32,149 @@ function matchesAnyIdentifier(str: string, patterns: RegExp[]): boolean {
     return patterns.some((re) => re.test(s));
 }
 
-// ...existing code...
-
-// Define or import PullRequestRecord type
 export type PullRequestRecord = {
+    number: number;
+    title: string;
     author: string;
     assignees: string[];
-    // Add other relevant fields as needed
+    createdAt?: string | Date;
+    htmlUrl?: string;
 };
 
-// Define CloseDuplicateOptions type
 export type CloseDuplicateOptions = {
     aiIdentifiers?: readonly string[];
     canonicalStrategy?: "earliest" | "latest";
     onClose?: (duplicate: PullRequestRecord, canonical: PullRequestRecord) => void;
 };
 
-// Define CloseDuplicateResult type (stub, update as needed)
-export type CloseDuplicateResult = unknown;
+export type CloseDuplicateResult = {
+    canonical: PullRequestRecord | null;
+    duplicatesClosed: PullRequestRecord[];
+};
+
+const toTimestamp = (record: PullRequestRecord): number | null => {
+    if (!record.createdAt) {
+        return null;
+    }
+
+    if (record.createdAt instanceof Date) {
+        const time = record.createdAt.getTime();
+        return Number.isNaN(time) ? null : time;
+    }
+
+    const parsed = Date.parse(record.createdAt);
+    return Number.isNaN(parsed) ? null : parsed;
+};
+
+const pickEarliest = (
+    current: PullRequestRecord | undefined,
+    candidate: PullRequestRecord,
+): PullRequestRecord => {
+    if (!current) {
+        return candidate;
+    }
+
+    const currentTime = toTimestamp(current);
+    const candidateTime = toTimestamp(candidate);
+
+    if (candidateTime === null && currentTime === null) {
+        return current;
+    }
+
+    if (candidateTime === null) {
+        return current;
+    }
+
+    if (currentTime === null) {
+        return candidate;
+    }
+
+    return candidateTime < currentTime ? candidate : current;
+};
+
+const pickLatest = (
+    current: PullRequestRecord | undefined,
+    candidate: PullRequestRecord,
+): PullRequestRecord => {
+    if (!current) {
+        return candidate;
+    }
+
+    const currentTime = toTimestamp(current);
+    const candidateTime = toTimestamp(candidate);
+
+    if (candidateTime === null && currentTime === null) {
+        return current;
+    }
+
+    if (candidateTime === null) {
+        return current;
+    }
+
+    if (currentTime === null) {
+        return candidate;
+    }
+
+    return candidateTime > currentTime ? candidate : current;
+};
 
 export function closeDuplicatePullRequests(
     pullRequests: PullRequestRecord[],
-    options: CloseDuplicateOptions = {}
+    options: CloseDuplicateOptions = {},
 ): CloseDuplicateResult {
-    // ...existing code...
     const {
         aiIdentifiers = DEFAULT_AI_IDENTIFIERS,
         canonicalStrategy = "earliest",
         onClose,
     } = options;
+
     const identifierPatterns = buildIdentifierPatterns(
         aiIdentifiers.map((id) => id.toLowerCase())
     );
+
     const isAiOwned = (pr: PullRequestRecord): boolean =>
         matchesAnyIdentifier(pr.author, identifierPatterns) ||
-        pr.assignees.some((a: string) => matchesAnyIdentifier(a, identifierPatterns));
+        pr.assignees.some((assignee: string) => matchesAnyIdentifier(assignee, identifierPatterns));
 
-    // Example logic using canonicalStrategy to select the canonical PR
-    let canonical: PullRequestRecord | undefined;
-    if (pullRequests.length > 0) {
-        if (canonicalStrategy === "earliest") {
-            canonical = pullRequests[0];
-        } else if (canonicalStrategy === "latest") {
-            canonical = pullRequests[pullRequests.length - 1];
-        }
+    const aiPullRequests = pullRequests.filter(isAiOwned);
+
+    if (aiPullRequests.length === 0) {
+        return {
+            canonical: null,
+            duplicatesClosed: [],
+        };
     }
 
-    for (const pr of pullRequests) {
-        if (!canonical || pr === canonical) continue;
-        const aiOwned = isAiOwned(pr);
+    const canonical = aiPullRequests.reduce(
+        canonicalStrategy === "latest" ? pickLatest : pickEarliest,
+        undefined as PullRequestRecord | undefined,
+    ) ?? null;
+
+    if (!canonical) {
+        return {
+            canonical: null,
+            duplicatesClosed: [],
+        };
+    }
+
+    const duplicatesClosed: PullRequestRecord[] = [];
+
+    for (const pr of aiPullRequests) {
+        if (pr === canonical) {
+            continue;
+        }
+
+        duplicatesClosed.push(pr);
+
         try {
             onClose?.(pr, canonical);
         } catch {
-            /* no-op */
+            // Swallow callback errors to avoid interrupting maintenance automation.
         }
-        // ...existing code...
     }
-    // ...existing code...
-    // Since CloseDuplicateResult is unknown, return null as a stub.
-    return null;
+
+    return {
+        canonical,
+        duplicatesClosed,
+    };
 }

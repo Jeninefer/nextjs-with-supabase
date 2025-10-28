@@ -9,27 +9,56 @@ interface MCPIntegrationState {
   servers: Set<string>;
 }
 
-// Tipos para configuración MCP
-type MCPConfigEntry =
-  | { command: string; args: string[]; env?: Record<string, string | undefined> }
-  | { command: string; args: string[] };
+type MCPConfigEntry = {
+  command: string;
+  args: string[];
+  env?: Record<string, string | undefined>;
+};
 
-// Type guard para env
-function hasEnvConfig(x: unknown): x is { env: Record<string, string | undefined> } {
-  return typeof x === 'object' && x !== null && 'env' in x && typeof (x as any).env === 'object';
+type MCPServerInitialization = {
+  success: boolean;
+  reason?: string;
+};
+
+type NormalizedEnv = Record<string, string> | undefined;
+
+function hasEnvConfig(value: MCPConfigEntry): value is MCPConfigEntry & { env: Record<string, string | undefined> } {
+  return typeof value.env === 'object' && value.env !== null;
 }
 
-// Mock MCP client para evitar dependencias externas por ahora
+const registeredServers = new Map<string, { command: string; args: string[]; env?: NormalizedEnv }>();
+const mockMemory = new Map<string, unknown>();
+
 const mockMCPClient = {
-  initializeServer: async (name: string, command: string, args: string[]) => {
-    console.log(`Mock: Initializing ${name} with ${command} ${args.join(' ')}`);
-    return Math.random() > 0.3; // Simula éxito en 70% de casos
+  async initializeServer(name: string, command: string, args: string[], env?: NormalizedEnv): Promise<MCPServerInitialization> {
+    if (env && Object.values(env).some(value => value.length === 0)) {
+      return { success: false, reason: `Missing environment configuration for ${name}` };
+    }
+
+    registeredServers.set(name, { command, args, env });
+    console.log(`Mock: Initializing ${name} with ${command} ${args.join(' ')}${env ? ` (env: ${Object.keys(env).join(', ')})` : ''}`);
+    return { success: true };
   },
-  searchFinancialData: async (query: string) => ({ success: true, data: `Mock analysis for: ${query}` }),
-  fetchMarketData: async (url: string) => ({ success: true, data: `Mock data from: ${url}` }),
-  storeMemory: async (key: string) => ({ success: true, data: `Stored ${key}` }),
-  getMemory: async (key: string) => ({ success: true, data: `Retrieved ${key}` }),
-  disconnect: async () => console.log('Mock: Disconnected')
+  async searchFinancialData(query: string) {
+    return { success: true, data: `Mock analysis for: ${query}` };
+  },
+  async fetchMarketData(source: string) {
+    return { success: true, data: `Mock data from: ${source}` };
+  },
+  async storeMemory(key: string, value: unknown) {
+    mockMemory.set(key, value);
+    return { success: true, data: value };
+  },
+  async getMemory(key: string) {
+    return {
+      success: mockMemory.has(key),
+      data: mockMemory.get(key) ?? null
+    };
+  },
+  async disconnect() {
+    registeredServers.clear();
+    mockMemory.clear();
+  }
 };
 
 export function useMCPIntegration() {
@@ -61,36 +90,42 @@ export function useMCPIntegration() {
       };
 
       const initializedServers = new Set<string>();
+      const initializationErrors: string[] = [];
 
       // Bucle con type guards y normalización segura
-      for (const [serverName, configRaw] of Object.entries(mcpConfig)) {
-        const config = configRaw as MCPConfigEntry;
-
+      for (const [serverName, config] of Object.entries(mcpConfig)) {
         if (hasEnvConfig(config)) {
           // Verificar variables de entorno
           const envValues = Object.values(config.env);
           if (!envValues.length || !envValues.every(v => typeof v === 'string' && v.length > 0)) {
-            console.warn(`Skipping ${serverName} - missing environment variables`);
+            const reason = `Skipping ${serverName} - missing environment variables`;
+            console.warn(reason);
+            initializationErrors.push(reason);
             continue;
           }
         }
 
         // Normalizar env a Record<string, string> o undefined
-        const envToPass: Record<string, string> | undefined = hasEnvConfig(config)
-          ? Object.fromEntries(Object.entries(config.env).map(([k, v]) => [k, v ?? '']))
+        const envToPass: NormalizedEnv = hasEnvConfig(config)
+          ? Object.fromEntries(
+              Object.entries(config.env).filter((entry): entry is [string, string] => {
+                const [, value] = entry;
+                return typeof value === 'string' && value.length > 0;
+              })
+            )
           : undefined;
 
-        // Usar mock client por ahora
-        // Fix: mockMCPClient.initializeServer expects 3 arguments, not 4.
-        const success = await mockMCPClient.initializeServer(
+        const { success, reason } = await mockMCPClient.initializeServer(
           serverName,
           config.command,
-          config.args
-          // envToPass // <-- Remove this argument or update mockMCPClient accordingly
+          config.args,
+          envToPass
         );
 
         if (success) {
           initializedServers.add(serverName);
+        } else {
+          initializationErrors.push(reason ?? `Failed to initialize ${serverName}`);
         }
       }
 
@@ -98,7 +133,8 @@ export function useMCPIntegration() {
         ...prev,
         isInitialized: initializedServers.size > 0,
         isLoading: false,
-        servers: initializedServers
+        servers: initializedServers,
+        error: initializationErrors.length > 0 ? initializationErrors.join('; ') : null
       }));
 
     } catch (error) {
@@ -119,8 +155,8 @@ export function useMCPIntegration() {
   }, []);
 
   // Fix: mockMCPClient.storeMemory expects 1 argument, not 2.
-  const storeAnalysisResult = useCallback(async (analysisId: string, result: any) => {
-    return await mockMCPClient.storeMemory(`analysis_${analysisId}`);
+  const storeAnalysisResult = useCallback(async (analysisId: string, result: unknown) => {
+    return await mockMCPClient.storeMemory(`analysis_${analysisId}`, result);
   }, []);
 
   const getStoredAnalysis = useCallback(async (analysisId: string) => {
