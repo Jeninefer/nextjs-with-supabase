@@ -1,143 +1,106 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+
+import type {
+  FinancialDashboardPayload,
+  FinancialMetric,
+  GrowthPoint,
+  Insight,
+  ProviderStatus,
+  RiskOverview
+} from '@/lib/data/financial-intelligence';
 
 interface MCPIntegrationState {
+  data: FinancialDashboardPayload | null;
   isInitialized: boolean;
   isLoading: boolean;
   error: string | null;
   servers: Set<string>;
 }
 
-// Tipos para configuración MCP
-type MCPConfigEntry =
-  | { command: string; args: string[]; env?: Record<string, string | undefined> }
-  | { command: string; args: string[] };
-
-// Type guard para env
-function hasEnvConfig(x: unknown): x is { env: Record<string, string | undefined> } {
-  return typeof x === 'object' && x !== null && 'env' in x && typeof (x as any).env === 'object';
-}
-
-// Mock MCP client para evitar dependencias externas por ahora
-const mockMCPClient = {
-  initializeServer: async (name: string, command: string, args: string[]) => {
-    console.log(`Mock: Initializing ${name} with ${command} ${args.join(' ')}`);
-    return Math.random() > 0.3; // Simula éxito en 70% de casos
-  },
-  searchFinancialData: async (query: string) => ({ success: true, data: `Mock analysis for: ${query}` }),
-  fetchMarketData: async (url: string) => ({ success: true, data: `Mock data from: ${url}` }),
-  storeMemory: async (key: string) => ({ success: true, data: `Stored ${key}` }),
-  getMemory: async (key: string) => ({ success: true, data: `Retrieved ${key}` }),
-  disconnect: async () => console.log('Mock: Disconnected')
-};
+const API_ENDPOINT = '/api/financial-intelligence';
 
 export function useMCPIntegration() {
   const [state, setState] = useState<MCPIntegrationState>({
+    data: null,
     isInitialized: false,
     isLoading: false,
     error: null,
-    servers: new Set()
+    servers: new Set<string>()
   });
 
-  const initializeMCPServers = useCallback(async () => {
+  const loadDataset = useCallback(async () => {
     setState(prev => ({ ...prev, isLoading: true, error: null }));
 
     try {
-      const mcpConfig: Record<string, MCPConfigEntry> = {
-        'perplexity-ask': {
-          command: 'npx',
-          args: ['-y', 'server-perplexity-ask'],
-          env: { PERPLEXITY_API_KEY: process.env.NEXT_PUBLIC_PERPLEXITY_API_KEY }
-        },
-        'fetch': {
-          command: 'npx',
-          args: ['-y', '@modelcontextprotocol/server-fetch']
-        },
-        'memory': {
-          command: 'npx',
-          args: ['-y', '@modelcontextprotocol/server-memory']
-        }
-      };
+      const response = await fetch(API_ENDPOINT, { cache: 'no-store' });
 
-      const initializedServers = new Set<string>();
-
-      // Bucle con type guards y normalización segura
-      for (const [serverName, configRaw] of Object.entries(mcpConfig)) {
-        const config = configRaw as MCPConfigEntry;
-
-        if (hasEnvConfig(config)) {
-          // Verificar variables de entorno
-          const envValues = Object.values(config.env);
-          if (!envValues.length || !envValues.every(v => typeof v === 'string' && v.length > 0)) {
-            console.warn(`Skipping ${serverName} - missing environment variables`);
-            continue;
-          }
-        }
-
-        // Normalizar env a Record<string, string> o undefined
-        const envToPass: Record<string, string> | undefined = hasEnvConfig(config)
-          ? Object.fromEntries(Object.entries(config.env).map(([k, v]) => [k, v ?? '']))
-          : undefined;
-
-        // Usar mock client por ahora
-        const success = await mockMCPClient.initializeServer(
-          serverName,
-          config.command,
-          config.args,
-          envToPass
-        );
-
-        if (success) {
-          initializedServers.add(serverName);
-        }
+      if (!response.ok) {
+        throw new Error(`Failed to load financial intelligence dataset: ${response.status}`);
       }
 
-      setState(prev => ({
-        ...prev,
-        isInitialized: initializedServers.size > 0,
-        isLoading: false,
-        servers: initializedServers
-      }));
+      const payload: FinancialDashboardPayload & { generatedAt?: string } = await response.json();
 
+      const onlineProviders = new Set(
+        (payload.providers ?? [])
+          .filter(provider => provider.status === 'online')
+          .map(provider => provider.id)
+      );
+
+      setState({
+        data: payload,
+        isInitialized: onlineProviders.size > 0,
+        isLoading: false,
+        error: null,
+        servers: onlineProviders
+      });
     } catch (error) {
       setState(prev => ({
         ...prev,
         isLoading: false,
-        error: error instanceof Error ? error.message : 'Failed to initialize MCP servers'
+        error: error instanceof Error ? error.message : 'Unable to load intelligence dataset'
       }));
     }
   }, []);
 
-  const searchFinancialInsights = useCallback(async (query: string) => {
-    return await mockMCPClient.searchFinancialData(query);
-  }, []);
-
-  const fetchMarketData = useCallback(async (source: string) => {
-    return await mockMCPClient.fetchMarketData(source);
-  }, []);
-
-  const storeAnalysisResult = useCallback(async (analysisId: string, result: any) => {
-    return await mockMCPClient.storeMemory(`analysis_${analysisId}`, result);
-  }, []);
-
-  const getStoredAnalysis = useCallback(async (analysisId: string) => {
-    return mockMCPClient.getMemory(`analysis_${analysisId}`);
-  }, []);
-
   useEffect(() => {
-    initializeMCPServers();
+    void loadDataset();
+
+    const interval = setInterval(() => {
+      void loadDataset();
+    }, 5 * 60 * 1000);
+
     return () => {
-      mockMCPClient.disconnect();
+      clearInterval(interval);
     };
-  }, [initializeMCPServers]);
+  }, [loadDataset]);
+
+  const getMetric = useCallback(
+    (id: string): FinancialMetric | undefined => state.data?.metrics.find(metric => metric.id === id),
+    [state.data]
+  );
+
+  const growthSeries = useMemo<GrowthPoint[]>(() => state.data?.growth ?? [], [state.data]);
+
+  const getInsight = useCallback(
+    (id: string): Insight | undefined => state.data?.insights.find(insight => insight.id === id),
+    [state.data]
+  );
+
+  const riskProfile = useMemo<RiskOverview | null>(() => state.data?.risk ?? null, [state.data]);
+
+  const providers = useMemo<ProviderStatus[]>(() => state.data?.providers ?? [], [state.data]);
 
   return {
     ...state,
-    initializeMCPServers,
-    searchFinancialInsights,
-    fetchMarketData,
-    storeAnalysisResult,
-    getStoredAnalysis
+    refresh: loadDataset,
+    metrics: state.data?.metrics ?? [],
+    growthSeries,
+    insights: state.data?.insights ?? [],
+    riskProfile,
+    providers,
+    getMetric,
+    getInsight
   };
 }
