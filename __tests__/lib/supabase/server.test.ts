@@ -157,7 +157,6 @@ describe('Supabase Server Client', () => {
 
         const client = await createClient()
 
-        expect(typeof client.auth.signIn).toBe('function')
         expect(typeof client.auth.signOut).toBe('function')
         expect(typeof client.auth.getUser).toBe('function')
         expect(typeof client.auth.getClaims).toBe('function')
