@@ -2,32 +2,85 @@ import { createClient } from "@supabase/supabase-js";
 import { NextResponse } from "next/server";
 
 export async function GET() {
-  try {
-    const supabase = createClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.SUPABASE_SERVICE_ROLE_KEY!
-    );
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
-    // Test connection with your existing kv_store table
+  // Helper to mask sensitive values
+  const mask = (val?: string) =>
+    val ? val.slice(0, 6) + "..." + val.slice(-4) : undefined;
+
+  // Validate env vars
+  if (!url || !anonKey) {
+    return NextResponse.json(
+      {
+        ok: false,
+        error: "Missing Supabase environment variables",
+        diagnostics: {
+          NEXT_PUBLIC_SUPABASE_URL: url ? mask(url) : null,
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: anonKey ? mask(anonKey) : null,
+        },
+        hint: "Check your .env or deployment environment variables.",
+      },
+      { status: 500 }
+    );
+  }
+
+  // Validate URL format
+  if (!/^https?:\/\/.+\..+/.test(url)) {
+    return NextResponse.json(
+      {
+        ok: false,
+        error: "Invalid Supabase URL: Must be a valid HTTP or HTTPS URL.",
+        diagnostics: {
+          NEXT_PUBLIC_SUPABASE_URL: mask(url),
+        },
+        hint: "Your Supabase URL should look like https://xyzcompany.supabase.co",
+      },
+      { status: 500 }
+    );
+  }
+
+  try {
+    const supabase = createClient(url, anonKey);
     const { data, error } = await supabase
-      .from("kv_store_08a31cde")
+      .from("test_table")
       .select("*")
       .limit(1);
 
+    if (error) {
+      return NextResponse.json(
+        {
+          ok: false,
+          error: "Supabase query failed",
+          details: error.message,
+          diagnostics: {
+            NEXT_PUBLIC_SUPABASE_URL: mask(url),
+            NEXT_PUBLIC_SUPABASE_ANON_KEY: mask(anonKey),
+          },
+        },
+        { status: 500 }
+      );
+    }
+
     return NextResponse.json({
-      status: "connected",
-      supabaseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL,
-      hasData: !!data,
-      dataCount: data?.length || 0,
-      error: error?.message || null,
-      timestamp: new Date().toISOString(),
+      ok: true,
+      message: "Supabase connectivity and query succeeded.",
+      sample: data,
+      diagnostics: {
+        NEXT_PUBLIC_SUPABASE_URL: mask(url),
+        NEXT_PUBLIC_SUPABASE_ANON_KEY: mask(anonKey),
+      },
     });
-  } catch (error) {
+  } catch (err: unknown) {
     return NextResponse.json(
       {
-        status: "error",
-        message: error instanceof Error ? error.message : "Unknown error",
-        timestamp: new Date().toISOString(),
+        ok: false,
+        error: "Unexpected error during Supabase connectivity test",
+        details: err instanceof Error ? err.message : String(err),
+        diagnostics: {
+          NEXT_PUBLIC_SUPABASE_URL: mask(url),
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: mask(anonKey),
+        },
       },
       { status: 500 }
     );
