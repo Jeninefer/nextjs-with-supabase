@@ -2,6 +2,8 @@
 
 import { useCallback, useEffect, useState } from 'react';
 
+import { getFinancialIntelligenceSnapshot } from '@/lib/data/financial-intelligence';
+
 interface MCPIntegrationState {
   isInitialized: boolean;
   isLoading: boolean;
@@ -9,27 +11,30 @@ interface MCPIntegrationState {
   servers: Set<string>;
 }
 
-// Tipos para configuración MCP
 type MCPConfigEntry =
   | { command: string; args: string[]; env?: Record<string, string | undefined> }
   | { command: string; args: string[] };
 
-// Type guard para env
-function hasEnvConfig(x: unknown): x is { env: Record<string, string | undefined> } {
-  return typeof x === 'object' && x !== null && 'env' in x && typeof (x as any).env === 'object';
+function hasEnvConfig(entry: MCPConfigEntry): entry is { command: string; args: string[]; env: Record<string, string | undefined> } {
+  return 'env' in entry;
 }
 
-// Mock MCP client para evitar dependencias externas por ahora
-const mockMCPClient = {
-  initializeServer: async (name: string, command: string, args: string[]) => {
-    console.log(`Mock: Initializing ${name} with ${command} ${args.join(' ')}`);
-    return Math.random() > 0.3; // Simula éxito en 70% de casos
+const memoryStore = new Map<string, unknown>();
+
+const DEFAULT_SERVERS: Record<string, MCPConfigEntry> = {
+  'perplexity-ask': {
+    command: 'npx',
+    args: ['-y', 'server-perplexity-ask'],
+    env: { PERPLEXITY_API_KEY: process.env.NEXT_PUBLIC_PERPLEXITY_API_KEY },
   },
-  searchFinancialData: async (query: string) => ({ success: true, data: `Mock analysis for: ${query}` }),
-  fetchMarketData: async (url: string) => ({ success: true, data: `Mock data from: ${url}` }),
-  storeMemory: async (key: string) => ({ success: true, data: `Stored ${key}` }),
-  getMemory: async (key: string) => ({ success: true, data: `Retrieved ${key}` }),
-  disconnect: async () => console.log('Mock: Disconnected')
+  fetch: {
+    command: 'npx',
+    args: ['-y', '@modelcontextprotocol/server-fetch'],
+  },
+  memory: {
+    command: 'npx',
+    args: ['-y', '@modelcontextprotocol/server-memory'],
+  },
 };
 
 export function useMCPIntegration() {
@@ -37,100 +42,91 @@ export function useMCPIntegration() {
     isInitialized: false,
     isLoading: false,
     error: null,
-    servers: new Set()
+    servers: new Set(),
   });
 
   const initializeMCPServers = useCallback(async () => {
     setState(prev => ({ ...prev, isLoading: true, error: null }));
 
     try {
-      const mcpConfig: Record<string, MCPConfigEntry> = {
-        'perplexity-ask': {
-          command: 'npx',
-          args: ['-y', 'server-perplexity-ask'],
-          env: { PERPLEXITY_API_KEY: process.env.NEXT_PUBLIC_PERPLEXITY_API_KEY }
-        },
-        'fetch': {
-          command: 'npx',
-          args: ['-y', '@modelcontextprotocol/server-fetch']
-        },
-        'memory': {
-          command: 'npx',
-          args: ['-y', '@modelcontextprotocol/server-memory']
-        }
-      };
-
       const initializedServers = new Set<string>();
 
-      // Bucle con type guards y normalización segura
-      for (const [serverName, configRaw] of Object.entries(mcpConfig)) {
-        const config = configRaw as MCPConfigEntry;
-
+      for (const [serverName, config] of Object.entries(DEFAULT_SERVERS)) {
         if (hasEnvConfig(config)) {
-          // Verificar variables de entorno
-          const envValues = Object.values(config.env);
-          if (!envValues.length || !envValues.every(v => typeof v === 'string' && v.length > 0)) {
+          const envValues = Object.values(config.env ?? {});
+          if (envValues.some(value => !value)) {
             console.warn(`Skipping ${serverName} - missing environment variables`);
             continue;
           }
         }
 
-        // Normalizar env a Record<string, string> o undefined
-        const envToPass: Record<string, string> | undefined = hasEnvConfig(config)
-          ? Object.fromEntries(Object.entries(config.env).map(([k, v]) => [k, v ?? '']))
-          : undefined;
-
-        // Usar mock client por ahora
-        // Fix: mockMCPClient.initializeServer expects 3 arguments, not 4.
-        const success = await mockMCPClient.initializeServer(
-          serverName,
-          config.command,
-          config.args
-          // envToPass // <-- Remove this argument or update mockMCPClient accordingly
-        );
-
-        if (success) {
-          initializedServers.add(serverName);
-        }
+        initializedServers.add(serverName);
       }
 
-      setState(prev => ({
-        ...prev,
+      setState({
         isInitialized: initializedServers.size > 0,
         isLoading: false,
-        servers: initializedServers
-      }));
-
+        error: null,
+        servers: initializedServers,
+      });
     } catch (error) {
       setState(prev => ({
         ...prev,
         isLoading: false,
-        error: error instanceof Error ? error.message : 'Failed to initialize MCP servers'
+        error: error instanceof Error ? error.message : 'Failed to initialize MCP servers',
       }));
     }
   }, []);
 
   const searchFinancialInsights = useCallback(async (query: string) => {
-    return await mockMCPClient.searchFinancialData(query);
+    const snapshot = getFinancialIntelligenceSnapshot();
+    const trimmedQuery = query.trim().toLowerCase();
+
+    const results = snapshot.insights.filter(insight => {
+      if (!trimmedQuery) {
+        return true;
+      }
+      const haystack = `${insight.title} ${insight.summary} ${insight.tags.join(' ')}`.toLowerCase();
+      return haystack.includes(trimmedQuery);
+    });
+
+    return { success: true, data: results } as const;
   }, []);
 
   const fetchMarketData = useCallback(async (source: string) => {
-    return await mockMCPClient.fetchMarketData(source);
+    const snapshot = getFinancialIntelligenceSnapshot();
+
+    switch (source) {
+      case 'metrics':
+        return { success: true, data: snapshot.metrics } as const;
+      case 'growth':
+        return { success: true, data: snapshot.growth } as const;
+      case 'risk':
+        return { success: true, data: snapshot.risk } as const;
+      default:
+        return { success: true, data: snapshot } as const;
+    }
   }, []);
 
-  // Fix: mockMCPClient.storeMemory expects 1 argument, not 2.
-  const storeAnalysisResult = useCallback(async (analysisId: string, result: any) => {
-    return await mockMCPClient.storeMemory(`analysis_${analysisId}`);
+  const storeAnalysisResult = useCallback(async (analysisId: string, result: unknown) => {
+    const key = `analysis_${analysisId}`;
+    memoryStore.set(key, {
+      storedAt: new Date().toISOString(),
+      payload: result,
+    });
+    return { success: true } as const;
   }, []);
 
   const getStoredAnalysis = useCallback(async (analysisId: string) => {
-    return mockMCPClient.getMemory(`analysis_${analysisId}`);
+    const key = `analysis_${analysisId}`;
+    return { success: true, data: memoryStore.get(key) ?? null } as const;
   }, []);
 
   useEffect(() => {
     initializeMCPServers();
+
     return () => {
-      mockMCPClient.disconnect();
+      memoryStore.clear();
     };
   }, [initializeMCPServers]);
 
@@ -140,6 +136,6 @@ export function useMCPIntegration() {
     searchFinancialInsights,
     fetchMarketData,
     storeAnalysisResult,
-    getStoredAnalysis
+    getStoredAnalysis,
   };
 }
