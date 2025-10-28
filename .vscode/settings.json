@@ -99,10 +99,8 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     // Exclude generated or library files from SonarLint analysis
     "sonarlint.analysisExcludesStandalone": "**/lib/**,**/*generated*",
-
     // Enable on-the-fly analysis (default: true)
     "sonarlint.automaticAnalysis": true,
-
     // Example: connect to SonarQube/SonarCloud (add your connection info if needed)
     // "sonarlint.connectedMode.connections.sonarcloud": [
     //   {
@@ -112,16 +110,12 @@
     //     "token": "V2VkIE1..."
     //   }
     // ],
-
     // Focus on new code issues (optional)
     "sonarlint.focusOnNewCode": false,
-
     // Disable telemetry (recommended for privacy)
     "sonarlint.disableTelemetry": true,
-
     // Use Node.js 20+ for JS/TS analysis (set path if not on PATH)
     // "sonarlint.pathToNodeExecutable": "/usr/local/bin/node",
-
     // Example: custom rule overrides (uncomment and customize as needed)
     // "sonarlint.rules": {
     //   "javascript:S1481": { "level": "off" },
