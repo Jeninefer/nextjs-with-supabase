@@ -116,6 +116,10 @@ npm run lint
 - **Market Intelligence**: 50+ data source monitoring
 - **Dataset Generator**: Comprehensive financial data generation with 30 customers and 53+ dimensions
 
+## 🛣️ Roadmap
+
+- **Secure ingestion pipeline**: Planned synchronization between live Supabase tables and the analytics lakehouse. See the [ABACO Implementation Summary](./ABACO_IMPLEMENTATION_SUMMARY.md) for the detailed design blueprint. _TODO: Track under milestone `ABACO-DataSync-M1`._
+
 ## 🔬 ABACO Dataset Generation
 
 Generate comprehensive financial intelligence datasets for analytics and testing:
