@@ -1,3 +1,5 @@
+import '@testing-library/jest-dom';
+
 /// <reference types="jest" />
 
 declare global {
