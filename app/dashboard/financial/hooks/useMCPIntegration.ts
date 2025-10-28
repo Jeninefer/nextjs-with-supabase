@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 interface MCPIntegrationState {
   isInitialized: boolean;
@@ -21,13 +21,13 @@ function hasEnvConfig(x: unknown): x is { env: Record<string, string | undefined
 
 // Mock MCP client para evitar dependencias externas por ahora
 const mockMCPClient = {
-  initializeServer: async (name: string, command: string, args: string[], env?: Record<string, string>) => {
+  initializeServer: async (name: string, command: string, args: string[]) => {
     console.log(`Mock: Initializing ${name} with ${command} ${args.join(' ')}`);
     return Math.random() > 0.3; // Simula éxito en 70% de casos
   },
   searchFinancialData: async (query: string) => ({ success: true, data: `Mock analysis for: ${query}` }),
   fetchMarketData: async (url: string) => ({ success: true, data: `Mock data from: ${url}` }),
-  storeMemory: async (key: string, value: any) => ({ success: true, data: `Stored ${key}` }),
+  storeMemory: async (key: string) => ({ success: true, data: `Stored ${key}` }),
   getMemory: async (key: string) => ({ success: true, data: `Retrieved ${key}` }),
   disconnect: async () => console.log('Mock: Disconnected')
 };
@@ -110,28 +110,20 @@ export function useMCPIntegration() {
   }, []);
 
   const searchFinancialInsights = useCallback(async (query: string) => {
-    const serverCheck = checkServer('perplexity-ask');
-    if (serverCheck) return serverCheck;
     return await mockMCPClient.searchFinancialData(query);
-  }, [checkServer]);
+  }, []);
 
   const fetchMarketData = useCallback(async (source: string) => {
-    const serverCheck = checkServer('fetch');
-    if (serverCheck) return serverCheck;
     return await mockMCPClient.fetchMarketData(source);
-  }, [checkServer]);
+  }, []);
 
   const storeAnalysisResult = useCallback(async (analysisId: string, result: any) => {
-    const serverCheck = checkServer('memory');
-    if (serverCheck) return serverCheck;
     return await mockMCPClient.storeMemory(`analysis_${analysisId}`, result);
-  }, [checkServer]);
+  }, []);
 
   const getStoredAnalysis = useCallback(async (analysisId: string) => {
-    const serverCheck = checkServer('memory');
-    if (serverCheck) return serverCheck;
     return mockMCPClient.getMemory(`analysis_${analysisId}`);
-  }, [checkServer]);
+  }, []);
 
   useEffect(() => {
     initializeMCPServers();
