@@ -50,7 +50,7 @@ export function useMCPIntegration() {
 
       setState({
         data: payload,
-        isInitialized: onlineProviders.size > 0,
+        isInitialized: true,
         isLoading: false,
         error: null,
         servers: onlineProviders
