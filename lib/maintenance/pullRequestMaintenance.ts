@@ -34,6 +34,23 @@ function matchesAnyIdentifier(str: string, patterns: RegExp[]): boolean {
 
 // ...existing code...
 
+// Define or import PullRequestRecord type
+export type PullRequestRecord = {
+    author: string;
+    assignees: string[];
+    // Add other relevant fields as needed
+};
+
+// Define CloseDuplicateOptions type
+export type CloseDuplicateOptions = {
+    aiIdentifiers?: readonly string[];
+    canonicalStrategy?: "earliest" | "latest";
+    onClose?: (duplicate: PullRequestRecord, canonical: PullRequestRecord) => void;
+};
+
+// Define CloseDuplicateResult type (stub, update as needed)
+export type CloseDuplicateResult = unknown;
+
 export function closeDuplicatePullRequests(
     pullRequests: PullRequestRecord[],
     options: CloseDuplicateOptions = {}
@@ -42,25 +59,28 @@ export function closeDuplicatePullRequests(
     const {
         aiIdentifiers = DEFAULT_AI_IDENTIFIERS,
         canonicalStrategy = "earliest",
-        requireAiOwner = true,
         onClose,
     } = options;
-    const loweredIdentifiers = Array.from(new Set(aiIdentifiers.map((id) => id.toLowerCase())));
-    const identifierPatterns = buildIdentifierPatterns(loweredIdentifiers);
+    const identifierPatterns = buildIdentifierPatterns(
+        aiIdentifiers.map((id) => id.toLowerCase())
+    );
     const isAiOwned = (pr: PullRequestRecord): boolean =>
         matchesAnyIdentifier(pr.author, identifierPatterns) ||
-        pr.assignees.some((a) => matchesAnyIdentifier(a, identifierPatterns));
+        pr.assignees.some((a: string) => matchesAnyIdentifier(a, identifierPatterns));
 
-    // ...existing code...
+    // Example logic using canonicalStrategy to select the canonical PR
+    let canonical: PullRequestRecord | undefined;
+    if (pullRequests.length > 0) {
+        if (canonicalStrategy === "earliest") {
+            canonical = pullRequests[0];
+        } else if (canonicalStrategy === "latest") {
+            canonical = pullRequests[pullRequests.length - 1];
+        }
+    }
 
     for (const pr of pullRequests) {
-        // ...existing code...
+        if (!canonical || pr === canonical) continue;
         const aiOwned = isAiOwned(pr);
-        // ...existing code...
-        const reason = aiOwned
-            ? "duplicate handled by AI maintainer"
-            : "duplicate detected via title normalisation";
-        // ...existing code...
         try {
             onClose?.(pr, canonical);
         } catch {
@@ -69,4 +89,6 @@ export function closeDuplicatePullRequests(
         // ...existing code...
     }
     // ...existing code...
+    // Since CloseDuplicateResult is unknown, return null as a stub.
+    return null;
 }
