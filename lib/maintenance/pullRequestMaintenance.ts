@@ -81,6 +81,7 @@ export function closeDuplicatePullRequests(
     for (const pr of pullRequests) {
         if (!canonical || pr === canonical) continue;
         const aiOwned = isAiOwned(pr);
+        if (!aiOwned) continue;
         try {
             onClose?.(pr, canonical);
         } catch {
