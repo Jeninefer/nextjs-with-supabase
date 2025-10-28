@@ -213,14 +213,20 @@ describe('middleware', () => {
   describe('Error handling', () => {
     it('should throw if SUPABASE_URL is missing', async () => {
       delete process.env.NEXT_PUBLIC_SUPABASE_URL
-
-      await expect(middleware(mockRequest)).rejects.toThrow()
+      mockCreateServerClient.mockImplementation((url: string) => {
+        if (!url) throw new Error('Missing SUPABASE_URL')
+        return { auth: { getSession: mockGetSession } }
+      })
+      await expect(middleware(mockRequest)).rejects.toThrow('Missing SUPABASE_URL')
     })
 
     it('should throw if SUPABASE_ANON_KEY is missing', async () => {
       delete process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-
-      await expect(middleware(mockRequest)).rejects.toThrow()
+      mockCreateServerClient.mockImplementation((_url: string, key: string) => {
+        if (!key) throw new Error('Missing SUPABASE_ANON_KEY')
+        return { auth: { getSession: mockGetSession } }
+      })
+      await expect(middleware(mockRequest)).rejects.toThrow('Missing SUPABASE_ANON_KEY')
     })
 
     it('should handle malformed request gracefully', async () => {
