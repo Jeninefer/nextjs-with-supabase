@@ -1,41 +1,38 @@
-<!-- markdownlint-disable MD033 MD041 -->
-<a href="https://demo-nextjs-with-supabase.vercel.app/">
-  <img alt="Next.js and Supabase Starter Kit - the fastest way to build apps with Next.js and Supabase" src="https://demo-nextjs-with-supabase.vercel.app/opengraph-image.png">
-  <h1 align="center">Next.js and Supabase Starter Kit</h1>
-</a>
-
-<p align="center">
- The fastest way to build apps with Next.js and Supabase
-</p>
-
-<p align="center">
-  <a href="#features"><strong>Features</strong></a> ·
-  <a href="#demo"><strong>Demo</strong></a> ·
-  <a href="#deploy-to-vercel"><strong>Deploy to Vercel</strong></a> ·
-  <a href="#clone-and-run-locally"><strong>Clone and run locally</strong></a> ·
-  <a href="#feedback-and-issues"><strong>Feedback and issues</strong></a> ·
-  <a href="#more-supabase-examples"><strong>More Examples</strong></a>
-</p>
-<br/>
-<!-- markdownlint-enable MD033 MD041 -->
-
 # ABACO Financial Intelligence Platform
 
-## Next-Generation Financial Analytics System
+The ABACO platform is a Next.js and Supabase application that provides secure authentication, configurable dashboards, and AI-assisted financial workflows. This repository contains the application source, supporting infrastructure scripts, and runtime export directories used to share analytics artifacts with downstream consumers.
 
-Transform raw lending data into superior, predictive intelligence with deep learning, behavioral modeling, and KPI automation in one cohesive system.
+## Repository Layout
 
-## 🚀 Quick Start
+```
+├── app/                    # Next.js App Router and pages
+├── components/             # UI components, including deployment utilities
+├── lib/                    # Supabase client setup and shared helpers
+├── models/                 # Domain models and schema utilities
+├── scripts/                # Maintenance and development scripts
+├── abaco_runtime/exports/  # Analytics exports produced at runtime (kept empty in git)
+└── supabase/               # Supabase configuration, migrations, and Edge Functions
+```
+
+## Runtime Export Management
+
+Analytics jobs generate CSV, JSON, and other export artifacts under `abaco_runtime/exports/`. These files are environment-specific and can be safely regenerated. To keep the directory structure versioned while ignoring generated data, each export subdirectory contains a `.gitkeep` placeholder and the `.gitignore` configuration allows only these placeholders to be committed.
+
+Current export buckets:
+
+- `analytics/` – Aggregated analytics bundles
+- `dpd/` – Days-past-due extracts for credit monitoring
+- `kpi/` and `kpi/json/` – KPI rollups in table and JSON form
+- `pricing/` – Pricing model exports for revenue teams
+
+## Getting Started
 
 ### Prerequisites
 
-Before you begin, ensure you have:
-
-- **Node.js 18+** installed
-- **npm** package manager
-- **Git** for version control
-- **Supabase account** ([Sign up](https://supabase.com))
-- **(Optional) Google Cloud account** for Cloud Run deployment ([Setup guide](./docs/GOOGLE_CLOUD_SETUP.md))
+- Node.js 18+
+- npm
+- Supabase project with the required tables and policies
+- (Optional) Vercel CLI for deployments
 
 ### Installation
 
@@ -43,262 +40,46 @@ Before you begin, ensure you have:
 # Clone the repository
 git clone https://github.com/Jeninefer/nextjs-with-supabase.git
 cd nextjs-with-supabase
-git checkout office-addin-figma
 
 # Install dependencies
 npm install
 
-# Set up environment variables
+# Configure environment variables
 cp .env.example .env.local
 # Edit .env.local with your Supabase credentials
 
-# Start development server
+# Start the development server
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) to access the ABACO platform.
-
-## 🏗️ Tech Stack
-
-- **Frontend**: Next.js 15, React, TypeScript
-- **Styling**: Tailwind CSS with ABACO design system
-- **Database**: Supabase (PostgreSQL)
-- **Authentication**: Supabase Auth
-- **Deployment**: Vercel, Google Cloud Run
-- **AI Integration**: MCP (Model Context Protocol)
-
-## 📁 Project Structure
-
-```
-├── app/                    # Next.js App Router
-│   ├── dashboard/         # Financial dashboard
-│   ├── auth/             # Authentication pages
-│   └── globals.css       # Global styles
-├── components/           # Reusable components
-│   ├── ui/              # shadcn/ui components
-│   └── auth/            # Authentication components
-├── lib/                 # Utilities and configurations
-│   └── supabase/       # Supabase client setup
-└── scripts/            # Utility scripts
-```
-
-## 🎨 ABACO Design System
-
-- **Colors**: Purple gradient (#C1A6FF to #5F4896)
-- **Typography**: Lato (primary), Poppins (secondary)
-- **Theme**: Dark mode with 4K rendering support
-
-## 🔧 Development
+### Available Scripts
 
 ```bash
-# Development server
-npm run dev
-
-# Type checking
-npm run type-check
-
-# Build for production
-npm run build
-
-# Start production server
-npm run start
-
-# Lint code
-npm run lint
+npm run dev        # Start local development server
+npm run build      # Create an optimized production build
+npm run start      # Run the production build locally
+npm run lint       # Run ESLint
+npm run type-check # Run TypeScript diagnostics
 ```
 
-## 📊 Features
+## Deployment
 
-- **Financial Dashboard**: Real-time KPI tracking
-- **Risk Analysis**: Advanced portfolio risk modeling
-- **AI Insights**: Machine learning-powered analytics
-- **Growth Projections**: Strategic planning tools
-- **Market Intelligence**: 50+ data source monitoring
-- **Dataset Generator**: Comprehensive financial data generation with 30 customers and 53+ dimensions
+### Vercel
 
-## 🔬 ABACO Dataset Generation
+1. Push changes to a branch on GitHub.
+2. Configure environment variables in the Vercel dashboard.
+3. Trigger a deployment via the dashboard or `vercel deploy`.
 
-Generate comprehensive financial intelligence datasets for analytics and testing:
+### Self-Hosted / Cloud Run
 
-```bash
-# Quick start demo (recommended)
-bash demo_abaco_dataset.sh
+The project can also run on container platforms such as Google Cloud Run. Use the provided `Dockerfile` and ensure the environment variables from `.env.local` are supplied at runtime.
 
-# Or run individually:
+## Roadmap
 
-# 1. Setup environment
-bash fix_abaco_environment.sh
+The following initiatives are in progress and tracked in [`ABACO_IMPLEMENTATION_SUMMARY.md`](./ABACO_IMPLEMENTATION_SUMMARY.md):
 
-# 2. Generate dataset
-cd notebooks
-python3 abaco_dataset_generator.py
-```
+- ✅ Directory scaffolding to preserve ABACO runtime export structure in version control.
+- 🛠️ Secure ingestion pipeline that synchronizes live Supabase tables with the analytics lakehouse. This capability is not yet implemented; see the "Data Synchronization" section of the implementation summary for the design and delivery milestones.
+- 🛠️ Expanded observability for data export jobs, including retention policies and audit logging.
 
-**Features:**
-
-- 30 customer records with 53 analytical dimensions
-- Realistic financial metrics and patterns
-- Comprehensive analytics reporting
-- CSV export with summary statistics
-
-For detailed documentation, see [notebooks/README_ABACO_DATASET.md](./notebooks/README_ABACO_DATASET.md)
-
-## 🚀 Deployment
-
-### Prerequisites
-
-Before deploying, ensure:
-
-- [ ] Supabase project is configured
-- [ ] Environment variables are set
-- [ ] Application builds successfully (`npm run build`)
-- [ ] Google Cloud account setup (for Cloud Run) - [Setup Guide](./docs/GOOGLE_CLOUD_SETUP.md)
-
-### Vercel (Recommended)
-
-```bash
-# Build locally first
-npm run build
-
-# Deploy to Vercel
-vercel deploy
-
-# Or deploy for production
-vercel --prod
-```
-
-**Environment Variables on Vercel**:
-
-1. Go to Project Settings → Environment Variables
-2. Add all variables from `.env.local`
-3. Redeploy after adding variables
-
-### Google Cloud Run
-
-**First-time Setup**:
-
-```bash
-# 1. Login to Google Cloud
-gcloud auth login
-
-# 2. Set your project
-gcloud config set project YOUR-PROJECT-ID
-
-# 3. Enable required APIs
-gcloud services enable run.googleapis.com cloudbuild.googleapis.com
-
-# 4. Deploy
-gcloud run deploy abaco-platform \
-    --source . \
-    --platform managed \
-    --region us-central1 \
-    --allow-unauthenticated \
-    --set-env-vars "NEXT_PUBLIC_SUPABASE_URL=your-url,NEXT_PUBLIC_SUPABASE_PUBLISHABLE_OR_ANON_KEY=your-key"
-```
-
-**Subsequent Deployments**:
-
-```bash
-# Quick deploy with existing config
-gcloud run deploy abaco-platform --source .
-```
-
-**Troubleshooting Deployment**:
-
-If you encounter permission errors:
-
-```bash
-# Check your access
-gcloud projects list
-
-# Enable necessary APIs
-gcloud services enable run.googleapis.com
-
-# See full troubleshooting guide
-# docs/TROUBLESHOOTING.md
-```
-
-For complete Google Cloud setup instructions, see:
-
-- [Google Cloud Setup Guide](./docs/GOOGLE_CLOUD_SETUP.md)
-- [Troubleshooting Guide](./docs/TROUBLESHOOTING.md)
-
-## 🔒 Security & Compliance
-
-- GDPR compliant data handling
-- SOX financial reporting standards
-- Basel III banking regulations
-- Enterprise-grade authentication
-
-## 🛠️ Troubleshooting
-
-For detailed setup instructions, error resolution, and platform status, see:
-
-- [📚 Documentation Index](./docs/README.md) - Complete documentation overview
-- [Google Cloud Setup Guide](./docs/GOOGLE_CLOUD_SETUP.md) - Complete GCP integration guide
-- [Troubleshooting Guide](./docs/TROUBLESHOOTING.md) - Common issues and solutions
-- [Quick Start Guide](./QUICK_START.md)
-- [Build Success Log](./BUILD_SUCCESS.md)
-
-### Common Issues
-
-**Port already in use:**
-
-```bash
-lsof -i :3000
-kill -9 <PID>
-npm run dev
-```
-
-**Git sync issues:**
-
-```bash
-# Set upstream branch
-git push -u origin main
-
-# Pull and push
-git pull origin main
-git push origin main
-```
-
-**Google Cloud access issues:**
-
-```bash
-# Check project access
-gcloud projects list
-
-# Enable required APIs
-gcloud services enable run.googleapis.com
-
-# See full guide: docs/TROUBLESHOOTING.md
-```
-
-**Python analysis not running:**
-
-```bash
-python3 notebooks/abaco_financial_intelligence.py
-```
-
-For comprehensive troubleshooting, see:
-
-- [Google Cloud Troubleshooting](./docs/TROUBLESHOOTING.md)
-- [Google Cloud Setup](./docs/GOOGLE_CLOUD_SETUP.md)
-
-## 📄 License
-
-Proprietary software. See [LICENSE](./LICENSE) for details.
-
-## 🤝 Contributing
-
-This is a proprietary platform. For authorized contributions, please contact the development team.
-
-## 📞 Support
-
-For technical support: <tech@abaco-platform.com>
-For licensing: <legal@abaco-platform.com>
-
----
-
-**ABACO Financial Intelligence Platform** - Setting the standard for financial analytics excellence.
-
-> **Note:** This is the canonical repository for the Office Add-in with Figma and AI API integration.
+Contributions and feedback are welcome. Please open an issue or submit a pull request to discuss improvements.

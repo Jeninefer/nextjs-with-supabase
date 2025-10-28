@@ -39,6 +39,12 @@ pids
 *.seed
 *.pid.lock
 
+# ABACO runtime exports (keep directory structure only)
+abaco_runtime/exports/*
+!abaco_runtime/exports/.gitkeep
+!abaco_runtime/exports/**/
+!abaco_runtime/exports/**/.gitkeep
+
 # CS-Script cache
 *.cs.dll
 *.cs.compiled
