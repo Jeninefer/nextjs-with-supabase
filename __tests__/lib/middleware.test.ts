@@ -285,16 +285,22 @@ describe('middleware', () => {
     })
 
     it('should maintain cookie state across operations', async () => {
+      const setCookieSpy = jest.fn()
+      // Mock NextResponse.next() to return a response with a spy
+      jest.spyOn(NextResponse, 'next').mockReturnValue({
+        cookies: {
+          set: setCookieSpy,
+          delete: jest.fn()
+        }
+      } as any)
+
       const response = await middleware(mockRequest)
 
       const cookiesConfig = mockCreateServerClient.mock.calls[0][2].cookies
 
-      // Set then get
       cookiesConfig.set('test', 'value', {})
-      mockCookies.set('test', 'value') // Simulate the set
       
-      const retrieved = cookiesConfig.get('test')
-      expect(retrieved).toBe('value')
+      expect(setCookieSpy).toHaveBeenCalledWith({ name: 'test', value: 'value' })
     })
 
     it('should handle auth flow with session cookies', async () => {
