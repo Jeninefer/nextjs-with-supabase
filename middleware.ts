@@ -1,10 +1,65 @@
-import { createServerClient } from "@supabase/ssr";
+import { createServerClient, type CookieOptions } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
+type ResponseCookies = ReturnType<typeof NextResponse.next>["cookies"];
+type ResponseCookieOptions = Parameters<ResponseCookies["set"]>[2];
+
+type SupabaseCookieDescriptor = {
+  name: string;
+  value: string;
+  options: CookieOptions;
+};
+
+type NormalizedCookieOptions = {
+  domain?: string;
+  path?: string;
+  expires?: Date;
+  httpOnly?: boolean;
+  secure?: boolean;
+  sameSite?: "strict" | "lax" | "none";
+  maxAge?: number;
+};
+
+const normalizeCookieOptions = (
+  options?: CookieOptions,
+): NormalizedCookieOptions | undefined => {
+  if (!options) {
+    return undefined;
+  }
+
+  const normalized: NormalizedCookieOptions = {};
+
+  if (options.domain) normalized.domain = options.domain;
+  if (options.path) normalized.path = options.path;
+  if (options.expires instanceof Date) normalized.expires = options.expires;
+  if (typeof options.maxAge === "number") normalized.maxAge = options.maxAge;
+  if (options.sameSite) normalized.sameSite = options.sameSite as NormalizedCookieOptions["sameSite"];
+  if (options.httpOnly !== undefined) normalized.httpOnly = options.httpOnly;
+  if (options.secure !== undefined) normalized.secure = options.secure;
+
+  return normalized;
+};
+
+const applyCookie = (
+  response: NextResponse,
+  name: string,
+  value: string,
+  options?: CookieOptions,
+) => {
+  const normalized = normalizeCookieOptions(options);
+  if (normalized) {
+    response.cookies.set(name, value, normalized as ResponseCookieOptions);
+  } else {
+    response.cookies.set(name, value);
+  }
+};
+
 /**
- * Initializes a Supabase server client that bridges cookies between the incoming request and outgoing response, then performs a lightweight auth check.
+ * Initializes a Supabase server client that bridges cookies between the incoming request and outgoing response, then performs a
+ * lightweight auth check.
  *
- * If Supabase environment variables are missing, returns the response unchanged. Any error during the auth check is logged but does not stop request processing.
+ * If Supabase environment variables are missing, returns the response unchanged.
+ * Any error during the auth check is logged but does not stop request processing.
  *
  * @returns A NextResponse for the request, potentially updated with authentication-related cookies.
  */
@@ -15,24 +70,28 @@ export async function middleware(request: NextRequest) {
   const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
   if (!supabaseUrl || !supabaseKey) {
-    console.warn("Supabase middleware: Missing NEXT_PUBLIC_SUPABASE_URL or NEXT_PUBLIC_SUPABASE_ANON_KEY. Authentication checks will be skipped.");
+    console.warn(
+      "Supabase middleware: Missing NEXT_PUBLIC_SUPABASE_URL or NEXT_PUBLIC_SUPABASE_ANON_KEY. Authentication checks will be skipped.",
+    );
     return response;
   }
 
   try {
     const supabase = createServerClient(supabaseUrl, supabaseKey, {
       cookies: {
-        getAll: () => request.cookies.getAll().map((c) => ({ name: c.name, value: c.value })),
-        setAll: (cookies) => {
+        getAll: () =>
+          request.cookies
+            .getAll()
+            .map((cookie) => ({ name: cookie.name, value: cookie.value })),
+        setAll: (cookies: SupabaseCookieDescriptor[]) => {
           cookies.forEach((cookie) => {
-            response.cookies.set(cookie.name, cookie.value, cookie.options);
+            applyCookie(response, cookie.name, cookie.value, cookie.options);
           });
         },
       },
     });
 
-    // Optionally, perform a lightweight auth check (e.g., getUser)
-    await supabase.auth.getUser();
+    await supabase.auth.getSession();
   } catch (err) {
     console.error("Supabase middleware error:", err);
   }
@@ -41,5 +100,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)"],
+  matcher: ["/((?!_next/static|_next/image|favicon.ico|.*\.(?:svg|png|jpg|jpeg|gif|webp)$).*)"],
 };
