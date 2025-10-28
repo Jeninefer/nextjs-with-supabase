@@ -49,7 +49,15 @@ export type CloseDuplicateOptions = {
 };
 
 // Define CloseDuplicateResult type (stub, update as needed)
-export type CloseDuplicateResult = unknown;
+export type ClosedPullRequestSummary = {
+    pullRequest: PullRequestRecord;
+    aiOwned: boolean;
+};
+
+export type CloseDuplicateResult = {
+    canonical: PullRequestRecord | null;
+    duplicatesClosed: ClosedPullRequestSummary[];
+};
 
 export function closeDuplicatePullRequests(
     pullRequests: PullRequestRecord[],
@@ -64,6 +72,7 @@ export function closeDuplicatePullRequests(
     const identifierPatterns = buildIdentifierPatterns(
         aiIdentifiers.map((id) => id.toLowerCase())
     );
+    const duplicatesClosed: CloseDuplicateResult["duplicatesClosed"] = [];
     const isAiOwned = (pr: PullRequestRecord): boolean =>
         matchesAnyIdentifier(pr.author, identifierPatterns) ||
         pr.assignees.some((a: string) => matchesAnyIdentifier(a, identifierPatterns));
@@ -86,9 +95,11 @@ export function closeDuplicatePullRequests(
         } catch {
             /* no-op */
         }
-        // ...existing code...
+        duplicatesClosed.push({ pullRequest: pr, aiOwned });
     }
     // ...existing code...
-    // Since CloseDuplicateResult is unknown, return null as a stub.
-    return null;
+    return {
+        canonical: canonical ?? null,
+        duplicatesClosed,
+    };
 }
