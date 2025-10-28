@@ -228,7 +228,7 @@ describe('middleware', () => {
       await expect(middleware(mockRequest)).rejects.toThrow('Missing SUPABASE_ANON_KEY')
     })
 
-    it('should handle malformed request gracefully', async () => {
+    it('should throw when request or client creation fails', async () => {
       const malformedRequest = {
         cookies: {
           get: jest.fn(() => { throw new Error('Cookie error') })
