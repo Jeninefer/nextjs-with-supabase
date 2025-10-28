@@ -80,7 +80,7 @@ describe('LoginForm Component', () => {
     })
 
     test('updates email and password fields when user types', async () => {
-        const user = userEvent.setup()
+        const user = userEvent.setup({ delay: null })
         render(<LoginForm />)
 
         const emailInput = screen.getByLabelText('Email') as HTMLInputElement
@@ -94,7 +94,7 @@ describe('LoginForm Component', () => {
     })
 
     test('submits form with correct credentials and redirects on success', async () => {
-        const user = userEvent.setup()
+        const user = userEvent.setup({ delay: null })
         mockSignInWithPassword.mockResolvedValue({ error: null })
 
         render(<LoginForm />)
@@ -118,7 +118,7 @@ describe('LoginForm Component', () => {
     })
 
     test('displays error message when login fails', async () => {
-        const user = userEvent.setup()
+        const user = userEvent.setup({ delay: null })
         const errorMessage = 'Invalid email or password'
         mockSignInWithPassword.mockResolvedValue({ error: { message: errorMessage } })
 
@@ -138,7 +138,7 @@ describe('LoginForm Component', () => {
     })
 
     test('shows loading state during form submission', async () => {
-        const user = userEvent.setup()
+        const user = userEvent.setup({ delay: null })
         let resolvePromise: (value: any) => void
         const pendingPromise = new Promise((resolve) => {
             resolvePromise = resolve
@@ -197,7 +197,7 @@ describe('LoginForm Component', () => {
     })
 
     test('handles non-Error exceptions gracefully', async () => {
-        const user = userEvent.setup()
+        const user = userEvent.setup({ delay: null })
         mockSignInWithPassword.mockRejectedValue('String error')
 
         render(<LoginForm />)
@@ -216,7 +216,7 @@ describe('LoginForm Component', () => {
     })
 
     test('clears error message on new submission attempt', async () => {
-        const user = userEvent.setup()
+        const user = userEvent.setup({ delay: null })
         // First submission with error
         mockSignInWithPassword.mockResolvedValueOnce({ error: { message: 'First error' } })
 
