@@ -217,7 +217,6 @@ describe('LoginForm Component', () => {
 
     test('clears error message on new submission attempt', async () => {
         const user = userEvent.setup()
-
         // First submission with error
         mockSignInWithPassword.mockResolvedValueOnce({ error: { message: 'First error' } })
 
@@ -247,7 +246,6 @@ describe('LoginForm Component', () => {
     })
 
     test('form submission prevents default browser behavior', async () => {
-        const user = userEvent.setup()
         mockSignInWithPassword.mockResolvedValue({ error: null })
 
         render(<LoginForm />)
