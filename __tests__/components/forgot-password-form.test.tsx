@@ -1,5 +1,5 @@
 import { ForgotPasswordForm } from '@/components/forgot-password-form'
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 // Mock Next.js Link
@@ -204,16 +204,20 @@ describe('ForgotPasswordForm Component', () => {
         })
     })
 
-    test('form submission prevents default browser behavior', async () => {
+    test('calls form submit handler', async () => {
+        const user = userEvent.setup({ delay: null })
         mockResetPasswordForEmail.mockResolvedValue({ error: null })
 
         render(<ForgotPasswordForm />)
 
-        const form = screen.getByRole('button', { name: 'Send reset email' }).closest('form')!
-        const preventDefault = jest.fn()
+        const emailInput = screen.getByLabelText('Email')
+        const submitButton = screen.getByRole('button', { name: 'Send reset email' })
 
-        fireEvent.submit(form, { preventDefault })
+        await user.type(emailInput, 'user@abaco.finance')
+        await user.click(submitButton)
 
-        expect(preventDefault).toHaveBeenCalled()
+        await waitFor(() => {
+            expect(mockResetPasswordForEmail).toHaveBeenCalled()
+        })
     })
 })

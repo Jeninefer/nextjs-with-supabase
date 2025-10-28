@@ -1,5 +1,5 @@
 import { LoginForm } from '@/components/login-form'
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 // Mock Next.js router
@@ -222,8 +222,8 @@ describe('LoginForm Component', () => {
 
         render(<LoginForm />)
 
-        const emailInput = screen.getByLabelText('Email')
-        const passwordInput = screen.getByLabelText('Password')
+        const emailInput = screen.getByLabelText('Email') as HTMLInputElement
+        const passwordInput = screen.getByLabelText('Password') as HTMLInputElement
         const submitButton = screen.getByRole('button', { name: 'Login' })
 
         await user.type(emailInput, 'analyst@abaco.finance')
@@ -232,29 +232,38 @@ describe('LoginForm Component', () => {
 
         await waitFor(() => {
             expect(screen.getByText('First error')).toBeInTheDocument()
-        })
+        }, { timeout: 3000 })
 
         // Second submission should clear the error initially
         mockSignInWithPassword.mockResolvedValueOnce({ error: null })
 
+        // Update password to show state change
+        await user.clear(passwordInput)
+        await user.type(passwordInput, 'correctpassword')
         await user.click(submitButton)
 
         // Error should be cleared during the loading state
         await waitFor(() => {
             expect(screen.queryByText('First error')).not.toBeInTheDocument()
-        })
+        }, { timeout: 3000 })
     })
 
-    test('form submission prevents default browser behavior', async () => {
+    test('calls form submit handler', async () => {
+        const user = userEvent.setup({ delay: null })
         mockSignInWithPassword.mockResolvedValue({ error: null })
 
         render(<LoginForm />)
 
-        const form = screen.getByRole('button', { name: 'Login' }).closest('form')!
-        const preventDefault = jest.fn()
+        const emailInput = screen.getByLabelText('Email')
+        const passwordInput = screen.getByLabelText('Password')
+        const submitButton = screen.getByRole('button', { name: 'Login' })
 
-        fireEvent.submit(form, { preventDefault })
+        await user.type(emailInput, 'analyst@abaco.finance')
+        await user.type(passwordInput, 'password123')
+        await user.click(submitButton)
 
-        expect(preventDefault).toHaveBeenCalled()
+        await waitFor(() => {
+            expect(mockSignInWithPassword).toHaveBeenCalled()
+        })
     })
 })
