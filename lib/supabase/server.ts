@@ -1,6 +1,16 @@
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 
+function getRequiredEnvVar(name: string) {
+  const value = process.env[name];
+
+  if (!value) {
+    throw new Error(`Missing environment variable: ${name}`);
+  }
+
+  return value;
+}
+
 /**
  * Ensure cookieStoreRef is the actual cookie store object (not a Promise)
  */
@@ -61,8 +71,8 @@ export async function createClient() {
   const cookiesAdapter = await createCookiesAdapter(cookieStore);
 
   return createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_OR_ANON_KEY!,
+    getRequiredEnvVar("NEXT_PUBLIC_SUPABASE_URL"),
+    getRequiredEnvVar("NEXT_PUBLIC_SUPABASE_PUBLISHABLE_OR_ANON_KEY"),
     {
       cookies: cookiesAdapter,
     },

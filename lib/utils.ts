@@ -8,3 +8,12 @@ export function cn(...inputs: ClassValue[]) {
 // If you have custom color utilities, update them:
 // Instead of: import flattenColorPalette from 'tailwindcss/lib/util/flattenColorPalette'
 // Use: Access colors directly from Tailwind config
+
+const requiredPublicEnvVars = [
+  process.env.NEXT_PUBLIC_SUPABASE_URL,
+  process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_OR_ANON_KEY,
+];
+
+export const hasEnvVars = requiredPublicEnvVars.every(
+  (value): value is string => typeof value === "string" && value.length > 0,
+);
