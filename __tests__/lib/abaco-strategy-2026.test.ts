@@ -60,7 +60,7 @@ describe('ABACO Strategy 2026 - Data Validation Suite', () => {
 
             const result = validateDataIngestion(testData)
             expect(result.hashVerification).toBeDefined()
-            expect(result.hashVerification.length).toBeGreaterThan(0)
+            expect(result.hashVerification?.length ?? 0).toBeGreaterThan(0)
         })
 
         test('validateDataIngestion validates row counts are logged', () => {
@@ -137,7 +137,7 @@ describe('ABACO Strategy 2026 - Data Validation Suite', () => {
 
             const result = validateDataQuality(data)
             expect(result.nullsByColumn).toHaveProperty('nit')
-            expect(result.nullsByColumn.nit).toBe(1)
+            expect(result.nullsByColumn?.nit ?? 0).toBe(1)
             expect(result.qualityScore).toBeLessThan(95)
         })
     })
@@ -221,14 +221,16 @@ describe('ABACO Strategy 2026 - Data Validation Suite', () => {
                 year1Revenue: 1200000,
             }
 
+            const nrr = (cohortMetrics.year1Revenue / cohortMetrics.baselineRevenue) * 100
+            expect(nrr).toBe(120)
+            expect(nrr).toBeGreaterThanOrEqual(110)
             const result = validateKPICalculation({
                 portfolio: cohortMetrics,
                 kpi: 'nrr',
             })
 
-            const nrr = (cohortMetrics.year1Revenue / cohortMetrics.baselineRevenue) * 100
-            expect(nrr).toBe(120)
-            expect(nrr).toBeGreaterThanOrEqual(110)
+            expect(result.value).toBe(nrr)
+            expect(result.target2026).toBe('≥110%')
         })
     })
 
@@ -266,14 +268,14 @@ describe('ABACO Strategy 2026 - Data Validation Suite', () => {
                 std,
             })
 
-            expect(Math.abs(result.mean - 0)).toBeLessThan(0.01)
-            expect(Math.abs(result.std - 1)).toBeLessThan(0.01)
+            expect(result.mean).toBeDefined()
+            expect(result.std).toBeDefined()
+            expect(Math.abs((result.mean ?? 0) - 0)).toBeLessThan(0.01)
+            expect(Math.abs((result.std ?? 0) - 1)).toBeLessThan(0.01)
             expect(result.validation).toBe('Mean ≈ 0, Std ≈ 1 ±0.01')
         })
 
         test('validateFeatureEngineering detects missing critical features', () => {
-            const missingFeatures = ['dpd_buckets']
-
             const result = validateFeatureEngineering({
                 requiredFeatures: ['segmentation', 'dpd_buckets', 'customer_type'],
                 providedFeatures: ['segmentation', 'customer_type'],
@@ -294,9 +296,9 @@ describe('ABACO Strategy 2026 - Data Validation Suite', () => {
                 features: criticalFeatures,
             })
 
-            expect(result.nansByFeature.aum).toBe(1)
-            expect(result.nansByFeature.dpd).toBe(1)
-            expect(result.nansByFeature.segment).toBe(0)
+            expect(result.nansByFeature?.aum ?? 0).toBe(1)
+            expect(result.nansByFeature?.dpd ?? 0).toBe(1)
+            expect(result.nansByFeature?.segment ?? 0).toBe(0)
         })
     })
 
@@ -310,7 +312,6 @@ describe('ABACO Strategy 2026 - Data Validation Suite', () => {
                 staleDateRows: 0,
             }
 
-            const result = validateDataQuality(auditData)
             const completeness = ((5000 - 100) / 5000) * 0.3
             const uniqueness = ((5000 - 50) / 5000) * 0.2
             const accuracy = ((5000 - 25) / 5000) * 0.3
@@ -318,6 +319,8 @@ describe('ABACO Strategy 2026 - Data Validation Suite', () => {
 
             const score = (completeness + uniqueness + accuracy + timeliness) * 100
             expect(score).toBeGreaterThan(95)
+            const result = validateDataQuality(auditData)
+            expect(result.qualityScore).toBeCloseTo(score, 5)
         })
 
         test('validateDataQuality detects quality score <95% triggers alert', () => {
@@ -420,6 +423,7 @@ describe('ABACO Strategy 2026 - Data Validation Suite', () => {
             expect(result.transformationCount).toBe(2)
             expect(result.completeness).toBe(100)
             expect(result.errors).toEqual([])
+            expect(result.transformations).toHaveLength(2)
         })
 
         test('validateAuditTrail detects missing audit entries', () => {
@@ -461,8 +465,10 @@ describe('ABACO Strategy 2026 - Data Validation Suite', () => {
             })
 
             expect(result.rowCountsConsistent).toBe(true)
-            result.transformations.forEach((t) => {
-                expect(t.sourceRows - t.droppedCount).toBe(t.targetRows)
+            const inspected = result.transformations ?? []
+            inspected.forEach((t) => {
+                const dropped = t.droppedCount ?? 0
+                expect(t.sourceRows - dropped).toBe(t.targetRows)
             })
         })
     })
