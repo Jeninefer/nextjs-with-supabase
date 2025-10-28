@@ -1,0 +1,34 @@
+[
+  {
+    "number": 106,
+    "title": "chore: commit pending workspace artifacts",
+    "assignees": ["chatgpt-codex-connector", "coderabbitai", "Jeninefer"],
+    "status": "open"
+  },
+  {
+    "number": 105,
+    "title": "Track ABACO runtime export directories",
+    "assignees": ["Jeninefer", "coderabbitai", "chatgpt-codex-connector"],
+    "status": "closed",
+    "duplicateOf": 102,
+    "closureReason": "duplicate-ai-assignee"
+  },
+  {
+    "number": 104,
+    "title": "Clarify status of ingestion pipeline in README",
+    "assignees": ["Jeninefer", "coderabbitai", "vercel"],
+    "status": "open"
+  },
+  {
+    "number": 103,
+    "title": "Validate Supabase environment variables",
+    "assignees": ["Jeninefer", "coderabbitai", "vercel"],
+    "status": "open"
+  },
+  {
+    "number": 102,
+    "title": "Track ABACO runtime export directories",
+    "assignees": ["Jeninefer", "coderabbitai", "vercel"],
+    "status": "open"
+  }
+]
