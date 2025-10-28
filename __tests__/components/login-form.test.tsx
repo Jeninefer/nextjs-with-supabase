@@ -80,21 +80,21 @@ describe('LoginForm Component', () => {
     })
 
     test('updates email and password fields when user types', async () => {
-        const user = userEvent.setup()
+        const userEventInstance = userEvent.setup()
         render(<LoginForm />)
 
         const emailInput = screen.getByLabelText('Email') as HTMLInputElement
         const passwordInput = screen.getByLabelText('Password') as HTMLInputElement
 
-        await user.type(emailInput, 'test@example.com')
-        await user.type(passwordInput, 'password123')
+        await userEventInstance.type(emailInput, 'test@example.com')
+        await userEventInstance.type(passwordInput, 'password123')
 
         expect(emailInput.value).toBe('test@example.com')
         expect(passwordInput.value).toBe('password123')
     })
 
     test('submits form with correct credentials and redirects on success', async () => {
-        const user = userEvent.setup()
+        const userEventInstance = userEvent.setup()
         mockSignInWithPassword.mockResolvedValue({ error: null })
 
         render(<LoginForm />)
@@ -103,9 +103,9 @@ describe('LoginForm Component', () => {
         const passwordInput = screen.getByLabelText('Password')
         const submitButton = screen.getByRole('button', { name: 'Login' })
 
-        await user.type(emailInput, 'test@example.com')
-        await user.type(passwordInput, 'password123')
-        await user.click(submitButton)
+        await userEventInstance.type(emailInput, 'test@example.com')
+        await userEventInstance.type(passwordInput, 'password123')
+        await userEventInstance.click(submitButton)
 
         expect(mockSignInWithPassword).toHaveBeenCalledWith({
             email: 'test@example.com',
@@ -118,7 +118,7 @@ describe('LoginForm Component', () => {
     })
 
     test('displays error message when login fails', async () => {
-        const user = userEvent.setup()
+        const userEventInstance = userEvent.setup()
         const errorMessage = 'Invalid email or password'
         mockSignInWithPassword.mockResolvedValue({ error: { message: errorMessage } })
 
@@ -128,9 +128,9 @@ describe('LoginForm Component', () => {
         const passwordInput = screen.getByLabelText('Password')
         const submitButton = screen.getByRole('button', { name: 'Login' })
 
-        await user.type(emailInput, 'test@example.com')
-        await user.type(passwordInput, 'wrongpassword')
-        await user.click(submitButton)
+        await userEventInstance.type(emailInput, 'test@example.com')
+        await userEventInstance.type(passwordInput, 'wrongpassword')
+        await userEventInstance.click(submitButton)
 
         await waitFor(() => {
             expect(screen.getByText(errorMessage)).toBeInTheDocument()
@@ -138,7 +138,7 @@ describe('LoginForm Component', () => {
     })
 
     test('shows loading state during form submission', async () => {
-        const user = userEvent.setup()
+        const userEventInstance = userEvent.setup()
         let resolvePromise: (value: any) => void
         const pendingPromise = new Promise((resolve) => {
             resolvePromise = resolve
@@ -151,9 +151,9 @@ describe('LoginForm Component', () => {
         const passwordInput = screen.getByLabelText('Password')
         const submitButton = screen.getByRole('button', { name: 'Login' })
 
-        await user.type(emailInput, 'test@example.com')
-        await user.type(passwordInput, 'password123')
-        await user.click(submitButton)
+        await userEventInstance.type(emailInput, 'test@example.com')
+        await userEventInstance.type(passwordInput, 'password123')
+        await userEventInstance.click(submitButton)
 
         // Button should show loading state
         expect(screen.getByText('Logging in...')).toBeInTheDocument()
@@ -197,7 +197,7 @@ describe('LoginForm Component', () => {
     })
 
     test('handles non-Error exceptions gracefully', async () => {
-        const user = userEvent.setup()
+        const userEventInstance = userEvent.setup()
         mockSignInWithPassword.mockRejectedValue('String error')
 
         render(<LoginForm />)
@@ -206,9 +206,9 @@ describe('LoginForm Component', () => {
         const passwordInput = screen.getByLabelText('Password')
         const submitButton = screen.getByRole('button', { name: 'Login' })
 
-        await user.type(emailInput, 'test@example.com')
-        await user.type(passwordInput, 'password123')
-        await user.click(submitButton)
+        await userEventInstance.type(emailInput, 'test@example.com')
+        await userEventInstance.type(passwordInput, 'password123')
+        await userEventInstance.click(submitButton)
 
         await waitFor(() => {
             expect(screen.getByText('An error occurred')).toBeInTheDocument()
@@ -216,7 +216,7 @@ describe('LoginForm Component', () => {
     })
 
     test('clears error message on new submission attempt', async () => {
-        const user = userEvent.setup()
+        const userEventInstance = userEvent.setup()
         // First submission with error
         mockSignInWithPassword.mockResolvedValueOnce({ error: { message: 'First error' } })
 
@@ -226,9 +226,9 @@ describe('LoginForm Component', () => {
         const passwordInput = screen.getByLabelText('Password')
         const submitButton = screen.getByRole('button', { name: 'Login' })
 
-        await user.type(emailInput, 'test@example.com')
-        await user.type(passwordInput, 'wrongpassword')
-        await user.click(submitButton)
+        await userEventInstance.type(emailInput, 'test@example.com')
+        await userEventInstance.type(passwordInput, 'wrongpassword')
+        await userEventInstance.click(submitButton)
 
         await waitFor(() => {
             expect(screen.getByText('First error')).toBeInTheDocument()
@@ -237,7 +237,7 @@ describe('LoginForm Component', () => {
         // Second submission should clear the error initially
         mockSignInWithPassword.mockResolvedValueOnce({ error: null })
 
-        await user.click(submitButton)
+        await userEventInstance.click(submitButton)
 
         // Error should be cleared during the loading state
         await waitFor(() => {
