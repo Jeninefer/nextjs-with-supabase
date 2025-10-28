@@ -5,6 +5,12 @@ import { ThemeSwitcher } from "@/components/theme-switcher";
 import { hasEnvVars } from "@/lib/utils";
 import Link from "next/link";
 
+/**
+ * Wraps page content in the application's protected layout with navigation, footer, and environment/auth controls.
+ *
+ * @param children - Content rendered inside the layout's main content area
+ * @returns The layout element containing the header (brand, deploy button, env/auth control), main content region, and footer
+ */
 export default function ProtectedLayout({
   children,
 }: {
