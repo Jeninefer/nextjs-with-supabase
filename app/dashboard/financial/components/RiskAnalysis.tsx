@@ -1,5 +1,13 @@
 'use client';
 
+/**
+ * Render a Risk Analysis panel showing risk posture, portfolio metrics, exposure breakdown, and stress test outcomes.
+ *
+ * Reads data from financialIntelligence.risk (and metrics for q/q changes) and formats portfolio VaR, expected shortfall,
+ * default rate, exposures (with indicators, avg days past due, ratio and change in bps), and stress test scenarios for display.
+ *
+ * @returns A JSX element containing the complete Risk Analysis UI.
+ */
 export default function RiskAnalysis() {
   return (
     <div className="p-6 bg-gradient-to-br from-purple-900/20 to-slate-900/40 backdrop-blur-sm rounded-lg border border-purple-500/20 shadow-lg">

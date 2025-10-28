@@ -32,6 +32,31 @@ const mockMCPClient = {
   disconnect: async () => console.log('Mock: Disconnected')
 };
 
+/**
+ * Fetches the financial intelligence dataset from the configured API endpoint.
+ *
+ * @returns The parsed FinancialIntelligenceDataset
+ * @throws Error if the HTTP response is not ok
+ */
+async function fetchDataset(): Promise<FinancialIntelligenceDataset> {
+  // ...existing code...
+}
+
+/**
+ * Provides state and helpers for loading the financial intelligence dataset and interacting with its insights, market indicators, and stored analysis results.
+ *
+ * @returns An object containing:
+ * - `isInitialized` — `true` when the dataset has been successfully loaded.
+ * - `isLoading` — `true` while the dataset is loading.
+ * - `error` — an error message when dataset loading fails, or `null`.
+ * - `servers` — a `Set<string>` of derived data source identifiers.
+ * - `dataset` — the loaded `FinancialIntelligenceDataset` or `null`.
+ * - `initializeMCPServers` — reloads the dataset and reinitializes the integration.
+ * - `searchFinancialInsights(query)` — returns matching insights for a query (limits and messages included).
+ * - `fetchMarketData(identifier)` — returns market indicators matching the identifier.
+ * - `storeAnalysisResult(analysisId, result)` — saves an analysis result to localStorage and returns the saved timestamp on success.
+ * - `getStoredAnalysis(analysisId)` — retrieves a previously stored analysis result from localStorage.
+ */
 export function useMCPIntegration() {
   const [state, setState] = useState<MCPIntegrationState>({
     isInitialized: false,
