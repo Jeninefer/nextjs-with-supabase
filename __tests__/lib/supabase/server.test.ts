@@ -4,10 +4,10 @@ import { createClient } from '@/lib/supabase/server'
 jest.mock('@supabase/ssr', () => ({
     createServerClient: jest.fn(() => ({
         auth: {
-            signIn: jest.fn(),
+            signInWithPassword: jest.fn(),
             signOut: jest.fn(),
             getUser: jest.fn(),
-            getClaims: jest.fn(),
+            getSession: jest.fn(),
         },
         from: jest.fn(() => ({
             select: jest.fn(),
@@ -84,8 +84,15 @@ describe('Supabase Server Client', () => {
 
         await createClient()
 
-        // Verify that getAll was accessible through the adapter
-        expect(mockCookies.getAll).toHaveBeenCalled()
+        const { createServerClient } = require('@supabase/ssr')
+        const adapter = createServerClient.mock.calls[0][2].cookies
+        const result = adapter.getAll()
+
+        expect(mockCookies.getAll).toHaveBeenCalledTimes(1)
+        expect(result).toEqual([
+            { name: 'cookie1', value: 'value1' },
+            { name: 'cookie2', value: 'value2' },
+        ])
     })
 
     test('cookies adapter handles setAll with error gracefully', async () => {
@@ -126,10 +133,11 @@ describe('Supabase Server Client', () => {
         const { cookies } = require('next/headers')
         cookies.mockResolvedValue(mockCookies)
 
-        const client = await createClient()
+        await createClient()
 
-        expect(client).toBeDefined()
-        // Should handle missing getAll gracefully by returning empty array
+        const { createServerClient } = require('@supabase/ssr')
+        const adapter = createServerClient.mock.calls[0][2].cookies
+        expect(adapter.getAll()).toEqual([])
     })
 
     test('cookies adapter handles array-like cookie store', async () => {
@@ -141,9 +149,11 @@ describe('Supabase Server Client', () => {
         const { cookies } = require('next/headers')
         cookies.mockResolvedValue(mockArrayCookies)
 
-        const client = await createClient()
+        await createClient()
 
-        expect(client).toBeDefined()
+        const { createServerClient } = require('@supabase/ssr')
+        const adapter = createServerClient.mock.calls[0][2].cookies
+        expect(adapter.getAll()).toEqual(mockArrayCookies)
     })
 
     test('server client has expected auth methods', async () => {
@@ -157,9 +167,9 @@ describe('Supabase Server Client', () => {
 
         const client = await createClient()
 
-        expect(typeof client.auth.signIn).toBe('function')
+        expect(typeof client.auth.signInWithPassword).toBe('function')
         expect(typeof client.auth.signOut).toBe('function')
         expect(typeof client.auth.getUser).toBe('function')
-        expect(typeof client.auth.getClaims).toBe('function')
+        expect(typeof client.auth.getSession).toBe('function')
     })
 })
