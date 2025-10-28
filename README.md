@@ -1,277 +1,106 @@
 # ABACO Financial Intelligence Platform
 
-## Next-Generation Financial Analytics System
+Enterprise-ready financial analytics powered by Supabase, Next.js, and AI-assisted market intelligence. The platform delivers live metrics, stress testing, and machine-generated insights for institutional lending teams.
 
-Transform raw lending data into superior, predictive intelligence with deep learning, behavioral modeling, and KPI automation in one cohesive system.
-
-## 🚀 Quick Start
+## 🚀 Quick start
 
 ### Prerequisites
 
-Before you begin, ensure you have:
+- Node.js **20.9+** (Next.js 15 runtime requirement)
+- npm 10+
+- Supabase project with production credentials
+- Google Cloud project (for Cloud Run deployment)
 
-- **Node.js 18+** installed
-- **npm** package manager
-- **Git** for version control
-- **Supabase account** ([Sign up](https://supabase.com))
-- **(Optional) Google Cloud account** for Cloud Run deployment ([Setup guide](./docs/GOOGLE_CLOUD_SETUP.md))
-
-### Installation
+### Install & configure
 
 ```bash
-# Clone the repository
+# Clone
 git clone https://github.com/Jeninefer/nextjs-with-supabase.git
 cd nextjs-with-supabase
 
 # Install dependencies
 npm install
 
-# Configure environment variables with production credentials
+# Configure environment
 cp .env.example .env.local
 ```
 
-Update `.env.local` with the Supabase project URL, anon key, and any private service credentials that map to your live analytics warehouse.
+Update `.env.local` with the production Supabase URL, anon key, and service role key. Start the development server once credentials are configured:
 
 ```bash
-# Start development server
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) to access the ABACO platform.
+Open <http://localhost:3000> to continue onboarding. The homepage automatically guides you through connecting Supabase credentials and provisioning your first operator account.
 
-## 🏗️ Tech Stack
+## 📡 Canonical dataset & API
 
-- **Frontend**: Next.js 15, React, TypeScript
-- **Styling**: Tailwind CSS with ABACO design system
-- **Database**: Supabase (PostgreSQL)
-- **Authentication**: Supabase Auth
-- **Deployment**: Vercel, Google Cloud Run
-- **AI Integration**: MCP (Model Context Protocol)
+The dashboard consumes a shared dataset located at `lib/data/financial-intelligence.ts`. The dataset exposes:
 
-## 📁 Project Structure
+- **Financial metrics** with trends, targets, and directional changes
+- **Growth series** covering 12 months of net asset value and retention data
+- **Risk overview** with sector exposures, stress scenarios, and early warnings
+- **Provider health** describing the status of Supabase and market data connectors
+- **AI insights** including confidence, impact, and recommended actions
+
+A public API endpoint at `GET /api/financial-intelligence` returns the dataset, attaches generation timestamps, and includes query/total duration metadata via JSON payload and response headers (`X-Query-Time-ms`, `X-Total-Time-ms`, `Server-Timing`).
+
+## 📊 Dashboard highlights
+
+- **Financial Metrics** – live KPI cards with change indicators and target tracking
+- **Growth & Retention** – SVG area chart with monthly NAV, inflows, and retention trend
+- **Risk Analysis** – VaR, expected shortfall, sector exposures, stress scenarios, and early warnings
+- **AI Insights** – provider health badges plus action-oriented recommendations with confidence scoring
+- Automatic refresh every 5 minutes with a manual refresh option for on-demand updates
+
+## 🧩 Project structure
 
 ```
-├── app/                    # Next.js App Router
-│   ├── dashboard/         # Financial dashboard
-│   ├── auth/             # Authentication pages
-│   └── globals.css       # Global styles
-├── components/           # Reusable components
-│   ├── ui/              # shadcn/ui components
-│   └── auth/            # Authentication components
-├── lib/                 # Utilities and configurations
-│   └── supabase/       # Supabase client setup
-└── scripts/            # Utility scripts
+app/                        # Next.js App Router
+├── api/financial-intelligence/route.ts
+├── dashboard/financial/    # Dashboard pages, hooks, and components
+└── page.tsx                 # Onboarding hero + tutorials
+components/                 # Reusable UI (deploy button, tutorials, hero)
+lib/data/                    # Canonical financial dataset
 ```
 
-## 🎨 ABACO Design System
-
-- **Colors**: Purple gradient (#C1A6FF to #5F4896)
-- **Typography**: Lato (primary), Poppins (secondary)
-- **Theme**: Dark mode with 4K rendering support
-
-## 🔧 Development
+## 🛠️ Development scripts
 
 ```bash
-# Development server
-npm run dev
-
-# Type checking
-npm run type-check
-
-# Build for production
-npm run build
-
-# Start production server
-npm run start
-
-# Lint code
-npm run lint
+npm run dev          # Start Next.js in development mode
+npm run build        # Production build (requires Node 20.9+)
+npm run start        # Start the compiled production server
+npm run lint         # Run linting (Biome / ESLint configuration)
+npm run type-check   # TypeScript project validation
 ```
 
-## 📊 Features
+## ☁️ Deployment (Google Cloud Run)
 
-- **Financial Dashboard**: Real-time KPI tracking
-- **Risk Analysis**: Advanced portfolio risk modeling
-- **AI Insights**: Machine learning-powered analytics
-- **Growth Projections**: Strategic planning tools
-- **Market Intelligence**: 50+ data source monitoring
-- **Data Integration**: Secure ingestion pipeline that synchronizes live Supabase tables with the analytics lakehouse
-
-## 🚀 Deployment
-
-### Prerequisites
-
-Before deploying, ensure:
-
-- [ ] Supabase project is configured
-- [ ] Environment variables are set
-- [ ] Application builds successfully (`npm run build`)
-- [ ] Google Cloud account setup (for Cloud Run) - [Setup Guide](./docs/GOOGLE_CLOUD_SETUP.md)
-
-### Vercel (Recommended)
-
-```bash
-# Build locally first
-npm run build
-
-# Deploy to Vercel
-vercel deploy
-
-# Or deploy for production
-vercel --prod
-```
-
-**Environment Variables on Vercel**:
-
-1. Go to Project Settings → Environment Variables
-2. Add all variables from `.env.local`
-3. Redeploy after adding variables
-
-### Google Cloud Run
-
-**First-time Setup**:
-
-```bash
-# 1. Login to Google Cloud
-gcloud auth login
-
-# 2. Set your project
-gcloud config set project YOUR-PROJECT-ID
-
-# 3. Enable required APIs
-gcloud services enable run.googleapis.com cloudbuild.googleapis.com
-
-# 4. Deploy
-gcloud run deploy abaco-platform \
-    --source . \
-    --platform managed \
-    --region us-central1 \
-    --allow-unauthenticated \
-    --set-env-vars "NEXT_PUBLIC_SUPABASE_URL=your-url,NEXT_PUBLIC_SUPABASE_PUBLISHABLE_OR_ANON_KEY=your-key"
-```
-
-**Subsequent Deployments**:
-
-```bash
-# Quick deploy with existing config
-gcloud run deploy abaco-platform --source .
-```
-
-**Troubleshooting Deployment**:
-
-If you encounter permission errors:
-
-```bash
-# Check your access
-gcloud projects list
-
-# Enable necessary APIs
-gcloud services enable run.googleapis.com
-
-# See full troubleshooting guide
-# docs/TROUBLESHOOTING.md
-```
-
-For complete Google Cloud setup instructions, see:
-
-- [Google Cloud Setup Guide](./docs/GOOGLE_CLOUD_SETUP.md)
-- [Troubleshooting Guide](./docs/TROUBLESHOOTING.md)
-
-## 🔒 Security & Compliance
-
-- GDPR compliant data handling
-- SOX financial reporting standards
-- Basel III banking regulations
-- Enterprise-grade authentication
-
-## 🛠️ Troubleshooting
-
-For detailed setup instructions, error resolution, and platform status, see:
-
-- [📚 Documentation Index](./docs/README.md) - Complete documentation overview
-- [Google Cloud Setup Guide](./docs/GOOGLE_CLOUD_SETUP.md) - Complete GCP integration guide
-- [Troubleshooting Guide](./docs/TROUBLESHOOTING.md) - Common issues and solutions
-- [Quick Start Guide](./QUICK_START.md)
-- [Build Success Log](./BUILD_SUCCESS.md)
-
-### Common Issues
-
-**Supabase URL is invalid or missing**
-
-If you see an error like:
-
-```bash
-Error: Invalid supabaseUrl: Must be a valid HTTP or HTTPS URL.
-```
-
-it means your Supabase URL environment variable is empty, malformed, or missing the `https://` prefix.
-
-**How to fix:**
-
-1. **Open your `.env.local` file** in the project root.
-
-2. **Add or correct these lines** (replace with your actual values from Supabase → Project Settings → API):
-
-   ```
-   NEXT_PUBLIC_SUPABASE_URL=https://your-project-ref.supabase.co
-   NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
-   ```
-
-   - The URL **must** start with `https://`.
-   - Do **not** use quotes around the values.
-
-3. **Restart your dev server** after saving changes:
-
+1. Authenticate and set your project:
    ```bash
-   npm run dev
+   gcloud auth login
+   gcloud config set project <PROJECT_ID>
    ```
-
-4. **If you still see the error:**
-   - Double-check for typos in variable names.
-   - Make sure `.env.local` is in the project root.
-   - Reload your IDE or terminal to ensure environment variables are loaded.
-
----
-
-**Port 3000 is already in use**
-
-If you see an error like:
-
-```bash
-Error: listen EADDRINUSE: address already in use :::3000
-```
-
-it means another process is already using port 3000.
-
-**How to fix:**
-
-1. **Check for any process using port 3000 (both IPv4 & IPv6):**
-
+2. Build locally to ensure the project compiles with production settings:
    ```bash
-   lsof -nP -iTCP:3000 -sTCP:LISTEN
-   netstat -anv | grep 3000
+   npm run build
    ```
-
-   Then kill the process by its PID:
-
+3. Deploy to Cloud Run with environment variables:
    ```bash
-   kill -9 <PID>
+   gcloud run deploy abaco-platform \
+     --source . \
+     --region us-central1 \
+     --allow-unauthenticated \
+     --set-env-vars "NEXT_PUBLIC_SUPABASE_URL=..." \
+     --set-env-vars "NEXT_PUBLIC_SUPABASE_ANON_KEY=..." \
+     --set-env-vars "SUPABASE_SERVICE_ROLE_KEY=..."
    ```
+4. Use the in-app “Deploy to Cloud Run” button (`components/deploy-button.tsx`) to jump directly to the Cloud Run console for subsequent deploys.
 
-2. **Or, start Next.js on a different port:**
+## 📚 Further reading
 
-   ```bash
-   PORT=3001 npm run dev
-   # or
-   npx next dev -p 3001
-   ```
+- [`SUPABASE_SETUP.md`](./SUPABASE_SETUP.md) – full environment configuration checklist
+- [`ABACO_IMPLEMENTATION_SUMMARY.md`](./ABACO_IMPLEMENTATION_SUMMARY.md) – rollout milestones and ingestion pipeline plan
+- [`CODE_REVIEW_AUTOMATION.md`](./CODE_REVIEW_AUTOMATION.md) – automated PR review playbook
 
-3. **If running in Codespaces or a dev container, you may need to restart the workspace.**
-
----
-
-**ABACO Financial Intelligence Platform** - Setting the standard for financial analytics excellence.
-
-## Support
-- Create an issue in GitHub for bugs or enhancement requests.
-- For confidential matters, email the ABACO engineering office at engineering@abaco.finance.
+For support, open a GitHub issue or contact the ABACO engineering office at [engineering@abaco.finance](mailto:engineering@abaco.finance).
