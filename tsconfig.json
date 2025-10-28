@@ -29,7 +29,9 @@
     "incremental": true,
     "esModuleInterop": true,
     "types": [
-      "node"
+      "node",
+      "jest",
+      "@testing-library/jest-dom"
     ],
     "plugins": [
       {

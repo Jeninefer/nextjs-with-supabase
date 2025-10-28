@@ -1,5 +1,5 @@
 import { LoginForm } from '@/components/login-form'
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 // Mock Next.js router
@@ -64,12 +64,15 @@ jest.mock('@/components/ui/label', () => ({
 describe('LoginForm Component', () => {
     beforeEach(() => {
         jest.clearAllMocks()
+        mockPush.mockReset()
+        mockSignInWithPassword.mockReset()
+        mockSignInWithPassword.mockResolvedValue({ error: null })
     })
 
     test('renders login form with all elements', () => {
         render(<LoginForm />)
 
-        expect(screen.getByText('Login')).toBeInTheDocument()
+        expect(screen.getByRole('heading', { name: 'Login' })).toBeInTheDocument()
         expect(screen.getByText('Enter your email below to login to your account')).toBeInTheDocument()
         expect(screen.getByLabelText('Email')).toBeInTheDocument()
         expect(screen.getByLabelText('Password')).toBeInTheDocument()
@@ -95,8 +98,6 @@ describe('LoginForm Component', () => {
 
     test('submits form with correct credentials and redirects on success', async () => {
         const user = userEvent.setup()
-        mockSignInWithPassword.mockResolvedValue({ error: null })
-
         render(<LoginForm />)
 
         const emailInput = screen.getByLabelText('Email')
@@ -120,7 +121,7 @@ describe('LoginForm Component', () => {
     test('displays error message when login fails', async () => {
         const user = userEvent.setup()
         const errorMessage = 'Invalid email or password'
-        mockSignInWithPassword.mockResolvedValue({ error: { message: errorMessage } })
+        mockSignInWithPassword.mockResolvedValueOnce({ error: { message: errorMessage } })
 
         render(<LoginForm />)
 
@@ -143,7 +144,7 @@ describe('LoginForm Component', () => {
         const pendingPromise = new Promise((resolve) => {
             resolvePromise = resolve
         })
-        mockSignInWithPassword.mockReturnValue(pendingPromise)
+        mockSignInWithPassword.mockReturnValueOnce(pendingPromise)
 
         render(<LoginForm />)
 
@@ -163,7 +164,7 @@ describe('LoginForm Component', () => {
         resolvePromise!({ error: null })
 
         await waitFor(() => {
-            expect(screen.getByText('Login')).toBeInTheDocument()
+            expect(screen.queryByText('Logging in...')).not.toBeInTheDocument()
             expect(submitButton).not.toBeDisabled()
         })
     })
@@ -198,7 +199,7 @@ describe('LoginForm Component', () => {
 
     test('handles non-Error exceptions gracefully', async () => {
         const user = userEvent.setup()
-        mockSignInWithPassword.mockRejectedValue('String error')
+        mockSignInWithPassword.mockRejectedValueOnce('String error')
 
         render(<LoginForm />)
 
@@ -247,15 +248,17 @@ describe('LoginForm Component', () => {
     })
 
     test('form submission prevents default browser behavior', async () => {
-        const user = userEvent.setup()
-        mockSignInWithPassword.mockResolvedValue({ error: null })
-
         render(<LoginForm />)
 
         const form = screen.getByRole('button', { name: 'Login' }).closest('form')!
         const preventDefault = jest.fn()
 
-        fireEvent.submit(form, { preventDefault })
+        const submitEvent = new Event('submit', { bubbles: true, cancelable: true })
+        Object.defineProperty(submitEvent, 'preventDefault', {
+            value: preventDefault,
+        })
+
+        form.dispatchEvent(submitEvent)
 
         expect(preventDefault).toHaveBeenCalled()
     })
