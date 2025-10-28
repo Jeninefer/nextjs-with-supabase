@@ -60,3 +60,6 @@ __pycache__/
 
 # TypeScript
 tsconfig.node.json
+
+# Egg information
+*.egg-info/

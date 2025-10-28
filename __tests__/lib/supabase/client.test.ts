@@ -4,7 +4,6 @@ import { createClient } from '@/lib/supabase/client'
 jest.mock('@supabase/ssr', () => ({
     createBrowserClient: jest.fn(() => ({
         auth: {
-            signIn: jest.fn(),
             signOut: jest.fn(),
             getUser: jest.fn(),
             getClaims: jest.fn(),
@@ -59,7 +58,6 @@ describe('Supabase Browser Client', () => {
     test('client has expected auth methods', () => {
         const client = createClient()
 
-        expect(typeof client.auth.signIn).toBe('function')
         expect(typeof client.auth.signOut).toBe('function')
         expect(typeof client.auth.getUser).toBe('function')
         expect(typeof client.auth.getClaims).toBe('function')
