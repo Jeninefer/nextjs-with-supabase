@@ -50,12 +50,10 @@ GOOGLE_SEARCH_ENGINE_ID=your-search-engine-id-here
 NEXT_PUBLIC_GROK_API_KEY=your-grok-api-key-here
 ```
 
-### 3. Test MCP Configuration
+### 3. Verify Financial Intelligence Dataset
 
 ```bash
-# Test if MCP servers can be reached
-npx -y server-perplexity-ask --help
-npx -y @modelcontextprotocol/server-fetch --help
+curl http://localhost:3000/api/financial/intelligence | jq '.asOf, .metrics[0]'
 ```
 
 ### 4. Initialize in Your Application
@@ -64,29 +62,28 @@ npx -y @modelcontextprotocol/server-fetch --help
 import { useMCPIntegration } from '@/app/dashboard/financial/hooks/useMCPIntegration';
 
 function FinancialDashboard() {
-  const { isInitialized, searchFinancialInsights } = useMCPIntegration();
-  
-  // Use MCP capabilities in your components
+  const { dataset, isInitialized, searchFinancialInsights } = useMCPIntegration();
+
+  if (!isInitialized) return <LoadingState />;
+
+  return (
+    <InsightsPanel
+      metrics={dataset?.metrics}
+      onSearch={searchFinancialInsights}
+    />
+  );
 }
 ```
 
-## Available MCP Servers
+## Optional MCP Servers
 
-### Core Servers
+The platform ships with a first-party dataset served from `/api/financial/intelligence`. External MCP servers remain optional if you need to enrich the intelligence layer with real-time research or bespoke data sources.
 
-1. **Perplexity Ask** - AI-powered financial research
-2. **Fetch** - Web data retrieval
-3. **Memory** - Persistent data storage
-4. **Filesystem** - Local file operations
-5. **Postgres** - Database operations
-
-### Optional Servers
-
-1. **Brave Search** - Enhanced web search
-2. **GitHub** - Repository management
-3. **Web Search** - Google search integration
-4. **Puppeteer** - Web scraping
-5. **SQLite** - Local database operations
+- **Perplexity Ask** – AI-powered financial research
+- **Fetch** – Generic web data retrieval
+- **Memory** – Externalized long-term memory store
+- **Brave Search / Google Search** – Broader market intelligence
+- **GitHub / Filesystem / Postgres** – Engineering automation hooks
 
 ## ABACO-Specific Usage
 
@@ -96,24 +93,30 @@ function FinancialDashboard() {
 const insights = await searchFinancialInsights(
   "Current trends in lending market and default rates"
 );
+
+if (insights.success) {
+  renderInsights(insights.data);
+}
 ```
 
 ### Market Data Fetching
 
 ```typescript
-const marketData = await fetchMarketData(
-  "https://api.example.com/financial-data"
-);
+const marketData = await fetchMarketData("prime rate");
+
+if (marketData.success) {
+  updateMarketBanner(marketData.data);
+}
 ```
 
 ### Analysis Storage
 
 ```typescript
-await storeAnalysisResult("portfolio_2024_q4", {
-  metrics: financialMetrics,
-  risks: riskAnalysis,
-  projections: growthProjections
-});
+const draft = await storeAnalysisResult("portfolio_2024_q4", analysisPayload);
+
+if (draft.success) {
+  console.log(`Saved at ${draft.data?.savedAt}`);
+}
 ```
 
 ## Troubleshooting
@@ -140,10 +143,7 @@ npx -y server-perplexity-ask --version
 
 ### Fallback Mode
 
-If MCP servers fail to initialize, the ABACO platform will automatically fall back to:
-- Rule-based analysis instead of AI insights
-- Direct HTTP requests instead of MCP fetch
-- Local storage instead of MCP memory
+If optional MCP servers are unavailable, the ABACO platform continues operating with the built-in intelligence dataset, local analytics pipeline, and browser storage fallback.
 
 ## Best Practices
 

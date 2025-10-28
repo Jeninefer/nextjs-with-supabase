@@ -1,138 +1,179 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+
+import type {
+  FinancialInsightResult,
+  FinancialIntelligenceDataset,
+  MarketIndicator,
+} from '@/lib/data/financial-intelligence';
 
 interface MCPIntegrationState {
   isInitialized: boolean;
   isLoading: boolean;
   error: string | null;
   servers: Set<string>;
+  dataset: FinancialIntelligenceDataset | null;
 }
 
-// Tipos para configuración MCP
-type MCPConfigEntry =
-  | { command: string; args: string[]; env?: Record<string, string | undefined> }
-  | { command: string; args: string[] };
+const STORAGE_PREFIX = 'abaco:financial-intelligence';
+const DATA_ENDPOINT = '/api/financial/intelligence';
 
-// Type guard para env
-function hasEnvConfig(x: unknown): x is { env: Record<string, string | undefined> } {
-  return typeof x === 'object' && x !== null && 'env' in x && typeof (x as any).env === 'object';
-}
-
-// Mock MCP client para evitar dependencias externas por ahora
-const mockMCPClient = {
-  initializeServer: async (name: string, command: string, args: string[]) => {
-    console.log(`Mock: Initializing ${name} with ${command} ${args.join(' ')}`);
-    return Math.random() > 0.3; // Simula éxito en 70% de casos
-  },
-  searchFinancialData: async (query: string) => ({ success: true, data: `Mock analysis for: ${query}` }),
-  fetchMarketData: async (url: string) => ({ success: true, data: `Mock data from: ${url}` }),
-  storeMemory: async (key: string) => ({ success: true, data: `Stored ${key}` }),
-  getMemory: async (key: string) => ({ success: true, data: `Retrieved ${key}` }),
-  disconnect: async () => console.log('Mock: Disconnected')
+type InsightSearchResult = {
+  success: boolean;
+  data: FinancialInsightResult[];
+  message?: string;
 };
+
+type MarketDataResult = {
+  success: boolean;
+  data: MarketIndicator[];
+  message?: string;
+};
+
+type StorageResult<T> = {
+  success: boolean;
+  data?: T;
+  message?: string;
+};
+
+async function fetchDataset(): Promise<FinancialIntelligenceDataset> {
+  const response = await fetch(DATA_ENDPOINT, { cache: 'no-store' });
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(`Failed to load intelligence dataset: ${errorText || response.statusText}`);
+  }
+
+  return (await response.json()) as FinancialIntelligenceDataset;
+}
 
 export function useMCPIntegration() {
   const [state, setState] = useState<MCPIntegrationState>({
     isInitialized: false,
-    isLoading: false,
+    isLoading: true,
     error: null,
-    servers: new Set()
+    servers: new Set(),
+    dataset: null,
   });
 
-  const initializeMCPServers = useCallback(async () => {
-    setState(prev => ({ ...prev, isLoading: true, error: null }));
-
+  const loadDataset = useCallback(async () => {
+    setState((prev) => ({ ...prev, isLoading: true, error: null }));
     try {
-      const mcpConfig: Record<string, MCPConfigEntry> = {
-        'perplexity-ask': {
-          command: 'npx',
-          args: ['-y', 'server-perplexity-ask'],
-          env: { PERPLEXITY_API_KEY: process.env.NEXT_PUBLIC_PERPLEXITY_API_KEY }
-        },
-        'fetch': {
-          command: 'npx',
-          args: ['-y', '@modelcontextprotocol/server-fetch']
-        },
-        'memory': {
-          command: 'npx',
-          args: ['-y', '@modelcontextprotocol/server-memory']
-        }
-      };
-
-      const initializedServers = new Set<string>();
-
-      // Bucle con type guards y normalización segura
-      for (const [serverName, configRaw] of Object.entries(mcpConfig)) {
-        const config = configRaw as MCPConfigEntry;
-
-        if (hasEnvConfig(config)) {
-          // Verificar variables de entorno
-          const envValues = Object.values(config.env);
-          if (!envValues.length || !envValues.every(v => typeof v === 'string' && v.length > 0)) {
-            console.warn(`Skipping ${serverName} - missing environment variables`);
-            continue;
-          }
-        }
-
-        // Normalizar env a Record<string, string> o undefined
-        const envToPass: Record<string, string> | undefined = hasEnvConfig(config)
-          ? Object.fromEntries(Object.entries(config.env).map(([k, v]) => [k, v ?? '']))
-          : undefined;
-
-        // Usar mock client por ahora
-        // Fix: mockMCPClient.initializeServer expects 3 arguments, not 4.
-        const success = await mockMCPClient.initializeServer(
-          serverName,
-          config.command,
-          config.args
-          // envToPass // <-- Remove this argument or update mockMCPClient accordingly
-        );
-
-        if (success) {
-          initializedServers.add(serverName);
-        }
-      }
-
-      setState(prev => ({
-        ...prev,
-        isInitialized: initializedServers.size > 0,
-        isLoading: false,
-        servers: initializedServers
-      }));
-
+      const dataset = await fetchDataset();
+      const servers = new Set(dataset.dataSources.map((source) => `datasource:${source}`));
+      setState({ isInitialized: true, isLoading: false, error: null, servers, dataset });
     } catch (error) {
-      setState(prev => ({
+      setState((prev) => ({
         ...prev,
+        isInitialized: false,
         isLoading: false,
-        error: error instanceof Error ? error.message : 'Failed to initialize MCP servers'
+        error: error instanceof Error ? error.message : 'Failed to load financial intelligence dataset',
       }));
     }
   }, []);
 
-  const searchFinancialInsights = useCallback(async (query: string) => {
-    return await mockMCPClient.searchFinancialData(query);
-  }, []);
-
-  const fetchMarketData = useCallback(async (source: string) => {
-    return await mockMCPClient.fetchMarketData(source);
-  }, []);
-
-  // Fix: mockMCPClient.storeMemory expects 1 argument, not 2.
-  const storeAnalysisResult = useCallback(async (analysisId: string, result: any) => {
-    return await mockMCPClient.storeMemory(`analysis_${analysisId}`);
-  }, []);
-
-  const getStoredAnalysis = useCallback(async (analysisId: string) => {
-    return mockMCPClient.getMemory(`analysis_${analysisId}`);
-  }, []);
-
   useEffect(() => {
-    initializeMCPServers();
-    return () => {
-      mockMCPClient.disconnect();
-    };
-  }, [initializeMCPServers]);
+    void loadDataset();
+  }, [loadDataset]);
+
+  const initializeMCPServers = useCallback(async () => {
+    await loadDataset();
+  }, [loadDataset]);
+
+  const normalizedInsights = useMemo(() => {
+    if (!state.dataset) {
+      return [] as { insight: FinancialInsightResult; searchable: string }[];
+    }
+
+    return state.dataset.insights.map((insight) => ({
+      insight,
+      searchable: `${insight.title} ${insight.summary} ${insight.tags.join(' ')}`.toLowerCase(),
+    }));
+  }, [state.dataset]);
+
+  const searchFinancialInsights = useCallback(
+    async (query: string): Promise<InsightSearchResult> => {
+      if (!state.dataset) {
+        return { success: false, data: [], message: 'Dataset not loaded yet' };
+      }
+
+      const normalizedQuery = query.trim().toLowerCase();
+      if (!normalizedQuery) {
+        return { success: true, data: state.dataset.insights.slice(0, 5) };
+      }
+
+      const matches = normalizedInsights
+        .filter((entry) => entry.searchable.includes(normalizedQuery))
+        .map((entry) => entry.insight)
+        .slice(0, 10);
+
+      return {
+        success: true,
+        data: matches,
+        message: matches.length ? undefined : 'No insights match your query. Try another keyword.',
+      };
+    },
+    [normalizedInsights, state.dataset]
+  );
+
+  const fetchMarketData = useCallback(
+    async (identifier: string): Promise<MarketDataResult> => {
+      if (!state.dataset) {
+        return { success: false, data: [], message: 'Dataset not loaded yet' };
+      }
+
+      const normalized = identifier.trim().toLowerCase();
+      const matches = state.dataset.marketIndicators.filter((indicator) => {
+        return (
+          indicator.id.toLowerCase() === normalized ||
+          indicator.name.toLowerCase().includes(normalized) ||
+          indicator.source.toLowerCase().includes(normalized)
+        );
+      });
+
+      return {
+        success: matches.length > 0,
+        data: matches,
+        message: matches.length ? undefined : 'No market indicators matched the identifier provided.',
+      };
+    },
+    [state.dataset]
+  );
+
+  const storeAnalysisResult = useCallback(
+    async (analysisId: string, result: unknown): Promise<StorageResult<{ savedAt: string }>> => {
+      if (typeof window === 'undefined') {
+        return { success: false, message: 'Storage is not available in this environment.' };
+      }
+
+      const savedAt = new Date().toISOString();
+      const payload = { savedAt, result };
+      window.localStorage.setItem(`${STORAGE_PREFIX}:${analysisId}`, JSON.stringify(payload));
+      return { success: true, data: { savedAt } };
+    },
+    []
+  );
+
+  const getStoredAnalysis = useCallback(
+    async (analysisId: string): Promise<StorageResult<{ savedAt: string; result: unknown }>> => {
+      if (typeof window === 'undefined') {
+        return { success: false, message: 'Storage is not available in this environment.' };
+      }
+
+      const raw = window.localStorage.getItem(`${STORAGE_PREFIX}:${analysisId}`);
+      if (!raw) {
+        return { success: false, message: 'No cached analysis found for the provided identifier.' };
+      }
+
+      try {
+        return { success: true, data: JSON.parse(raw) };
+      } catch (error) {
+        console.error('Failed to parse cached analysis', error);
+        return { success: false, message: 'Stored analysis data is corrupted.' };
+      }
+    },
+    []
+  );
 
   return {
     ...state,
@@ -140,6 +181,6 @@ export function useMCPIntegration() {
     searchFinancialInsights,
     fetchMarketData,
     storeAnalysisResult,
-    getStoredAnalysis
+    getStoredAnalysis,
   };
 }
