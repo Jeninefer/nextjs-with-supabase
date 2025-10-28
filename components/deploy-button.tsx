@@ -1,6 +1,11 @@
 import Link from "next/link";
 import { Button } from "./ui/button";
 
+/**
+ * Render a button that opens Vercel's "Create New Project" page with repository and demo metadata prefilled.
+ *
+ * @returns A React element (link-wrapped button) that opens the Vercel new project flow in a new tab for the configured repository and demo details.
+ */
 export function DeployButton() {
   return (
     <>
