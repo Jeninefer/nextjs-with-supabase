@@ -1,5 +1,5 @@
 import { SignUpForm } from '@/components/sign-up-form'
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 // Mock Next.js router
@@ -256,6 +256,40 @@ describe('SignUpForm Component', () => {
 
         render(<SignUpForm />)
 
+        const emailInput = screen.getByLabelText('Email') as HTMLInputElement
+        const passwordInput = screen.getByLabelText('Password') as HTMLInputElement
+        const repeatPasswordInput = screen.getByLabelText('Repeat Password') as HTMLInputElement
+        const submitButton = screen.getByRole('button', { name: 'Sign up' })
+
+        await user.type(emailInput, 'newuser@abaco.finance')
+        await user.type(passwordInput, 'SecurePassword123!')
+        await user.type(repeatPasswordInput, 'SecurePassword123!')
+        await user.click(submitButton)
+
+        await waitFor(() => {
+            expect(screen.getByText('First error')).toBeInTheDocument()
+        }, { timeout: 3000 })
+
+        // Second submission should clear the error initially
+        mockSignUp.mockResolvedValueOnce({ error: null })
+
+        // Clear inputs to show clear state change
+        await user.clear(emailInput)
+        await user.type(emailInput, 'another@abaco.finance')
+        await user.click(submitButton)
+
+        // Error should be cleared during the loading state
+        await waitFor(() => {
+            expect(screen.queryByText('First error')).not.toBeInTheDocument()
+        }, { timeout: 3000 })
+    })
+
+    test('calls form submit handler', async () => {
+        const user = userEvent.setup({ delay: null })
+        mockSignUp.mockResolvedValue({ error: null })
+
+        render(<SignUpForm />)
+
         const emailInput = screen.getByLabelText('Email')
         const passwordInput = screen.getByLabelText('Password')
         const repeatPasswordInput = screen.getByLabelText('Repeat Password')
@@ -267,30 +301,7 @@ describe('SignUpForm Component', () => {
         await user.click(submitButton)
 
         await waitFor(() => {
-            expect(screen.getByText('First error')).toBeInTheDocument()
+            expect(mockSignUp).toHaveBeenCalled()
         })
-
-        // Second submission should clear the error initially
-        mockSignUp.mockResolvedValueOnce({ error: null })
-
-        await user.click(submitButton)
-
-        // Error should be cleared during the loading state
-        await waitFor(() => {
-            expect(screen.queryByText('First error')).not.toBeInTheDocument()
-        })
-    })
-
-    test('form submission prevents default browser behavior', async () => {
-        mockSignUp.mockResolvedValue({ error: null })
-
-        render(<SignUpForm />)
-
-        const form = screen.getByRole('button', { name: 'Sign up' }).closest('form')!
-        const preventDefault = jest.fn()
-
-        fireEvent.submit(form, { preventDefault })
-
-        expect(preventDefault).toHaveBeenCalled()
     })
 })

@@ -112,8 +112,10 @@ describe('LogoutButton Component', () => {
 
     test('handles signOut errors gracefully', async () => {
         const user = userEvent.setup({ delay: null })
-        const logError = jest.spyOn(console, 'error').mockImplementation(() => { })
         mockSignOut.mockRejectedValue(new Error('Sign out failed'))
+
+        // Suppress console error output for this test
+        const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => { })
 
         render(<LogoutButton />)
 
@@ -121,12 +123,12 @@ describe('LogoutButton Component', () => {
 
         await user.click(logoutButton)
 
-        // The error should be caught internally, and navigation still attempts
+        // The error should be caught internally
         await waitFor(() => {
             expect(mockSignOut).toHaveBeenCalled()
         })
 
-        logError.mockRestore()
+        consoleSpy.mockRestore()
     })
 
     test('button remains visible and functional after render', () => {

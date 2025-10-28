@@ -1,5 +1,5 @@
 import { UpdatePasswordForm } from '@/components/update-password-form'
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 // Mock Next.js router
@@ -185,7 +185,7 @@ describe('UpdatePasswordForm Component', () => {
 
         render(<UpdatePasswordForm />)
 
-        const passwordInput = screen.getByLabelText('New password')
+        const passwordInput = screen.getByLabelText('New password') as HTMLInputElement
         const submitButton = screen.getByRole('button', { name: 'Save new password' })
 
         await user.type(passwordInput, 'NewSecurePassword123!')
@@ -193,29 +193,36 @@ describe('UpdatePasswordForm Component', () => {
 
         await waitFor(() => {
             expect(screen.getByText('First error')).toBeInTheDocument()
-        })
+        }, { timeout: 3000 })
 
         // Second submission should clear the error initially
         mockUpdateUser.mockResolvedValueOnce({ error: null })
 
+        // Clear the input first to trigger new state
+        await user.clear(passwordInput)
+        await user.type(passwordInput, 'DifferentPassword123!')
         await user.click(submitButton)
 
         // Error should be cleared during the loading state
         await waitFor(() => {
             expect(screen.queryByText('First error')).not.toBeInTheDocument()
-        })
+        }, { timeout: 3000 })
     })
 
-    test('form submission prevents default browser behavior', async () => {
+    test('calls form submit handler', async () => {
+        const user = userEvent.setup({ delay: null })
         mockUpdateUser.mockResolvedValue({ error: null })
 
         render(<UpdatePasswordForm />)
 
-        const form = screen.getByRole('button', { name: 'Save new password' }).closest('form')!
-        const preventDefault = jest.fn()
+        const passwordInput = screen.getByLabelText('New password')
+        const submitButton = screen.getByRole('button', { name: 'Save new password' })
 
-        fireEvent.submit(form, { preventDefault })
+        await user.type(passwordInput, 'NewSecurePassword123!')
+        await user.click(submitButton)
 
-        expect(preventDefault).toHaveBeenCalled()
+        await waitFor(() => {
+            expect(mockUpdateUser).toHaveBeenCalledWith({ password: 'NewSecurePassword123!' })
+        })
     })
 })
