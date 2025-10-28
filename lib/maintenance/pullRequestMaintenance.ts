@@ -51,6 +51,12 @@ export type CloseDuplicateOptions = {
 // Define CloseDuplicateResult type (stub, update as needed)
 export type CloseDuplicateResult = unknown;
 
+/**
+ * Identifies and closes pull requests that appear to be created or owned by AI accounts, keeping a single canonical PR.
+ *
+ * @param options - Configuration options. `aiIdentifiers` supplies identifiers used to detect AI-owned authors/assignees (defaults to DEFAULT_AI_IDENTIFIERS). `canonicalStrategy` chooses which PR to keep (`"earliest"` or `"latest"`, default `"earliest"`). `onClose` is invoked for each duplicate detected with the duplicate and the chosen canonical PR.
+ * @returns The result of the duplicate-close operation; currently returns `null` as a placeholder.
+ */
 export function closeDuplicatePullRequests(
     pullRequests: PullRequestRecord[],
     options: CloseDuplicateOptions = {}

@@ -5,6 +5,13 @@ import { useMemo } from "react";
 import { financialIntelligence } from "@/lib/data/financial-intelligence";
 import { formatCurrency, formatPercent } from "@/lib/utils";
 
+/**
+ * Render a responsive "Growth Performance" panel showing an area NAV chart with grid ticks and recent points alongside summary KPI cards.
+ *
+ * The component reads growth data from the financial intelligence module, computes a normalized SVG area path and Y-axis ticks, and displays formatted currency and percentage metrics (compound annual growth, trailing-twelve-month net new assets, year-over-year revenue growth, latest NAV and retention).
+ *
+ * @returns The component's rendered React element containing the SVG growth chart, recent data rows, and three summary metric cards.
+ */
 export default function GrowthChart() {
   const { series, compoundAnnualGrowth, trailingTwelveMonthNetNewAssets, yoyRevenueGrowth, comment } =
     financialIntelligence.growth;
