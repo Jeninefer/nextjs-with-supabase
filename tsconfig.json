@@ -7,11 +7,6 @@
       "DOM",
       "DOM.Iterable"
     ],
-    "types": [
-      "jest",
-      "node",
-      "@testing-library/jest-dom"
-    ],
     "module": "ESNext",
     "skipLibCheck": true,
     "moduleResolution": "bundler",
@@ -19,7 +14,7 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "preserve",
+    "jsx": "react-jsx",
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
@@ -33,6 +28,9 @@
     "allowJs": true,
     "incremental": true,
     "esModuleInterop": true,
+    "types": [
+      "node"
+    ],
     "plugins": [
       {
         "name": "next"
@@ -47,12 +45,8 @@
     ".next/types/**/*.ts",
     "middleware.ts",
     "__tests__/**/*",
-    "__tests__/jest.d.ts"
-  ],
-  "references": [
-    {
-      "path": "./tsconfig.node.json"
-    }
+    "__tests__/jest.d.ts",
+    ".next/dev/types/**/*.ts"
   ],
   "exclude": [
     "node_modules"
