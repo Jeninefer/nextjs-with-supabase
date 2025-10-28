@@ -242,41 +242,27 @@ For detailed setup instructions, error resolution, and platform status, see:
 
 ### Common Issues
 
-**Port 3000 is already in use**
+**Supabase URL is invalid or missing**
 
 If you see an error like:
 
 ```bash
-Error: listen EADDRINUSE: address already in use :::3000
+Error: Invalid Supabase URL
 ```
 
-it means another process is already using port 3000.
+it means the Supabase URL is not set or incorrect in your environment variables.
 
 **How to fix:**
 
-1. **Find and stop the process using port 3000:**
+1. **Check your `.env.local` file** and ensure `NEXT_PUBLIC_SUPABASE_URL` is set to your Supabase project URL.
+
+2. **Verify your Supabase project** is active and the URL is correct.
+
+3. **Restart the development server** after making changes to the environment variables:
 
    ```bash
-   lsof -i :3000 -sTCP:LISTEN
-   # or, for Alpine Linux:
-   netstat -tulpn | grep :3000
+   npm run dev
    ```
-
-   Then kill the process by its PID:
-
-   ```bash
-   kill -9 <PID>
-   ```
-
-2. **Or, start Next.js on a different port:**
-
-   ```bash
-   PORT=3001 npm run dev
-   # or
-   npx next dev -p 3001
-   ```
-
-3. **If running in Codespaces or a dev container, you may need to restart the workspace.**
 
 ---
 
@@ -309,25 +295,25 @@ gcloud services enable run.googleapis.com
 python3 notebooks/abaco_financial_intelligence.py
 ```
 
-For comprehensive troubleshooting, see:
+**Port 3000 is already in use**
 
-- [Google Cloud Troubleshooting](./docs/TROUBLESHOOTING.md)
-- [Google Cloud Setup](./docs/GOOGLE_CLOUD_SETUP.md)
+If you see an error like:
 
-## 📄 License
+```bash
+Error: listen EADDRINUSE: address already in use :::3000
+```
 
-Proprietary software. See [LICENSE](./LICENSE) for details.
+it means another process is already using port 3000.
 
-## 🤝 Contributing
+**How to fix:**
 
-This is a proprietary platform. For authorized contributions, please contact the development team.
+1. **Check for any process using port 3000 (both IPv4 & IPv6):**
 
-## 📞 Support
+   ```bash
+   lsof -nP -iTCP:3000 -sTCP:LISTEN
+   netstat -anv | grep 3000
+   ```
 
-For technical support: <tech@abaco-platform.com>
-For licensing: <legal@abaco-platform.com>
-
----
 
 **ABACO Financial Intelligence Platform** - Setting the standard for financial analytics excellence.
 
