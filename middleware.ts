@@ -6,7 +6,7 @@ import { supabaseConfig } from "./lib/env";
 export async function middleware(request: NextRequest) {
   const response = NextResponse.next();
 
-  createServerClient(supabaseConfig.url, supabaseConfig.anonKey, {
+  const supabase = createServerClient(supabaseConfig.url, supabaseConfig.anonKey, {
     cookies: {
       getAll: () =>
         request.cookies.getAll().map((cookie) => ({
@@ -20,6 +20,8 @@ export async function middleware(request: NextRequest) {
       },
     },
   });
+  // Touch auth to propagate/refresh cookies into the response
+  await supabase.auth.getSession();
 
   return response;
 }
