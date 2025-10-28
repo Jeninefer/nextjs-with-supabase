@@ -90,7 +90,12 @@ export default function RiskAnalysis({ risk, isLoading }: RiskAnalysisProps) {
                   <div className="w-full bg-slate-700 rounded-full h-2 mt-2">
                     <div
                       className="bg-purple-400 h-2 rounded-full"
-                      style={{ width: `${Math.min(100, Math.round(sector.share * 100))}%` }}
+                      role="progressbar"
+                      aria-label={`${sector.sector} share of book`}
+                      aria-valuemin={0}
+                      aria-valuemax={100}
+                      aria-valuenow={Math.max(0, Math.min(100, Math.round(sector.share * 100)))}
+                      style={{ width: `${Math.max(0, Math.min(100, Math.round(sector.share * 100)))}%` }}
                     />
                   </div>
                 </div>
