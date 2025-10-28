@@ -20,14 +20,17 @@ function hasEnvConfig(x: unknown): x is { env: Record<string, string | undefined
 }
 
 // Mock MCP client para evitar dependencias externas por ahora
+type MCPEnvironment = Record<string, string> | undefined;
+
 const mockMCPClient = {
-  initializeServer: async (name: string, command: string, args: string[]) => {
-    console.log(`Mock: Initializing ${name} with ${command} ${args.join(' ')}`);
+  initializeServer: async (name: string, command: string, args: string[], env?: MCPEnvironment) => {
+    const envSummary = env ? ` with env ${JSON.stringify(env)}` : '';
+    console.log(`Mock: Initializing ${name} with ${command} ${args.join(' ')}${envSummary}`);
     return Math.random() > 0.3; // Simula éxito en 70% de casos
   },
   searchFinancialData: async (query: string) => ({ success: true, data: `Mock analysis for: ${query}` }),
   fetchMarketData: async (url: string) => ({ success: true, data: `Mock data from: ${url}` }),
-  storeMemory: async (key: string) => ({ success: true, data: `Stored ${key}` }),
+  storeMemory: async (key: string, value: unknown) => ({ success: true, data: `Stored ${key}: ${JSON.stringify(value)}` }),
   getMemory: async (key: string) => ({ success: true, data: `Retrieved ${key}` }),
   disconnect: async () => console.log('Mock: Disconnected')
 };
@@ -80,13 +83,11 @@ export function useMCPIntegration() {
           ? Object.fromEntries(Object.entries(config.env).map(([k, v]) => [k, v ?? '']))
           : undefined;
 
-        // Usar mock client por ahora
-        // Fix: mockMCPClient.initializeServer expects 3 arguments, not 4.
         const success = await mockMCPClient.initializeServer(
           serverName,
           config.command,
-          config.args
-          // envToPass // <-- Remove this argument or update mockMCPClient accordingly
+          config.args,
+          envToPass
         );
 
         if (success) {
@@ -118,9 +119,8 @@ export function useMCPIntegration() {
     return await mockMCPClient.fetchMarketData(source);
   }, []);
 
-  // Fix: mockMCPClient.storeMemory expects 1 argument, not 2.
-  const storeAnalysisResult = useCallback(async (analysisId: string, result: any) => {
-    return await mockMCPClient.storeMemory(`analysis_${analysisId}`);
+    const storeAnalysisResult = useCallback(async (analysisId: string, result: unknown) => {
+      return await mockMCPClient.storeMemory(`analysis_${analysisId}`, result);
   }, []);
 
   const getStoredAnalysis = useCallback(async (analysisId: string) => {
