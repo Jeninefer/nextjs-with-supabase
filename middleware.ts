@@ -8,6 +8,7 @@ export async function middleware(request: NextRequest) {
   const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
   if (!supabaseUrl || !supabaseKey) {
+    console.warn("Supabase middleware: Missing NEXT_PUBLIC_SUPABASE_URL or NEXT_PUBLIC_SUPABASE_ANON_KEY. Authentication checks will be skipped.");
     return response;
   }
 
