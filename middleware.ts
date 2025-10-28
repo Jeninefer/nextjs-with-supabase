@@ -11,10 +11,10 @@ export async function middleware(request: NextRequest) {
       cookies: {
         getAll() { return request.cookies.getAll() },
         setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value, options }) => request.cookies.set(name, value))
+          cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value))
           supabaseResponse = NextResponse.next({ request })
-          cookiesToSet.forEach(({ name, value, options }) =>
-            supabaseResponse.cookies.set(name, value, options)
+          cookiesToSet.forEach(({ name, value }) =>
+            supabaseResponse.cookies.set(name, value)
           )
         },
       },
@@ -23,10 +23,10 @@ export async function middleware(request: NextRequest) {
 
   const { data: { user } } = await supabase.auth.getUser()
 
-  if (!user && !request.nextUrl.pathname.startsWith('/sign-in') && 
-      !request.nextUrl.pathname.startsWith('/sign-up') && 
-      !request.nextUrl.pathname.startsWith('/auth') && 
-      request.nextUrl.pathname !== '/') {
+  if (!user && !request.nextUrl.pathname.startsWith('/sign-in') &&
+    !request.nextUrl.pathname.startsWith('/sign-up') &&
+    !request.nextUrl.pathname.startsWith('/auth') &&
+    request.nextUrl.pathname !== '/') {
     const url = request.nextUrl.clone()
     url.pathname = '/sign-in'
     return NextResponse.redirect(url)
