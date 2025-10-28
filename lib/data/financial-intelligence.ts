@@ -8,6 +8,8 @@ export interface FinancialMetric {
   change: number;
   changeLabel: string;
   target?: number;
+  /** Whether an upward change is good (default) or downward change is good */
+  trendDirection?: 'up' | 'down';
 }
 
 export interface GrowthPoint {
