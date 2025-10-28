@@ -48,6 +48,8 @@ abaco_venv/
 __pycache__/
 *.pyc
 *.pyo
+# Python build metadata
+*.egg-info/
 
 # Jupyter Notebook checkpoints
 .ipynb_checkpoints/
