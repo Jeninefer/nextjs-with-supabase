@@ -9,7 +9,9 @@
             "type": "node",
             "request": "launch",
             "program": "${workspaceFolder}/node_modules/.bin/next",
-            "args": ["dev"],
+            "args": [
+                "dev"
+            ],
             "console": "integratedTerminal",
             "env": {
                 "NODE_ENV": "development"
@@ -24,7 +26,9 @@
             "type": "node",
             "request": "launch",
             "program": "${workspaceFolder}/node_modules/.bin/next",
-            "args": ["build"],
+            "args": [
+                "build"
+            ],
             "console": "integratedTerminal",
             "env": {
                 "NODE_ENV": "production"
@@ -51,12 +55,27 @@
             "type": "node",
             "request": "launch",
             "program": "${workspaceFolder}/node_modules/.bin/tsc",
-            "args": ["--noEmit"],
+            "args": [
+                "--noEmit"
+            ],
             "console": "integratedTerminal",
             "skipFiles": [
                 "<node_internals>/**"
             ],
             "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Run Script: start",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "program": "${workspaceFolder}/node_modules/.bin/next",
+            "args": [
+                "start"
+            ],
+            "envFile": "${workspaceFolder}/.env.local"
         }
     ]
 }

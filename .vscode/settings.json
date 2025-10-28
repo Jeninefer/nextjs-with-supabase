@@ -95,5 +95,6 @@
         "connectionId": "jeninefer",
         "projectKey": "Jeninefer_nextjs-with-supabase"
     },
-    "editor.codeActions.triggerOnFocusChange": true
+    "editor.codeActions.triggerOnFocusChange": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
 }
