@@ -114,6 +114,36 @@
     "sonarlint.focusOnNewCode": false,
     // Disable telemetry (recommended for privacy)
     "sonarlint.disableTelemetry": true,
+    "Lingma.aI Chat.mcpToolsInAgentMode": true,
+    "chat.mcp.discovery.enabled": {
+        "claude-desktop": true,
+        "windsurf": true,
+        "cursor-global": true,
+        "cursor-workspace": true
+    },
+    "chatgpt.openOnStartup": true,
+    "chat.mcp.assisted.nuget.enabled": true,
+    "[github-actions-workflow]": {
+        "editor.defaultFormatter": "redhat.vscode-yaml"
+    },
+    "githubIssues.alwaysPromptForNewIssueRepo": true,
+    "DockerRun.DisableDockerrc": true,
+    "DockerRun.Containers": [
+        "28e1467e9591",
+        "769ae62b37f1",
+        "3321652c7d9f",
+        "b9286e98fd76",
+        "76dc2c40bfea",
+        "655762c6c651",
+        "caa54601d229",
+        "32401fd05dce",
+        "fc39ca3a14db",
+        "d15721d149b5",
+        "0cabce70cba5",
+        "002adf66b921",
+        "fe36f65c4305",
+        "9a9e7912c6ca"
+    ],
     // Use Node.js 20+ for JS/TS analysis (set path if not on PATH)
     // "sonarlint.pathToNodeExecutable": "/usr/local/bin/node",
     // Example: custom rule overrides (uncomment and customize as needed)
