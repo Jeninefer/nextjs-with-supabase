@@ -1,19 +1,8 @@
 {
   "compilerOptions": {
-<<<<<<< HEAD
-    "target": "ES2020",
-    "useDefineForClassFields": true,
-    "lib": [
-      "ES2020",
-      "DOM",
-      "DOM.Iterable"
-    ],
-    "module": "ESNext",
-=======
     "target": "ES2017",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
->>>>>>> 0231f9b9 (fix: resolve all critical build issues - Supabase, ESLint, TypeScript)
     "skipLibCheck": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
@@ -23,46 +12,6 @@
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
-<<<<<<< HEAD
-    "noEmit": true,
-    "jsx": "react-jsx",
-    "strict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true,
-    "ignoreDeprecations": "5.0",
-    "paths": {
-      "@/*": [
-        "./*"
-      ]
-    },
-    "allowJs": true,
-    "incremental": true,
-    "esModuleInterop": true,
-    "types": [
-      "node"
-    ],
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ]
-  },
-  "include": [
-    "app",
-    "components",
-    "lib",
-    "types",
-    ".next/types/**/*.ts",
-    "middleware.ts",
-    "__tests__/**/*",
-    "__tests__/jest.d.ts",
-    ".next/dev/types/**/*.ts"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
-=======
     "jsx": "preserve",
     "incremental": true,
     "plugins": [{"name": "next"}],
@@ -70,6 +19,5 @@
     "paths": {"@/*": ["./*"]}
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["node_modules", "supabase/functions"]
->>>>>>> 0231f9b9 (fix: resolve all critical build issues - Supabase, ESLint, TypeScript)
+  "exclude": ["node_modules"]
 }
