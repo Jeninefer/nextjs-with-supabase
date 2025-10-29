@@ -256,3 +256,4 @@ config.secrets.ts
 
 # Never commit these
 !.env.example
+.swp
