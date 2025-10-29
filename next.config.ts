@@ -1,11 +1,10 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  serverExternalPackages: [
-    "@node-rs/argon2",
-    "@node-rs/bcrypt",
-    "@supabase/supabase-js",
-  ],
+  serverExternalPackages: ["@node-rs/argon2", "@node-rs/bcrypt"],
+  experimental: {
+    serverComponentsExternalPackages: ["@supabase/supabase-js"]
+  },
   images: {
     remotePatterns: [
       {

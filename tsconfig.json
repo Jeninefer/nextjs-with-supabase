@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+<<<<<<< HEAD
     "target": "ES2020",
     "useDefineForClassFields": true,
     "lib": [
@@ -8,11 +9,21 @@
       "DOM.Iterable"
     ],
     "module": "ESNext",
+=======
+    "target": "ES2017",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+>>>>>>> 0231f9b9 (fix: resolve all critical build issues - Supabase, ESLint, TypeScript)
     "skipLibCheck": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
     "moduleResolution": "bundler",
-    "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
+<<<<<<< HEAD
     "noEmit": true,
     "jsx": "react-jsx",
     "strict": true,
@@ -51,4 +62,14 @@
   "exclude": [
     "node_modules"
   ]
+=======
+    "jsx": "preserve",
+    "incremental": true,
+    "plugins": [{"name": "next"}],
+    "baseUrl": ".",
+    "paths": {"@/*": ["./*"]}
+  },
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "exclude": ["node_modules", "supabase/functions"]
+>>>>>>> 0231f9b9 (fix: resolve all critical build issues - Supabase, ESLint, TypeScript)
 }
