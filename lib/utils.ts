@@ -1,5 +1,5 @@
-import { type ClassValue, clsx } from "clsx";
-import { twMerge } from "tailwind-merge";
+import { type ClassValue, clsx } from "clsx"
+import { twMerge } from "tailwind-merge"
 
 /**
  * Combines multiple class value inputs into a single string and resolves Tailwind class conflicts.
@@ -8,9 +8,10 @@ import { twMerge } from "tailwind-merge";
  * @returns A single class name string with conflicting Tailwind classes merged
  */
 export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs));
+  return twMerge(clsx(inputs))
 }
 
+<<<<<<< HEAD
 const defaultNumberFormat = new Intl.NumberFormat("en-US", {
   maximumFractionDigits: 1,
 });
@@ -93,3 +94,9 @@ export function formatDateTime(value: string) {
     timeStyle: "short",
   }).format(date);
 }
+=======
+export const hasEnvVars = !!(
+  process.env.NEXT_PUBLIC_SUPABASE_URL && 
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+);
+>>>>>>> 0231f9b9 (fix: resolve all critical build issues - Supabase, ESLint, TypeScript)
