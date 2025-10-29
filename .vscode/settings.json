@@ -123,6 +123,9 @@
     },
     "chatgpt.openOnStartup": true,
     "chat.mcp.assisted.nuget.enabled": true,
+    "[github-actions-workflow]": {
+        "editor.defaultFormatter": "redhat.vscode-yaml"
+    },
     // Use Node.js 20+ for JS/TS analysis (set path if not on PATH)
     // "sonarlint.pathToNodeExecutable": "/usr/local/bin/node",
     // Example: custom rule overrides (uncomment and customize as needed)
