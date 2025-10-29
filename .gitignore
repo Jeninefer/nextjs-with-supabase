@@ -1,71 +1,258 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+# ============================================================================
+# ABACO Platform - Comprehensive Git Ignore Configuration
+# ============================================================================
 
-# Dependencies
+# ============================================================================
+# DEPENDENCIES
+# ============================================================================
 node_modules/
 /.pnp
 .pnp.js
+yarn.lock
+package-lock.json
+pnpm-lock.yaml
 
-# Testing
-/coverage
-
-# Next.js
+# ============================================================================
+# BUILD OUTPUT & CACHES
+# ============================================================================
 /.next/
 /out/
-
-# Production
 /build
-
-# Misc
-.DS_Store
+/dist
 *.tsbuildinfo
+.swc/
+.cache/
 next-env.d.ts
 
-# Environment variables
-.env*.local
+# ============================================================================
+# TESTING & COVERAGE
+# ============================================================================
+/coverage
+*.lcov
+.nyc_output/
+jest.setup.js.bak
+
+# ============================================================================
+# ENVIRONMENT & SECRETS
+# ============================================================================
 .env
+.env.local
+.env.*.local
+.env.production.local
+.env.development.local
+.env.test.local
+!.env.example
+.env.example.secure
 
-# IDE
+# ============================================================================
+# PYTHON ENVIRONMENT & NOTEBOOKS
+# ============================================================================
+abaco_venv/
+.venv/
+venv/
+ENV/
+env/
+.python-version
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg
+*.egg-info/
+dist/
+build/
+pip-log.txt
+pip-delete-this-directory.txt
+.tox/
+.coverage
+.coverage.*
+.cache
+.pytest_cache/
+.hypothesis/
+.mypy_cache/
+.ruff_cache/
+
+# Jupyter Notebook
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+.jupyter/
+
+# IPython
+profile_default/
+ipython_config.py
+.ipykernel/
+
+# Plotly exports
+notebooks/charts/
+notebooks/exports/
+*.html
+
+# ============================================================================
+# IDE & EDITOR FILES
+# ============================================================================
 .vscode/settings.json
+.vscode/launch.json
+.vscode/extensions.json
+!.vscode/settings.json.template
 .idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+*.sublime-project
+*.sublime-workspace
+.project
+.pydevproject
+.settings/
+*.code-workspace
 
-# Logs
+# ============================================================================
+# LOGGING & RUNTIME
+# ============================================================================
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-
-# Runtime data
-pids
+lerna-debug.log*
+*.log
+logs/
+pids/
 *.pid
 *.seed
 *.pid.lock
+debug.log
+build.log
+cleanup-*.log
 
-# CS-Script cache
-*.cs.dll
-*.cs.compiled
-
-# Python virtual environment
-abaco_venv/
-__pycache__/
-*.pyc
-*.pyo
-
-# Jupyter Notebook checkpoints
-.ipynb_checkpoints/
-
-# Temporary files
+# ============================================================================
+# TEMPORARY & BACKUP FILES
+# ============================================================================
 *.tmp
 *.bak
 *.swp
+*.temp
 *~
+*.orig
+*.rej
+.#*
 
-# TypeScript
+# ============================================================================
+# OS SPECIFIC
+# ============================================================================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+*.class
+.AppleDouble
+.LSOverride
+
+# ============================================================================
+# GENERATED FILES (prevent bloat from scripts)
+# ============================================================================
+emergency-fix.sh
+fix_*.sh
+cleanup_*.sh
+sync_*.sh
+*-cleanup-*.sh
+repair-*.sh
+repair_*.sh
+verify-*.sh
+verify_*.sh
+
+# Generated status/recovery docs (use proper git workflows instead)
+BUILD_SUCCESS.md
+DEPLOYMENT*.md
+DEPLOYMENT_*.md
+*-RECOVERY.md
+*-RECOVERY_*.md
+RESOLUTION_*.md
+RECOVERY_*.md
+repo_backup.md
+QUICK_START.md
+TESTING.md
+VERCEL_DEPLOY.md
+
+# Build artifacts from scripts
+colors.ts
+tsconfig.tsbuildinfo
+*.tsbuildinfo
 tsconfig.node.json
 
-# Egg information
-*.egg-info/
+# ============================================================================
+# ABACO-SPECIFIC IGNORED DIRECTORIES
+# ============================================================================
+backend/pocketbase/
+multi-container-app/
+abaco_runtime/
+surveys/
+scripts/
 
-# ABACO runtime exports (keep structure with .gitkeep files)
-abaco_runtime/exports/*
-abaco_runtime/exports/**/*
-!abaco_runtime/exports/**/
-!abaco_runtime/exports/**/.gitkeep
+# Supabase local development (if running locally)
+supabase/.branches/
+supabase/migrations/*_backup/
+
+# ============================================================================
+# MONOREPO/WORKSPACE ARTIFACTS
+# ============================================================================
+lerna.json.bak
+workspace-settings.json
+tsconfig.tsbuildinfo.json
+
+# ============================================================================
+# SENSITIVE DATA (Extra paranoia - whitelist approach)
+# ============================================================================
+*.pem
+*.key
+*.crt
+*.cer
+*.pfx
+*.p12
+secrets.json
+credentials.json
+*-credentials.json
+*-secret.json
+config.secrets.js
+config.secrets.ts
+
+# ============================================================================
+# LARGE FILES (prevent accidental commits)
+# ============================================================================
+*.mp4
+*.mov
+*.avi
+*.zip
+*.tar.gz
+*.rar
+*.7z
+*.iso
+*.dmg
+*.db
+*.sqlite
+*.sqlite3
+
+# ============================================================================
+# WHITELIST - Force include important files
+# ============================================================================
+!.env.example
+!.gitignore
+!.prettierignore
+!.eslintignore
+!.npmrc.example
+!.github/
+!docs/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+.env.production.local
+.env.development.local
+.env.test.local
+
+# Never commit these
+!.env.example
