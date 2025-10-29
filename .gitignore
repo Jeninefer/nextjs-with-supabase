@@ -47,6 +47,7 @@ jest.setup.js.bak
 # ============================================================================
 # PYTHON ENVIRONMENT & NOTEBOOKS
 # ============================================================================
+# Virtual environments
 abaco_venv/
 .venv/
 venv/
@@ -154,6 +155,7 @@ Thumbs.db
 # ============================================================================
 # GENERATED FILES (prevent bloat from scripts)
 # ============================================================================
+# Emergency/one-off fix scripts should never be committed
 emergency-fix.sh
 fix_*.sh
 cleanup_*.sh
@@ -186,6 +188,7 @@ tsconfig.node.json
 # ============================================================================
 # ABACO-SPECIFIC IGNORED DIRECTORIES
 # ============================================================================
+# Abandoned projects (should not be in main repo)
 backend/pocketbase/
 multi-container-app/
 abaco_runtime/
@@ -206,6 +209,7 @@ tsconfig.tsbuildinfo.json
 # ============================================================================
 # SENSITIVE DATA (Extra paranoia - whitelist approach)
 # ============================================================================
+# Never commit credentials, tokens, or API keys
 *.pem
 *.key
 *.crt
@@ -222,6 +226,7 @@ config.secrets.ts
 # ============================================================================
 # LARGE FILES (prevent accidental commits)
 # ============================================================================
+# Videos, archives, databases
 *.mp4
 *.mov
 *.avi
@@ -245,15 +250,4 @@ config.secrets.ts
 !.npmrc.example
 !.github/
 !docs/
-
-# Environment variables
-.env
-.env.local
-.env.*.local
-.env.production.local
-.env.development.local
-.env.test.local
-
-# Never commit these
-!.env.example
 .swp
