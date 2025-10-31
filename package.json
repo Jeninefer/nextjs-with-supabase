@@ -18,7 +18,10 @@
     "test:urls": "node scripts/test-urls.js",
     "verify": "npm run clean:duplicates && npm run type-check && npm run lint",
     "find-licenses": "node scripts/find-license-matches.js",
-    "cleanup:now": "bash scripts/cleanup-now.sh"
+    "cleanup:now": "bash scripts/cleanup-now.sh",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "coverage": "vitest run --coverage"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.39.0",
@@ -41,7 +44,12 @@
     "postcss": "^8.4.32",
     "tailwindcss": "^3.4.0",
     "typescript": "^5.9.3",
-    "vite": "^7.1.11"
+    "vite": "^7.1.11",
+    "@testing-library/jest-dom": "^6.4.6",
+    "@testing-library/react": "^14.2.0",
+    "@testing-library/user-event": "^14.5.2",
+    "jsdom": "^24.0.0",
+    "vitest": "^1.6.0"
   },
   "engines": {
     "node": ">=18.0.0",
