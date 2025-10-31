@@ -28,6 +28,15 @@ export function LoginForm({
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (
+      "nativeEvent" in e &&
+      e.nativeEvent &&
+      typeof e.nativeEvent === "object" &&
+      "preventDefault" in e.nativeEvent &&
+      typeof (e.nativeEvent as { preventDefault?: unknown }).preventDefault === "function"
+    ) {
+      (e.nativeEvent as { preventDefault: () => void }).preventDefault();
+    }
     const supabase = createClient();
     setIsLoading(true);
     setError(null);
@@ -41,7 +50,16 @@ export function LoginForm({
       // Update this route to redirect to an authenticated route. The user already has an active session.
       router.push("/protected");
     } catch (error: unknown) {
-      setError(error instanceof Error ? error.message : "An error occurred");
+      if (
+        error &&
+        typeof error === "object" &&
+        "message" in error &&
+        typeof (error as { message?: unknown }).message === "string"
+      ) {
+        setError((error as { message?: string }).message ?? "An error occurred");
+      } else {
+        setError(error instanceof Error ? error.message : "An error occurred");
+      }
     } finally {
       setIsLoading(false);
     }
