@@ -4,6 +4,14 @@ import { financialIntelligence } from "@/lib/data/financial-intelligence";
 import { getRiskIndicator, getRiskLevel } from "@/lib/risk-indicators";
 import { formatCurrency, formatPercent } from "@/lib/utils";
 
+/**
+ * Render a Risk Analysis panel showing risk posture, portfolio metrics, exposure breakdown, and stress test outcomes.
+ *
+ * Reads data from financialIntelligence.risk (and metrics for q/q changes) and formats portfolio VaR, expected shortfall,
+ * default rate, exposures (with indicators, avg days past due, ratio and change in bps), and stress test scenarios for display.
+ *
+ * @returns A JSX element containing the complete Risk Analysis UI.
+ */
 export default function RiskAnalysis() {
   const { risk } = financialIntelligence;
 

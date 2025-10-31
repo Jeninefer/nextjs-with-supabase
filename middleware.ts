@@ -1,6 +1,13 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
+/**
+ * Initializes a Supabase server client that bridges cookies between the incoming request and outgoing response, then performs a lightweight auth check.
+ *
+ * If Supabase environment variables are missing, returns the response unchanged. Any error during the auth check is logged but does not stop request processing.
+ *
+ * @returns A NextResponse for the request, potentially updated with authentication-related cookies.
+ */
 export async function middleware(request: NextRequest) {
   const response = NextResponse.next({ request: { headers: request.headers } });
 
@@ -8,7 +15,6 @@ export async function middleware(request: NextRequest) {
   const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
   if (!supabaseUrl || !supabaseKey) {
-    console.warn("Supabase middleware: Missing NEXT_PUBLIC_SUPABASE_URL or NEXT_PUBLIC_SUPABASE_ANON_KEY. Authentication checks will be skipped.");
     return response;
   }
 
