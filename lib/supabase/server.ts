@@ -52,9 +52,17 @@ async function createCookiesAdapter(cookieSource: unknown) {
 }
 
 /**
- * Especially important if using Fluid compute: Don't put this client in a
- * global variable. Always create a new client within each function when using
- * it.
+ * Create a Supabase server client configured to use Next.js cookies for SSR.
+ *
+ * Creates and returns a server-side Supabase client whose cookie handling is
+ * backed by a cookies adapter derived from Next.js `cookies()`. This function
+ * reads `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` from
+ * environment variables and asserts their presence.
+ *
+ * Do not reuse the returned client across concurrent requests or long-lived
+ * globals; instantiate a new client for each request or compute invocation.
+ *
+ * @returns A Supabase server client instance configured to use the resolved cookies adapter.
  */
 export async function createClient() {
   const cookieStore = await cookies();
