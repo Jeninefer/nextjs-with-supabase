@@ -7,12 +7,13 @@ set -e  # Exit on any error
 echo "🚀 ABACO Financial Intelligence Platform - Repository Cleanup"
 echo "============================================================"
 
-# Navigate to project root
-cd /Users/jenineferderas/Documents/GitHub/nextjs-with-supabase
+# Get the directory where this script is located and navigate to repository root
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+cd "$SCRIPT_DIR/.."
 
 # Phase 1: Remove duplicate lockfiles
 echo "📦 Phase 1: Removing duplicate lockfiles..."
-rm -f /Users/jenineferderas/pnpm-lock.yaml
+# Only clean lockfiles in the repository directory
 rm -f pnpm-lock.yaml
 rm -f yarn.lock
 echo "✅ Duplicate lockfiles removed"

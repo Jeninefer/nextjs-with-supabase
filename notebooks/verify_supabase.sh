@@ -3,7 +3,9 @@
 echo "🔍 ABACO Supabase Connection Verification"
 echo "========================================"
 
-cd /Users/jenineferderas/Documents/GitHub/nextjs-with-supabase
+# Get the directory where this script is located and navigate to repository root
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+cd "$SCRIPT_DIR/.."
 
 # Check Supabase CLI installation
 if ! command -v supabase &> /dev/null; then
