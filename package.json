@@ -2,6 +2,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
+    "dev:all": "bash scripts/start-dev.sh",
+    "dev:stop": "bash scripts/stop-dev.sh",
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
@@ -11,7 +13,10 @@
     "clean": "rm -rf .next out node_modules/.cache",
     "test": "jest",
     "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage"
+    "test:coverage": "jest --coverage",
+    "dashboard": "source abaco_venv/bin/activate && streamlit run notebooks/ml_dashboard.py",
+    "dashboard:prod": "source abaco_venv/bin/activate && streamlit run notebooks/ml_dashboard.py --server.port 8501 --server.address 0.0.0.0",
+    "ports:clean": "bash scripts/cleanup-ports.sh"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^0.5.0",

@@ -11,7 +11,6 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-<<<<<<< HEAD
 const defaultNumberFormat = new Intl.NumberFormat("en-US", {
   maximumFractionDigits: 1,
 });
@@ -94,9 +93,9 @@ export function formatDateTime(value: string) {
     timeStyle: "short",
   }).format(date);
 }
-=======
-export const hasEnvVars = !!(
-  process.env.NEXT_PUBLIC_SUPABASE_URL && 
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+
+export const hasEnvVars = Boolean(
+  process.env.NEXT_PUBLIC_SUPABASE_URL &&
+    (process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_OR_ANON_KEY ||
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)
 );
->>>>>>> 0231f9b9 (fix: resolve all critical build issues - Supabase, ESLint, TypeScript)

@@ -12,6 +12,7 @@ const compat = new FlatCompat({
 const eslintConfig = [
   {
     ignores: [
+      ".next/**/*",
       "supabase/functions/**/*",
       "apiClient.ts",
       "models/**/*",
