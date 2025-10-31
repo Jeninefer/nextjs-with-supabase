@@ -36,6 +36,13 @@ const createErrorReference = () => {
     .slice(2, 10)}`;
 };
 
+/**
+ * Performs a Supabase connectivity test and returns a structured HTTP response describing the result.
+ *
+ * The response JSON includes `ok`, `data` or `error`, `meta` (environment flags and timings), and timing fields.
+ * When Supabase environment variables are missing the handler returns a 500; when the query fails it returns a 502 with an error reference; on success it returns a 200 with the query results. Responses include timing headers (e.g., `X-Total-Time-ms`, `Server-Timing`) and may include an error `reference` for failed cases.
+ *
+ * @returns An HTTP Response whose JSON body contains the test outcome (`ok`, `data` or `error`, `meta`), and whose status is 200 on success, 502 for query failures, or 500 for missing configuration or unexpected errors.
 export async function GET(): Promise<Response> {
   const totalStart = performance.now();
 

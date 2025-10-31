@@ -3,6 +3,11 @@ import { ConnectSupabaseSteps } from "@/components/tutorial/connect-supabase-ste
 import { SignUpUserSteps } from "@/components/tutorial/sign-up-user-steps";
 import { hasEnvVars } from "@/lib/utils";
 
+/**
+ * Renders the page hero and contextual "Next steps" content for onboarding.
+ *
+ * @returns A React element containing the Hero and a main section that shows `SignUpUserSteps` when required environment variables are present, otherwise `ConnectSupabaseSteps`.
+ */
 export default function Index() {
   return (
     <>
