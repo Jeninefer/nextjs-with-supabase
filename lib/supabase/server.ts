@@ -1,6 +1,8 @@
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 
+import { supabaseConfig } from "../env";
+
 /**
  * Ensure cookieStoreRef is the actual cookie store object (not a Promise)
  */
@@ -36,7 +38,7 @@ async function createCookiesAdapter(cookieSource: unknown) {
       try {
         if (cookieStore && typeof (cookieStore as Record<string, unknown>).set === "function") {
           cookiesToSet.forEach(({ name, value, options }) =>
-            (cookieStore as { set: (name: string, value: string, options?: Record<string, unknown>) => void }).set(name, value, options)
+            (cookieStore as { set: (name: string, value: string, options?: Record<string, unknown>) => void }).set(name, value, options),
           );
           return;
         }
@@ -60,11 +62,7 @@ export async function createClient() {
   const cookieStore = await cookies();
   const cookiesAdapter = await createCookiesAdapter(cookieStore);
 
-  return createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_OR_ANON_KEY!,
-    {
-      cookies: cookiesAdapter,
-    },
-  );
+  return createServerClient(supabaseConfig.url, supabaseConfig.anonKey, {
+    cookies: cookiesAdapter,
+  });
 }
