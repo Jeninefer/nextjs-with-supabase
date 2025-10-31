@@ -1,44 +1,82 @@
 [
   {
-    "number": 110,
-    "title": "Improve Supabase connectivity diagnostics",
-    "assignees": ["Jeninefer"],
-    "status": "open"
+    "number": 4861,
+    "title": "Roll out region-aware replication monitors",
+    "status": "open",
+    "assignees": ["emily.cho"],
+    "author": "emily.cho"
   },
   {
-    "number": 109,
-    "title": "Improve Supabase connectivity diagnostics",
-    "assignees": ["chatgpt-codex-connector[bot]"],
+    "number": 4862,
+    "title": "Roll out region-aware replication monitors",
     "status": "closed",
-    "duplicateOf": 110,
+    "assignees": ["supabase-ai-observer"],
+    "author": "supabase-ai-observer",
+    "duplicateOf": 4861,
     "closureReason": "duplicate-ai-assignee"
   },
   {
-    "number": 108,
-    "title": "Document planned ingestion pipeline",
-    "assignees": ["JenineferDeras"],
-    "status": "open"
+    "number": 4854,
+    "title": "Harden storage lifecycle retention policies",
+    "status": "open",
+    "assignees": ["diego.marquez"],
+    "author": "diego.marquez"
   },
   {
-    "number": 107,
-    "title": "Document planned ingestion pipeline",
-    "assignees": ["openai-maintainer"],
+    "number": 4855,
+    "title": "Harden storage lifecycle retention policies",
     "status": "closed",
-    "duplicateOf": 108,
+    "assignees": ["chatgpt-release"],
+    "author": "chatgpt-release",
+    "duplicateOf": 4854,
     "closureReason": "duplicate-ai-assignee"
   },
   {
-    "number": 106,
-    "title": "Add pull request deduplication utilities",
+    "number": 4856,
+    "title": "Harden storage lifecycle retention policies",
+    "status": "closed",
+    "assignees": ["openai-release"],
+    "author": "openai-release",
+    "duplicateOf": 4854,
+    "closureReason": "duplicate-ai-assignee"
+  },
+  {
+    "number": 4849,
+    "title": "Implement multi-tenant billing webhooks",
+    "status": "open",
+    "assignees": ["mina.kapoor"],
+    "author": "mina.kapoor"
+  },
+  {
+    "number": 4850,
+    "title": "Implement multi-tenant billing webhooks",
+    "status": "closed",
     "assignees": ["grok-release-bot"],
-    "status": "closed",
-    "duplicateOf": 105,
+    "author": "grok-release-bot",
+    "duplicateOf": 4849,
     "closureReason": "duplicate-ai-assignee"
   },
   {
-    "number": 105,
-    "title": "Add pull request deduplication utilities",
-    "assignees": ["Jeninefer"],
-    "status": "open"
+    "number": 4837,
+    "title": "Expose audit log exports via secure bundles",
+    "status": "open",
+    "assignees": ["olivia.ng"],
+    "author": "olivia.ng"
+  },
+  {
+    "number": 4830,
+    "title": "Expand identity provider analytics dashboards",
+    "status": "open",
+    "assignees": ["samuel.okoro"],
+    "author": "samuel.okoro"
+  },
+  {
+    "number": 4831,
+    "title": "Expand identity provider analytics dashboards",
+    "status": "closed",
+    "assignees": ["chatgpt-codex-connector"],
+    "author": "chatgpt-codex-connector",
+    "duplicateOf": 4830,
+    "closureReason": "duplicate-ai-assignee"
   }
 ]
