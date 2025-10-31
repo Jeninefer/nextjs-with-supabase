@@ -41,6 +41,12 @@ Welcome to the ABACO Financial Intelligence Platform documentation. This index h
 | [ABACO_IMPLEMENTATION_SUMMARY.md](../ABACO_IMPLEMENTATION_SUMMARY.md) | Feature implementation details | Understanding platform capabilities |
 | [notebooks/README_ABACO_DATASET.md](../notebooks/README_ABACO_DATASET.md) | Dataset generation guide | Working with financial data |
 
+### Developer Productivity
+
+| Document | Purpose | When to Use |
+|----------|---------|-------------|
+| [GITHUB_COPILOT_CLI.md](./GITHUB_COPILOT_CLI.md) | GitHub Copilot CLI overview and setup | Enhancing terminal workflows with AI assistance |
+
 ## 🎯 Common Scenarios
 
 ### "I'm starting a new project"
@@ -106,6 +112,7 @@ Welcome to the ABACO Financial Intelligence Platform documentation. This index h
 #### AI & ML Integration
 - **MCP servers**: [MCP_SETUP_GUIDE.md](./MCP_SETUP_GUIDE.md)
 - **API keys**: [MCP_SETUP_GUIDE.md](./MCP_SETUP_GUIDE.md) → Required API Keys
+- **Terminal AI workflows**: [GITHUB_COPILOT_CLI.md](./GITHUB_COPILOT_CLI.md)
 
 ## 📖 Document Descriptions
 
